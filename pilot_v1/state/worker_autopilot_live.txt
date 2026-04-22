@@ -1,16 +1,13 @@
 Autopilot Live Status
-updated_utc: 2026-04-22T23:14:16Z
+updated_utc: 2026-04-22T23:14:17Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
-mode: running
-last_task_processed: MTASK-0036
+mode: idle
+last_task_processed: 
 poll_seconds: 180
-note: Task completed successfully.
+note: No assigned mtasks found; sleeping until next poll. approved=39, eligible=0, mismatched=0.
 
 Recent Events (latest 20):
-2026-04-22T22:29:47Z | mode=running | last_task=MTASK-0034 | note=Task completed successfully.
-2026-04-22T22:44:07Z | mode=running | last_task= | note=Autopilot started.
-2026-04-22T22:44:27Z | mode=running | last_task=MTASK-0033-RETRY1 | note=Task completed successfully.
 2026-04-22T22:44:28Z | mode=idle | last_task=MTASK-0033-RETRY1 | note=Forced task cycle finished.
 2026-04-22T22:55:00Z | mode=running | last_task= | note=Autopilot started.
 2026-04-22T22:55:02Z | mode=running | last_task= | note=Autopilot started.
@@ -28,3 +25,6 @@ Recent Events (latest 20):
 2026-04-22T23:04:31Z | mode=running | last_task= | note=Autopilot started.
 2026-04-22T23:14:15Z | mode=running | last_task= | note=Autopilot started.
 2026-04-22T23:14:16Z | mode=running | last_task=MTASK-0036 | note=Task completed successfully.
+2026-04-22T23:14:17Z | mode=idle | last_task=MTASK-0036 | note=Forced task cycle finished.
+2026-04-22T23:14:17Z | mode=running | last_task= | note=Autopilot started.
+2026-04-22T23:14:17Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=39, eligible=0, mismatched=0.
