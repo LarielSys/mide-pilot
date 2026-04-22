@@ -1,0 +1,151 @@
+{
+  "name": "MIDE",
+  "version": "v1",
+  "status": "pilot",
+  "purpose": "Supervisor-controlled, approval-gated orchestration across Windows Main and Ubuntu Worker using Git as transport.",
+  "principles": [
+    "Main node is source of truth",
+    "Worker executes within explicit task bounds",
+    "No apply without approval",
+    "Every action must be auditable"
+  ],
+  "topology": {
+    "nodes": [
+      {
+        "node_id": "windows-main",
+        "role": "controller",
+        "responsibilities": [
+          "create tasks",
+          "review results",
+          "approve or reject",
+          "maintain ledger"
+        ],
+        "trust_level": "high"
+      },
+      {
+        "node_id": "ubuntu-worker-01",
+        "role": "executor",
+        "responsibilities": [
+          "pull tasks",
+          "execute bounded commands",
+          "return result bundles"
+        ],
+        "trust_level": "bounded"
+      }
+    ],
+    "transport": {
+      "type": "git",
+      "remote": "github",
+      "repo": "LarielSys/mide-pilot",
+      "branch": "main",
+      "exchange_paths": [
+        "pilot_v1/tasks",
+        "pilot_v1/results",
+        "pilot_v1/approvals",
+        "pilot_v1/state"
+      ]
+    }
+  },
+  "control_plane": {
+    "artifacts": {
+      "task": "pilot_v1/tasks/TASK-XXXX.json",
+      "result": "pilot_v1/results/TASK-XXXX.result.json",
+      "approval": "pilot_v1/approvals/TASK-XXXX.approval.json",
+      "ledger": "pilot_v1/state/ledger.json"
+    },
+    "task_lifecycle": [
+      "main_create_and_push_task",
+      "worker_pull_execute_and_push_result",
+      "main_pull_review_and_write_approval",
+      "main_update_ledger_and_push"
+    ],
+    "decisions": [
+      "approve",
+      "reject",
+      "approve_with_exception"
+    ]
+  },
+  "data_plane": {
+    "runtime_services": [
+      {
+        "service": "site_kb_server",
+        "host": "ubuntu-worker-01",
+        "bind": "127.0.0.1:8091",
+        "health_endpoint": "/health",
+        "chat_endpoint": "/api/chat",
+        "storage": "site_kb_chromadb",
+        "collection": "lariel_site_kb"
+      },
+      {
+        "service": "ollama",
+        "host": "ubuntu-worker-01",
+        "bind": "127.0.0.1:11434",
+        "models": [
+          "qwen2.5:14b",
+          "qwen2.5:7b"
+        ]
+      }
+    ],
+    "external_access": {
+      "tunnel": "ngrok",
+      "public_base_url": "https://jawed-lapel-dispersed.ngrok-free.dev",
+      "notes": [
+        "Public URL is mutable and must be validated before deployment",
+        "Any exposed token must be rotated"
+      ]
+    }
+  },
+  "policy": {
+    "safety": {
+      "exclusive_file_lock": true,
+      "quarantine_after_failures": 3,
+      "override_mode": "single_admin_default_two_person_optional"
+    },
+    "scope_enforcement": {
+      "requires_allowed_paths": true,
+      "requires_blocked_paths": true,
+      "reject_on_scope_violation": true
+    },
+    "evidence_requirements": [
+      "commands_run",
+      "validation_results",
+      "errors",
+      "evidence"
+    ]
+  },
+  "observability": {
+    "required": [
+      "task status",
+      "command transcript excerpts",
+      "approval decisions",
+      "ledger continuity"
+    ],
+    "health_guards": [
+      {
+        "name": "site_kb_consistency",
+        "script": "pilot_v1/scripts/verify_site_kb_consistency.sh",
+        "pass_condition": "health.documents equals direct chroma count"
+      }
+    ]
+  },
+  "known_risks": [
+    {
+      "risk": "Path mismatch between direct chroma checks and runtime service",
+      "mitigation": "Use canonical path site_kb_chromadb and guardrail script"
+    },
+    {
+      "risk": "Transport/auth interruption",
+      "mitigation": "Use PAT or SSH auth and verify git sync each loop"
+    },
+    {
+      "risk": "Tunnel endpoint drift",
+      "mitigation": "Validate health and chat via active public URL before deploying frontend changes"
+    }
+  ],
+  "next_capabilities": [
+    "automated main-side review checks",
+    "policy engine for task schema validation",
+    "worker quarantine automation",
+    "dashboard view for task history and risk state"
+  ]
+}

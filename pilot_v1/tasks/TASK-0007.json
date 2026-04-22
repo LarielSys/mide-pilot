@@ -1,0 +1,65 @@
+{
+  "task_id": "TASK-0007",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Validate Architecture v1 runtime assumptions on Ubuntu and return a fact-checked architecture evidence bundle.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot",
+    "~/Documents/itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Confirm site_kb_server health endpoint is reachable on 127.0.0.1:8091",
+    "Confirm /health status is ok and documents count is numeric",
+    "Confirm direct Chroma count for lariel_site_kb at site_kb_chromadb",
+    "Confirm verify_site_kb_consistency.sh exists and runs successfully",
+    "Confirm Ollama is reachable and active models listed",
+    "Report any architecture drift versus architecture/mide_architecture_v1.json"
+  ],
+  "dependencies": [
+    "TASK-0006"
+  ],
+  "timeout_seconds": 2400,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull",
+    "Run required commands and capture outputs",
+    "Write pilot_v1/results/TASK-0007.result.json",
+    "git add pilot_v1/results/TASK-0007.result.json",
+    "git commit -m 'worker: add TASK-0007 architecture validation result'",
+    "git push"
+  ],
+  "commands_expected": [
+    "cd ~/mide-pilot && git pull",
+    "curl -s http://127.0.0.1:8091/health",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='site_kb_chromadb'); col=c.get_collection('lariel_site_kb'); print({'collection': col.name, 'count': col.count()})\"",
+    "cd ~/mide-pilot && ./pilot_v1/scripts/verify_site_kb_consistency.sh",
+    "ollama list"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0007",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed|failed",
+    "commands_run": ["..."],
+    "validation_results": ["..."],
+    "errors": ["..."],
+    "evidence": {
+      "health_output": {},
+      "direct_chroma": {
+        "collection": "lariel_site_kb",
+        "count": 0
+      },
+      "guardrail_script_exit_code": 0,
+      "ollama_models_excerpt": "...",
+      "architecture_drift": ["..."]
+    }
+  }
+}
