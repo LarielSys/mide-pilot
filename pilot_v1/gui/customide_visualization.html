@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CustomIDE Architecture — MOSS Visualization</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep:    #020810;
+      --bg-dark:    #0a1628;
+      --bg-card:    rgba(10, 22, 40, 0.85);
+      --cyan:       #00d4ff;
+      --cyan-dim:   #00d4ff66;
+      --cyan-glow:  0 0 15px #00d4ff44, 0 0 30px #00d4ff22;
+      --amber:      #ffaa00;
+      --amber-dim:  #ffaa0066;
+      --green:      #44ff88;
+      --purple:     #bb88ff;
+      --red:        #ff6655;
+      --text:       #c8dce8;
+      --text-dim:   #7a99b5;
+      --border:     rgba(0,212,255,0.15);
+      --font-head:  'Orbitron', sans-serif;
+      --font-body:  'Rajdhani', sans-serif;
+      --font-mono:  'Share Tech Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-dark);
+      flex-shrink: 0;
+    }
+    .top-bar .logo {
+      font-family: var(--font-head);
+      font-size: 13px;
+      color: var(--cyan);
+      letter-spacing: 2px;
+    }
+    .top-bar .logo span { color: var(--amber); }
+    .top-bar .subtitle {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .top-bar .badge {
+      display: inline-block;
+      background: rgba(0,212,255,0.12);
+      border: 1px solid var(--cyan-dim);
+      border-radius: 3px;
+      padding: 2px 10px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--cyan);
+    }
+    .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+            background: #22c55e; margin-right: 6px; animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+    /* ── THREE-PANEL LAYOUT ── */
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr 1fr;
+      height: calc(100vh - 53px);
+    }
+    .panel {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .panel:last-child { border-right: none; }
+    .panel-header {
+      font-family: var(--font-head);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      padding: 11px 18px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,212,255,0.03);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .panel-header .tag {
+      background: var(--cyan);
+      color: var(--bg-deep);
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-size: 9px;
+      font-family: var(--font-mono);
+    }
+    .panel-header .tag.amber { background: var(--amber); }
+    .panel-header .tag.green { background: var(--green); }
+    .panel-body { flex: 1; overflow-y: auto; padding: 14px 18px; }
+
+    /* ── LEFT: MOSS CODE ── */
+    .moss-code {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      line-height: 1.65;
+      white-space: pre;
+    }
+    .moss-line {
+      display: block;
+      padding: 1px 6px;
+      border-left: 2px solid transparent;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .moss-line:hover { background: rgba(0,212,255,0.04); border-left-color: var(--cyan-dim); }
+    .moss-line.highlight { color: var(--cyan); border-left-color: var(--cyan);
+                            background: rgba(0,212,255,0.08); }
+    .t-comment  { color: #3a5a6a; }
+    .t-section  { color: var(--cyan); font-weight: 600; }
+    .t-key      { color: var(--amber); }
+    .t-val      { color: var(--text); }
+    .t-listitem { color: var(--text-dim); }
+    .t-separator{ color: #2a4a5a; }
+    .t-blank    { }
+
+    /* ── CENTER: BLOCK DIAGRAM ── */
+    #diagramSvg {
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+    }
+    .block-rect {
+      rx: 8;
+      ry: 8;
+      fill: rgba(10,22,40,0.9);
+      stroke: rgba(0,212,255,0.3);
+      stroke-width: 1.5;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .block-rect.hovered  { stroke: #00d4ff; stroke-width: 2.5;
+                            filter: drop-shadow(0 0 8px #00d4ff66); }
+    .block-rect.active   { stroke: #00d4ff; stroke-width: 2.5;
+                            filter: drop-shadow(0 0 12px #00d4ff88); }
+    .block-rect.ollama   { stroke: rgba(255,170,0,0.5); }
+    .block-rect.ollama.hovered { stroke: var(--amber);
+                                  filter: drop-shadow(0 0 8px #ffaa0066); }
+    .block-rect.worker   { stroke: rgba(68,255,136,0.4); }
+    .block-rect.worker.hovered { stroke: var(--green);
+                                  filter: drop-shadow(0 0 8px #44ff8866); }
+    .block-rect.support  { stroke: rgba(187,136,255,0.35); }
+    .block-rect.support.hovered { stroke: var(--purple);
+                                   filter: drop-shadow(0 0 8px #bb88ff66); }
+    .block-label { font-family: 'Share Tech Mono', monospace; font-size: 9px;
+                    fill: #7a99b5; }
+    .block-name  { font-family: 'Rajdhani', sans-serif; font-size: 12px;
+                    font-weight: 600; fill: #c8dce8; }
+    .block-name.hovered { fill: #00d4ff; }
+    .block-type  { font-family: 'Share Tech Mono', monospace; font-size: 8.5px;
+                    fill: #4a7a99; }
+    .edge-line   { stroke: rgba(0,212,255,0.25); stroke-width: 1.5;
+                    fill: none; transition: all 0.25s; }
+    .edge-line.hovered  { stroke: #00d4ff; stroke-width: 2.5;
+                           filter: drop-shadow(0 0 4px #00d4ff66); }
+    .edge-label  { font-family: 'Share Tech Mono', monospace; font-size: 8px;
+                    fill: #3a6a8a; }
+    .edge-label.hovered { fill: #00d4ff88; }
+    .arrowhead   { fill: rgba(0,212,255,0.4); }
+    .arrowhead.hovered { fill: #00d4ff; }
+
+    /* ── RIGHT: DETAILS PANEL ── */
+    .detail-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-align: center;
+      gap: 12px;
+    }
+    .detail-empty .hint {
+      font-size: 10px;
+      color: #2a4a5a;
+    }
+    .detail-section {
+      margin-bottom: 16px;
+    }
+    .detail-section-title {
+      font-family: var(--font-head);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-name {
+      font-family: var(--font-head);
+      font-size: 13px;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+    .detail-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+    .detail-row .dk { color: var(--amber); font-family: var(--font-mono); font-size: 11px;
+                       min-width: 80px; flex-shrink: 0; }
+    .detail-row .dv { color: var(--text); font-size: 12px; word-break: break-word; }
+    .detail-desc {
+      background: rgba(0,212,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+    .acts-list, .ints-list {
+      list-style: none;
+    }
+    .acts-list li, .ints-list li {
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 5px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .acts-list li:hover { border-color: var(--cyan-dim); color: var(--cyan);
+                           background: rgba(0,212,255,0.04); }
+    .acts-list li .act-name { color: var(--amber); font-size: 10px; }
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      border: 1px solid;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="logo">MOSS<span> ▸ </span>CustomIDE_DualPane_SharedOllama</div>
+    <div class="subtitle">
+      <span class="dot"></span>
+      10 RESOURCES &nbsp;·&nbsp; 11 ACTIONS &nbsp;·&nbsp; 3 INTERFACES
+    </div>
+    <div class="badge">architecture_draft · 2026-04-22</div>
+  </div>
+
+  <!-- THREE PANELS -->
+  <div class="panels">
+
+    <!-- LEFT: MOSS CODE -->
+    <div class="panel">
+      <div class="panel-header"><span class="tag">MOSS</span> ARCHITECTURE SOURCE</div>
+      <div class="panel-body">
+        <div class="moss-code" id="mossCode"></div>
+      </div>
+    </div>
+
+    <!-- CENTER: BLOCK DIAGRAM -->
+    <div class="panel">
+      <div class="panel-header"><span class="tag amber">R</span> COMPONENT DIAGRAM</div>
+      <div class="panel-body" style="padding:8px; display:flex; flex-direction:column;">
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="border-color:#00d4ff; background:rgba(0,212,255,0.1);"></div>
+            IDE Core
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="border-color:#ffaa00; background:rgba(255,170,0,0.1);"></div>
+            Ollama
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="border-color:#44ff88; background:rgba(68,255,136,0.1);"></div>
+            Worker 1
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="border-color:#bb88ff; background:rgba(187,136,255,0.1);"></div>
+            Support
+          </div>
+        </div>
+        <svg id="diagramSvg" viewBox="0 0 580 560" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" class="arrowhead" id="arrowMarker"/>
+            </marker>
+            <marker id="arrow-hover" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#00d4ff" id="arrowMarkerHover"/>
+            </marker>
+          </defs>
+
+          <!-- Edges (drawn first, behind blocks) -->
+          <!-- IDE_Frontend → IDE_Backend -->
+          <line class="edge-line" id="e0" x1="290" y1="90" x2="290" y2="148" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el0" x="295" y="122" text-anchor="start">HTTP :5555</text>
+
+          <!-- IDE_Backend → Ollama -->
+          <line class="edge-line" id="e1" x1="362" y1="190" x2="430" y2="190" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el1" x="370" y="184" text-anchor="start">POST /api/generate</text>
+
+          <!-- IDE_Backend → Script_Exec -->
+          <line class="edge-line" id="e2" x1="290" y1="228" x2="290" y2="288" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el2" x="295" y="260" text-anchor="start">execute()</text>
+
+          <!-- IDE_Backend → SSH_Bridge -->
+          <line class="edge-line" id="e3" x1="218" y1="190" x2="150" y2="190" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el3" x="160" y="184" text-anchor="start">remote exec</text>
+
+          <!-- SSH_Bridge → Worker1 -->
+          <line class="edge-line" id="e4" x1="100" y1="228" x2="100" y2="358" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el4" x="105" y="295" text-anchor="start">SSH :22</text>
+
+          <!-- Script_Exec → SSH_Bridge -->
+          <line class="edge-line" id="e5" x1="218" y1="320" x2="150" y2="230" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el5" x="160" y="275" text-anchor="end">execute_remote()</text>
+
+          <!-- IDE_Frontend → Remote_IDE_View (dashed flow to right) -->
+          <line class="edge-line" id="e6" x1="362" y1="52" x2="460" y2="290" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el6" x="415" y="165" text-anchor="start">right pane</text>
+
+          <!-- Remote_IDE_View → SSH_Bridge -->
+          <line class="edge-line" id="e7" x1="460" y1="330" x2="150" y2="200" stroke-dasharray="3,4" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el7" x="290" y="285" text-anchor="middle">data source</text>
+
+          <!-- Ollama_Version_Coordinator → Ollama_Local_Server -->
+          <line class="edge-line" id="e8" x1="480" y1="112" x2="480" y2="148" marker-end="url(#arrow)"/>
+          <text class="edge-label" id="el8" x="485" y="132" text-anchor="start">version spec</text>
+
+          <!-- IDE_Backend → Git_Integration -->
+          <line class="edge-line" id="e9" x1="290" y1="228" x2="460" y2="430" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+          <!-- IDE_Backend → File_System_Local -->
+          <line class="edge-line" id="e10" x1="362" y1="210" x2="460" y2="470" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+          <!-- ── BLOCKS ── -->
+
+          <!-- IDE_Frontend_Windows  (top center) -->
+          <g class="block-group" data-id="IDE_Frontend_Windows" transform="translate(190,20)">
+            <rect class="block-rect" width="200" height="62" data-id="IDE_Frontend_Windows"/>
+            <text class="block-label" x="8" y="14">R · IDE_CORE</text>
+            <text class="block-name"  x="100" y="35" text-anchor="middle" data-id="IDE_Frontend_Windows">IDE Frontend</text>
+            <text class="block-type"  x="100" y="50" text-anchor="middle">HTML/JS · Electron</text>
+          </g>
+
+          <!-- IDE_Backend_Windows  (center) -->
+          <g class="block-group" data-id="IDE_Backend_Windows" transform="translate(190,150)">
+            <rect class="block-rect" width="200" height="62" data-id="IDE_Backend_Windows"/>
+            <text class="block-label" x="8" y="14">R · IDE_CORE</text>
+            <text class="block-name"  x="100" y="35" text-anchor="middle" data-id="IDE_Backend_Windows">IDE Backend</text>
+            <text class="block-type"  x="100" y="50" text-anchor="middle">Python FastAPI · :5555</text>
+          </g>
+
+          <!-- Ollama_Local_Server  (right) -->
+          <g class="block-group" data-id="Ollama_Local_Server" transform="translate(432,150)">
+            <rect class="block-rect ollama" width="140" height="62" data-id="Ollama_Local_Server"/>
+            <text class="block-label" x="8" y="14" style="fill:#ffaa0099">R · OLLAMA</text>
+            <text class="block-name"  x="70" y="35" text-anchor="middle" data-id="Ollama_Local_Server">Ollama</text>
+            <text class="block-type"  x="70" y="50" text-anchor="middle">localhost:11434</text>
+          </g>
+
+          <!-- Ollama_Version_Coordinator (top-right) -->
+          <g class="block-group" data-id="Ollama_Version_Coordinator" transform="translate(432,72)">
+            <rect class="block-rect support" width="140" height="56" data-id="Ollama_Version_Coordinator"/>
+            <text class="block-label" x="8" y="14" style="fill:#bb88ff99">R · CONFIG</text>
+            <text class="block-name"  x="70" y="33" text-anchor="middle" style="font-size:10.5px;" data-id="Ollama_Version_Coordinator">Version Coordinator</text>
+            <text class="block-type"  x="70" y="47" text-anchor="middle">ollama_version.txt</text>
+          </g>
+
+          <!-- Script_Execution_Engine  (center-bottom) -->
+          <g class="block-group" data-id="Script_Execution_Engine" transform="translate(190,290)">
+            <rect class="block-rect" width="200" height="62" data-id="Script_Execution_Engine"/>
+            <text class="block-label" x="8" y="14">R · RUNTIME</text>
+            <text class="block-name"  x="100" y="35" text-anchor="middle" data-id="Script_Execution_Engine">Script Engine</text>
+            <text class="block-type"  x="100" y="50" text-anchor="middle">Python · Bash · PowerShell</text>
+          </g>
+
+          <!-- SSH_Worker1_Bridge  (left) -->
+          <g class="block-group" data-id="SSH_Worker1_Bridge" transform="translate(10,150)">
+            <rect class="block-rect" width="140" height="62" data-id="SSH_Worker1_Bridge"/>
+            <text class="block-label" x="8" y="14">R · TUNNEL</text>
+            <text class="block-name"  x="70" y="35" text-anchor="middle" data-id="SSH_Worker1_Bridge">SSH Bridge</text>
+            <text class="block-type"  x="70" y="50" text-anchor="middle">ubuntu-atlas-01</text>
+          </g>
+
+          <!-- Worker_1_Ubuntu_System  (bottom-left) -->
+          <g class="block-group" data-id="Worker_1_Ubuntu_System" transform="translate(10,360)">
+            <rect class="block-rect worker" width="140" height="62" data-id="Worker_1_Ubuntu_System"/>
+            <text class="block-label" x="8" y="14" style="fill:#44ff8899">R · EXTERNAL</text>
+            <text class="block-name"  x="70" y="35" text-anchor="middle" data-id="Worker_1_Ubuntu_System">Worker 1 Ubuntu</text>
+            <text class="block-type"  x="70" y="50" text-anchor="middle">ubuntu-worker-01</text>
+          </g>
+
+          <!-- Remote_IDE_View  (far right, middle) -->
+          <g class="block-group" data-id="Remote_IDE_View" transform="translate(432,290)">
+            <rect class="block-rect support" width="140" height="62" data-id="Remote_IDE_View"/>
+            <text class="block-label" x="8" y="14" style="fill:#bb88ff99">R · DISPLAY</text>
+            <text class="block-name"  x="70" y="35" text-anchor="middle" data-id="Remote_IDE_View">Remote IDE View</text>
+            <text class="block-type"  x="70" y="50" text-anchor="middle">Right Pane</text>
+          </g>
+
+          <!-- Git_Integration  (bottom right) -->
+          <g class="block-group" data-id="Git_Integration" transform="translate(432,420)">
+            <rect class="block-rect support" width="140" height="50" data-id="Git_Integration"/>
+            <text class="block-label" x="8" y="14" style="fill:#bb88ff99">R · VCS</text>
+            <text class="block-name"  x="70" y="33" text-anchor="middle" data-id="Git_Integration">Git Integration</text>
+            <text class="block-type"  x="70" y="45" text-anchor="middle">local .git</text>
+          </g>
+
+          <!-- File_System_Local  (bottom right) -->
+          <g class="block-group" data-id="File_System_Local" transform="translate(432,480)">
+            <rect class="block-rect support" width="140" height="50" data-id="File_System_Local"/>
+            <text class="block-label" x="8" y="14" style="fill:#bb88ff99">R · STORAGE</text>
+            <text class="block-name"  x="70" y="33" text-anchor="middle" data-id="File_System_Local">File System</text>
+            <text class="block-type"  x="70" y="45" text-anchor="middle">c:\AI Assistant\...</text>
+          </g>
+
+        </svg>
+      </div>
+    </div>
+
+    <!-- RIGHT: DETAILS -->
+    <div class="panel">
+      <div class="panel-header"><span class="tag green">INT</span> COMPONENT DETAILS</div>
+      <div class="panel-body" id="detailPanel">
+        <div class="detail-empty" id="detailEmpty">
+          <div>← Hover a block to inspect</div>
+          <div class="hint">
+            R = Resource &nbsp;·&nbsp; ACT = Action &nbsp;·&nbsp; INT = Interface<br>
+            10 resources &nbsp;·&nbsp; 11 actions &nbsp;·&nbsp; 3 interfaces
+          </div>
+        </div>
+        <div id="detailContent" style="display:none;"></div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATA (compiled from MOSSCompiler + custom parser)
+// ════════════════════════════════════════════════════════════════
+const CODE_LINES    = [{"text": "# Custom IDE with Ollama Integration - MOSS Architecture", "type": "comment"}, {"text": "# Version: 2.0-dual_system", "type": "comment"}, {"text": "# Date: 2026-04-22", "type": "comment"}, {"text": "# Purpose: Define VS Code-like IDE with shared Ollama, dual-pane editor (Windows + Ubuntu Worker 1 remote view), and script execution", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "[SYSTEM]", "type": "section"}, {"text": "Name: CustomIDE_DualPane_SharedOllama", "type": "kv", "k": "Name", "v": "CustomIDE_DualPane_SharedOllama"}, {"text": "Description: Windows IDE (VS Code-like) with dual panes: local editor + remote Ubuntu Worker 1 IDE view. Shared Ollama version across both systems for model consistency. Capable of reading, applying, and executing scripts locally and on Worker 1.", "type": "kv", "k": "Description", "v": "Windows IDE (VS Code-like) with dual panes: local editor + remote Ubuntu Worker 1 IDE view. Shared Ollama version across both systems for model consistency. Capable of reading, applying, and executing scripts locally and on Worker 1."}, {"text": "Owner: AI_Assistant", "type": "kv", "k": "Owner", "v": "AI_Assistant"}, {"text": "Status: architecture_draft", "type": "kv", "k": "Status", "v": "architecture_draft"}, {"text": "Key_Constraint: OLLAMA_VERSION must be identical on Windows and Ubuntu Worker 1", "type": "kv", "k": "Key_Constraint", "v": "OLLAMA_VERSION must be identical on Windows and Ubuntu Worker 1"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# RESOURCES - System Components", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "[R:Ollama_Version_Coordinator]", "type": "section"}, {"text": "Type: Configuration/Service", "type": "kv", "k": "Type", "v": "Configuration/Service"}, {"text": "Location: Windows: localhost:11434 | Ubuntu: localhost:11434 (same version deployed to both)", "type": "kv", "k": "Location", "v": "Windows: localhost:11434 | Ubuntu: localhost:11434 (same version deployed to both)"}, {"text": "Description: Centrally specified Ollama version ensuring model consistency across Windows IDE and Ubuntu Worker 1", "type": "kv", "k": "Description", "v": "Centrally specified Ollama version ensuring model consistency across Windows IDE and Ubuntu Worker 1"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Define canonical Ollama version (e.g., \"ollama:latest\" or pinned version)", "type": "listitem"}, {"text": "- Provide version specification file readable by both systems", "type": "listitem"}, {"text": "- Enable model syncing (same mistral/neural-chat/etc on both)", "type": "listitem"}, {"text": "Canonical_Version_File: c:\\AI Assistant\\MIDE\\pilot_v1\\config\\ollama_version.txt (and mirrored on Worker 1)", "type": "kv", "k": "Canonical_Version_File", "v": "c:\\AI Assistant\\MIDE\\pilot_v1\\config\\ollama_version.txt (and mirrored on Worker 1)"}, {"text": "Models_Pinned:", "type": "kv", "k": "Models_Pinned", "v": ""}, {"text": "- model_primary: \"mistral:7b\" (or user choice)", "type": "listitem"}, {"text": "- model_backup: \"neural-chat:7b\"", "type": "listitem"}, {"text": "Quality: Version mismatch between Windows and Ubuntu would cause inconsistent code generation → must be enforced", "type": "kv", "k": "Quality", "v": "Version mismatch between Windows and Ubuntu would cause inconsistent code generation → must be enforced"}, {"text": "Accessed_By: IDE_Backend_Windows, IDE_Backend_Ubuntu (via MIDE worker)", "type": "kv", "k": "Accessed_By", "v": "IDE_Backend_Windows, IDE_Backend_Ubuntu (via MIDE worker)"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:IDE_Frontend_Windows]", "type": "section"}, {"text": "Type: Application/UI", "type": "kv", "k": "Type", "v": "Application/UI"}, {"text": "Location: c:\\AI Assistant\\customide\\frontend", "type": "kv", "k": "Location", "v": "c:\\AI Assistant\\customide\\frontend"}, {"text": "Language: HTML/JavaScript (Electron or web-based)", "type": "kv", "k": "Language", "v": "HTML/JavaScript (Electron or web-based)"}, {"text": "Description: VS Code-like IDE interface running on Windows desktop with dual-pane design and full code editor capabilities", "type": "kv", "k": "Description", "v": "VS Code-like IDE interface running on Windows desktop with dual-pane design and full code editor capabilities"}, {"text": "Architecture:", "type": "kv", "k": "Architecture", "v": ""}, {"text": "Pane_Left:", "type": "kv", "k": "Pane_Left", "v": ""}, {"text": "- Primary code editor (ace/monaco-like)", "type": "listitem"}, {"text": "- File tabs (open multiple files)", "type": "listitem"}, {"text": "- Syntax highlighting (Python, JavaScript, Bash, JSON, etc.)", "type": "listitem"}, {"text": "- Line numbers + gutter markers", "type": "listitem"}, {"text": "- Search/replace (Ctrl+H)", "type": "listitem"}, {"text": "- File explorer (project tree)", "type": "listitem"}, {"text": "- Git status indicators", "type": "listitem"}, {"text": "Pane_Right:", "type": "kv", "k": "Pane_Right", "v": ""}, {"text": "- Remote view of Ubuntu Worker 1 IDE (via SSH terminal or iframe-like remote display)", "type": "listitem"}, {"text": "- Allows monitoring/interaction with remote environment", "type": "listitem"}, {"text": "- Shows remote file system, terminal output", "type": "listitem"}, {"text": "Global_UI:", "type": "kv", "k": "Global_UI", "v": ""}, {"text": "- Sidebar: File Explorer, Search, Git, Extensions-like panel", "type": "listitem"}, {"text": "- Top Bar: File menu, Edit, View, Run, Help", "type": "listitem"}, {"text": "- Bottom Status Bar: Line/Col, Git branch, Ollama connection status, Worker 1 status", "type": "listitem"}, {"text": "- Integrated Terminal (Ctrl+`)", "type": "listitem"}, {"text": "- Command Palette (Ctrl+Shift+P)", "type": "listitem"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Display code with syntax highlighting", "type": "listitem"}, {"text": "- Tab management (open/close files)", "type": "listitem"}, {"text": "- Split-pane view management", "type": "listitem"}, {"text": "- Accept Ollama AI requests (Ctrl+Space completion, Ctrl+Alt+G for generation)", "type": "listitem"}, {"text": "- Display script execution results", "type": "listitem"}, {"text": "- Show remote Ubuntu IDE in right pane", "type": "listitem"}, {"text": "Dependencies: IDE_Backend_Windows, SSH_Worker1_Bridge, Remote_IDE_View", "type": "kv", "k": "Dependencies", "v": "IDE_Backend_Windows, SSH_Worker1_Bridge, Remote_IDE_View"}, {"text": "Exposes:", "type": "kv", "k": "Exposes", "v": ""}, {"text": "- GET /health", "type": "listitem"}, {"text": "- GET /files/{path}", "type": "listitem"}, {"text": "- GET /file/{path}", "type": "listitem"}, {"text": "- POST /editor/open (tab management)", "type": "listitem"}, {"text": "- POST /editor/save", "type": "listitem"}, {"text": "- POST /ollama/complete", "type": "listitem"}, {"text": "- POST /ollama/generate", "type": "listitem"}, {"text": "- POST /script/apply", "type": "listitem"}, {"text": "- POST /script/execute", "type": "listitem"}, {"text": "- POST /remote/connect (SSH to Worker 1)", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:IDE_Backend_Windows]", "type": "section"}, {"text": "Type: Server/Coordinator", "type": "kv", "k": "Type", "v": "Server/Coordinator"}, {"text": "Location: c:\\AI Assistant\\customide\\backend", "type": "kv", "k": "Location", "v": "c:\\AI Assistant\\customide\\backend"}, {"text": "Language: Python (FastAPI)", "type": "kv", "k": "Language", "v": "Python (FastAPI)"}, {"text": "Description: Local server coordinating IDE operations, bridges UI to Ollama, script execution, and Worker 1", "type": "kv", "k": "Description", "v": "Local server coordinating IDE operations, bridges UI to Ollama, script execution, and Worker 1"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Expose REST API for IDE_Frontend_Windows", "type": "listitem"}, {"text": "- Accept code + context for AI requests", "type": "listitem"}, {"text": "- Forward to Ollama_Version_Coordinator (localhost:11434)", "type": "listitem"}, {"text": "- Handle script reading, validation, and execution", "type": "listitem"}, {"text": "- Coordinate SSH connections to Worker 1", "type": "listitem"}, {"text": "- Manage file system I/O", "type": "listitem"}, {"text": "- Route remote IDE display requests to Worker 1", "type": "listitem"}, {"text": "Port: 5555", "type": "kv", "k": "Port", "v": "5555"}, {"text": "Dependencies: Ollama_Version_Coordinator, Script_Execution_Engine, SSH_Worker1_Bridge, File_System_Local, Git_Integration", "type": "kv", "k": "Dependencies", "v": "Ollama_Version_Coordinator, Script_Execution_Engine, SSH_Worker1_Bridge, File_System_Local, Git_Integration"}, {"text": "Consumes:", "type": "kv", "k": "Consumes", "v": ""}, {"text": "- Editor state + AI requests from IDE_Frontend_Windows", "type": "listitem"}, {"text": "- Code generation from Ollama_Version_Coordinator", "type": "listitem"}, {"text": "- Script output from Script_Execution_Engine", "type": "listitem"}, {"text": "- Remote data from SSH_Worker1_Bridge", "type": "listitem"}, {"text": "Produces:", "type": "kv", "k": "Produces", "v": ""}, {"text": "- Formatted suggestions to IDE_Frontend_Windows", "type": "listitem"}, {"text": "- Script execution results", "type": "listitem"}, {"text": "- Remote view data for right pane", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:SSH_Worker1_Bridge]", "type": "section"}, {"text": "Type: Communication/Tunnel", "type": "kv", "k": "Type", "v": "Communication/Tunnel"}, {"text": "Location: Connects Windows IDE_Backend to Ubuntu Worker 1 (~ubuntu-worker-01)", "type": "kv", "k": "Location", "v": "Connects Windows IDE_Backend to Ubuntu Worker 1 (~ubuntu-worker-01)"}, {"text": "Description: SSH tunnel for secure command execution and file access on remote Ubuntu system", "type": "kv", "k": "Description", "v": "SSH tunnel for secure command execution and file access on remote Ubuntu system"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Establish SSH session to Worker 1", "type": "listitem"}, {"text": "- Execute scripts remotely (bash, python)", "type": "listitem"}, {"text": "- Query remote filesystem", "type": "listitem"}, {"text": "- Retrieve remote IDE state", "type": "listitem"}, {"text": "- Forward Ollama requests to remote Ollama instance (consistency check)", "type": "listitem"}, {"text": "SSH_Config:", "type": "kv", "k": "SSH_Config", "v": ""}, {"text": "- Host: ubuntu-atlas-01 (FQDN or IP)", "type": "listitem"}, {"text": "- Port: 22", "type": "listitem"}, {"text": "- User: larieladmin", "type": "listitem"}, {"text": "- Auth: SSH key (stored securely)", "type": "listitem"}, {"text": "- Persist_Session: true (keep tunnel alive)", "type": "listitem"}, {"text": "Dependencies: Worker_1_Ubuntu_System", "type": "kv", "k": "Dependencies", "v": "Worker_1_Ubuntu_System"}, {"text": "Exposes:", "type": "kv", "k": "Exposes", "v": ""}, {"text": "- exec_remote_script(script_path, args) → output", "type": "listitem"}, {"text": "- query_remote_fs(path) → file tree", "type": "listitem"}, {"text": "- get_remote_ide_state() → current file, line, terminal state", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:Remote_IDE_View]", "type": "section"}, {"text": "Type: Display/Window", "type": "kv", "k": "Type", "v": "Display/Window"}, {"text": "Location: Right pane of IDE_Frontend_Windows", "type": "kv", "k": "Location", "v": "Right pane of IDE_Frontend_Windows"}, {"text": "Description: Live view of Ubuntu Worker 1's IDE and terminal environment", "type": "kv", "k": "Description", "v": "Live view of Ubuntu Worker 1's IDE and terminal environment"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Display remote filesystem browser (read-only or editable)", "type": "listitem"}, {"text": "- Show active remote terminal session", "type": "listitem"}, {"text": "- Display Worker 1's recent script outputs", "type": "listitem"}, {"text": "- Show active task/mtask status", "type": "listitem"}, {"text": "- Allow user to switch focus between local and remote", "type": "listitem"}, {"text": "Data_Source: SSH_Worker1_Bridge queries", "type": "kv", "k": "Data_Source", "v": "SSH_Worker1_Bridge queries"}, {"text": "Refresh_Rate: 1 second (or on-demand)", "type": "kv", "k": "Refresh_Rate", "v": "1 second (or on-demand)"}, {"text": "Quality: Must not block local IDE responsiveness; async updates", "type": "kv", "k": "Quality", "v": "Must not block local IDE responsiveness; async updates"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:Script_Execution_Engine]", "type": "section"}, {"text": "Type: Runtime/Executor", "type": "kv", "k": "Type", "v": "Runtime/Executor"}, {"text": "Location: Embedded in IDE_Backend_Windows", "type": "kv", "k": "Location", "v": "Embedded in IDE_Backend_Windows"}, {"text": "Description: Reads, validates, and executes scripts (Bash, Python, PowerShell) locally and on Worker 1", "type": "kv", "k": "Description", "v": "Reads, validates, and executes scripts (Bash, Python, PowerShell) locally and on Worker 1"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Read script from file system", "type": "listitem"}, {"text": "- Parse script headers for metadata (dependencies, runtime requirements)", "type": "listitem"}, {"text": "- Validate syntax before execution", "type": "listitem"}, {"text": "- Execute locally OR forward to Worker 1 via SSH_Worker1_Bridge", "type": "listitem"}, {"text": "- Capture stdout/stderr/exit_code", "type": "listitem"}, {"text": "- Display results in IDE terminal", "type": "listitem"}, {"text": "- Support script arguments and environment variables", "type": "listitem"}, {"text": "Supported_Runtimes:", "type": "kv", "k": "Supported_Runtimes", "v": ""}, {"text": "- Python (python3)", "type": "listitem"}, {"text": "- Bash (bash)", "type": "listitem"}, {"text": "- PowerShell (pwsh)", "type": "listitem"}, {"text": "- Node.js (node) - optional", "type": "listitem"}, {"text": "Safety_Constraints:", "type": "kv", "k": "Safety_Constraints", "v": ""}, {"text": "- Require user confirmation for script execution", "type": "listitem"}, {"text": "- No execution of scripts from untrusted sources", "type": "listitem"}, {"text": "- Timeout protection (default 60s, user-adjustable)", "type": "listitem"}, {"text": "Dependencies: File_System_Local, SSH_Worker1_Bridge", "type": "kv", "k": "Dependencies", "v": "File_System_Local, SSH_Worker1_Bridge"}, {"text": "Exposes:", "type": "kv", "k": "Exposes", "v": ""}, {"text": "- execute_local(script_path, args, timeout)", "type": "listitem"}, {"text": "- execute_remote(script_path, args, host, timeout)", "type": "listitem"}, {"text": "- validate_script(script_path)", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:Ollama_Local_Server]", "type": "section"}, {"text": "Type: External AI Service", "type": "kv", "k": "Type", "v": "External AI Service"}, {"text": "Location: localhost:11434 (Windows) + localhost:11434 (Ubuntu Worker 1)", "type": "kv", "k": "Location", "v": "localhost:11434 (Windows) + localhost:11434 (Ubuntu Worker 1)"}, {"text": "Description: Ollama instance for code generation, completion, refactoring - SAME VERSION on both systems", "type": "kv", "k": "Description", "v": "Ollama instance for code generation, completion, refactoring - SAME VERSION on both systems"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Accept code prompts from IDE_Backend_Windows", "type": "listitem"}, {"text": "- Generate/complete/refactor code using models specified by Ollama_Version_Coordinator", "type": "listitem"}, {"text": "- Stream or batch responses", "type": "listitem"}, {"text": "Version: Must match Ollama_Version_Coordinator spec (enforced at deployment)", "type": "kv", "k": "Version", "v": "Must match Ollama_Version_Coordinator spec (enforced at deployment)"}, {"text": "Models_Required:", "type": "kv", "k": "Models_Required", "v": ""}, {"text": "- Primary: mistral:7b (or pinned version)", "type": "listitem"}, {"text": "- Backup: neural-chat:7b", "type": "listitem"}, {"text": "Exposes:", "type": "kv", "k": "Exposes", "v": ""}, {"text": "- POST /api/generate (streaming text generation)", "type": "listitem"}, {"text": "- POST /api/chat (chat-based requests)", "type": "listitem"}, {"text": "- GET /api/tags (list available models)", "type": "listitem"}, {"text": "Dependencies: None (external, pre-existing)", "type": "kv", "k": "Dependencies", "v": "None (external, pre-existing)"}, {"text": "Quality_Notes: Both Windows and Ubuntu instances must be version-identical to ensure reproducible code generation", "type": "kv", "k": "Quality_Notes", "v": "Both Windows and Ubuntu instances must be version-identical to ensure reproducible code generation"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:File_System_Local]", "type": "section"}, {"text": "Type: Storage/Filesystem", "type": "kv", "k": "Type", "v": "Storage/Filesystem"}, {"text": "Location: c:\\AI Assistant\\customide\\projects\\{project_name}", "type": "kv", "k": "Location", "v": "c:\\AI Assistant\\customide\\projects\\{project_name}"}, {"text": "Description: Local Windows filesystem for project code files", "type": "kv", "k": "Description", "v": "Local Windows filesystem for project code files"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Store source code, configs, docs, scripts", "type": "listitem"}, {"text": "- Support read/write operations from IDE_Backend_Windows", "type": "listitem"}, {"text": "- Track file metadata (modification time, size, type)", "type": "listitem"}, {"text": "- Support .gitignore filtering", "type": "listitem"}, {"text": "Dependencies: IDE_Backend_Windows, Script_Execution_Engine", "type": "kv", "k": "Dependencies", "v": "IDE_Backend_Windows, Script_Execution_Engine"}, {"text": "Accessed_By: IDE_Backend_Windows, IDE_Frontend_Windows", "type": "kv", "k": "Accessed_By", "v": "IDE_Backend_Windows, IDE_Frontend_Windows"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:Git_Integration]", "type": "section"}, {"text": "Type: Version Control", "type": "kv", "k": "Type", "v": "Version Control"}, {"text": "Location: c:\\AI Assistant\\customide\\projects\\{project_name}\\.git", "type": "kv", "k": "Location", "v": "c:\\AI Assistant\\customide\\projects\\{project_name}\\.git"}, {"text": "Description: Git repository for version control and remote sync", "type": "kv", "k": "Description", "v": "Git repository for version control and remote sync"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Manage local commits", "type": "listitem"}, {"text": "- Track file changes (staged/unstaged)", "type": "listitem"}, {"text": "- Support push/pull to remote (e.g., GitHub)", "type": "listitem"}, {"text": "- Provide status queries", "type": "listitem"}, {"text": "Dependencies: File_System_Local, IDE_Backend_Windows", "type": "kv", "k": "Dependencies", "v": "File_System_Local, IDE_Backend_Windows"}, {"text": "Accessed_By: IDE_Backend_Windows, IDE_Frontend_Windows", "type": "kv", "k": "Accessed_By", "v": "IDE_Backend_Windows, IDE_Frontend_Windows"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[R:Worker_1_Ubuntu_System]", "type": "section"}, {"text": "Type: External System", "type": "kv", "k": "Type", "v": "External System"}, {"text": "Location: ubuntu-worker-01 / ubuntu-atlas-01 (ngrok accessible)", "type": "kv", "k": "Location", "v": "ubuntu-worker-01 / ubuntu-atlas-01 (ngrok accessible)"}, {"text": "Description: Ubuntu server with MIDE autopilot, Worker 1 IDE, and remote Ollama instance", "type": "kv", "k": "Description", "v": "Ubuntu server with MIDE autopilot, Worker 1 IDE, and remote Ollama instance"}, {"text": "Responsibilities:", "type": "kv", "k": "Responsibilities", "v": ""}, {"text": "- Run autonomous mtask jobs", "type": "listitem"}, {"text": "- Execute scripts via SSH from Windows IDE", "type": "listitem"}, {"text": "- Provide IDE interface (VSCode server or similar on Ubuntu)", "type": "listitem"}, {"text": "- Run Ollama instance (VERSION-COORDINATED with Windows)", "type": "listitem"}, {"text": "- Support remote file access via SSH", "type": "listitem"}, {"text": "Status: Operational (from weather demo)", "type": "kv", "k": "Status", "v": "Operational (from weather demo)"}, {"text": "SSH_Access: Enabled via SSH_Worker1_Bridge", "type": "kv", "k": "SSH_Access", "v": "Enabled via SSH_Worker1_Bridge"}, {"text": "IDE_on_Remote: Must expose IDE interface for right-pane viewing", "type": "kv", "k": "IDE_on_Remote", "v": "Must expose IDE interface for right-pane viewing"}, {"text": "Ollama_Instance: Must match Windows version exactly", "type": "kv", "k": "Ollama_Instance", "v": "Must match Windows version exactly"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# ACTIONS - Data Flows & Operations", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "[ACT:Script_Read_Validate_Apply]", "type": "section"}, {"text": "Trigger: User selects a script file (.sh, .py, .ps1) in file explorer, right-clicks \"Read and Apply\"", "type": "kv", "k": "Trigger", "v": "User selects a script file (.sh, .py, .ps1) in file explorer, right-clicks \"Read and Apply\""}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows requests script content via GET /file/{script_path}", "type": "plain"}, {"text": "2. IDE_Backend_Windows reads from File_System_Local", "type": "plain"}, {"text": "3. Script_Execution_Engine validates syntax (python -m py_compile, bash -n, etc.)", "type": "plain"}, {"text": "4. IDE_Frontend displays script content in editor panel + metadata (runtime required, args)", "type": "plain"}, {"text": "5. User reviews script and clicks \"Apply\"", "type": "plain"}, {"text": "6. On Apply: IDE_Backend_Windows shows diff/preview before execution", "type": "kv", "k": "6. On Apply", "v": "IDE_Backend_Windows shows diff/preview before execution"}, {"text": "7. User confirms execution", "type": "plain"}, {"text": "Response_Time: <1 second for read/validate, execution time depends on script", "type": "kv", "k": "Response_Time", "v": "<1 second for read/validate, execution time depends on script"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Script_Execute_Local]", "type": "section"}, {"text": "Trigger: User clicks \"Execute\" button in script panel (or Ctrl+Shift+E in script file)", "type": "kv", "k": "Trigger", "v": "User clicks \"Execute\" button in script panel (or Ctrl+Shift+E in script file)"}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows sends POST /script/execute with:", "type": "kv", "k": "1. IDE_Frontend_Windows sends POST /script/execute with", "v": ""}, {"text": "- script_path", "type": "listitem"}, {"text": "- arguments (if parameterized)", "type": "listitem"}, {"text": "- timeout (default 60s)", "type": "listitem"}, {"text": "- capture_output: true", "type": "listitem"}, {"text": "2. IDE_Backend_Windows routes to Script_Execution_Engine", "type": "plain"}, {"text": "3. Script_Execution_Engine executes locally:", "type": "kv", "k": "3. Script_Execution_Engine executes locally", "v": ""}, {"text": "- Spawns subprocess (python3, bash, pwsh)", "type": "listitem"}, {"text": "- Captures stdout, stderr, exit_code", "type": "listitem"}, {"text": "- Enforces timeout", "type": "listitem"}, {"text": "4. IDE_Backend_Windows collects results", "type": "plain"}, {"text": "5. IDE_Frontend displays output in integrated terminal + status (success/failure)", "type": "plain"}, {"text": "6. User can re-execute or modify parameters", "type": "plain"}, {"text": "Response_Time: Script execution time + 100ms overhead", "type": "kv", "k": "Response_Time", "v": "Script execution time + 100ms overhead"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Script_Execute_Remote_Worker1]", "type": "section"}, {"text": "Trigger: User selects \"Execute on Worker 1\" (right-click in script, or button toggle)", "type": "kv", "k": "Trigger", "v": "User selects \"Execute on Worker 1\" (right-click in script, or button toggle)"}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows sends POST /script/execute-remote with:", "type": "kv", "k": "1. IDE_Frontend_Windows sends POST /script/execute-remote with", "v": ""}, {"text": "- script_path", "type": "listitem"}, {"text": "- arguments", "type": "listitem"}, {"text": "- target_host: \"ubuntu-worker-01\"", "type": "listitem"}, {"text": "- timeout", "type": "listitem"}, {"text": "2. IDE_Backend_Windows routes to SSH_Worker1_Bridge", "type": "plain"}, {"text": "3. SSH_Worker1_Bridge establishes SSH session (if not persistent)", "type": "plain"}, {"text": "4. SSH_Worker1_Bridge validates script exists on remote", "type": "plain"}, {"text": "5. SSH_Worker1_Bridge executes: ssh user@host \"bash /path/to/script.sh {args}\"", "type": "kv", "k": "5. SSH_Worker1_Bridge executes", "v": "ssh user@host \"bash /path/to/script.sh {args}\""}, {"text": "6. Captures remote stdout/stderr/exit_code", "type": "plain"}, {"text": "7. IDE_Backend_Windows buffers results", "type": "plain"}, {"text": "8. IDE_Frontend displays in terminal + updates Remote_IDE_View with output", "type": "plain"}, {"text": "9. User can execute again or view logs on Worker 1", "type": "plain"}, {"text": "Response_Time: SSH latency (50-200ms) + script execution time", "type": "kv", "k": "Response_Time", "v": "SSH latency (50-200ms) + script execution time"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Ollama_Version_Sync_Check]", "type": "section"}, {"text": "Trigger: IDE starts up OR user clicks \"Verify Ollama Consistency\"", "type": "kv", "k": "Trigger", "v": "IDE starts up OR user clicks \"Verify Ollama Consistency\""}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Backend_Windows reads Ollama_Version_Coordinator spec (c:\\AI Assistant\\...\\ollama_version.txt)", "type": "kv", "k": "1. IDE_Backend_Windows reads Ollama_Version_Coordinator spec (c", "v": "\\AI Assistant\\...\\ollama_version.txt)"}, {"text": "2. IDE_Backend queries localhost:11434/api/tags to get installed version", "type": "kv", "k": "2. IDE_Backend queries localhost", "v": "11434/api/tags to get installed version"}, {"text": "3. IDE_Backend queries Worker 1 via SSH: \"ollama --version\" + list models", "type": "kv", "k": "3. IDE_Backend queries Worker 1 via SSH", "v": "\"ollama --version\" + list models"}, {"text": "4. Compares versions", "type": "plain"}, {"text": "5. If mismatch:", "type": "kv", "k": "5. If mismatch", "v": ""}, {"text": "- Display warning in status bar (🔴 Ollama version mismatch)", "type": "listitem"}, {"text": "- Suggest: pull latest on Worker 1 via mtask", "type": "listitem"}, {"text": "- Disable code generation until synced", "type": "listitem"}, {"text": "6. If match:", "type": "kv", "k": "6. If match", "v": ""}, {"text": "- Display ✅ in status bar", "type": "listitem"}, {"text": "- Ready for AI requests", "type": "listitem"}, {"text": "Response_Time: <2 seconds", "type": "kv", "k": "Response_Time", "v": "<2 seconds"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Dual_Pane_Switch]", "type": "section"}, {"text": "Trigger: User clicks right-pane \"Connect to Worker 1\" button or presses Alt+Right", "type": "kv", "k": "Trigger", "v": "User clicks right-pane \"Connect to Worker 1\" button or presses Alt+Right"}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows requests POST /remote/connect", "type": "plain"}, {"text": "2. IDE_Backend_Windows calls SSH_Worker1_Bridge.establish_session()", "type": "plain"}, {"text": "3. SSH_Worker1_Bridge queries Worker 1:", "type": "kv", "k": "3. SSH_Worker1_Bridge queries Worker 1", "v": ""}, {"text": "- \"whoami\" (verify connection)", "type": "listitem"}, {"text": "- \"pwd\" (current directory)", "type": "listitem"}, {"text": "- \"ls -la\" (file tree)", "type": "listitem"}, {"text": "- PS output (if IDE running on Worker 1)", "type": "listitem"}, {"text": "4. Remote_IDE_View receives data", "type": "plain"}, {"text": "5. IDE_Frontend right pane displays:", "type": "kv", "k": "5. IDE_Frontend right pane displays", "v": ""}, {"text": "- Remote file browser", "type": "listitem"}, {"text": "- Active terminal session output", "type": "listitem"}, {"text": "- Recent mtask status", "type": "listitem"}, {"text": "6. User can interact: click files, run commands, view logs", "type": "kv", "k": "6. User can interact", "v": "click files, run commands, view logs"}, {"text": "Response_Time: SSH round-trip (100-200ms) + UI render", "type": "kv", "k": "Response_Time", "v": "SSH round-trip (100-200ms) + UI render"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Terminal_Execution_Integrated]", "type": "section"}, {"text": "Trigger: User types command in IDE integrated terminal (Ctrl+`)", "type": "kv", "k": "Trigger", "v": "User types command in IDE integrated terminal (Ctrl+`)"}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows captures command input", "type": "plain"}, {"text": "2. IDE_Backend_Windows routes to Script_Execution_Engine (or direct shell)", "type": "plain"}, {"text": "3. Script_Execution_Engine executes in subprocess", "type": "plain"}, {"text": "4. Output streams back to IDE terminal in real-time", "type": "plain"}, {"text": "5. User can chain commands, use pipes, environment variables", "type": "plain"}, {"text": "Response_Time: <100ms per line", "type": "kv", "k": "Response_Time", "v": "<100ms per line"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Code_Completion_Request]", "type": "section"}, {"text": "Trigger: User types in IDE editor or presses hotkey (Ctrl+Space)", "type": "kv", "k": "Trigger", "v": "User types in IDE editor or presses hotkey (Ctrl+Space)"}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows captures editor context (current file + surrounding lines)", "type": "plain"}, {"text": "2. IDE_Frontend sends POST /ollama/complete to IDE_Backend_Windows with:", "type": "kv", "k": "2. IDE_Frontend sends POST /ollama/complete to IDE_Backend_Windows with", "v": ""}, {"text": "- file_path", "type": "listitem"}, {"text": "- current_line_number", "type": "listitem"}, {"text": "- cursor_position", "type": "listitem"}, {"text": "- file_contents (full or excerpt)", "type": "listitem"}, {"text": "- language (python, javascript, bash, etc.)", "type": "listitem"}, {"text": "3. IDE_Backend_Windows formats prompt for Ollama_Version_Coordinator (localhost:11434)", "type": "kv", "k": "3. IDE_Backend_Windows formats prompt for Ollama_Version_Coordinator (localhost", "v": "11434)"}, {"text": "4. Ollama_Local_Server (Windows instance) generates completion suggestions (streaming)", "type": "plain"}, {"text": "5. IDE_Backend_Windows buffers and formats response", "type": "plain"}, {"text": "6. IDE_Frontend receives JSON with suggestions", "type": "plain"}, {"text": "7. IDE_Frontend displays in autocomplete dropdown or inline", "type": "plain"}, {"text": "Response_Time: 1-5 seconds (dependent on Ollama hardware)", "type": "kv", "k": "Response_Time", "v": "1-5 seconds (dependent on Ollama hardware)"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Code_Generation_Request]", "type": "section"}, {"text": "Trigger: User writes natural language comment or prompt in editor", "type": "kv", "k": "Trigger", "v": "User writes natural language comment or prompt in editor"}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows captures user prompt + file context", "type": "plain"}, {"text": "2. IDE_Frontend sends POST /ollama/generate to IDE_Backend_Windows with:", "type": "kv", "k": "2. IDE_Frontend sends POST /ollama/generate to IDE_Backend_Windows with", "v": ""}, {"text": "- prompt (user's natural language)", "type": "listitem"}, {"text": "- file_path", "type": "listitem"}, {"text": "- context_lines (code before/after insertion point)", "type": "listitem"}, {"text": "- language", "type": "listitem"}, {"text": "3. IDE_Backend_Windows sends detailed prompt to Ollama_Version_Coordinator (localhost:11434)", "type": "kv", "k": "3. IDE_Backend_Windows sends detailed prompt to Ollama_Version_Coordinator (localhost", "v": "11434)"}, {"text": "4. Ollama_Local_Server (Windows) generates code (streaming)", "type": "plain"}, {"text": "5. IDE_Backend_Windows accumulates response", "type": "plain"}, {"text": "6. IDE_Frontend displays in modal/panel with approve/reject buttons", "type": "plain"}, {"text": "7. On approve: code inserted into editor", "type": "kv", "k": "7. On approve", "v": "code inserted into editor"}, {"text": "8. On reject: discarded", "type": "kv", "k": "8. On reject", "v": "discarded"}, {"text": "Response_Time: 3-10 seconds", "type": "kv", "k": "Response_Time", "v": "3-10 seconds"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Code_Refactoring_Request]", "type": "section"}, {"text": "Trigger: User selects code block + menu action \"Refactor with Ollama\"", "type": "kv", "k": "Trigger", "v": "User selects code block + menu action \"Refactor with Ollama\""}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows captures selected text + language", "type": "plain"}, {"text": "2. IDE_Frontend sends POST /ollama/refactor to IDE_Backend_Windows with:", "type": "kv", "k": "2. IDE_Frontend sends POST /ollama/refactor to IDE_Backend_Windows with", "v": ""}, {"text": "- selected_code", "type": "listitem"}, {"text": "- language", "type": "listitem"}, {"text": "- refactoring_goal (simplify, optimize, add_types, etc.)", "type": "listitem"}, {"text": "3. IDE_Backend_Windows crafts refactoring prompt", "type": "plain"}, {"text": "4. Ollama_Version_Coordinator generates refactored code", "type": "plain"}, {"text": "5. IDE_Frontend shows diff view (original vs refactored)", "type": "plain"}, {"text": "6. On approve: replaces selection", "type": "kv", "k": "6. On approve", "v": "replaces selection"}, {"text": "7. On reject: no change", "type": "kv", "k": "7. On reject", "v": "no change"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:File_Save_and_Git_Commit]", "type": "section"}, {"text": "Trigger: User saves file (Ctrl+S) + manually commits in Git panel", "type": "kv", "k": "Trigger", "v": "User saves file (Ctrl+S) + manually commits in Git panel"}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows detects file save", "type": "plain"}, {"text": "2. File_System_Local writes changes", "type": "plain"}, {"text": "3. IDE_Backend_Windows queries Git_Integration for modified files", "type": "plain"}, {"text": "4. Git status shown in IDE left panel (untracked, modified, staged)", "type": "plain"}, {"text": "5. User clicks \"Stage\" → IDE_Backend_Windows runs git add {file}", "type": "plain"}, {"text": "6. User writes commit message + clicks \"Commit\"", "type": "plain"}, {"text": "7. IDE_Backend_Windows runs git commit -m \"{message}\"", "type": "plain"}, {"text": "8. IDE_Frontend updates status display", "type": "plain"}, {"text": "9. Optional: User clicks \"Push\" → git push to remote", "type": "kv", "k": "9. Optional", "v": "User clicks \"Push\" → git push to remote"}, {"text": "Response_Time: <1 second per operation", "type": "kv", "k": "Response_Time", "v": "<1 second per operation"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[ACT:Project_Open]", "type": "section"}, {"text": "Trigger: User clicks \"Open Project\" or starts IDE", "type": "kv", "k": "Trigger", "v": "User clicks \"Open Project\" or starts IDE"}, {"text": "Flow:", "type": "kv", "k": "Flow", "v": ""}, {"text": "1. IDE_Frontend_Windows shows project browser or accepts folder path", "type": "plain"}, {"text": "2. IDE_Backend_Windows scans folder for .git, project structure", "type": "plain"}, {"text": "3. IDE_Backend_Windows reads Git_Integration status", "type": "plain"}, {"text": "4. IDE_Backend_Windows reads File_System_Local directory tree", "type": "plain"}, {"text": "5. IDE_Frontend displays file tree, git status summary, left pane ready for code editing", "type": "plain"}, {"text": "6. Right pane (Remote_IDE_View) prompts to \"Connect to Worker 1\"", "type": "plain"}, {"text": "7. Ready for code editing + remote monitoring", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# INTERFACES - Communication Contracts", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "[INT:IDEBackend_OllamaVersion_REST]", "type": "section"}, {"text": "Protocol: HTTP/REST (streaming JSON)", "type": "kv", "k": "Protocol", "v": "HTTP/REST (streaming JSON)"}, {"text": "Port: IDE_Backend_Windows calls localhost:11434 (Windows Ollama)", "type": "kv", "k": "Port", "v": "IDE_Backend_Windows calls localhost:11434 (Windows Ollama)"}, {"text": "Consistency: Must verify Windows Ollama version matches Worker_1_Ubuntu_System Ollama version", "type": "kv", "k": "Consistency", "v": "Must verify Windows Ollama version matches Worker_1_Ubuntu_System Ollama version"}, {"text": "Request_Format (to Ollama):", "type": "kv", "k": "Request_Format (to Ollama)", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"model\": \"mistral:7b\",  // Pinned from Ollama_Version_Coordinator", "type": "kv", "k": "\"model\"", "v": "\"mistral:7b\",  // Pinned from Ollama_Version_Coordinator"}, {"text": "\"prompt\": \"{formatted_prompt}\",", "type": "kv", "k": "\"prompt\"", "v": "\"{formatted_prompt}\","}, {"text": "\"stream\": true,", "type": "kv", "k": "\"stream\"", "v": "true,"}, {"text": "\"temperature\": 0.7,", "type": "kv", "k": "\"temperature\"", "v": "0.7,"}, {"text": "\"context\": [...]", "type": "kv", "k": "\"context\"", "v": "[...]"}, {"text": "}", "type": "plain"}, {"text": "Response_Format (from Ollama):", "type": "kv", "k": "Response_Format (from Ollama)", "v": ""}, {"text": "Line 1: {\"response\": \"chunk1\", \"done\": false}", "type": "kv", "k": "Line 1", "v": "{\"response\": \"chunk1\", \"done\": false}"}, {"text": "Line 2: {\"response\": \"chunk2\", \"done\": false}", "type": "kv", "k": "Line 2", "v": "{\"response\": \"chunk2\", \"done\": false}"}, {"text": "Line N: {\"response\": \"\", \"done\": true}", "type": "kv", "k": "Line N", "v": "{\"response\": \"\", \"done\": true}"}, {"text": "Latency_Target: <5s for completion, <10s for generation", "type": "kv", "k": "Latency_Target", "v": "<5s for completion, <10s for generation"}, {"text": "Version_Check: On IDE startup + periodically verify against Worker 1", "type": "kv", "k": "Version_Check", "v": "On IDE startup + periodically verify against Worker 1"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[INT:IDEFrontend_IDEBackend_HTTP]", "type": "section"}, {"text": "Protocol: HTTP/REST (JSON)", "type": "kv", "k": "Protocol", "v": "HTTP/REST (JSON)"}, {"text": "Port: 5555", "type": "kv", "k": "Port", "v": "5555"}, {"text": "Base_URL: http://127.0.0.1:5555", "type": "kv", "k": "Base_URL", "v": "http://127.0.0.1:5555"}, {"text": "", "type": "blank"}, {"text": "Endpoint: GET /health", "type": "kv", "k": "Endpoint", "v": "GET /health"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"status\": \"ok\",", "type": "kv", "k": "\"status\"", "v": "\"ok\","}, {"text": "\"ollama_version\": \"0.x.x\",", "type": "kv", "k": "\"ollama_version\"", "v": "\"0.x.x\","}, {"text": "\"ollama_sync\": \"matched\",  // or \"mismatch_warning\"", "type": "kv", "k": "\"ollama_sync\"", "v": "\"matched\",  // or \"mismatch_warning\""}, {"text": "\"worker_connected\": true", "type": "kv", "k": "\"worker_connected\"", "v": "true"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /ollama/complete", "type": "kv", "k": "Endpoint", "v": "POST /ollama/complete"}, {"text": "Request:", "type": "kv", "k": "Request", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"file_path\": \"src/main.py\",", "type": "kv", "k": "\"file_path\"", "v": "\"src/main.py\","}, {"text": "\"line_number\": 42,", "type": "kv", "k": "\"line_number\"", "v": "42,"}, {"text": "\"cursor_pos\": 15,", "type": "kv", "k": "\"cursor_pos\"", "v": "15,"}, {"text": "\"file_contents\": \"import os\\n...\",", "type": "kv", "k": "\"file_contents\"", "v": "\"import os\\n...\","}, {"text": "\"language\": \"python\"", "type": "kv", "k": "\"language\"", "v": "\"python\""}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"suggestions\": [", "type": "kv", "k": "\"suggestions\"", "v": "["}, {"text": "{\"text\": \"os.listdir()\", \"score\": 0.95},", "type": "kv", "k": "{\"text\"", "v": "\"os.listdir()\", \"score\": 0.95},"}, {"text": "{\"text\": \"os.path.exists()\", \"score\": 0.85}", "type": "kv", "k": "{\"text\"", "v": "\"os.path.exists()\", \"score\": 0.85}"}, {"text": "],", "type": "plain"}, {"text": "\"latency_ms\": 2340", "type": "kv", "k": "\"latency_ms\"", "v": "2340"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /ollama/generate", "type": "kv", "k": "Endpoint", "v": "POST /ollama/generate"}, {"text": "Request:", "type": "kv", "k": "Request", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"prompt\": \"write a function to validate email\",", "type": "kv", "k": "\"prompt\"", "v": "\"write a function to validate email\","}, {"text": "\"file_path\": \"src/validators.py\",", "type": "kv", "k": "\"file_path\"", "v": "\"src/validators.py\","}, {"text": "\"language\": \"python\",", "type": "kv", "k": "\"language\"", "v": "\"python\","}, {"text": "\"context_lines\": 5", "type": "kv", "k": "\"context_lines\"", "v": "5"}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"generated_code\": \"def validate_email(email: str) -> bool:\\n    import re\\n    return re.match(...)\",", "type": "kv", "k": "\"generated_code\"", "v": "\"def validate_email(email: str) -> bool:\\n    import re\\n    return re.match(...)\","}, {"text": "\"model_used\": \"mistral:7b\",", "type": "kv", "k": "\"model_used\"", "v": "\"mistral:7b\","}, {"text": "\"latency_ms\": 6500", "type": "kv", "k": "\"latency_ms\"", "v": "6500"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /script/validate", "type": "kv", "k": "Endpoint", "v": "POST /script/validate"}, {"text": "Request:", "type": "kv", "k": "Request", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"script_path\": \"scripts/deploy.sh\",", "type": "kv", "k": "\"script_path\"", "v": "\"scripts/deploy.sh\","}, {"text": "\"language\": \"bash\"", "type": "kv", "k": "\"language\"", "v": "\"bash\""}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"valid\": true,", "type": "kv", "k": "\"valid\"", "v": "true,"}, {"text": "\"syntax_check\": \"passed\",", "type": "kv", "k": "\"syntax_check\"", "v": "\"passed\","}, {"text": "\"runtime_required\": \"bash\",", "type": "kv", "k": "\"runtime_required\"", "v": "\"bash\","}, {"text": "\"args\": []", "type": "kv", "k": "\"args\"", "v": "[]"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /script/execute", "type": "kv", "k": "Endpoint", "v": "POST /script/execute"}, {"text": "Request:", "type": "kv", "k": "Request", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"script_path\": \"scripts/test.py\",", "type": "kv", "k": "\"script_path\"", "v": "\"scripts/test.py\","}, {"text": "\"arguments\": [\"--verbose\"],", "type": "kv", "k": "\"arguments\"", "v": "[\"--verbose\"],"}, {"text": "\"timeout\": 60,", "type": "kv", "k": "\"timeout\"", "v": "60,"}, {"text": "\"capture_output\": true,", "type": "kv", "k": "\"capture_output\"", "v": "true,"}, {"text": "\"target\": \"local\"  // or \"worker1\"", "type": "kv", "k": "\"target\"", "v": "\"local\"  // or \"worker1\""}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"success\": true,", "type": "kv", "k": "\"success\"", "v": "true,"}, {"text": "\"exit_code\": 0,", "type": "kv", "k": "\"exit_code\"", "v": "0,"}, {"text": "\"stdout\": \"Test results...\",", "type": "kv", "k": "\"stdout\"", "v": "\"Test results...\","}, {"text": "\"stderr\": \"\",", "type": "kv", "k": "\"stderr\"", "v": "\"\","}, {"text": "\"execution_time_ms\": 1234", "type": "kv", "k": "\"execution_time_ms\"", "v": "1234"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /script/execute-remote", "type": "kv", "k": "Endpoint", "v": "POST /script/execute-remote"}, {"text": "Request:", "type": "kv", "k": "Request", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"script_path\": \"scripts/deploy.sh\",", "type": "kv", "k": "\"script_path\"", "v": "\"scripts/deploy.sh\","}, {"text": "\"arguments\": [\"production\"],", "type": "kv", "k": "\"arguments\"", "v": "[\"production\"],"}, {"text": "\"target_host\": \"ubuntu-worker-01\",", "type": "kv", "k": "\"target_host\"", "v": "\"ubuntu-worker-01\","}, {"text": "\"timeout\": 120", "type": "kv", "k": "\"timeout\"", "v": "120"}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"success\": true,", "type": "kv", "k": "\"success\"", "v": "true,"}, {"text": "\"exit_code\": 0,", "type": "kv", "k": "\"exit_code\"", "v": "0,"}, {"text": "\"stdout\": \"Deployment complete\",", "type": "kv", "k": "\"stdout\"", "v": "\"Deployment complete\","}, {"text": "\"stderr\": \"\",", "type": "kv", "k": "\"stderr\"", "v": "\"\","}, {"text": "\"remote_host\": \"ubuntu-worker-01\",", "type": "kv", "k": "\"remote_host\"", "v": "\"ubuntu-worker-01\","}, {"text": "\"execution_time_ms\": 45000", "type": "kv", "k": "\"execution_time_ms\"", "v": "45000"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /git/status", "type": "kv", "k": "Endpoint", "v": "POST /git/status"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"branch\": \"main\",", "type": "kv", "k": "\"branch\"", "v": "\"main\","}, {"text": "\"modified\": [\"src/main.py\", \"README.md\"],", "type": "kv", "k": "\"modified\"", "v": "[\"src/main.py\", \"README.md\"],"}, {"text": "\"untracked\": [\"test_output.log\"],", "type": "kv", "k": "\"untracked\"", "v": "[\"test_output.log\"],"}, {"text": "\"staged\": [],", "type": "kv", "k": "\"staged\"", "v": "[],"}, {"text": "\"ahead\": 0,", "type": "kv", "k": "\"ahead\"", "v": "0,"}, {"text": "\"behind\": 0", "type": "kv", "k": "\"behind\"", "v": "0"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /git/commit", "type": "kv", "k": "Endpoint", "v": "POST /git/commit"}, {"text": "Request:", "type": "kv", "k": "Request", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"message\": \"feat: add email validation\",", "type": "kv", "k": "\"message\"", "v": "\"feat: add email validation\","}, {"text": "\"files\": [\"src/validators.py\"]", "type": "kv", "k": "\"files\"", "v": "[\"src/validators.py\"]"}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"success\": true,", "type": "kv", "k": "\"success\"", "v": "true,"}, {"text": "\"commit_hash\": \"a1b2c3d\",", "type": "kv", "k": "\"commit_hash\"", "v": "\"a1b2c3d\","}, {"text": "\"message\": \"feat: add email validation\"", "type": "kv", "k": "\"message\"", "v": "\"feat: add email validation\""}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /remote/connect", "type": "kv", "k": "Endpoint", "v": "POST /remote/connect"}, {"text": "Request:", "type": "kv", "k": "Request", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"host\": \"ubuntu-atlas-01\",", "type": "kv", "k": "\"host\"", "v": "\"ubuntu-atlas-01\","}, {"text": "\"port\": 22", "type": "kv", "k": "\"port\"", "v": "22"}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"connected\": true,", "type": "kv", "k": "\"connected\"", "v": "true,"}, {"text": "\"current_dir\": \"/home/larieladmin/projects\",", "type": "kv", "k": "\"current_dir\"", "v": "\"/home/larieladmin/projects\","}, {"text": "\"user\": \"larieladmin\",", "type": "kv", "k": "\"user\"", "v": "\"larieladmin\","}, {"text": "\"shell\": \"/bin/bash\"", "type": "kv", "k": "\"shell\"", "v": "\"/bin/bash\""}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: GET /remote/files", "type": "kv", "k": "Endpoint", "v": "GET /remote/files"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"path\": \"/home/larieladmin/projects\",", "type": "kv", "k": "\"path\"", "v": "\"/home/larieladmin/projects\","}, {"text": "\"files\": [", "type": "kv", "k": "\"files\"", "v": "["}, {"text": "{\"name\": \"project1\", \"type\": \"dir\", \"modified\": \"2026-04-22T12:00:00Z\"},", "type": "kv", "k": "{\"name\"", "v": "\"project1\", \"type\": \"dir\", \"modified\": \"2026-04-22T12:00:00Z\"},"}, {"text": "{\"name\": \"script.sh\", \"type\": \"file\", \"size\": 2048}", "type": "kv", "k": "{\"name\"", "v": "\"script.sh\", \"type\": \"file\", \"size\": 2048}"}, {"text": "]", "type": "plain"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: GET /remote/terminal", "type": "kv", "k": "Endpoint", "v": "GET /remote/terminal"}, {"text": "Response (streaming):", "type": "kv", "k": "Response (streaming)", "v": ""}, {"text": "Last 100 lines of remote terminal output for display in right pane", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "[INT:IDEBackend_SSHWorker1_Tunnel]", "type": "section"}, {"text": "Protocol: SSH/Command Execution", "type": "kv", "k": "Protocol", "v": "SSH/Command Execution"}, {"text": "Port: 22 (standard SSH)", "type": "kv", "k": "Port", "v": "22 (standard SSH)"}, {"text": "Target: ubuntu-worker-01 / ubuntu-atlas-01", "type": "kv", "k": "Target", "v": "ubuntu-worker-01 / ubuntu-atlas-01"}, {"text": "Auth: SSH key (stored securely in IDE config)", "type": "kv", "k": "Auth", "v": "SSH key (stored securely in IDE config)"}, {"text": "Commands_Executed:", "type": "kv", "k": "Commands_Executed", "v": ""}, {"text": "- ssh user@host \"python3 /path/to/script.py {args}\"", "type": "listitem"}, {"text": "- ssh user@host \"bash -n /path/to/script.sh\" (syntax check)", "type": "listitem"}, {"text": "- ssh user@host \"ollama --version\" (version check)", "type": "listitem"}, {"text": "- ssh user@host \"ls -la /remote/path\" (file browsing)", "type": "listitem"}, {"text": "- ssh user@host \"cd /path && pwd\" (navigation)", "type": "listitem"}, {"text": "Persistence: SSH connection pooling (keep-alive)", "type": "kv", "k": "Persistence", "v": "SSH connection pooling (keep-alive)"}, {"text": "Quality: Latency ~100-200ms per round-trip", "type": "kv", "k": "Quality", "v": "Latency ~100-200ms per round-trip"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"generated_code\": \"def validate_email(email: str) -> bool:\\n    import re\\n    return re.match(...)\",", "type": "kv", "k": "\"generated_code\"", "v": "\"def validate_email(email: str) -> bool:\\n    import re\\n    return re.match(...)\","}, {"text": "\"model_used\": \"mistral:latest\",", "type": "kv", "k": "\"model_used\"", "v": "\"mistral:latest\","}, {"text": "\"latency_ms\": 6500", "type": "kv", "k": "\"latency_ms\"", "v": "6500"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /git/status", "type": "kv", "k": "Endpoint", "v": "POST /git/status"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"branch\": \"main\",", "type": "kv", "k": "\"branch\"", "v": "\"main\","}, {"text": "\"modified\": [\"src/main.py\", \"README.md\"],", "type": "kv", "k": "\"modified\"", "v": "[\"src/main.py\", \"README.md\"],"}, {"text": "\"untracked\": [\"test_output.log\"],", "type": "kv", "k": "\"untracked\"", "v": "[\"test_output.log\"],"}, {"text": "\"staged\": [],", "type": "kv", "k": "\"staged\"", "v": "[],"}, {"text": "\"ahead\": 0,", "type": "kv", "k": "\"ahead\"", "v": "0,"}, {"text": "\"behind\": 0", "type": "kv", "k": "\"behind\"", "v": "0"}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "Endpoint: POST /git/commit", "type": "kv", "k": "Endpoint", "v": "POST /git/commit"}, {"text": "Request:", "type": "kv", "k": "Request", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"message\": \"feat: add email validation\",", "type": "kv", "k": "\"message\"", "v": "\"feat: add email validation\","}, {"text": "\"files\": [\"src/validators.py\"]", "type": "kv", "k": "\"files\"", "v": "[\"src/validators.py\"]"}, {"text": "}", "type": "plain"}, {"text": "Response:", "type": "kv", "k": "Response", "v": ""}, {"text": "{", "type": "plain"}, {"text": "\"success\": true,", "type": "kv", "k": "\"success\"", "v": "true,"}, {"text": "\"commit_hash\": \"a1b2c3d\",", "type": "kv", "k": "\"commit_hash\"", "v": "\"a1b2c3d\","}, {"text": "\"message\": \"feat: add email validation\"", "type": "kv", "k": "\"message\"", "v": "\"feat: add email validation\""}, {"text": "}", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# ABSTRACTIONS - System Dependencies & Architecture", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "[ABS:IDE_System_Layers]", "type": "section"}, {"text": "Layer 1 (Presentation): IDE_Frontend_Windows (dual-pane UI)", "type": "kv", "k": "Layer 1 (Presentation)", "v": "IDE_Frontend_Windows (dual-pane UI)"}, {"text": "- Left pane: Local code editor (VS Code-like)", "type": "listitem"}, {"text": "- Right pane: Remote Ubuntu IDE view", "type": "listitem"}, {"text": "- User interactions", "type": "listitem"}, {"text": "- File tabs, explorer, status bar", "type": "listitem"}, {"text": "Layer 2 (Coordination): IDE_Backend_Windows", "type": "kv", "k": "Layer 2 (Coordination)", "v": "IDE_Backend_Windows"}, {"text": "- Request routing (AI, script, git, remote)", "type": "listitem"}, {"text": "- Context management", "type": "listitem"}, {"text": "- Response formatting", "type": "listitem"}, {"text": "- SSH tunnel management to Worker 1", "type": "listitem"}, {"text": "Layer 3 (Intelligence): Ollama_Version_Coordinator (Windows + Ubuntu)", "type": "kv", "k": "Layer 3 (Intelligence)", "v": "Ollama_Version_Coordinator (Windows + Ubuntu)"}, {"text": "- Code generation (AI reasoning)", "type": "listitem"}, {"text": "- Model consistency enforcement", "type": "listitem"}, {"text": "Layer 4 (Execution): Script_Execution_Engine", "type": "kv", "k": "Layer 4 (Execution)", "v": "Script_Execution_Engine"}, {"text": "- Local script execution", "type": "listitem"}, {"text": "- Remote execution via SSH_Worker1_Bridge", "type": "listitem"}, {"text": "Layer 5 (Persistence): File_System_Local + Git_Integration", "type": "kv", "k": "Layer 5 (Persistence)", "v": "File_System_Local + Git_Integration"}, {"text": "- Local data storage", "type": "listitem"}, {"text": "- Version control", "type": "listitem"}, {"text": "- Remote filesystem access via SSH", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "[ABS:Dual_Pane_Architecture]", "type": "section"}, {"text": "Left_Pane: IDE_Frontend_Windows local editor", "type": "kv", "k": "Left_Pane", "v": "IDE_Frontend_Windows local editor"}, {"text": "- Active development", "type": "listitem"}, {"text": "- Local file navigation", "type": "listitem"}, {"text": "- Local script execution with visible output", "type": "listitem"}, {"text": "- Git operations (commit, status, push)", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Right_Pane: Remote_IDE_View (Ubuntu Worker 1)", "type": "kv", "k": "Right_Pane", "v": "Remote_IDE_View (Ubuntu Worker 1)"}, {"text": "- Read-only or limited-edit remote filesystem", "type": "listitem"}, {"text": "- Remote terminal session", "type": "listitem"}, {"text": "- mtask execution status", "type": "listitem"}, {"text": "- Remote script outputs", "type": "listitem"}, {"text": "- Live synchronization via SSH_Worker1_Bridge", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "[ABS:Data_Flow_Architecture]", "type": "section"}, {"text": "Synchronous_Flows (user waits for response):", "type": "kv", "k": "Synchronous_Flows (user waits for response)", "v": ""}, {"text": "- Code completion → Ollama_Version_Coordinator (Windows) → IDE display (<3s)", "type": "listitem"}, {"text": "- Code generation → Ollama_Version_Coordinator → IDE display (<10s)", "type": "listitem"}, {"text": "- Git status query → filesystem → IDE display (<1s)", "type": "listitem"}, {"text": "- Script validation → Script_Execution_Engine → IDE display (<1s)", "type": "listitem"}, {"text": "- Remote file list → SSH_Worker1_Bridge → right pane (<200ms)", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Asynchronous_Flows (background operations):", "type": "kv", "k": "Asynchronous_Flows (background operations)", "v": ""}, {"text": "- File watcher triggers on save", "type": "listitem"}, {"text": "- Ollama version sync check (Worker 1 vs Windows)", "type": "listitem"}, {"text": "- Remote IDE state refresh (1s poll)", "type": "listitem"}, {"text": "- Background script execution on Worker 1", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "[ABS:Ollama_Version_Coordination]", "type": "section"}, {"text": "Constraint: Windows and Ubuntu Worker 1 MUST use identical Ollama versions", "type": "kv", "k": "Constraint", "v": "Windows and Ubuntu Worker 1 MUST use identical Ollama versions"}, {"text": "Enforcement:", "type": "kv", "k": "Enforcement", "v": ""}, {"text": "- Canonical version spec in c:\\AI Assistant\\MIDE\\pilot_v1\\config\\ollama_version.txt", "type": "listitem"}, {"text": "- On IDE startup: compare localhost:11434 version with remote (via SSH)", "type": "listitem"}, {"text": "- On version mismatch: warn user + disable code generation", "type": "listitem"}, {"text": "- Admin can trigger MTASK to update Worker 1 Ollama via IDE UI", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "[ABS:Script_Execution_Capability]", "type": "section"}, {"text": "Local_Execution: IDE_Backend_Windows → Script_Execution_Engine → local subprocess", "type": "kv", "k": "Local_Execution", "v": "IDE_Backend_Windows → Script_Execution_Engine → local subprocess"}, {"text": "Remote_Execution: IDE_Backend_Windows → SSH_Worker1_Bridge → Worker_1_Ubuntu_System", "type": "kv", "k": "Remote_Execution", "v": "IDE_Backend_Windows → SSH_Worker1_Bridge → Worker_1_Ubuntu_System"}, {"text": "", "type": "blank"}, {"text": "Read_Apply_Flow:", "type": "kv", "k": "Read_Apply_Flow", "v": ""}, {"text": "1. User selects script in file explorer", "type": "plain"}, {"text": "2. IDE_Backend reads + displays in editor", "type": "plain"}, {"text": "3. User reviews content + metadata", "type": "plain"}, {"text": "4. User clicks \"Execute\" → Choose local or remote", "type": "plain"}, {"text": "5. Script_Execution_Engine validates syntax", "type": "plain"}, {"text": "6. On approve: execute with user confirmation", "type": "kv", "k": "6. On approve", "v": "execute with user confirmation"}, {"text": "7. Output streamed to integrated terminal", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "[ABS:Integration_with_MIDE_Worker]", "type": "section"}, {"text": "Assumption: Custom IDE and MIDE autopilot are complementary", "type": "kv", "k": "Assumption", "v": "Custom IDE and MIDE autopilot are complementary"}, {"text": "- MIDE handles: autonomous task execution, mtask jobs, scheduled operations", "type": "listitem"}, {"text": "- Custom IDE handles: interactive development, testing, debugging, script management", "type": "listitem"}, {"text": "- SSH_Worker1_Bridge enables IDE to trigger scripts on Worker 1", "type": "listitem"}, {"text": "- Shared filesystem: both can read/write MIDE repo", "type": "listitem"}, {"text": "- Shared Ollama: consistent code generation across both systems", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# QUALITY & NON-FUNCTIONAL REQUIREMENTS", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "[QFR:Performance]", "type": "section"}, {"text": "- Code completion: <3 seconds", "type": "listitem"}, {"text": "- Code generation: <10 seconds", "type": "listitem"}, {"text": "- Script validation: <1 second", "type": "listitem"}, {"text": "- Local script execution: depends on script (timeout 60s default)", "type": "listitem"}, {"text": "- Remote script execution: SSH latency (100-200ms) + script time", "type": "listitem"}, {"text": "- Git operations: <1 second", "type": "listitem"}, {"text": "- File browser (local): instant (<100ms)", "type": "listitem"}, {"text": "- Remote file browser: <200ms (SSH query)", "type": "listitem"}, {"text": "- Ollama version check: <2 seconds", "type": "listitem"}, {"text": "- Tab switching: instant", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "[QFR:Availability]", "type": "section"}, {"text": "- IDE requires local Ollama running (mismatched version shows warning, disables AI)", "type": "listitem"}, {"text": "- SSH to Worker 1 optional (IDE works without it, just local mode)", "type": "listitem"}, {"text": "- Fallback: disable AI features if Ollama unavailable", "type": "listitem"}, {"text": "- Git can work offline; push/pull requires network", "type": "listitem"}, {"text": "- Script execution can target local OR remote independently", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "[QFR:Usability]", "type": "section"}, {"text": "- Dual-pane layout (VS Code-inspired)", "type": "listitem"}, {"text": "- Dark theme (consistent with weather GUI)", "type": "listitem"}, {"text": "- Keyboard shortcuts: Ctrl+Space (complete), Ctrl+/ (comment), Ctrl+Shift+P (palette), Ctrl+` (terminal)", "type": "listitem"}, {"text": "- Split-pane draggable divider", "type": "listitem"}, {"text": "- Status bar: current file, line/col, git branch, Ollama version status, Worker 1 connection status", "type": "listitem"}, {"text": "- File tabs with unsaved indicator (•)", "type": "listitem"}, {"text": "- Syntax highlighting: Python, JavaScript, Bash, JSON, YAML, Markdown", "type": "listitem"}, {"text": "- Integrated terminal (bottom of left pane)", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "[QFR:Security]", "type": "section"}, {"text": "- Local Ollama: no auth required (localhost only)", "type": "listitem"}, {"text": "- SSH to Worker 1: key-based auth (no passwords)", "type": "listitem"}, {"text": "- Git credentials: use system keychain or .git/config", "type": "listitem"}, {"text": "- No secrets in code (enforce .gitignore)", "type": "listitem"}, {"text": "- Script execution: require user confirmation before running", "type": "listitem"}, {"text": "- Script timeout protection: max 300s configurable", "type": "listitem"}, {"text": "- SSH connection: pooled, keep-alive, auto-reconnect on disconnect", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "[QFR:Scalability]", "type": "section"}, {"text": "- Support projects up to 10MB local (file indexing)", "type": "listitem"}, {"text": "- Remote filesystem browsing via SSH (on-demand lazy loading)", "type": "listitem"}, {"text": "- Streaming responses from Ollama (no memory bloat)", "type": "listitem"}, {"text": "- Connection pooling to Worker 1 (persistent SSH session)", "type": "listitem"}, {"text": "- Tab limit: reasonable (recommend <50 open files)", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# IMPLEMENTATION ROADMAP (Phases)", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "Phase 1: MVP Architecture & Design (CURRENT - Now)", "type": "kv", "k": "Phase 1", "v": "MVP Architecture & Design (CURRENT - Now)"}, {"text": "- ✅ Define components (R/ACT/INT/ABS)", "type": "listitem"}, {"text": "- ✅ Create comprehensive MOSS file (version 2.0)", "type": "listitem"}, {"text": "- ⬜ Generate workflow diagram from MOSS compiler", "type": "listitem"}, {"text": "- ⬜ User review & architectural approval", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Phase 2: Core Backend Implementation (Week 1-2)", "type": "kv", "k": "Phase 2", "v": "Core Backend Implementation (Week 1-2)"}, {"text": "- IDE_Backend_Windows basic FastAPI server (port 5555)", "type": "listitem"}, {"text": "- Ollama_Version_Coordinator integration (version spec + sync check)", "type": "listitem"}, {"text": "- Script_Execution_Engine (local bash/python/pwsh execution)", "type": "listitem"}, {"text": "- Git_Integration (git CLI wrappers)", "type": "listitem"}, {"text": "- File_System_Local operations (read/list/write)", "type": "listitem"}, {"text": "- SSH_Worker1_Bridge (establish connection, execute remote commands)", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Phase 3: Frontend UI Implementation (Week 2-3)", "type": "kv", "k": "Phase 3", "v": "Frontend UI Implementation (Week 2-3)"}, {"text": "- IDE_Frontend_Windows basic dual-pane structure (HTML/Electron/web-based)", "type": "listitem"}, {"text": "- Left pane: basic code editor (ace/monaco-like)", "type": "listitem"}, {"text": "- File explorer + tabs", "type": "listitem"}, {"text": "- Right pane: remote filesystem view stub", "type": "listitem"}, {"text": "- Status bar: file info, git branch, connection status", "type": "listitem"}, {"text": "- Integrated terminal (basic)", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Phase 4: AI Integration (Week 3)", "type": "kv", "k": "Phase 4", "v": "AI Integration (Week 3)"}, {"text": "- Ollama_Version_Coordinator compliance check", "type": "listitem"}, {"text": "- Code completion endpoint (POST /ollama/complete)", "type": "listitem"}, {"text": "- Code generation endpoint (POST /ollama/generate)", "type": "listitem"}, {"text": "- Syntax highlighting for Python/JavaScript/Bash", "type": "listitem"}, {"text": "- Streaming responses", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Phase 5: Script Execution UI (Week 4)", "type": "kv", "k": "Phase 5", "v": "Script Execution UI (Week 4)"}, {"text": "- Script read/validate/execute flow", "type": "listitem"}, {"text": "- Local vs Remote execution toggle", "type": "listitem"}, {"text": "- Execute button + confirm dialog", "type": "listitem"}, {"text": "- Terminal output display", "type": "listitem"}, {"text": "- Timeout + error handling", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Phase 6: Remote IDE Integration (Week 4-5)", "type": "kv", "k": "Phase 6", "v": "Remote IDE Integration (Week 4-5)"}, {"text": "- SSH connection establishment UI", "type": "listitem"}, {"text": "- Remote_IDE_View refresh loop (1s poll)", "type": "listitem"}, {"text": "- Remote file browser in right pane", "type": "listitem"}, {"text": "- Remote terminal output streaming", "type": "listitem"}, {"text": "- Connection status indicator", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Phase 7: Polish & Hardening (Week 5-6)", "type": "kv", "k": "Phase 7", "v": "Polish & Hardening (Week 5-6)"}, {"text": "- Error handling + logging", "type": "listitem"}, {"text": "- Keyboard shortcuts (Ctrl+Space, Ctrl+/, Ctrl+Shift+P, etc.)", "type": "listitem"}, {"text": "- Draggable split-pane divider", "type": "listitem"}, {"text": "- Dark theme refinement", "type": "listitem"}, {"text": "- SSH connection pooling", "type": "listitem"}, {"text": "- Project templates", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Phase 8: Integration Testing (Week 6-7)", "type": "kv", "k": "Phase 8", "v": "Integration Testing (Week 6-7)"}, {"text": "- End-to-end: local code edit → Ollama completion → display", "type": "listitem"}, {"text": "- End-to-end: remote script execution on Worker 1", "type": "listitem"}, {"text": "- Ollama version mismatch handling", "type": "listitem"}, {"text": "- SSH failure graceful degradation", "type": "listitem"}, {"text": "- Git operations on both local and in MIDE repo", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "Phase 9: Deployment & Training (Week 7-8)", "type": "kv", "k": "Phase 9", "v": "Deployment & Training (Week 7-8)"}, {"text": "- Deploy to Windows workspace", "type": "listitem"}, {"text": "- Package as executable or portable", "type": "listitem"}, {"text": "- Document keyboard shortcuts + workflows", "type": "listitem"}, {"text": "- Test with actual MIDE worker system", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# CRITICAL CONSTRAINTS & DEPENDENCIES", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "[CONSTRAINT:Ollama_Version_Identity]", "type": "section"}, {"text": "MUST: Windows IDE Ollama version = Ubuntu Worker 1 Ollama version", "type": "kv", "k": "MUST", "v": "Windows IDE Ollama version = Ubuntu Worker 1 Ollama version"}, {"text": "Impact: Code generation consistency across both systems", "type": "kv", "k": "Impact", "v": "Code generation consistency across both systems"}, {"text": "Enforcement: Version check on startup + periodic sync", "type": "kv", "k": "Enforcement", "v": "Version check on startup + periodic sync"}, {"text": "Failure_Mode: Disable code generation, show warning", "type": "kv", "k": "Failure_Mode", "v": "Disable code generation, show warning"}, {"text": "", "type": "blank"}, {"text": "[CONSTRAINT:SSH_Authentication]", "type": "section"}, {"text": "MUST: SSH key-based auth to Worker 1 (ubuntu-atlas-01)", "type": "kv", "k": "MUST", "v": "SSH key-based auth to Worker 1 (ubuntu-atlas-01)"}, {"text": "Impact: Secure, passwordless remote script execution", "type": "kv", "k": "Impact", "v": "Secure, passwordless remote script execution"}, {"text": "Setup: User provides SSH key path in IDE config", "type": "kv", "k": "Setup", "v": "User provides SSH key path in IDE config"}, {"text": "Failure_Mode: Right pane unavailable, local-only mode", "type": "kv", "k": "Failure_Mode", "v": "Right pane unavailable, local-only mode"}, {"text": "", "type": "blank"}, {"text": "[CONSTRAINT:Ollama_Service_Availability]", "type": "section"}, {"text": "MUST: Local Ollama running (localhost:11434)", "type": "kv", "k": "MUST", "v": "Local Ollama running (localhost:11434)"}, {"text": "Impact: Code completion/generation features", "type": "kv", "k": "Impact", "v": "Code completion/generation features"}, {"text": "Failure_Mode: Warn user, disable AI features, continue with file editing", "type": "kv", "k": "Failure_Mode", "v": "Warn user, disable AI features, continue with file editing"}, {"text": "", "type": "blank"}, {"text": "[CONSTRAINT:Git_Availability]", "type": "section"}, {"text": "Should: Git installed on Windows + Ubuntu", "type": "kv", "k": "Should", "v": "Git installed on Windows + Ubuntu"}, {"text": "Impact: Version control operations", "type": "kv", "k": "Impact", "v": "Version control operations"}, {"text": "Failure_Mode: Warn user, disable git UI, continue with file editing", "type": "kv", "k": "Failure_Mode", "v": "Warn user, disable git UI, continue with file editing"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# KEY ARCHITECTURAL DECISIONS", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "**Decision 1: Dual-Pane Design (Left=Local, Right=Remote)**", "type": "kv", "k": "**Decision 1", "v": "Dual-Pane Design (Left=Local, Right=Remote)**"}, {"text": "Rationale: Allows simultaneous development + monitoring of Worker 1 environment", "type": "kv", "k": "Rationale", "v": "Allows simultaneous development + monitoring of Worker 1 environment"}, {"text": "Benefit: User can see results of script execution on Worker 1 in real-time", "type": "kv", "k": "Benefit", "v": "User can see results of script execution on Worker 1 in real-time"}, {"text": "Alternative: Single pane + separate Worker 1 window (rejected: context-switching overhead)", "type": "kv", "k": "Alternative", "v": "Single pane + separate Worker 1 window (rejected: context-switching overhead)"}, {"text": "", "type": "blank"}, {"text": "**Decision 2: Shared Ollama Version Requirement**", "type": "kv", "k": "**Decision 2", "v": "Shared Ollama Version Requirement**"}, {"text": "Rationale: Ensures reproducible code generation across Windows IDE and Ubuntu Worker 1", "type": "kv", "k": "Rationale", "v": "Ensures reproducible code generation across Windows IDE and Ubuntu Worker 1"}, {"text": "Benefit: User can apply same prompt locally or remotely, get consistent code", "type": "kv", "k": "Benefit", "v": "User can apply same prompt locally or remotely, get consistent code"}, {"text": "Alternative: Separate Ollama instances (rejected: inconsistent outputs, confusing)", "type": "kv", "k": "Alternative", "v": "Separate Ollama instances (rejected: inconsistent outputs, confusing)"}, {"text": "", "type": "blank"}, {"text": "**Decision 3: Script_Execution_Engine with Local + Remote Dispatch**", "type": "kv", "k": "**Decision 3", "v": "Script_Execution_Engine with Local + Remote Dispatch**"}, {"text": "Rationale: IDE manages both local and remote execution from single interface", "type": "kv", "k": "Rationale", "v": "IDE manages both local and remote execution from single interface"}, {"text": "Benefit: Single UI for debugging + deploying scripts", "type": "kv", "k": "Benefit", "v": "Single UI for debugging + deploying scripts"}, {"text": "Alternative: Separate local IDE + remote SSH client (rejected: complex workflow)", "type": "kv", "k": "Alternative", "v": "Separate local IDE + remote SSH client (rejected: complex workflow)"}, {"text": "", "type": "blank"}, {"text": "**Decision 4: HTTP REST API Backend (IDE_Backend_Windows)**", "type": "kv", "k": "**Decision 4", "v": "HTTP REST API Backend (IDE_Backend_Windows)**"}, {"text": "Rationale: Separates concerns, enables future remote IDE access", "type": "kv", "k": "Rationale", "v": "Separates concerns, enables future remote IDE access"}, {"text": "Benefit: Frontend can be web-based or Electron, backend reusable", "type": "kv", "k": "Benefit", "v": "Frontend can be web-based or Electron, backend reusable"}, {"text": "Alternative: Direct IPC (rejected: less flexible, platform-specific)", "type": "kv", "k": "Alternative", "v": "Direct IPC (rejected: less flexible, platform-specific)"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# NEXT STEPS", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "1. ✅ MOSS architecture file complete (v2.0-dual_system)", "type": "plain"}, {"text": "2. 🟡 Generate workflow diagram from MOSS compiler → visual confirmation", "type": "plain"}, {"text": "3. 🔵 User review & architectural approval", "type": "plain"}, {"text": "4. 🔵 Phase 2 implementation begins once approved", "type": "plain"}, {"text": "- Start with IDE_Backend_Windows (FastAPI server)", "type": "listitem"}, {"text": "- Parallel: prepare SSH key for Worker 1 connection", "type": "listitem"}, {"text": "- Parallel: confirm Ollama version on both systems", "type": "listitem"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}, {"text": "", "type": "blank"}, {"text": "# APPENDIX: File Structure (Post-Implementation)", "type": "comment"}, {"text": "", "type": "blank"}, {"text": "```", "type": "plain"}, {"text": "c:\\AI Assistant\\customide\\", "type": "kv", "k": "c", "v": "\\AI Assistant\\customide\\"}, {"text": "├── backend/", "type": "plain"}, {"text": "│   ├── main.py (FastAPI entry point)", "type": "plain"}, {"text": "│   ├── handlers/", "type": "plain"}, {"text": "│   │   ├── ollama_handler.py", "type": "plain"}, {"text": "│   │   ├── script_handler.py", "type": "plain"}, {"text": "│   │   ├── git_handler.py", "type": "plain"}, {"text": "│   │   └── ssh_handler.py", "type": "plain"}, {"text": "│   ├── models/", "type": "plain"}, {"text": "│   │   ├── request_schema.py", "type": "plain"}, {"text": "│   │   └── response_schema.py", "type": "plain"}, {"text": "│   ├── config/", "type": "plain"}, {"text": "│   │   ├── ollama_version.txt", "type": "plain"}, {"text": "│   │   └── ssh_config.json", "type": "plain"}, {"text": "│   └── requirements.txt", "type": "plain"}, {"text": "├── frontend/", "type": "plain"}, {"text": "│   ├── index.html (main UI)", "type": "plain"}, {"text": "│   ├── styles.css (dark theme)", "type": "plain"}, {"text": "│   ├── app.js (main logic)", "type": "plain"}, {"text": "│   ├── components/", "type": "plain"}, {"text": "│   │   ├── editor.js", "type": "plain"}, {"text": "│   │   ├── explorer.js", "type": "plain"}, {"text": "│   │   ├── terminal.js", "type": "plain"}, {"text": "│   │   ├── remote_view.js", "type": "plain"}, {"text": "│   │   └── status_bar.js", "type": "plain"}, {"text": "│   ├── lib/", "type": "plain"}, {"text": "│   │   ├── fetch_api.js", "type": "plain"}, {"text": "│   │   ├── editor_wrapper.js", "type": "plain"}, {"text": "│   │   └── ssh_client.js", "type": "plain"}, {"text": "│   └── assets/", "type": "plain"}, {"text": "│       └── fonts/, icons/", "type": "plain"}, {"text": "├── scripts/", "type": "plain"}, {"text": "│   ├── start_backend.sh", "type": "plain"}, {"text": "│   ├── start_frontend.sh", "type": "plain"}, {"text": "│   └── check_dependencies.sh", "type": "plain"}, {"text": "├── projects/ (user project root)", "type": "plain"}, {"text": "│   └── {project_name}/", "type": "plain"}, {"text": "│       ├── src/", "type": "plain"}, {"text": "│       ├── scripts/", "type": "plain"}, {"text": "│       └── .git/", "type": "plain"}, {"text": "└── config.json (IDE configuration)", "type": "plain"}, {"text": "```", "type": "plain"}, {"text": "", "type": "blank"}, {"text": "---", "type": "separator"}];
+const COMP_DETAILS  = {"Ollama_Version_Coordinator": {"name": "Ollama_Version_Coordinator", "type": "Configuration/Service", "location": "Windows: localhost:11434 | Ubuntu: localhost:11434 (same version deployed to both)", "description": "Centrally specified Ollama version ensuring model consistency across Windows IDE and Ubuntu Worker 1", "language": "", "port": ""}, "IDE_Frontend_Windows": {"name": "IDE_Frontend_Windows", "type": "Application/UI", "location": "c:\\AI Assistant\\customide\\frontend", "description": "VS Code-like IDE interface running on Windows desktop with dual-pane design and full code editor capabilities", "language": "HTML/JavaScript (Electron or web-based)", "port": ""}, "IDE_Backend_Windows": {"name": "IDE_Backend_Windows", "type": "Server/Coordinator", "location": "c:\\AI Assistant\\customide\\backend", "description": "Local server coordinating IDE operations, bridges UI to Ollama, script execution, and Worker 1", "language": "Python (FastAPI)", "port": "5555"}, "SSH_Worker1_Bridge": {"name": "SSH_Worker1_Bridge", "type": "Communication/Tunnel", "location": "Connects Windows IDE_Backend to Ubuntu Worker 1 (~ubuntu-worker-01)", "description": "SSH tunnel for secure command execution and file access on remote Ubuntu system", "language": "", "port": ""}, "Remote_IDE_View": {"name": "Remote_IDE_View", "type": "Display/Window", "location": "Right pane of IDE_Frontend_Windows", "description": "Live view of Ubuntu Worker 1's IDE and terminal environment", "language": "", "port": ""}, "Script_Execution_Engine": {"name": "Script_Execution_Engine", "type": "Runtime/Executor", "location": "Embedded in IDE_Backend_Windows", "description": "Reads, validates, and executes scripts (Bash, Python, PowerShell) locally and on Worker 1", "language": "", "port": ""}, "Ollama_Local_Server": {"name": "Ollama_Local_Server", "type": "External AI Service", "location": "localhost:11434 (Windows) + localhost:11434 (Ubuntu Worker 1)", "description": "Ollama instance for code generation, completion, refactoring - SAME VERSION on both systems", "language": "", "port": ""}, "File_System_Local": {"name": "File_System_Local", "type": "Storage/Filesystem", "location": "c:\\AI Assistant\\customide\\projects\\{project_name}", "description": "Local Windows filesystem for project code files", "language": "", "port": ""}, "Git_Integration": {"name": "Git_Integration", "type": "Version Control", "location": "c:\\AI Assistant\\customide\\projects\\{project_name}\\.git", "description": "Git repository for version control and remote sync", "language": "", "port": ""}, "Worker_1_Ubuntu_System": {"name": "Worker_1_Ubuntu_System", "type": "External System", "location": "ubuntu-worker-01 / ubuntu-atlas-01 (ngrok accessible)", "description": "Ubuntu server with MIDE autopilot, Worker 1 IDE, and remote Ollama instance", "language": "", "port": ""}};
+const ACT_SUMMARY   = {"Script_Read_Validate_Apply": {"name": "Script_Read_Validate_Apply", "trigger": "User selects a script file (.sh, .py, .ps1) in file explorer, right-clicks \"Read and Apply\""}, "Script_Execute_Local": {"name": "Script_Execute_Local", "trigger": "User clicks \"Execute\" button in script panel (or Ctrl+Shift+E in script file)"}, "Script_Execute_Remote_Worker1": {"name": "Script_Execute_Remote_Worker1", "trigger": "User selects \"Execute on Worker 1\" (right-click in script, or button toggle)"}, "Ollama_Version_Sync_Check": {"name": "Ollama_Version_Sync_Check", "trigger": "IDE starts up OR user clicks \"Verify Ollama Consistency\""}, "Dual_Pane_Switch": {"name": "Dual_Pane_Switch", "trigger": "User clicks right-pane \"Connect to Worker 1\" button or presses Alt+Right"}, "Terminal_Execution_Integrated": {"name": "Terminal_Execution_Integrated", "trigger": "User types command in IDE integrated terminal (Ctrl+`)"}, "Code_Completion_Request": {"name": "Code_Completion_Request", "trigger": "User types in IDE editor or presses hotkey (Ctrl+Space)"}, "Code_Generation_Request": {"name": "Code_Generation_Request", "trigger": "User writes natural language comment or prompt in editor"}, "Code_Refactoring_Request": {"name": "Code_Refactoring_Request", "trigger": "User selects code block + menu action \"Refactor with Ollama\""}, "File_Save_and_Git_Commit": {"name": "File_Save_and_Git_Commit", "trigger": "User saves file (Ctrl+S) + manually commits in Git panel"}, "Project_Open": {"name": "Project_Open", "trigger": "User clicks \"Open Project\" or starts IDE"}};
+const INT_SUMMARY   = {"IDEBackend_OllamaVersion_REST": {"name": "IDEBackend_OllamaVersion_REST", "protocol": "HTTP/REST (streaming JSON)", "port": "IDE_Backend_Windows calls localhost:11434 (Windows Ollama)"}, "IDEFrontend_IDEBackend_HTTP": {"name": "IDEFrontend_IDEBackend_HTTP", "protocol": "HTTP/REST (JSON)", "port": "5555"}, "IDEBackend_SSHWorker1_Tunnel": {"name": "IDEBackend_SSHWorker1_Tunnel", "protocol": "SSH/Command Execution", "port": "22 (standard SSH)"}};
+const EDGES         = [{"from": "IDE_Frontend_Windows", "to": "IDE_Backend_Windows", "label": "HTTP REST :5555"}, {"from": "IDE_Backend_Windows", "to": "Ollama_Local_Server", "label": "POST /api/generate"}, {"from": "IDE_Backend_Windows", "to": "Script_Execution_Engine", "label": "execute()"}, {"from": "IDE_Backend_Windows", "to": "SSH_Worker1_Bridge", "label": "remote exec"}, {"from": "SSH_Worker1_Bridge", "to": "Worker_1_Ubuntu_System", "label": "SSH :22"}, {"from": "IDE_Frontend_Windows", "to": "Remote_IDE_View", "label": "right pane"}, {"from": "Remote_IDE_View", "to": "SSH_Worker1_Bridge", "label": "data source"}, {"from": "Script_Execution_Engine", "to": "SSH_Worker1_Bridge", "label": "execute_remote()"}, {"from": "Ollama_Version_Coordinator", "to": "Ollama_Local_Server", "label": "version spec"}, {"from": "IDE_Backend_Windows", "to": "Git_Integration", "label": "git ops"}, {"from": "IDE_Backend_Windows", "to": "File_System_Local", "label": "read/write"}];
+const ALL_RESOURCES = ["Ollama_Version_Coordinator", "IDE_Frontend_Windows", "IDE_Backend_Windows", "SSH_Worker1_Bridge", "Remote_IDE_View", "Script_Execution_Engine", "Ollama_Local_Server", "File_System_Local", "Git_Integration", "Worker_1_Ubuntu_System"];
+
+// ════════════════════════════════════════════════════════════════
+// BUILD LEFT PANEL: MOSS CODE
+// ════════════════════════════════════════════════════════════════
+const mossCodeEl = document.getElementById('mossCode');
+
+// section-name extraction to allow linking code lines to blocks
+const SECTION_RE = /^\[([A-Z]+):?([^\]]*)\]$/;
+
+CODE_LINES.forEach((line, idx) => {
+  const span = document.createElement('span');
+  span.className = 'moss-line';
+  span.dataset.idx = idx;
+
+  // Detect section references
+  const sm = SECTION_RE.exec(line.text || '');
+  if (sm) {
+    const rname = sm[2].trim();
+    if (rname) span.dataset.resource = rname;
+  }
+
+  switch (line.type) {
+    case 'comment':
+      span.innerHTML = `<span class="t-comment">${esc(line.text)}</span>`;
+      break;
+    case 'section':
+      span.innerHTML = `<span class="t-section">${esc(line.text)}</span>`;
+      break;
+    case 'kv':
+      span.innerHTML = `<span class="t-key">${esc(line.k)}:</span> <span class="t-val">${esc(line.v)}</span>`;
+      break;
+    case 'listitem':
+      span.innerHTML = `<span class="t-listitem">${esc(line.text)}</span>`;
+      break;
+    case 'separator':
+      span.innerHTML = `<span class="t-separator">---</span>`;
+      break;
+    case 'blank':
+      span.innerHTML = '&nbsp;';
+      break;
+    default:
+      span.textContent = line.text || '';
+  }
+
+  mossCodeEl.appendChild(span);
+});
+
+function esc(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
+// ════════════════════════════════════════════════════════════════
+// BLOCK DIAGRAM INTERACTIONS
+// ════════════════════════════════════════════════════════════════
+const detailEmpty   = document.getElementById('detailEmpty');
+const detailContent = document.getElementById('detailContent');
+
+// Edge connectivity map: blockId → [edgeIdx, ...]
+const EDGE_MAP = {};
+EDGES.forEach((e, i) => {
+  (EDGE_MAP[e.from] = EDGE_MAP[e.from] || []).push(i);
+  (EDGE_MAP[e.to]   = EDGE_MAP[e.to]   || []).push(i);
+});
+
+function setEdgeHovered(edgeIdx, on) {
+  const line = document.getElementById(`e${edgeIdx}`);
+  const lbl  = document.getElementById(`el${edgeIdx}`);
+  if (line) line.classList.toggle('hovered', on);
+  if (lbl)  lbl.classList.toggle('hovered', on);
+}
+
+function setBlockHovered(id, on) {
+  const rects = document.querySelectorAll(`.block-rect[data-id="${id}"]`);
+  const names = document.querySelectorAll(`.block-name[data-id="${id}"]`);
+  rects.forEach(r => r.classList.toggle('hovered', on));
+  names.forEach(n => n.classList.toggle('hovered', on));
+}
+
+// Highlight MOSS code lines for this resource
+function highlightMossLines(id, on) {
+  const spans = document.querySelectorAll('.moss-line');
+  let inSection = false;
+  spans.forEach(s => {
+    const res = s.dataset.resource;
+    if (res === id) inSection = true;
+    else if (res && res !== id && inSection) inSection = false;
+    if (inSection) {
+      s.classList.toggle('highlight', on);
+      if (on) s.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  });
+}
+
+// Show details for component
+function showDetails(id) {
+  const comp = COMP_DETAILS[id];
+  if (!comp) { detailEmpty.style.display='flex'; detailContent.style.display='none'; return; }
+
+  detailEmpty.style.display = 'none';
+  detailContent.style.display = 'block';
+
+  // Find related actions
+  const relatedActs = Object.values(ACT_SUMMARY).filter(a =>
+    a.trigger && a.trigger.toLowerCase().includes(id.toLowerCase().replace(/_/g,' '))
+  );
+
+  // Find related interfaces
+  const relatedInts = Object.values(INT_SUMMARY).filter(i =>
+    i.name.toLowerCase().includes(id.toLowerCase().replace(/_windows|_bridge/g,''))
+  );
+
+  detailContent.innerHTML = `
+    <div class="detail-section">
+      <div class="detail-section-title">Resource</div>
+      <div class="detail-name">${esc(comp.name)}</div>
+      ${comp.type ? `<div class="detail-row"><span class="dk">Type</span><span class="dv">${esc(comp.type)}</span></div>` : ''}
+      ${comp.language ? `<div class="detail-row"><span class="dk">Language</span><span class="dv">${esc(comp.language)}</span></div>` : ''}
+      ${comp.port ? `<div class="detail-row"><span class="dk">Port</span><span class="dv">${esc(comp.port)}</span></div>` : ''}
+      ${comp.location ? `<div class="detail-row"><span class="dk">Location</span><span class="dv">${esc(comp.location)}</span></div>` : ''}
+    </div>
+    ${comp.description ? `<div class="detail-desc">${esc(comp.description)}</div>` : ''}
+    ${relatedActs.length ? `
+      <div class="detail-section">
+        <div class="detail-section-title">Related ACT Flows</div>
+        <ul class="acts-list">
+          ${relatedActs.map(a => `<li><div class="act-name">${esc(a.name)}</div><div>${esc(a.trigger).substring(0,80)}</div></li>`).join('')}
+        </ul>
+      </div>` : ''}
+    ${relatedInts.length ? `
+      <div class="detail-section">
+        <div class="detail-section-title">Interfaces</div>
+        <ul class="ints-list">
+          ${relatedInts.map(i => `<li>${esc(i.name)} — ${esc(i.protocol)}</li>`).join('')}
+        </ul>
+      </div>` : ''}
+    <div class="detail-section">
+      <div class="detail-section-title">Connections</div>
+      <ul class="acts-list">
+        ${(EDGE_MAP[id] || []).map(ei => {
+          const e = EDGES[ei];
+          return `<li style="color:var(--cyan-dim)">${esc(e.from)} → ${esc(e.to)}${e.label ? ` <span style="color:#4a7a99"> (${esc(e.label)})</span>` : ''}</li>`;
+        }).join('')}
+      </ul>
+    </div>
+  `;
+}
+
+// Attach hover + click to all block groups
+document.querySelectorAll('.block-group').forEach(g => {
+  const id = g.dataset.id;
+  if (!id) return;
+
+  g.addEventListener('mouseenter', () => {
+    setBlockHovered(id, true);
+    (EDGE_MAP[id] || []).forEach(ei => setEdgeHovered(ei, true));
+    highlightMossLines(id, true);
+    showDetails(id);
+  });
+
+  g.addEventListener('mouseleave', () => {
+    setBlockHovered(id, false);
+    (EDGE_MAP[id] || []).forEach(ei => setEdgeHovered(ei, false));
+    highlightMossLines(id, false);
+  });
+
+  g.addEventListener('click', () => {
+    showDetails(id);
+    highlightMossLines(id, true);
+    setTimeout(() => highlightMossLines(id, false), 3000);
+  });
+});
+
+</script>
+</body>
+</html>
