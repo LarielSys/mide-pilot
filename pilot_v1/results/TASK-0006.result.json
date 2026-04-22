@@ -1,0 +1,29 @@
+{
+  "task_id": "TASK-0006",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "commands_run": [
+    "cd ~/mide-pilot && git pull",
+    "chmod +x pilot_v1/scripts/verify_site_kb_consistency.sh",
+    "cd ~/mide-pilot && ./pilot_v1/scripts/verify_site_kb_consistency.sh",
+    "git add pilot_v1/scripts/verify_site_kb_consistency.sh pilot_v1/results/TASK-0006.result.json",
+    "git commit -m 'worker: add TASK-0006 consistency verifier and result'",
+    "git push"
+  ],
+  "validation_results": [
+    "PASS: Created pilot_v1/scripts/verify_site_kb_consistency.sh with executable bit",
+    "PASS: Script checks /health on 127.0.0.1:8091 and extracts documents count",
+    "PASS: Script checks direct Chroma count from site_kb_chromadb/lariel_site_kb",
+    "PASS: Script exits 0 when counts match and health status=ok",
+    "PASS: Script exits non-zero on mismatch or error (verified via set -euo pipefail + explicit exit 1 branches)",
+    "PASS: Script ran successfully, captured one successful execution output"
+  ],
+  "errors": [],
+  "evidence": {
+    "health_status": "ok",
+    "health_documents": 49,
+    "direct_chroma_count": 49,
+    "script_exit_code": 0,
+    "script_output_excerpt": "=== verify_site_kb_consistency ===\nTimestamp: 2026-04-22T01:41:21Z\n\n--- Step 1: GET http://127.0.0.1:8091/health ---\n{\"collection\":\"lariel_site_kb\",\"documents\":49,\"ollama_model\":\"qwen2.5:14b\",\"ollama_url\":\"http://127.0.0.1:11434\",\"status\":\"ok\"}\nhealth.status   = ok\nhealth.documents= 49\n\n--- Step 2: Direct Chroma query (lariel_site_kb @ /home/larieladmin/Documents/itheia-llm/site_kb_chromadb) ---\nchroma.count    = 49\n\n--- Step 3: Comparison ---\nPASS: /health.documents (49) == direct chroma count (49)\nEXIT_CODE=0"
+  }
+}
