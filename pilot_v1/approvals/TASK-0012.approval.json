@@ -1,0 +1,11 @@
+{
+  "task_id": "TASK-0012",
+  "reviewed_by": "windows-main",
+  "decision": "approve",
+  "decision_reason": "CORS preflight confirmed returning Access-Control-Allow-Headers: ngrok-skip-browser-warning. Health check OK (49 docs, status ok). No errors. Chat from larielsystems.com should now connect.",
+  "approved_actions": [
+    "mark TASK-0012 completed",
+    "site_kb_server CORS fix is live"
+  ],
+  "timestamp_utc": "2026-04-22T00:00:00Z"
+}

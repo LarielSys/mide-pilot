@@ -152,6 +152,18 @@
       "approval_file": "approvals/TASK-0011.approval.json",
       "summary": "All backend services restored. Ollama running, Flask RAG on :8091 healthy (49 docs), ngrok tunnel active at https://jawed-lapel-dispersed.ngrok-free.dev. Worker resolved missing chromadb module via pip install.",
       "timestamp_utc": "2026-04-22T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0012",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Fix CORS on site_kb_server.py to allow ngrok-skip-browser-warning header.",
+      "result_file": "results/TASK-0012.result.json",
+      "approval_file": "approvals/TASK-0012.approval.json",
+      "summary": "CORS preflight now returns Access-Control-Allow-Headers: ngrok-skip-browser-warning. Health check OK. Chat from larielsystems.com is unblocked.",
+      "timestamp_utc": "2026-04-22T00:00:00Z"
     }
   ]
 }
