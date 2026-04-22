@@ -2,9 +2,16 @@
   "task_id": "TASK-0001",
   "created_by": "windows-main",
   "assigned_to": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/example_executor.sh",
   "objective": "Describe the goal clearly",
+  "moss_labels": [
+    "system/component-label",
+    "service/endpoint-label"
+  ],
+  "moss_scope_hash": "sha256-of-moss-scope-snapshot",
   "priority": "high",
   "risk_level": "medium",
+  "automation_mode": "review_required",
   "allowed_paths": [
     "path/on/ubuntu/that/is/allowed"
   ],
