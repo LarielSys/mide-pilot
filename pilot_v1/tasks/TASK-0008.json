@@ -1,0 +1,68 @@
+{
+  "task_id": "TASK-0008",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Validate quarantine control path by simulating 3 consecutive bounded task failures and confirming worker quarantine behavior is triggered and recorded.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/Documents/itheia-llm",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Simulate three consecutive task failures without modifying protected paths",
+    "Record each failure event with timestamp and reason",
+    "Demonstrate quarantine status activated after third failure",
+    "Demonstrate post-quarantine behavior (new execution attempts are blocked or flagged)",
+    "Provide a clear reset/unquarantine recommendation for Main approval"
+  ],
+  "dependencies": [
+    "TASK-0007"
+  ],
+  "timeout_seconds": 2400,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with: cd ~/mide-pilot && git pull",
+    "Use safe simulated failures only (no destructive operations)",
+    "Write pilot_v1/results/TASK-0008.result.json with full evidence",
+    "git add pilot_v1/results/TASK-0008.result.json",
+    "git commit -m 'worker: add TASK-0008 quarantine simulation result'",
+    "git push"
+  ],
+  "commands_expected": [
+    "cd ~/mide-pilot && git pull",
+    "bash -lc 'false'",
+    "bash -lc 'exit 2'",
+    "bash -lc 'python3 -c \"import sys; sys.exit(3)\"'",
+    "date -u +%Y-%m-%dT%H:%M:%SZ"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0008",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed|failed",
+    "commands_run": ["..."],
+    "validation_results": ["..."],
+    "errors": ["..."],
+    "evidence": {
+      "failure_events": [
+        {
+          "attempt": 1,
+          "exit_code": 1,
+          "timestamp_utc": "...",
+          "reason": "simulated"
+        }
+      ],
+      "quarantine_triggered": true,
+      "quarantine_rule": "3 consecutive failures",
+      "post_quarantine_enforcement": "blocked|flagged",
+      "reset_recommendation": "..."
+    }
+  }
+}
