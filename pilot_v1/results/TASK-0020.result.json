@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0020",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "TASK-0020 autopilot timestamp check\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\ntimestamp_utc=2026-04-22T18:48:47Z\nepoch_utc=1776883727",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-22T18:48:47Z"
+}
