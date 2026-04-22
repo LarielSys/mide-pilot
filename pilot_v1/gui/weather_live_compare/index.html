@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Live Compare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="panel">
+    <header class="hero">
+      <p class="eyebrow">MOSS Live Link</p>
+      <h1>San Diego vs NYC</h1>
+      <p class="sub">IDE GUI talking to Worker 1 live weather API</p>
+    </header>
+
+    <section class="card">
+      <label for="apiBase">Worker 1 API Base URL</label>
+      <div class="row">
+        <input id="apiBase" type="text" value="https://jawed-lapel-dispersed.ngrok-free.dev/api/weather" spellcheck="false">
+        <button id="healthBtn" class="ghost">Check Health</button>
+      </div>
+      <p id="healthStatus" class="status">Health: unknown</p>
+    </section>
+
+    <section class="card grid2">
+      <div>
+        <label for="cityA">City A</label>
+        <input id="cityA" type="text" value="San Diego">
+      </div>
+      <div>
+        <label for="cityB">City B</label>
+        <input id="cityB" type="text" value="New York City">
+      </div>
+      <div>
+        <label for="units">Units</label>
+        <select id="units">
+          <option value="metric" selected>Metric</option>
+          <option value="imperial">Imperial</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button id="compareBtn" class="primary">Compare Live Weather</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Comparison Output</h2>
+      <pre id="output">No response yet.</pre>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
