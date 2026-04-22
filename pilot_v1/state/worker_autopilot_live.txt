@@ -1,11 +1,11 @@
 Autopilot Live Status
-updated_utc: 2026-04-22T20:10:30Z
+updated_utc: 2026-04-22T20:10:36Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
-mode: running
-last_task_processed: TASK-0025
+mode: idle
+last_task_processed: 
 poll_seconds: 180
-note: Task completed successfully.
+note: No assigned mtasks found; sleeping until next poll. approved=27, eligible=0, mismatched=1.
 
 Recent Events (latest 20):
 2026-04-22T20:01:18Z | mode=running | last_task= | note=Autopilot started.
@@ -15,3 +15,6 @@ Recent Events (latest 20):
 2026-04-22T20:09:17Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=27, eligible=0, mismatched=1.
 2026-04-22T20:10:26Z | mode=running | last_task= | note=Autopilot started.
 2026-04-22T20:10:30Z | mode=running | last_task=TASK-0025 | note=Task completed successfully.
+2026-04-22T20:10:31Z | mode=idle | last_task=TASK-0025 | note=Forced task cycle finished.
+2026-04-22T20:10:36Z | mode=running | last_task= | note=Autopilot started.
+2026-04-22T20:10:36Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=27, eligible=0, mismatched=1.
