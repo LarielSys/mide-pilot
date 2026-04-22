@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-0014",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Repair the Flask chat handler so /api/chat no longer returns 500. TASK-0013 confirmed site_kb_server.py is calling an unsupported Ollama endpoint at http://127.0.0.1:11434/api/chat. Probe the worker's Ollama API, patch site_kb_server.py to the supported generation/chat endpoint, restart the server, and verify end-to-end success.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1",
+    "~/Documents/itheia-llm/site_kb_server.py"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "Probe local Ollama and identify a working inference endpoint using qwen2.5:14b",
+    "Patch only the upstream Ollama call path/shape in site_kb_server.py as needed",
+    "Restart site_kb_server.py",
+    "Confirm http://127.0.0.1:8091/health returns HTTP 200",
+    "Confirm local POST http://127.0.0.1:8091/api/chat with message=hello returns HTTP 200 and a non-empty answer",
+    "Confirm public POST https://jawed-lapel-dispersed.ngrok-free.dev/api/chat with Origin https://larielsystems.com and header ngrok-skip-browser-warning:true returns HTTP 200"
+  ],
+  "dependencies": [
+    "TASK-0013"
+  ],
+  "timeout_seconds": 420,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull --ff-only origin main",
+    "Probe Ollama endpoints. At minimum test: curl -s http://127.0.0.1:11434/ ; curl -s http://127.0.0.1:11434/api/tags ; curl -s -X POST http://127.0.0.1:11434/api/generate -H 'Content-Type: application/json' -d '{\"model\":\"qwen2.5:14b\",\"prompt\":\"hello\",\"stream\":false}' ; if needed test other supported chat/completions endpoint variants and record which one works",
+    "Edit ~/Documents/itheia-llm/site_kb_server.py to use the working Ollama endpoint and request shape. Keep the Flask API contract unchanged: /api/chat must still accept message/session_id and return answer for non-stream mode plus SSE tokens for stream mode.",
+    "Kill the running Flask process: pkill -f site_kb_server.py",
+    "Restart: nohup python3 ~/Documents/itheia-llm/site_kb_server.py > ~/Documents/itheia-llm/site_kb.log 2>&1 &",
+    "Wait 5 seconds",
+    "Validate local health: curl -i -s http://127.0.0.1:8091/health",
+    "Validate local chat: curl -i -s -X POST http://127.0.0.1:8091/api/chat -H 'Content-Type: application/json' -d '{\"message\":\"hello\",\"session_id\":null}'",
+    "Validate public chat through ngrok: curl -i -s -X POST https://jawed-lapel-dispersed.ngrok-free.dev/api/chat -H 'Origin: https://larielsystems.com' -H 'Content-Type: application/json' -H 'ngrok-skip-browser-warning: true' -d '{\"message\":\"hello\",\"session_id\":null}'",
+    "Write pilot_v1/results/TASK-0014.result.json with the working Ollama endpoint, a summary of the code change, and the validation outputs",
+    "git add, git commit -m 'worker: TASK-0014 result — repair upstream Ollama endpoint', git push"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0014",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "working_ollama_endpoint": "<endpoint and request shape that succeeded>",
+    "code_change_summary": "<what changed in site_kb_server.py>",
+    "health_check": "<full /health output>",
+    "local_chat_check": "<full local /api/chat output>",
+    "public_chat_check": "<full ngrok /api/chat output>",
+    "errors": [],
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
