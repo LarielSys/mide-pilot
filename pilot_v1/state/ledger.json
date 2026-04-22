@@ -56,6 +56,18 @@
       "approval_file": "approvals/TASK-0004.approval.json",
       "summary": "Result was placeholder-only and failed required evidence checks; retried as TASK-0004A.",
       "timestamp_utc": "2026-04-21T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0004A",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved_with_exception",
+      "reviewed_by": "windows-main",
+      "objective": "Retry TASK-0004 with full evidence. Produce a complete RAG knowledge base status snapshot from Ubuntu and push results through Git.",
+      "result_file": "results/TASK-0004A.result.json",
+      "approval_file": "approvals/TASK-0004A.approval.json",
+      "summary": "Approved with exception: evidence complete except direct Chroma query mismatch; follow-up issued as TASK-0005.",
+      "timestamp_utc": "2026-04-21T00:00:00Z"
     }
   ]
 }

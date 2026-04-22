@@ -1,0 +1,17 @@
+{
+  "task_id": "TASK-0004A",
+  "reviewed_by": "windows-main",
+  "decision": "approve_with_exception",
+  "decision_reason": "Worker provided complete evidence bundle for Git pull, backend health, Ollama status, and candidate source files. One exception remains: direct Chroma command returned NotFound for lariel_site_kb while /health reports lariel_site_kb with 49 documents.",
+  "exception_notes": [
+    "Chroma direct query failed: Collection [lariel_site_kb] does not exist",
+    "Backend /health reports collection lariel_site_kb with 49 documents",
+    "Likely cause: path/environment mismatch between Flask runtime Chroma path and shell command path"
+  ],
+  "approved_actions": [
+    "mark TASK-0004A completed",
+    "issue diagnostic follow-up TASK-0005",
+    "continue operations while treating Chroma direct-access check as degraded"
+  ],
+  "timestamp_utc": "2026-04-21T00:00:00Z"
+}

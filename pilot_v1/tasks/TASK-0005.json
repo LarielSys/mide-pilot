@@ -1,0 +1,69 @@
+{
+  "task_id": "TASK-0005",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Diagnose and resolve Chroma collection path mismatch between Flask /health output and direct shell access.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot",
+    "~/Documents/itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Identify exact Chroma persist directory used by running Flask backend",
+    "List collections found at that exact persist directory",
+    "Confirm lariel_site_kb count from direct Chroma query at backend path",
+    "Compare with any alternate chromadb_data path and explain mismatch",
+    "Provide one recommended canonical path and command set for future tasks"
+  ],
+  "dependencies": [
+    "TASK-0004A"
+  ],
+  "timeout_seconds": 2400,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Pull latest from origin/main first",
+    "Do not modify backend code in this task",
+    "Capture raw command outputs",
+    "Write pilot_v1/results/TASK-0005.result.json and push"
+  ],
+  "commands_expected": [
+    "cd ~/mide-pilot && git pull",
+    "cd ~/Documents/itheia-llm && pwd && ls -la",
+    "cd ~/Documents/itheia-llm && find . -maxdepth 4 -type d -name '*chroma*' | sort",
+    "cd ~/Documents/itheia-llm && python3 -c \"import os; print('CWD=', os.getcwd())\"",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='chromadb_data'); print([col.name for col in c.list_collections()])\"",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='data/chromadb'); print([col.name for col in c.list_collections()])\""
+  ],
+  "result_schema": {
+    "task_id": "TASK-0005",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed|failed",
+    "commands_run": ["..."],
+    "validation_results": ["..."],
+    "errors": ["..."],
+    "evidence": {
+      "backend_reported_collection": "lariel_site_kb",
+      "backend_reported_count": 0,
+      "direct_query_results_by_path": {
+        "chromadb_data": {
+          "collections": [],
+          "lariel_site_kb_count": null
+        },
+        "data/chromadb": {
+          "collections": [],
+          "lariel_site_kb_count": null
+        }
+      },
+      "recommended_canonical_path": "<path>",
+      "recommended_verification_command": "<command>"
+    }
+  }
+}
