@@ -8,11 +8,13 @@ RESULT_DIR="${REPO_ROOT}/pilot_v1/results"
 STATE_DIR="${REPO_ROOT}/pilot_v1/state"
 LOCK_FILE="${STATE_DIR}/worker_mtask_autopilot.lock"
 STATUS_FILE="${STATE_DIR}/worker_autopilot_status.json"
+HEARTBEAT_FILE="${STATE_DIR}/worker_autopilot_heartbeat_epoch.txt"
 POLL_SECONDS="${POLL_SECONDS:-180}"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
 ADMIN_PASSWORD_SHA256="${ADMIN_PASSWORD_SHA256:-}"
 ADMIN_OVERRIDE_PASSWORD="${ADMIN_OVERRIDE_PASSWORD:-}"
+PUSH_IDLE_HEARTBEAT="${PUSH_IDLE_HEARTBEAT:-true}"
 DRY_RUN="false"
 ONESHOT="false"
 FORCE_TASK_ID=""
@@ -45,6 +47,10 @@ mkdir -p "${STATE_DIR}" "${RESULT_DIR}"
 
 now_utc() {
   date -u +"%Y-%m-%dT%H:%M:%SZ"
+}
+
+now_epoch() {
+  date -u +"%s"
 }
 
 write_status() {
@@ -82,6 +88,57 @@ admin_override_authorized() {
     return 1
   fi
   [[ "$(hash_sha256 "${ADMIN_OVERRIDE_PASSWORD}")" == "${ADMIN_PASSWORD_SHA256}" ]]
+}
+
+queue_summary() {
+  python3 - "$TASK_DIR" "$RESULT_DIR" "$WORKER_ID" <<'PY'
+import glob
+import json
+import os
+import sys
+
+task_dir, result_dir, worker_id = sys.argv[1:4]
+approved_total = 0
+eligible = 0
+mismatch = 0
+
+for path in glob.glob(os.path.join(task_dir, "TASK-*.json")):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            task = json.load(f)
+    except Exception:
+        continue
+
+    if task.get("status") != "approved_to_execute":
+        continue
+
+    approved_total += 1
+    task_id = task.get("task_id", "")
+    if not task_id:
+        continue
+
+    result_path = os.path.join(result_dir, f"{task_id}.result.json")
+    if os.path.exists(result_path):
+        continue
+
+    task_worker = task.get("required_worker_id") or task.get("assigned_to")
+    if task_worker == worker_id:
+        eligible += 1
+    else:
+        mismatch += 1
+
+print(f"{approved_total}|{eligible}|{mismatch}")
+PY
+}
+
+commit_and_push_status_heartbeat() {
+  local ts
+  ts="$(now_epoch)"
+  echo "${ts}" >"${HEARTBEAT_FILE}"
+
+  git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt"
+  git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
+  git -C "${REPO_ROOT}" push origin main >/dev/null
 }
 
 git_sync() {
@@ -284,6 +341,12 @@ write_status "running" "" "Autopilot started."
 while true; do
   git_sync
 
+  queue_stats="$(queue_summary)"
+  approved_total="${queue_stats%%|*}"
+  remaining_stats="${queue_stats#*|}"
+  eligible_count="${remaining_stats%%|*}"
+  mismatch_count="${remaining_stats#*|}"
+
   processed_any="false"
 
   if [[ -n "${FORCE_TASK_ID}" ]]; then
@@ -315,12 +378,16 @@ while true; do
   done
 
   if [[ "${ONESHOT}" == "true" ]]; then
-    write_status "idle" "" "Autopilot one-shot cycle finished."
+    write_status "idle" "" "Autopilot one-shot cycle finished. approved=${approved_total}, eligible=${eligible_count}, mismatched=${mismatch_count}."
     break
   fi
 
   if [[ "${processed_any}" == "false" ]]; then
-    write_status "idle" "" "No assigned mtasks found; sleeping until next poll."
+    write_status "idle" "" "No assigned mtasks found; sleeping until next poll. approved=${approved_total}, eligible=${eligible_count}, mismatched=${mismatch_count}."
+
+    if [[ "${PUSH_IDLE_HEARTBEAT}" == "true" ]]; then
+      commit_and_push_status_heartbeat
+    fi
   fi
 
   sleep "${POLL_SECONDS}"
