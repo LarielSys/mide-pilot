@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0025",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=TASK-0025\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nngrok_bin=/snap/bin/ngrok\nservice_path=/home/larieladmin/.config/systemd/user/ngrok-site-kb.service\nlinger_status=not_enabled_no_passwordless_sudo\nservice_name=ngrok-site-kb.service\nservice_state=activating\nerror=ngrok_service_not_active\n\u25cf ngrok-site-kb.service - ngrok tunnel for site_kb_server\n     Loaded: loaded (/home/larieladmin/.config/systemd/user/ngrok-site-kb.service; enabled; preset: enabled)\n     Active: activating (auto-restart) (Result: exit-code) since Wed 2026-04-22 20:01:13 UTC; 3s ago\n    Process: 30514 ExecStart=/snap/bin/ngrok http 8091 (code=exited, status=1/FAILURE)\n   Main PID: 30514 (code=exited, status=1/FAILURE)\n        CPU: 54ms",
+  "stderr_excerpt": "Created symlink /home/larieladmin/.config/systemd/user/default.target.wants/ngrok-site-kb.service \u2192 /home/larieladmin/.config/systemd/user/ngrok-site-kb.service.",
+  "timestamp_utc": "2026-04-22T20:01:17Z"
+}
