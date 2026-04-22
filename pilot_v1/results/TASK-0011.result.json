@@ -1,0 +1,14 @@
+{
+  "task_id": "TASK-0011",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "services": {
+    "ollama": "running",
+    "site_kb_server": "running",
+    "ngrok": "running"
+  },
+  "ngrok_public_url": "https://jawed-lapel-dispersed.ngrok-free.dev",
+  "health_check_response": "{\"collection\":\"lariel_site_kb\",\"documents\":49,\"ollama_model\":\"qwen2.5:14b\",\"ollama_url\":\"http://127.0.0.1:11434\",\"status\":\"ok\"}",
+  "errors": ["chromadb module missing on startup — resolved by running: pip3 install -r site_kb_requirements.txt --break-system-packages"],
+  "timestamp_utc": "2026-04-22T14:52:12Z"
+}
