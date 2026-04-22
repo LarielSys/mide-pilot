@@ -1,0 +1,11 @@
+{
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0033_codeserver_install.sh",
+    "description":  "[AUTO-RETRY attempt 2] Install code-server (VS Code in browser) on port 8092. Configure with password auth. Start pointing at mide-pilot project root. Install Continue extension for Ollama AI coding assistance. Write Continue config pointing at local qwen2.5 (localhost:11434). Verify code-server health endpoint responds.",
+    "retry_attempt":  2,
+    "display_name":  "RETRY 2: Install code-server with Ollama (qwen2.5) Integration",
+    "original_task":  "MTASK-0033",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_at":  "2026-04-22T18:32:19Z",
+    "task_id":  "MTASK-0033-RETRY2",
+    "status":  "approved_to_execute"
+}
