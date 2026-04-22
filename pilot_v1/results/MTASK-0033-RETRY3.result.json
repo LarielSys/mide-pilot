@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0033-RETRY3",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0033\nworker_id=ubuntu-worker-01\ncode_server_status=already_installed\ncode_server_version=4.116.0 be537ce77a2d84428ad834890d2f6f1e413366ad with Code 1.116.0\ncode_server_config=written\ncode_server_pid=22124\ncode_server_ready=true\ninstalled_extensions=continue.continue\ncontinue_extension=already_installed\ncontinue_config=written\ntimestamp_utc=2026-04-22T22:55:07Z\nresult_written=/home/larieladmin/mide-pilot/pilot_v1/results/MTASK-0033.result.json",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-22T22:55:07Z"
+}
