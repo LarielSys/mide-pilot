@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0030",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0030\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nserver_file=/home/larieladmin/Documents/itheia-llm/site_kb_server.py\nhint: See PEP 668 for the detailed specification.",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-22T22:29:27Z"
+}
