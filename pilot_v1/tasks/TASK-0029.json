@@ -1,0 +1,60 @@
+{
+  "task_id": "MTASK-0029",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_task_0029_enable_weather_live_api_retry.sh",
+  "objective": "Retry live weather API enablement with robust backend startup validation and diagnostics for IDE GUI integration.",
+  "moss_labels": [
+    "moss/gui-to-worker/live-http",
+    "moss/weather/compare",
+    "moss/backend/retry-hardening"
+  ],
+  "moss_scope_hash": "pending-weather-live-architecture-v1",
+  "priority": "high",
+  "risk_level": "medium",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/results",
+    "~/mide-pilot/pilot_v1/state",
+    "~/Documents/itheia-llm/site_kb_server.py"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "Base backend health endpoint responds on localhost:8091",
+    "Weather health endpoint responds on localhost:8091/api/weather/health",
+    "Weather compare endpoint returns response excerpt",
+    "stdout_excerpt includes local_health and local_compare_excerpt",
+    "Autopilot commits and pushes result to origin/main"
+  ],
+  "dependencies": [
+    "MTASK-0028"
+  ],
+  "timeout_seconds": 900,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "Commit message format: worker: autopilot result MTASK-0029"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0029",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
