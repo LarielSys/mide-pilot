@@ -1,0 +1,52 @@
+{
+  "task_id": "TASK-0012",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Fix CORS on site_kb_server.py to allow the ngrok-skip-browser-warning header. The frontend at larielsystems.com sends this header to bypass the ngrok browser interstitial, but the Flask CORS preflight is rejecting it.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1",
+    "~/Documents/itheia-llm/site_kb_server.py"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "site_kb_server.py line 12 must read: CORS(app, resources={r'/*': {'origins': '*', 'allow_headers': ['Content-Type', 'ngrok-skip-browser-warning']}})",
+    "Restart site_kb_server.py after the edit",
+    "Confirm /health still returns HTTP 200",
+    "Confirm CORS preflight OPTIONS request to /api/chat returns Access-Control-Allow-Headers containing ngrok-skip-browser-warning"
+  ],
+  "dependencies": [
+    "TASK-0011"
+  ],
+  "timeout_seconds": 300,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull --ff-only origin main",
+    "Edit ~/Documents/itheia-llm/site_kb_server.py: replace 'CORS(app)' with 'CORS(app, resources={r\"/*\": {\"origins\": \"*\", \"allow_headers\": [\"Content-Type\", \"ngrok-skip-browser-warning\"]}})'",
+    "Kill the running site_kb_server process: pkill -f site_kb_server.py",
+    "Restart: nohup python3 ~/Documents/itheia-llm/site_kb_server.py > ~/Documents/itheia-llm/site_kb.log 2>&1 &",
+    "Wait 5 seconds",
+    "Verify /health: curl -s http://127.0.0.1:8091/health",
+    "Verify CORS preflight: curl -s -X OPTIONS http://127.0.0.1:8091/api/chat -H 'Origin: https://larielsystems.com' -H 'Access-Control-Request-Headers: ngrok-skip-browser-warning' -H 'Access-Control-Request-Method: POST' -i | grep -i access-control",
+    "Write pilot_v1/results/TASK-0012.result.json with evidence",
+    "git add, git commit -m 'worker: TASK-0012 result — CORS fix applied', git push"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0012",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "health_check": "<paste of /health response>",
+    "cors_preflight_headers": "<paste of Access-Control-Allow-Headers line from OPTIONS response>",
+    "errors": [],
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
