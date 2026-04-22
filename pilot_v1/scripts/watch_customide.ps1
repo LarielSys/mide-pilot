@@ -1,8 +1,8 @@
-#!/usr/bin/env pwsh
+#!/usr/bin/env powershell
 # CustomIDE Auto-Watcher for Windows IDE
 # Polls MIDE git repo every 2 minutes, checks MTASK results,
 # auto-troubleshoots failures, and updates the project MD log.
-# Run: pwsh -File watch_customide.ps1
+# Run: powershell -ExecutionPolicy Bypass -File watch_customide.ps1
 
 param(
     [int]$IntervalSeconds = 120,
@@ -25,12 +25,12 @@ function Write-Log {
         "TASK"  { "Cyan" }
         default { "White" }
     }
-    Write-Host "[$ts] [$Level] $Msg" -ForegroundColor $color
+    Write-Host ("[$ts] [$Level] " + $Msg) -ForegroundColor $color
 }
 
 function Get-TaskResult {
     param([string]$TaskId)
-    $path = Join-Path $MideRoot "pilot_v1\results\$TaskId.result.json"
+    $path = Join-Path $MideRoot ("pilot_v1\results\" + $TaskId + ".result.json")
     if (Test-Path $path) {
         try { return Get-Content $path | ConvertFrom-Json } catch { return $null }
     }
@@ -39,7 +39,7 @@ function Get-TaskResult {
 
 function Get-TaskDefinition {
     param([string]$TaskId)
-    $path = Join-Path $MideRoot "pilot_v1\tasks\$TaskId.json"
+    $path = Join-Path $MideRoot ("pilot_v1\tasks\" + $TaskId + ".json")
     if (Test-Path $path) {
         try { return Get-Content $path | ConvertFrom-Json } catch { return $null }
     }
@@ -48,35 +48,35 @@ function Get-TaskDefinition {
 
 function Dispatch-RetryTask {
     param([string]$TaskId, [int]$Attempt)
-    Write-Log "AUTO-TROUBLESHOOT: Dispatching retry for $TaskId (attempt $Attempt)" "WARN"
+    Write-Log ("AUTO-TROUBLESHOOT: Dispatching retry for " + $TaskId + " (attempt " + $Attempt + ")") "WARN"
 
     # Create a retry task variant
-    $retryId = "$TaskId-RETRY$Attempt"
+    $retryId = ($TaskId + "-RETRY" + $Attempt)
     $origDef = Get-TaskDefinition -TaskId $TaskId
-    if (-not $origDef) { Write-Log "Cannot find task definition for $TaskId" "ERROR"; return }
+    if (-not $origDef) { Write-Log ("Cannot find task definition for " + $TaskId) "ERROR"; return }
 
     $retryDef = @{
         task_id        = $retryId
-        display_name   = "RETRY $Attempt: $($origDef.display_name)"
+        display_name   = ("RETRY " + $Attempt + ": " + $origDef.display_name)
         status         = "approved_to_execute"
         required_worker_id = "ubuntu-worker-01"
         executor_script = $origDef.executor_script
-        description    = "[AUTO-RETRY attempt $Attempt] $($origDef.description)"
+        description    = ("[AUTO-RETRY attempt " + $Attempt + "] " + $origDef.description)
         original_task  = $TaskId
         retry_attempt  = $Attempt
         created_at     = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
     }
 
-    $retryPath = Join-Path $MideRoot "pilot_v1\tasks\$retryId.json"
+    $retryPath = Join-Path $MideRoot ("pilot_v1\tasks\" + $retryId + ".json")
     $retryDef | ConvertTo-Json -Depth 5 | Set-Content $retryPath
 
     Push-Location $MideRoot
-    git add "pilot_v1/tasks/$retryId.json" 2>$null
-    git commit -m "auto-retry: $retryId (watcher auto-troubleshoot)" 2>$null
+    git add ("pilot_v1/tasks/" + $retryId + ".json") 2>$null
+    git commit -m ("auto-retry: " + $retryId + " (watcher auto-troubleshoot)") 2>$null
     git push origin main 2>$null
     Pop-Location
 
-    Write-Log "Retry task $retryId dispatched to Worker 1" "WARN"
+    Write-Log ("Retry task " + $retryId + " dispatched to Worker 1") "WARN"
 }
 
 function Update-ProjectMd {
@@ -84,7 +84,7 @@ function Update-ProjectMd {
 
     $ts = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
     $lines = @()
-    $lines += "<!-- AUTO-UPDATED: $ts -->"
+    $lines += ("<!-- AUTO-UPDATED: " + $ts + " -->")
     $lines += ""
     $lines += "## MTASK Status"
     $lines += ""
@@ -95,27 +95,27 @@ function Update-ProjectMd {
         $r = $StatusMap[$taskId]
         if ($r) {
             $icon = switch ($r.execution_status) {
-                "completed" { "✅" }
-                "failed"    { "❌" }
-                default     { "🟡" }
+                "completed" { "[OK]" }
+                "failed"    { "[FAIL]" }
+                default     { "[RUNNING]" }
             }
-            $lines += "| $taskId | $icon $($r.execution_status) | $($r.summary) | $($r.timestamp_utc) |"
+            $lines += ("| " + $taskId + " | " + $icon + " " + $r.execution_status + " | " + $r.summary + " | " + $r.timestamp_utc + " |")
         } else {
-            $lines += "| $taskId | ⏳ pending | Awaiting Worker 1 | — |"
+            $lines += ("| " + $taskId + " | [WAIT] pending | Awaiting Worker 1 | - |")
         }
     }
 
     $lines += ""
     $lines += "---"
-    $lines += "_Last watcher check: $ts_"
+    $lines += ("_Last watcher check: " + $ts + "_")
 
     # Read existing MD, replace the status block
     if (Test-Path $ProjectMd) {
         $existing = Get-Content $ProjectMd -Raw
         # Replace between ## MTASK Status and next --- (or EOF)
         $newBlock = $lines -join "`n"
-        if ($existing -match "(?s)<!-- AUTO-UPDATED:.*?---\n_Last watcher check:.*?_") {
-            $existing = $existing -replace "(?s)<!-- AUTO-UPDATED:.*?---\n_Last watcher check:.*?_", $newBlock
+        if ($existing -match '(?s)<!-- AUTO-UPDATED:.*?---\r?\n_Last watcher check:.*?_') {
+            $existing = $existing -replace '(?s)<!-- AUTO-UPDATED:.*?---\r?\n_Last watcher check:.*?_', $newBlock
         } else {
             $existing = $existing + "`n`n" + $newBlock
         }
@@ -130,24 +130,25 @@ function Pull-Repo {
     return $out
 }
 
-# ─── MAIN WATCH LOOP ────────────────────────────────────────────────────────
-Write-Log "CustomIDE Watcher started. Interval: ${IntervalSeconds}s. Watching: $($TASKS_TO_WATCH -join ', ')" "OK"
-Write-Log "MIDE root: $MideRoot" "INFO"
-Write-Log "Project MD: $ProjectMd" "INFO"
+# === MAIN WATCH LOOP =========================================================
+Write-Log ("CustomIDE Watcher started. Interval: " + $IntervalSeconds + "s. Watching: " + ($TASKS_TO_WATCH -join ", ")) "OK"
+Write-Log ("MIDE root: " + $MideRoot) "INFO"
+Write-Log ("Project MD: " + $ProjectMd) "INFO"
 Write-Log "Press Ctrl+C to stop." "INFO"
-Write-Log "─────────────────────────────────────────────────────" "INFO"
+Write-Log "---------------------------------------------------" "INFO"
 
 $completedTasks = @{}
 $cycle = 0
+$lastStatusSignature = ""
 
 while ($true) {
     $cycle++
-    Write-Log "──── CYCLE $cycle ────────────────────────────────────" "INFO"
+    Write-Log ("---- CYCLE " + $cycle + " ------------------------------------------") "INFO"
 
     # Pull latest from git
     Write-Log "Pulling repo..." "INFO"
     $pullOut = Pull-Repo
-    Write-Log "Git pull: $($pullOut[-1])" "INFO"
+    Write-Log ("Git pull: " + $pullOut[-1]) "INFO"
 
     $statusMap = @{}
     $allDone = $true
@@ -155,7 +156,7 @@ while ($true) {
 
     foreach ($taskId in $TASKS_TO_WATCH) {
         if ($completedTasks[$taskId]) {
-            Write-Log "$taskId — already completed ✅" "OK"
+            Write-Log ($taskId + " - already completed [OK]") "OK"
             $statusMap[$taskId] = $completedTasks[$taskId]
             continue
         }
@@ -164,13 +165,13 @@ while ($true) {
         $statusMap[$taskId] = $result
 
         if (-not $result) {
-            Write-Log "$taskId — ⏳ pending (no result yet)" "TASK"
+            Write-Log ($taskId + " - [WAIT] pending (no result yet)") "TASK"
             $allDone = $false
         } elseif ($result.execution_status -eq "completed") {
-            Write-Log "$taskId — ✅ completed: $($result.summary)" "OK"
+            Write-Log ($taskId + " - [OK] completed: " + $result.summary) "OK"
             $completedTasks[$taskId] = $result
         } elseif ($result.execution_status -eq "failed") {
-            Write-Log "$taskId — ❌ FAILED: $($result.summary)" "ERROR"
+            Write-Log ($taskId + " - [FAIL] FAILED: " + $result.summary) "ERROR"
             $anyFailed = $true
             $allDone = $false
 
@@ -178,36 +179,52 @@ while ($true) {
             if ($retryCount[$taskId] -le $MAX_RETRIES) {
                 Dispatch-RetryTask -TaskId $taskId -Attempt $retryCount[$taskId]
             } else {
-                Write-Log "$taskId — Max retries ($MAX_RETRIES) reached. Manual intervention needed." "ERROR"
+                Write-Log ($taskId + " - Max retries (" + $MAX_RETRIES + ") reached. Manual intervention needed.") "ERROR"
             }
         } else {
-            Write-Log "$taskId — status: $($result.execution_status)" "WARN"
+            Write-Log ($taskId + " - status: " + $result.execution_status) "WARN"
             $allDone = $false
         }
     }
 
-    # Update project MD
-    Update-ProjectMd -StatusMap $statusMap
-
-    # Commit watcher update to MD
-    Push-Location $MideRoot
-    git add "CUSTOMIDE_PROJECT.md" 2>$null | Out-Null
-    git diff --cached --quiet 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        git commit -m "watcher: project MD updated cycle $cycle" 2>$null | Out-Null
-        git push origin main 2>$null | Out-Null
-        Write-Log "Project MD committed (cycle $cycle)" "INFO"
+    # Create a stable signature so we only commit when task state changes.
+    $parts = @()
+    foreach ($taskId in $TASKS_TO_WATCH) {
+        $r = $statusMap[$taskId]
+        if ($r) {
+            $parts += ($taskId + ":" + $r.execution_status + ":" + $r.summary + ":" + $r.timestamp_utc)
+        } else {
+            $parts += ($taskId + ":pending")
+        }
     }
-    Pop-Location
+    $currentStatusSignature = ($parts -join "|")
+
+    if ($currentStatusSignature -ne $lastStatusSignature) {
+        Update-ProjectMd -StatusMap $statusMap
+
+        Push-Location $MideRoot
+        git add "CUSTOMIDE_PROJECT.md" 2>$null | Out-Null
+        git diff --cached --quiet 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            git commit -m ("watcher: project MD updated cycle " + $cycle) 2>$null | Out-Null
+            git push origin main 2>$null | Out-Null
+            Write-Log ("Project MD committed (cycle " + $cycle + ")") "INFO"
+        }
+        Pop-Location
+
+        $lastStatusSignature = $currentStatusSignature
+    } else {
+        Write-Log "MTASK state unchanged; skipped project MD commit this cycle." "INFO"
+    }
 
     if ($allDone -and -not $anyFailed) {
-        Write-Log "═══════════════════════════════════════════════════" "OK"
-        Write-Log "ALL TASKS COMPLETE. Worker 1 setup finished! 🎉" "OK"
-        Write-Log "═══════════════════════════════════════════════════" "OK"
+        Write-Log "===================================================" "OK"
+        Write-Log "ALL TASKS COMPLETE. Worker 1 setup finished!" "OK"
+        Write-Log "===================================================" "OK"
         Write-Log "Check worker1_services.json for all endpoint URLs." "OK"
         break
     }
 
-    Write-Log "Next check in ${IntervalSeconds}s..." "INFO"
+    Write-Log ("Next check in " + $IntervalSeconds + "s...") "INFO"
     Start-Sleep -Seconds $IntervalSeconds
 }
