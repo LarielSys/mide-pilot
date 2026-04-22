@@ -20,13 +20,13 @@ if [[ ! -d "${CLONE_DOMAIN_ROOT}" ]]; then
   exit 1
 fi
 
-echo "task=TASK-0023"
+echo "task=TASK-0024"
 echo "worker_name=${WORKER_NAME}"
 echo "worker_id=${WORKER_ID}"
 echo "clone_domain_root=${CLONE_DOMAIN_ROOT}"
 echo "localhost_url=${URL}"
 
-python3 -m http.server "${PORT}" --directory "${CLONE_DOMAIN_ROOT}" >/tmp/mide_task_0023_http.log 2>&1 &
+python3 -m http.server "${PORT}" --directory "${CLONE_DOMAIN_ROOT}" >/tmp/mide_task_0024_http.log 2>&1 &
 HTTP_PID=$!
 
 cleanup() {
