@@ -1,0 +1,962 @@
+# Custom IDE with Ollama Integration - MOSS Architecture
+# Version: 2.0-dual_system
+# Date: 2026-04-22
+# Purpose: Define VS Code-like IDE with shared Ollama, dual-pane editor (Windows + Ubuntu Worker 1 remote view), and script execution
+
+[SYSTEM]
+Name: CustomIDE_DualPane_SharedOllama
+Description: Windows IDE (VS Code-like) with dual panes: local editor + remote Ubuntu Worker 1 IDE view. Shared Ollama version across both systems for model consistency. Capable of reading, applying, and executing scripts locally and on Worker 1.
+Owner: AI_Assistant
+Status: architecture_draft
+Key_Constraint: OLLAMA_VERSION must be identical on Windows and Ubuntu Worker 1
+
+---
+
+# RESOURCES - System Components
+
+[R:Ollama_Version_Coordinator]
+Type: Configuration/Service
+Location: Windows: localhost:11434 | Ubuntu: localhost:11434 (same version deployed to both)
+Description: Centrally specified Ollama version ensuring model consistency across Windows IDE and Ubuntu Worker 1
+Responsibilities:
+  - Define canonical Ollama version (e.g., "ollama:latest" or pinned version)
+  - Provide version specification file readable by both systems
+  - Enable model syncing (same mistral/neural-chat/etc on both)
+Canonical_Version_File: c:\AI Assistant\MIDE\pilot_v1\config\ollama_version.txt (and mirrored on Worker 1)
+Models_Pinned:
+  - model_primary: "mistral:7b" (or user choice)
+  - model_backup: "neural-chat:7b"
+Quality: Version mismatch between Windows and Ubuntu would cause inconsistent code generation → must be enforced
+Accessed_By: IDE_Backend_Windows, IDE_Backend_Ubuntu (via MIDE worker)
+
+---
+
+[R:IDE_Frontend_Windows]
+Type: Application/UI
+Location: c:\AI Assistant\customide\frontend
+Language: HTML/JavaScript (Electron or web-based)
+Description: VS Code-like IDE interface running on Windows desktop with dual-pane design and full code editor capabilities
+Architecture:
+  Pane_Left:
+    - Primary code editor (ace/monaco-like)
+    - File tabs (open multiple files)
+    - Syntax highlighting (Python, JavaScript, Bash, JSON, etc.)
+    - Line numbers + gutter markers
+    - Search/replace (Ctrl+H)
+    - File explorer (project tree)
+    - Git status indicators
+  Pane_Right:
+    - Remote view of Ubuntu Worker 1 IDE (via SSH terminal or iframe-like remote display)
+    - Allows monitoring/interaction with remote environment
+    - Shows remote file system, terminal output
+  Global_UI:
+    - Sidebar: File Explorer, Search, Git, Extensions-like panel
+    - Top Bar: File menu, Edit, View, Run, Help
+    - Bottom Status Bar: Line/Col, Git branch, Ollama connection status, Worker 1 status
+    - Integrated Terminal (Ctrl+`)
+    - Command Palette (Ctrl+Shift+P)
+Responsibilities:
+  - Display code with syntax highlighting
+  - Tab management (open/close files)
+  - Split-pane view management
+  - Accept Ollama AI requests (Ctrl+Space completion, Ctrl+Alt+G for generation)
+  - Display script execution results
+  - Show remote Ubuntu IDE in right pane
+Dependencies: IDE_Backend_Windows, SSH_Worker1_Bridge, Remote_IDE_View
+Exposes:
+  - GET /health
+  - GET /files/{path}
+  - GET /file/{path}
+  - POST /editor/open (tab management)
+  - POST /editor/save
+  - POST /ollama/complete
+  - POST /ollama/generate
+  - POST /script/apply
+  - POST /script/execute
+  - POST /remote/connect (SSH to Worker 1)
+
+---
+
+[R:IDE_Backend_Windows]
+Type: Server/Coordinator
+Location: c:\AI Assistant\customide\backend
+Language: Python (FastAPI)
+Description: Local server coordinating IDE operations, bridges UI to Ollama, script execution, and Worker 1
+Responsibilities:
+  - Expose REST API for IDE_Frontend_Windows
+  - Accept code + context for AI requests
+  - Forward to Ollama_Version_Coordinator (localhost:11434)
+  - Handle script reading, validation, and execution
+  - Coordinate SSH connections to Worker 1
+  - Manage file system I/O
+  - Route remote IDE display requests to Worker 1
+Port: 5555
+Dependencies: Ollama_Version_Coordinator, Script_Execution_Engine, SSH_Worker1_Bridge, File_System_Local, Git_Integration
+Consumes:
+  - Editor state + AI requests from IDE_Frontend_Windows
+  - Code generation from Ollama_Version_Coordinator
+  - Script output from Script_Execution_Engine
+  - Remote data from SSH_Worker1_Bridge
+Produces:
+  - Formatted suggestions to IDE_Frontend_Windows
+  - Script execution results
+  - Remote view data for right pane
+
+---
+
+[R:SSH_Worker1_Bridge]
+Type: Communication/Tunnel
+Location: Connects Windows IDE_Backend to Ubuntu Worker 1 (~ubuntu-worker-01)
+Description: SSH tunnel for secure command execution and file access on remote Ubuntu system
+Responsibilities:
+  - Establish SSH session to Worker 1
+  - Execute scripts remotely (bash, python)
+  - Query remote filesystem
+  - Retrieve remote IDE state
+  - Forward Ollama requests to remote Ollama instance (consistency check)
+SSH_Config:
+  - Host: ubuntu-atlas-01 (FQDN or IP)
+  - Port: 22
+  - User: larieladmin
+  - Auth: SSH key (stored securely)
+  - Persist_Session: true (keep tunnel alive)
+Dependencies: Worker_1_Ubuntu_System
+Exposes:
+  - exec_remote_script(script_path, args) → output
+  - query_remote_fs(path) → file tree
+  - get_remote_ide_state() → current file, line, terminal state
+
+---
+
+[R:Remote_IDE_View]
+Type: Display/Window
+Location: Right pane of IDE_Frontend_Windows
+Description: Live view of Ubuntu Worker 1's IDE and terminal environment
+Responsibilities:
+  - Display remote filesystem browser (read-only or editable)
+  - Show active remote terminal session
+  - Display Worker 1's recent script outputs
+  - Show active task/mtask status
+  - Allow user to switch focus between local and remote
+Data_Source: SSH_Worker1_Bridge queries
+Refresh_Rate: 1 second (or on-demand)
+Quality: Must not block local IDE responsiveness; async updates
+
+---
+
+[R:Script_Execution_Engine]
+Type: Runtime/Executor
+Location: Embedded in IDE_Backend_Windows
+Description: Reads, validates, and executes scripts (Bash, Python, PowerShell) locally and on Worker 1
+Responsibilities:
+  - Read script from file system
+  - Parse script headers for metadata (dependencies, runtime requirements)
+  - Validate syntax before execution
+  - Execute locally OR forward to Worker 1 via SSH_Worker1_Bridge
+  - Capture stdout/stderr/exit_code
+  - Display results in IDE terminal
+  - Support script arguments and environment variables
+Supported_Runtimes:
+  - Python (python3)
+  - Bash (bash)
+  - PowerShell (pwsh)
+  - Node.js (node) - optional
+Safety_Constraints:
+  - Require user confirmation for script execution
+  - No execution of scripts from untrusted sources
+  - Timeout protection (default 60s, user-adjustable)
+Dependencies: File_System_Local, SSH_Worker1_Bridge
+Exposes:
+  - execute_local(script_path, args, timeout)
+  - execute_remote(script_path, args, host, timeout)
+  - validate_script(script_path)
+
+---
+
+[R:Ollama_Local_Server]
+Type: External AI Service
+Location: localhost:11434 (Windows) + localhost:11434 (Ubuntu Worker 1)
+Description: Ollama instance for code generation, completion, refactoring - SAME VERSION on both systems
+Responsibilities:
+  - Accept code prompts from IDE_Backend_Windows
+  - Generate/complete/refactor code using models specified by Ollama_Version_Coordinator
+  - Stream or batch responses
+Version: Must match Ollama_Version_Coordinator spec (enforced at deployment)
+Models_Required:
+  - Primary: mistral:7b (or pinned version)
+  - Backup: neural-chat:7b
+Exposes:
+  - POST /api/generate (streaming text generation)
+  - POST /api/chat (chat-based requests)
+  - GET /api/tags (list available models)
+Dependencies: None (external, pre-existing)
+Quality_Notes: Both Windows and Ubuntu instances must be version-identical to ensure reproducible code generation
+
+---
+
+[R:File_System_Local]
+Type: Storage/Filesystem
+Location: c:\AI Assistant\customide\projects\{project_name}
+Description: Local Windows filesystem for project code files
+Responsibilities:
+  - Store source code, configs, docs, scripts
+  - Support read/write operations from IDE_Backend_Windows
+  - Track file metadata (modification time, size, type)
+  - Support .gitignore filtering
+Dependencies: IDE_Backend_Windows, Script_Execution_Engine
+Accessed_By: IDE_Backend_Windows, IDE_Frontend_Windows
+
+---
+
+[R:Git_Integration]
+Type: Version Control
+Location: c:\AI Assistant\customide\projects\{project_name}\.git
+Description: Git repository for version control and remote sync
+Responsibilities:
+  - Manage local commits
+  - Track file changes (staged/unstaged)
+  - Support push/pull to remote (e.g., GitHub)
+  - Provide status queries
+Dependencies: File_System_Local, IDE_Backend_Windows
+Accessed_By: IDE_Backend_Windows, IDE_Frontend_Windows
+
+---
+
+[R:Worker_1_Ubuntu_System]
+Type: External System
+Location: ubuntu-worker-01 / ubuntu-atlas-01 (ngrok accessible)
+Description: Ubuntu server with MIDE autopilot, Worker 1 IDE, and remote Ollama instance
+Responsibilities:
+  - Run autonomous mtask jobs
+  - Execute scripts via SSH from Windows IDE
+  - Provide IDE interface (VSCode server or similar on Ubuntu)
+  - Run Ollama instance (VERSION-COORDINATED with Windows)
+  - Support remote file access via SSH
+Status: Operational (from weather demo)
+SSH_Access: Enabled via SSH_Worker1_Bridge
+IDE_on_Remote: Must expose IDE interface for right-pane viewing
+Ollama_Instance: Must match Windows version exactly
+
+---
+
+# ACTIONS - Data Flows & Operations
+
+[ACT:Script_Read_Validate_Apply]
+Trigger: User selects a script file (.sh, .py, .ps1) in file explorer, right-clicks "Read and Apply"
+Flow:
+  1. IDE_Frontend_Windows requests script content via GET /file/{script_path}
+  2. IDE_Backend_Windows reads from File_System_Local
+  3. Script_Execution_Engine validates syntax (python -m py_compile, bash -n, etc.)
+  4. IDE_Frontend displays script content in editor panel + metadata (runtime required, args)
+  5. User reviews script and clicks "Apply"
+  6. On Apply: IDE_Backend_Windows shows diff/preview before execution
+  7. User confirms execution
+Response_Time: <1 second for read/validate, execution time depends on script
+
+---
+
+[ACT:Script_Execute_Local]
+Trigger: User clicks "Execute" button in script panel (or Ctrl+Shift+E in script file)
+Flow:
+  1. IDE_Frontend_Windows sends POST /script/execute with:
+     - script_path
+     - arguments (if parameterized)
+     - timeout (default 60s)
+     - capture_output: true
+  2. IDE_Backend_Windows routes to Script_Execution_Engine
+  3. Script_Execution_Engine executes locally:
+     - Spawns subprocess (python3, bash, pwsh)
+     - Captures stdout, stderr, exit_code
+     - Enforces timeout
+  4. IDE_Backend_Windows collects results
+  5. IDE_Frontend displays output in integrated terminal + status (success/failure)
+  6. User can re-execute or modify parameters
+Response_Time: Script execution time + 100ms overhead
+
+---
+
+[ACT:Script_Execute_Remote_Worker1]
+Trigger: User selects "Execute on Worker 1" (right-click in script, or button toggle)
+Flow:
+  1. IDE_Frontend_Windows sends POST /script/execute-remote with:
+     - script_path
+     - arguments
+     - target_host: "ubuntu-worker-01"
+     - timeout
+  2. IDE_Backend_Windows routes to SSH_Worker1_Bridge
+  3. SSH_Worker1_Bridge establishes SSH session (if not persistent)
+  4. SSH_Worker1_Bridge validates script exists on remote
+  5. SSH_Worker1_Bridge executes: ssh user@host "bash /path/to/script.sh {args}"
+  6. Captures remote stdout/stderr/exit_code
+  7. IDE_Backend_Windows buffers results
+  8. IDE_Frontend displays in terminal + updates Remote_IDE_View with output
+  9. User can execute again or view logs on Worker 1
+Response_Time: SSH latency (50-200ms) + script execution time
+
+---
+
+[ACT:Ollama_Version_Sync_Check]
+Trigger: IDE starts up OR user clicks "Verify Ollama Consistency"
+Flow:
+  1. IDE_Backend_Windows reads Ollama_Version_Coordinator spec (c:\AI Assistant\...\ollama_version.txt)
+  2. IDE_Backend queries localhost:11434/api/tags to get installed version
+  3. IDE_Backend queries Worker 1 via SSH: "ollama --version" + list models
+  4. Compares versions
+  5. If mismatch:
+     - Display warning in status bar (🔴 Ollama version mismatch)
+     - Suggest: pull latest on Worker 1 via mtask
+     - Disable code generation until synced
+  6. If match:
+     - Display ✅ in status bar
+     - Ready for AI requests
+Response_Time: <2 seconds
+
+---
+
+[ACT:Dual_Pane_Switch]
+Trigger: User clicks right-pane "Connect to Worker 1" button or presses Alt+Right
+Flow:
+  1. IDE_Frontend_Windows requests POST /remote/connect
+  2. IDE_Backend_Windows calls SSH_Worker1_Bridge.establish_session()
+  3. SSH_Worker1_Bridge queries Worker 1:
+     - "whoami" (verify connection)
+     - "pwd" (current directory)
+     - "ls -la" (file tree)
+     - PS output (if IDE running on Worker 1)
+  4. Remote_IDE_View receives data
+  5. IDE_Frontend right pane displays:
+     - Remote file browser
+     - Active terminal session output
+     - Recent mtask status
+  6. User can interact: click files, run commands, view logs
+Response_Time: SSH round-trip (100-200ms) + UI render
+
+---
+
+[ACT:Terminal_Execution_Integrated]
+Trigger: User types command in IDE integrated terminal (Ctrl+`)
+Flow:
+  1. IDE_Frontend_Windows captures command input
+  2. IDE_Backend_Windows routes to Script_Execution_Engine (or direct shell)
+  3. Script_Execution_Engine executes in subprocess
+  4. Output streams back to IDE terminal in real-time
+  5. User can chain commands, use pipes, environment variables
+Response_Time: <100ms per line
+
+---
+
+[ACT:Code_Completion_Request]
+Trigger: User types in IDE editor or presses hotkey (Ctrl+Space)
+Flow:
+  1. IDE_Frontend_Windows captures editor context (current file + surrounding lines)
+  2. IDE_Frontend sends POST /ollama/complete to IDE_Backend_Windows with:
+     - file_path
+     - current_line_number
+     - cursor_position
+     - file_contents (full or excerpt)
+     - language (python, javascript, bash, etc.)
+  3. IDE_Backend_Windows formats prompt for Ollama_Version_Coordinator (localhost:11434)
+  4. Ollama_Local_Server (Windows instance) generates completion suggestions (streaming)
+  5. IDE_Backend_Windows buffers and formats response
+  6. IDE_Frontend receives JSON with suggestions
+  7. IDE_Frontend displays in autocomplete dropdown or inline
+Response_Time: 1-5 seconds (dependent on Ollama hardware)
+
+---
+
+[ACT:Code_Generation_Request]
+Trigger: User writes natural language comment or prompt in editor
+Flow:
+  1. IDE_Frontend_Windows captures user prompt + file context
+  2. IDE_Frontend sends POST /ollama/generate to IDE_Backend_Windows with:
+     - prompt (user's natural language)
+     - file_path
+     - context_lines (code before/after insertion point)
+     - language
+  3. IDE_Backend_Windows sends detailed prompt to Ollama_Version_Coordinator (localhost:11434)
+  4. Ollama_Local_Server (Windows) generates code (streaming)
+  5. IDE_Backend_Windows accumulates response
+  6. IDE_Frontend displays in modal/panel with approve/reject buttons
+  7. On approve: code inserted into editor
+  8. On reject: discarded
+Response_Time: 3-10 seconds
+
+---
+
+[ACT:Code_Refactoring_Request]
+Trigger: User selects code block + menu action "Refactor with Ollama"
+Flow:
+  1. IDE_Frontend_Windows captures selected text + language
+  2. IDE_Frontend sends POST /ollama/refactor to IDE_Backend_Windows with:
+     - selected_code
+     - language
+     - refactoring_goal (simplify, optimize, add_types, etc.)
+  3. IDE_Backend_Windows crafts refactoring prompt
+  4. Ollama_Version_Coordinator generates refactored code
+  5. IDE_Frontend shows diff view (original vs refactored)
+  6. On approve: replaces selection
+  7. On reject: no change
+
+---
+
+[ACT:File_Save_and_Git_Commit]
+Trigger: User saves file (Ctrl+S) + manually commits in Git panel
+Flow:
+  1. IDE_Frontend_Windows detects file save
+  2. File_System_Local writes changes
+  3. IDE_Backend_Windows queries Git_Integration for modified files
+  4. Git status shown in IDE left panel (untracked, modified, staged)
+  5. User clicks "Stage" → IDE_Backend_Windows runs git add {file}
+  6. User writes commit message + clicks "Commit"
+  7. IDE_Backend_Windows runs git commit -m "{message}"
+  8. IDE_Frontend updates status display
+  9. Optional: User clicks "Push" → git push to remote
+Response_Time: <1 second per operation
+
+---
+
+[ACT:Project_Open]
+Trigger: User clicks "Open Project" or starts IDE
+Flow:
+  1. IDE_Frontend_Windows shows project browser or accepts folder path
+  2. IDE_Backend_Windows scans folder for .git, project structure
+  3. IDE_Backend_Windows reads Git_Integration status
+  4. IDE_Backend_Windows reads File_System_Local directory tree
+  5. IDE_Frontend displays file tree, git status summary, left pane ready for code editing
+  6. Right pane (Remote_IDE_View) prompts to "Connect to Worker 1"
+  7. Ready for code editing + remote monitoring
+
+---
+
+# INTERFACES - Communication Contracts
+
+[INT:IDEBackend_OllamaVersion_REST]
+Protocol: HTTP/REST (streaming JSON)
+Port: IDE_Backend_Windows calls localhost:11434 (Windows Ollama)
+Consistency: Must verify Windows Ollama version matches Worker_1_Ubuntu_System Ollama version
+Request_Format (to Ollama):
+  {
+    "model": "mistral:7b",  // Pinned from Ollama_Version_Coordinator
+    "prompt": "{formatted_prompt}",
+    "stream": true,
+    "temperature": 0.7,
+    "context": [...]
+  }
+Response_Format (from Ollama):
+  Line 1: {"response": "chunk1", "done": false}
+  Line 2: {"response": "chunk2", "done": false}
+  Line N: {"response": "", "done": true}
+Latency_Target: <5s for completion, <10s for generation
+Version_Check: On IDE startup + periodically verify against Worker 1
+
+---
+
+[INT:IDEFrontend_IDEBackend_HTTP]
+Protocol: HTTP/REST (JSON)
+Port: 5555
+Base_URL: http://127.0.0.1:5555
+
+Endpoint: GET /health
+Response:
+  {
+    "status": "ok",
+    "ollama_version": "0.x.x",
+    "ollama_sync": "matched",  // or "mismatch_warning"
+    "worker_connected": true
+  }
+
+Endpoint: POST /ollama/complete
+Request:
+  {
+    "file_path": "src/main.py",
+    "line_number": 42,
+    "cursor_pos": 15,
+    "file_contents": "import os\n...",
+    "language": "python"
+  }
+Response:
+  {
+    "suggestions": [
+      {"text": "os.listdir()", "score": 0.95},
+      {"text": "os.path.exists()", "score": 0.85}
+    ],
+    "latency_ms": 2340
+  }
+
+Endpoint: POST /ollama/generate
+Request:
+  {
+    "prompt": "write a function to validate email",
+    "file_path": "src/validators.py",
+    "language": "python",
+    "context_lines": 5
+  }
+Response:
+  {
+    "generated_code": "def validate_email(email: str) -> bool:\n    import re\n    return re.match(...)",
+    "model_used": "mistral:7b",
+    "latency_ms": 6500
+  }
+
+Endpoint: POST /script/validate
+Request:
+  {
+    "script_path": "scripts/deploy.sh",
+    "language": "bash"
+  }
+Response:
+  {
+    "valid": true,
+    "syntax_check": "passed",
+    "runtime_required": "bash",
+    "args": []
+  }
+
+Endpoint: POST /script/execute
+Request:
+  {
+    "script_path": "scripts/test.py",
+    "arguments": ["--verbose"],
+    "timeout": 60,
+    "capture_output": true,
+    "target": "local"  // or "worker1"
+  }
+Response:
+  {
+    "success": true,
+    "exit_code": 0,
+    "stdout": "Test results...",
+    "stderr": "",
+    "execution_time_ms": 1234
+  }
+
+Endpoint: POST /script/execute-remote
+Request:
+  {
+    "script_path": "scripts/deploy.sh",
+    "arguments": ["production"],
+    "target_host": "ubuntu-worker-01",
+    "timeout": 120
+  }
+Response:
+  {
+    "success": true,
+    "exit_code": 0,
+    "stdout": "Deployment complete",
+    "stderr": "",
+    "remote_host": "ubuntu-worker-01",
+    "execution_time_ms": 45000
+  }
+
+Endpoint: POST /git/status
+Response:
+  {
+    "branch": "main",
+    "modified": ["src/main.py", "README.md"],
+    "untracked": ["test_output.log"],
+    "staged": [],
+    "ahead": 0,
+    "behind": 0
+  }
+
+Endpoint: POST /git/commit
+Request:
+  {
+    "message": "feat: add email validation",
+    "files": ["src/validators.py"]
+  }
+Response:
+  {
+    "success": true,
+    "commit_hash": "a1b2c3d",
+    "message": "feat: add email validation"
+  }
+
+Endpoint: POST /remote/connect
+Request:
+  {
+    "host": "ubuntu-atlas-01",
+    "port": 22
+  }
+Response:
+  {
+    "connected": true,
+    "current_dir": "/home/larieladmin/projects",
+    "user": "larieladmin",
+    "shell": "/bin/bash"
+  }
+
+Endpoint: GET /remote/files
+Response:
+  {
+    "path": "/home/larieladmin/projects",
+    "files": [
+      {"name": "project1", "type": "dir", "modified": "2026-04-22T12:00:00Z"},
+      {"name": "script.sh", "type": "file", "size": 2048}
+    ]
+  }
+
+Endpoint: GET /remote/terminal
+Response (streaming):
+  Last 100 lines of remote terminal output for display in right pane
+
+---
+
+[INT:IDEBackend_SSHWorker1_Tunnel]
+Protocol: SSH/Command Execution
+Port: 22 (standard SSH)
+Target: ubuntu-worker-01 / ubuntu-atlas-01
+Auth: SSH key (stored securely in IDE config)
+Commands_Executed:
+  - ssh user@host "python3 /path/to/script.py {args}"
+  - ssh user@host "bash -n /path/to/script.sh" (syntax check)
+  - ssh user@host "ollama --version" (version check)
+  - ssh user@host "ls -la /remote/path" (file browsing)
+  - ssh user@host "cd /path && pwd" (navigation)
+Persistence: SSH connection pooling (keep-alive)
+Quality: Latency ~100-200ms per round-trip
+
+---
+  }
+Response:
+  {
+    "generated_code": "def validate_email(email: str) -> bool:\n    import re\n    return re.match(...)",
+    "model_used": "mistral:latest",
+    "latency_ms": 6500
+  }
+
+Endpoint: POST /git/status
+Response:
+  {
+    "branch": "main",
+    "modified": ["src/main.py", "README.md"],
+    "untracked": ["test_output.log"],
+    "staged": [],
+    "ahead": 0,
+    "behind": 0
+  }
+
+Endpoint: POST /git/commit
+Request:
+  {
+    "message": "feat: add email validation",
+    "files": ["src/validators.py"]
+  }
+Response:
+  {
+    "success": true,
+    "commit_hash": "a1b2c3d",
+    "message": "feat: add email validation"
+  }
+
+---
+
+# ABSTRACTIONS - System Dependencies & Architecture
+
+[ABS:IDE_System_Layers]
+Layer 1 (Presentation): IDE_Frontend_Windows (dual-pane UI)
+  - Left pane: Local code editor (VS Code-like)
+  - Right pane: Remote Ubuntu IDE view
+  - User interactions
+  - File tabs, explorer, status bar
+Layer 2 (Coordination): IDE_Backend_Windows
+  - Request routing (AI, script, git, remote)
+  - Context management
+  - Response formatting
+  - SSH tunnel management to Worker 1
+Layer 3 (Intelligence): Ollama_Version_Coordinator (Windows + Ubuntu)
+  - Code generation (AI reasoning)
+  - Model consistency enforcement
+Layer 4 (Execution): Script_Execution_Engine
+  - Local script execution
+  - Remote execution via SSH_Worker1_Bridge
+Layer 5 (Persistence): File_System_Local + Git_Integration
+  - Local data storage
+  - Version control
+  - Remote filesystem access via SSH
+
+[ABS:Dual_Pane_Architecture]
+Left_Pane: IDE_Frontend_Windows local editor
+  - Active development
+  - Local file navigation
+  - Local script execution with visible output
+  - Git operations (commit, status, push)
+  
+Right_Pane: Remote_IDE_View (Ubuntu Worker 1)
+  - Read-only or limited-edit remote filesystem
+  - Remote terminal session
+  - mtask execution status
+  - Remote script outputs
+  - Live synchronization via SSH_Worker1_Bridge
+
+[ABS:Data_Flow_Architecture]
+Synchronous_Flows (user waits for response):
+  - Code completion → Ollama_Version_Coordinator (Windows) → IDE display (<3s)
+  - Code generation → Ollama_Version_Coordinator → IDE display (<10s)
+  - Git status query → filesystem → IDE display (<1s)
+  - Script validation → Script_Execution_Engine → IDE display (<1s)
+  - Remote file list → SSH_Worker1_Bridge → right pane (<200ms)
+
+Asynchronous_Flows (background operations):
+  - File watcher triggers on save
+  - Ollama version sync check (Worker 1 vs Windows)
+  - Remote IDE state refresh (1s poll)
+  - Background script execution on Worker 1
+
+[ABS:Ollama_Version_Coordination]
+Constraint: Windows and Ubuntu Worker 1 MUST use identical Ollama versions
+Enforcement:
+  - Canonical version spec in c:\AI Assistant\MIDE\pilot_v1\config\ollama_version.txt
+  - On IDE startup: compare localhost:11434 version with remote (via SSH)
+  - On version mismatch: warn user + disable code generation
+  - Admin can trigger MTASK to update Worker 1 Ollama via IDE UI
+
+[ABS:Script_Execution_Capability]
+Local_Execution: IDE_Backend_Windows → Script_Execution_Engine → local subprocess
+Remote_Execution: IDE_Backend_Windows → SSH_Worker1_Bridge → Worker_1_Ubuntu_System
+
+Read_Apply_Flow:
+  1. User selects script in file explorer
+  2. IDE_Backend reads + displays in editor
+  3. User reviews content + metadata
+  4. User clicks "Execute" → Choose local or remote
+  5. Script_Execution_Engine validates syntax
+  6. On approve: execute with user confirmation
+  7. Output streamed to integrated terminal
+
+[ABS:Integration_with_MIDE_Worker]
+Assumption: Custom IDE and MIDE autopilot are complementary
+- MIDE handles: autonomous task execution, mtask jobs, scheduled operations
+- Custom IDE handles: interactive development, testing, debugging, script management
+- SSH_Worker1_Bridge enables IDE to trigger scripts on Worker 1
+- Shared filesystem: both can read/write MIDE repo
+- Shared Ollama: consistent code generation across both systems
+
+---
+
+# QUALITY & NON-FUNCTIONAL REQUIREMENTS
+
+[QFR:Performance]
+- Code completion: <3 seconds
+- Code generation: <10 seconds
+- Script validation: <1 second
+- Local script execution: depends on script (timeout 60s default)
+- Remote script execution: SSH latency (100-200ms) + script time
+- Git operations: <1 second
+- File browser (local): instant (<100ms)
+- Remote file browser: <200ms (SSH query)
+- Ollama version check: <2 seconds
+- Tab switching: instant
+
+[QFR:Availability]
+- IDE requires local Ollama running (mismatched version shows warning, disables AI)
+- SSH to Worker 1 optional (IDE works without it, just local mode)
+- Fallback: disable AI features if Ollama unavailable
+- Git can work offline; push/pull requires network
+- Script execution can target local OR remote independently
+
+[QFR:Usability]
+- Dual-pane layout (VS Code-inspired)
+- Dark theme (consistent with weather GUI)
+- Keyboard shortcuts: Ctrl+Space (complete), Ctrl+/ (comment), Ctrl+Shift+P (palette), Ctrl+` (terminal)
+- Split-pane draggable divider
+- Status bar: current file, line/col, git branch, Ollama version status, Worker 1 connection status
+- File tabs with unsaved indicator (•)
+- Syntax highlighting: Python, JavaScript, Bash, JSON, YAML, Markdown
+- Integrated terminal (bottom of left pane)
+
+[QFR:Security]
+- Local Ollama: no auth required (localhost only)
+- SSH to Worker 1: key-based auth (no passwords)
+- Git credentials: use system keychain or .git/config
+- No secrets in code (enforce .gitignore)
+- Script execution: require user confirmation before running
+- Script timeout protection: max 300s configurable
+- SSH connection: pooled, keep-alive, auto-reconnect on disconnect
+
+[QFR:Scalability]
+- Support projects up to 10MB local (file indexing)
+- Remote filesystem browsing via SSH (on-demand lazy loading)
+- Streaming responses from Ollama (no memory bloat)
+- Connection pooling to Worker 1 (persistent SSH session)
+- Tab limit: reasonable (recommend <50 open files)
+
+---
+
+# IMPLEMENTATION ROADMAP (Phases)
+
+Phase 1: MVP Architecture & Design (CURRENT - Now)
+  - ✅ Define components (R/ACT/INT/ABS)
+  - ✅ Create comprehensive MOSS file (version 2.0)
+  - ⬜ Generate workflow diagram from MOSS compiler
+  - ⬜ User review & architectural approval
+
+Phase 2: Core Backend Implementation (Week 1-2)
+  - IDE_Backend_Windows basic FastAPI server (port 5555)
+  - Ollama_Version_Coordinator integration (version spec + sync check)
+  - Script_Execution_Engine (local bash/python/pwsh execution)
+  - Git_Integration (git CLI wrappers)
+  - File_System_Local operations (read/list/write)
+  - SSH_Worker1_Bridge (establish connection, execute remote commands)
+
+Phase 3: Frontend UI Implementation (Week 2-3)
+  - IDE_Frontend_Windows basic dual-pane structure (HTML/Electron/web-based)
+  - Left pane: basic code editor (ace/monaco-like)
+  - File explorer + tabs
+  - Right pane: remote filesystem view stub
+  - Status bar: file info, git branch, connection status
+  - Integrated terminal (basic)
+
+Phase 4: AI Integration (Week 3)
+  - Ollama_Version_Coordinator compliance check
+  - Code completion endpoint (POST /ollama/complete)
+  - Code generation endpoint (POST /ollama/generate)
+  - Syntax highlighting for Python/JavaScript/Bash
+  - Streaming responses
+
+Phase 5: Script Execution UI (Week 4)
+  - Script read/validate/execute flow
+  - Local vs Remote execution toggle
+  - Execute button + confirm dialog
+  - Terminal output display
+  - Timeout + error handling
+
+Phase 6: Remote IDE Integration (Week 4-5)
+  - SSH connection establishment UI
+  - Remote_IDE_View refresh loop (1s poll)
+  - Remote file browser in right pane
+  - Remote terminal output streaming
+  - Connection status indicator
+
+Phase 7: Polish & Hardening (Week 5-6)
+  - Error handling + logging
+  - Keyboard shortcuts (Ctrl+Space, Ctrl+/, Ctrl+Shift+P, etc.)
+  - Draggable split-pane divider
+  - Dark theme refinement
+  - SSH connection pooling
+  - Project templates
+
+Phase 8: Integration Testing (Week 6-7)
+  - End-to-end: local code edit → Ollama completion → display
+  - End-to-end: remote script execution on Worker 1
+  - Ollama version mismatch handling
+  - SSH failure graceful degradation
+  - Git operations on both local and in MIDE repo
+
+Phase 9: Deployment & Training (Week 7-8)
+  - Deploy to Windows workspace
+  - Package as executable or portable
+  - Document keyboard shortcuts + workflows
+  - Test with actual MIDE worker system
+
+---
+
+# CRITICAL CONSTRAINTS & DEPENDENCIES
+
+[CONSTRAINT:Ollama_Version_Identity]
+MUST: Windows IDE Ollama version = Ubuntu Worker 1 Ollama version
+Impact: Code generation consistency across both systems
+Enforcement: Version check on startup + periodic sync
+Failure_Mode: Disable code generation, show warning
+
+[CONSTRAINT:SSH_Authentication]
+MUST: SSH key-based auth to Worker 1 (ubuntu-atlas-01)
+Impact: Secure, passwordless remote script execution
+Setup: User provides SSH key path in IDE config
+Failure_Mode: Right pane unavailable, local-only mode
+
+[CONSTRAINT:Ollama_Service_Availability]
+MUST: Local Ollama running (localhost:11434)
+Impact: Code completion/generation features
+Failure_Mode: Warn user, disable AI features, continue with file editing
+
+[CONSTRAINT:Git_Availability]
+Should: Git installed on Windows + Ubuntu
+Impact: Version control operations
+Failure_Mode: Warn user, disable git UI, continue with file editing
+
+---
+
+# KEY ARCHITECTURAL DECISIONS
+
+**Decision 1: Dual-Pane Design (Left=Local, Right=Remote)**
+Rationale: Allows simultaneous development + monitoring of Worker 1 environment
+Benefit: User can see results of script execution on Worker 1 in real-time
+Alternative: Single pane + separate Worker 1 window (rejected: context-switching overhead)
+
+**Decision 2: Shared Ollama Version Requirement**
+Rationale: Ensures reproducible code generation across Windows IDE and Ubuntu Worker 1
+Benefit: User can apply same prompt locally or remotely, get consistent code
+Alternative: Separate Ollama instances (rejected: inconsistent outputs, confusing)
+
+**Decision 3: Script_Execution_Engine with Local + Remote Dispatch**
+Rationale: IDE manages both local and remote execution from single interface
+Benefit: Single UI for debugging + deploying scripts
+Alternative: Separate local IDE + remote SSH client (rejected: complex workflow)
+
+**Decision 4: HTTP REST API Backend (IDE_Backend_Windows)**
+Rationale: Separates concerns, enables future remote IDE access
+Benefit: Frontend can be web-based or Electron, backend reusable
+Alternative: Direct IPC (rejected: less flexible, platform-specific)
+
+---
+
+# NEXT STEPS
+
+1. ✅ MOSS architecture file complete (v2.0-dual_system)
+2. 🟡 Generate workflow diagram from MOSS compiler → visual confirmation
+3. 🔵 User review & architectural approval
+4. 🔵 Phase 2 implementation begins once approved
+   - Start with IDE_Backend_Windows (FastAPI server)
+   - Parallel: prepare SSH key for Worker 1 connection
+   - Parallel: confirm Ollama version on both systems
+
+---
+
+# APPENDIX: File Structure (Post-Implementation)
+
+```
+c:\AI Assistant\customide\
+├── backend/
+│   ├── main.py (FastAPI entry point)
+│   ├── handlers/
+│   │   ├── ollama_handler.py
+│   │   ├── script_handler.py
+│   │   ├── git_handler.py
+│   │   └── ssh_handler.py
+│   ├── models/
+│   │   ├── request_schema.py
+│   │   └── response_schema.py
+│   ├── config/
+│   │   ├── ollama_version.txt
+│   │   └── ssh_config.json
+│   └── requirements.txt
+├── frontend/
+│   ├── index.html (main UI)
+│   ├── styles.css (dark theme)
+│   ├── app.js (main logic)
+│   ├── components/
+│   │   ├── editor.js
+│   │   ├── explorer.js
+│   │   ├── terminal.js
+│   │   ├── remote_view.js
+│   │   └── status_bar.js
+│   ├── lib/
+│   │   ├── fetch_api.js
+│   │   ├── editor_wrapper.js
+│   │   └── ssh_client.js
+│   └── assets/
+│       └── fonts/, icons/
+├── scripts/
+│   ├── start_backend.sh
+│   ├── start_frontend.sh
+│   └── check_dependencies.sh
+├── projects/ (user project root)
+│   └── {project_name}/
+│       ├── src/
+│       ├── scripts/
+│       └── .git/
+└── config.json (IDE configuration)
+```
+
+---
