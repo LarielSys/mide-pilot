@@ -8,10 +8,12 @@ SERVICE_NAME="worker-mtask-autopilot.service"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 POLL_SECONDS="${POLL_SECONDS:-180}"
 RESTART_MODE=""
+FORCE_ONCE_TIMEOUT_SECONDS="${FORCE_ONCE_TIMEOUT_SECONDS:-900}"
 
 echo "task=TASK-0030"
 echo "worker_id=${WORKER_ID}"
 echo "repo_root=${REPO_ROOT}"
+echo "force_once_timeout_seconds=${FORCE_ONCE_TIMEOUT_SECONDS}"
 
 autopilot_restart() {
   if systemctl --user list-unit-files 2>/dev/null | grep -q "${SERVICE_NAME}"; then
@@ -28,6 +30,26 @@ cleanup() {
   autopilot_restart || true
 }
 trap cleanup EXIT
+
+run_forced_autopilot_once() {
+  local run_log
+  run_log="$(mktemp)"
+
+  echo "autopilot_forced_once=start"
+  echo "autopilot_forced_once_task=MTASK-0031"
+
+  if timeout "${FORCE_ONCE_TIMEOUT_SECONDS}" \
+    bash "${AUTOPILOT_SCRIPT}" --worker-id="${WORKER_ID}" --poll-seconds="${POLL_SECONDS}" --force-task=MTASK-0031 --once \
+    > >(tee "${run_log}") 2>&1; then
+    echo "autopilot_forced_once=done"
+  else
+    rc=$?
+    echo "error=autopilot_forced_once_failed"
+    echo "autopilot_forced_once_exit_code=${rc}"
+    echo "autopilot_forced_once_log_tail=$(tail -n 60 "${run_log}" | tr '\n' ';')"
+    return 1
+  fi
+}
 
 cd "${REPO_ROOT}"
 git fetch origin
@@ -48,7 +70,7 @@ else
 fi
 sleep 2
 
-bash "${AUTOPILOT_SCRIPT}" --worker-id="${WORKER_ID}" --poll-seconds="${POLL_SECONDS}" --force-task=MTASK-0031 --once
+run_forced_autopilot_once
 
 echo "forced_task=MTASK-0031"
 
