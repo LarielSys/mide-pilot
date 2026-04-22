@@ -10,6 +10,8 @@ RUNTIME_DIR="${HOME}/.config/mide"
 LOCK_FILE="${RUNTIME_DIR}/worker_mtask_autopilot.lock"
 STATUS_FILE="${STATE_DIR}/worker_autopilot_status.json"
 HEARTBEAT_FILE="${STATE_DIR}/worker_autopilot_heartbeat_epoch.txt"
+LIVE_STATUS_FILE="${STATE_DIR}/worker_autopilot_live.txt"
+EVENT_LOG_FILE="${STATE_DIR}/worker_autopilot_events.log"
 POLL_SECONDS="${POLL_SECONDS:-180}"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
@@ -66,6 +68,9 @@ write_status() {
   local note="$3"
   local ts
   ts="$(now_utc)"
+
+  printf "%s | mode=%s | last_task=%s | note=%s\n" "${ts}" "${mode}" "${last_task}" "${note}" >>"${EVENT_LOG_FILE}"
+
   cat >"${STATUS_FILE}" <<EOF
 {
   "worker_name": "${WORKER_NAME}",
@@ -77,6 +82,20 @@ write_status() {
   "note": "${note}"
 }
 EOF
+
+  {
+    echo "Autopilot Live Status"
+    echo "updated_utc: ${ts}"
+    echo "worker_name: ${WORKER_NAME}"
+    echo "worker_id: ${WORKER_ID}"
+    echo "mode: ${mode}"
+    echo "last_task_processed: ${last_task}"
+    echo "poll_seconds: ${POLL_SECONDS}"
+    echo "note: ${note}"
+    echo
+    echo "Recent Events (latest 20):"
+    tail -n 20 "${EVENT_LOG_FILE}" 2>/dev/null || true
+  } >"${LIVE_STATUS_FILE}"
 }
 
 hash_sha256() {
@@ -143,7 +162,7 @@ commit_and_push_status_heartbeat() {
   ts="$(now_epoch)"
   echo "${ts}" >"${HEARTBEAT_FILE}"
 
-  git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt"
+  git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt"
   git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
   git -C "${REPO_ROOT}" push origin main >/dev/null
 }
@@ -264,7 +283,7 @@ PY
 
 commit_and_push_result() {
   local task_id="$1"
-  git -C "${REPO_ROOT}" add "pilot_v1/results/${task_id}.result.json" "pilot_v1/state/worker_autopilot_status.json"
+  git -C "${REPO_ROOT}" add "pilot_v1/results/${task_id}.result.json" "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log"
   git -C "${REPO_ROOT}" commit -m "worker: autopilot result ${task_id}" >/dev/null || true
   git -C "${REPO_ROOT}" push origin main >/dev/null
 }
