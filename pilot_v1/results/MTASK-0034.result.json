@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0034",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0034\nworker_id=ubuntu-worker-01\ncode_server_check=down\ncode_server_restart=still_down\ncodeserver_public_url=https://jawed-lapel-dispersed.ngrok-free.dev\n=== SERVICE VERIFICATION ===\nkb_server_health=down\nollama_models=['qwen2.5:14b']\nollama_proxy_local=down\nqwen25_test_response=\npublic_ollama_proxy=<!DOCTYPE html>\n<html class=\"h-full\" lang=\"en-US\" dir=\"ltr\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width\nservices_config_written=/home/larieladmin/mide-pilot/pilot_v1/config/worker1_services.json\n[main c7bfd2f] config: worker1 services map (MTASK-0034)\n 1 file changed, 26 insertions(+)\n create mode 100644 pilot_v1/config/worker1_services.json\nconfig_committed=ok\nresult_written=/home/larieladmin/mide-pilot/pilot_v1/results/MTASK-0034.result.json",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-22T22:29:47Z"
+}
