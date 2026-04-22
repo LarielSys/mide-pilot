@@ -104,6 +104,18 @@
       "approval_file": "approvals/TASK-0007.approval.json",
       "summary": "All runtime checks passed. Architecture drift (kimi-k2.6:cloud) reconciled as inactive/scrapped. Baseline updated.",
       "timestamp_utc": "2026-04-21T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0008",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Validate quarantine control path by simulating 3 consecutive bounded task failures and confirming worker quarantine behavior is triggered and recorded.",
+      "result_file": "results/TASK-0008.result.json",
+      "approval_file": "approvals/TASK-0008.approval.json",
+      "summary": "Passed. Three simulated failures recorded; quarantine condition triggered and post-quarantine behavior flagged for procedural enforcement.",
+      "timestamp_utc": "2026-04-21T00:00:00Z"
     }
   ]
 }
