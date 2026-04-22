@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0012",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "health_check": "HTTP/1.1 200 OK\n{\"collection\":\"lariel_site_kb\",\"documents\":49,\"ollama_model\":\"qwen2.5:14b\",\"ollama_url\":\"http://127.0.0.1:11434\",\"status\":\"ok\"}",
+  "cors_preflight_headers": "Access-Control-Allow-Origin: https://larielsystems.com\nAccess-Control-Allow-Headers: ngrok-skip-browser-warning\nAccess-Control-Allow-Methods: DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT",
+  "errors": [],
+  "timestamp_utc": "2026-04-22T15:11:55Z"
+}
