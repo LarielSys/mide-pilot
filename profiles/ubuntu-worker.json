@@ -1,0 +1,23 @@
+{
+  "machine_id": "ubuntu-worker-01",
+  "role": "worker_executor",
+  "os": "ubuntu",
+  "host": "47.17.251.15",
+  "operator": "larieladmin",
+  "capabilities": [
+    "code_execution",
+    "dependency_checks",
+    "backend_validation",
+    "api_health_tests"
+  ],
+  "llm_mode": {
+    "type": "local",
+    "provider": "ollama",
+    "model": "qwen2.5:7b"
+  },
+  "safety": {
+    "max_consecutive_failures": 3,
+    "file_lock_policy": "exclusive"
+  },
+  "notes": "Worker node for delegated bounded tasks. Returns evidence bundle for approval."
+}

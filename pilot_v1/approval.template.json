@@ -1,0 +1,11 @@
+{
+  "task_id": "TASK-0001",
+  "reviewed_by": "windows-main",
+  "decision": "approve",
+  "decision_reason": "Validation evidence meets requirements",
+  "approved_actions": [
+    "apply changes",
+    "proceed to next dependency"
+  ],
+  "timestamp_utc": "YYYY-MM-DDTHH:MM:SSZ"
+}

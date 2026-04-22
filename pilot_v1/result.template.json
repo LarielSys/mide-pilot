@@ -1,0 +1,21 @@
+{
+  "task_id": "TASK-0001",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "commands_run": [
+    "command 1",
+    "command 2"
+  ],
+  "touched_files": [
+    "file/path/if/any"
+  ],
+  "proposed_changes": [
+    "summary of change 1"
+  ],
+  "validation_results": [
+    "status 200 on /health",
+    "test suite passed"
+  ],
+  "errors": [],
+  "confidence_note": "high confidence"
+}

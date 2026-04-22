@@ -1,0 +1,38 @@
+{
+  "task_id": "TASK-0001",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Validate Ubuntu chat backend health and API response evidence for website integration",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "uname/hostname/pwd confirmation",
+    "GET /health from backend endpoint",
+    "POST /api/chat with sample message",
+    "capture command transcript and outputs"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 1800,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run from Ubuntu worker terminal",
+    "Do not edit files in this task",
+    "Collect outputs and write results/TASK-0001.result.json"
+  ],
+  "commands_expected": [
+    "uname -a",
+    "hostname",
+    "pwd",
+    "curl -s http://127.0.0.1:8091/health",
+    "curl -s -X POST http://127.0.0.1:8091/api/chat -H \"Content-Type: application/json\" -d '{\"message\":\"What services does Lariel Systems offer?\"}'"
+  ]
+}

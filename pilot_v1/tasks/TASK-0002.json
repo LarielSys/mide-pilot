@@ -1,0 +1,41 @@
+{
+  "task_id": "TASK-0002",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Validate the current ngrok-backed Lariel chat endpoint end-to-end and produce a result bundle for Main review",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Confirm local backend /health on 127.0.0.1:8091",
+    "Confirm current ngrok public /health returns HTTP 200",
+    "Confirm current ngrok public /api/chat returns HTTP 200 with JSON answer",
+    "Capture the exact ngrok public HTTPS URL used",
+    "Capture command transcript and outputs"
+  ],
+  "dependencies": [
+    "TASK-0001"
+  ],
+  "timeout_seconds": 1800,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run from Ubuntu worker terminal",
+    "Do not edit files in this task",
+    "Use the currently active ngrok tunnel if one is already running",
+    "If ngrok is not running, start it against port 8091 and record the URL",
+    "Write results/TASK-0002.result.json after validation"
+  ],
+  "commands_expected": [
+    "curl -i http://127.0.0.1:8091/health",
+    "curl -i https://CURRENT-NGROK-URL/health",
+    "curl -i -X POST https://CURRENT-NGROK-URL/api/chat -H \"Content-Type: application/json\" -d '{\"message\":\"What services does Lariel Systems offer?\"}'"
+  ]
+}

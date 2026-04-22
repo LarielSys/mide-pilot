@@ -1,0 +1,18 @@
+{
+  "machine_id": "windows-main",
+  "role": "main_orchestrator",
+  "os": "windows",
+  "host": "TBD",
+  "operator": "marco",
+  "capabilities": [
+    "task_planning",
+    "approval_gates",
+    "state_ledger",
+    "lock_management"
+  ],
+  "llm_mode": {
+    "type": "local_or_api",
+    "provider": "TBD"
+  },
+  "notes": "Main authority node. No worker can apply canonical changes without this node approval."
+}

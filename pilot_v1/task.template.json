@@ -1,0 +1,22 @@
+{
+  "task_id": "TASK-0001",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Describe the goal clearly",
+  "priority": "high",
+  "risk_level": "medium",
+  "allowed_paths": [
+    "path/on/ubuntu/that/is/allowed"
+  ],
+  "blocked_paths": [
+    "sensitive/path/not/allowed"
+  ],
+  "required_validation": [
+    "health check",
+    "command output",
+    "test evidence"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 1800,
+  "status": "approved_to_execute"
+}

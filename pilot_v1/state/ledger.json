@@ -1,0 +1,37 @@
+{
+  "version": "v1",
+  "main_node": "windows-main",
+  "worker_nodes": ["ubuntu-worker-01"],
+  "lock_policy": "exclusive",
+  "failure_quarantine_threshold": 3,
+  "override_policy": {
+    "default": "single_admin",
+    "sensitive_mode": "two_person_optional"
+  },
+  "tasks": [
+    {
+      "task_id": "TASK-0001",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Validate Ubuntu chat backend health and API response evidence for website integration",
+      "result_file": "results/TASK-0001.result.json",
+      "approval_file": "approvals/TASK-0001.approval.json",
+      "summary": "Health and chat endpoint validations passed with no out-of-scope edits.",
+      "timestamp_utc": "2026-04-21T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0002",
+      "assigned_to": "windows-main",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Validate ngrok-backed Lariel chat endpoint end-to-end from external Windows client",
+      "result_file": "results/TASK-0002.result.json",
+      "approval_file": "approvals/TASK-0002.approval.json",
+      "summary": "All three checks passed: /health HTTP 200, backend healthy 49 docs qwen2.5:14b, /api/chat returning accurate answers.",
+      "timestamp_utc": "2026-04-21T00:00:00Z"
+    }
+  ]
+}

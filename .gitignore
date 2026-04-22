@@ -1,0 +1,12 @@
+# Do not commit secrets or tokens
+*.env
+*.enc
+.env*
+*token*
+*secret*
+*password*
+*.key
+
+# OS
+Thumbs.db
+.DS_Store

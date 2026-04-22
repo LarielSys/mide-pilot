@@ -1,0 +1,82 @@
+{
+  "task_id": "TASK-0003",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Initialize Git-based sync transport between Windows Main and Ubuntu Worker for the MIDE pilot_v1 workflow",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "MIDE/pilot_v1",
+    "~/.gitconfig"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems",
+    "itheia-llm"
+  ],
+  "required_validation": [
+    "A shared Git remote repo exists (GitHub or equivalent) accessible from both machines",
+    "Windows Main has the repo cloned or initialized with remote set",
+    "Ubuntu Worker has the repo cloned with remote set",
+    "Ubuntu Worker can push a test commit to the shared remote",
+    "Windows Main can pull that commit and confirm receipt",
+    "MIDE/pilot_v1 folder structure is present in the shared repo"
+  ],
+  "dependencies": [
+    "TASK-0002"
+  ],
+  "timeout_seconds": 3600,
+  "status": "approved_to_execute",
+  "phase_a_windows_main": {
+    "description": "Main sets up the shared remote",
+    "steps": [
+      "Create a new private GitHub repository named 'mide-pilot' (or equivalent)",
+      "In C:\\AI Assistant\\MIDE\\, run: git init",
+      "git add pilot_v1/",
+      "git commit -m 'main: initial MIDE pilot_v1 scaffold'",
+      "git remote add origin <GITHUB_REPO_URL>",
+      "git push -u origin main",
+      "Record the GitHub repo URL in this result file"
+    ]
+  },
+  "phase_b_ubuntu_worker": {
+    "description": "Worker clones the shared repo and confirms read access",
+    "steps": [
+      "git clone <GITHUB_REPO_URL> ~/mide-pilot",
+      "cd ~/mide-pilot",
+      "ls pilot_v1/tasks/ pilot_v1/results/ pilot_v1/state/",
+      "Confirm TASK-0002 files are visible",
+      "Write results/TASK-0003.result.json",
+      "git add results/TASK-0003.result.json",
+      "git commit -m 'worker: add TASK-0003 result'",
+      "git push"
+    ]
+  },
+  "phase_c_windows_main": {
+    "description": "Main pulls worker result and approves",
+    "steps": [
+      "In C:\\AI Assistant\\MIDE\\, run: git pull",
+      "Confirm results/TASK-0003.result.json is present",
+      "Write approvals/TASK-0003.approval.json",
+      "git add approvals/TASK-0003.approval.json state/ledger.json",
+      "git commit -m 'main: approve TASK-0003'",
+      "git push"
+    ]
+  },
+  "execution_instructions": [
+    "Phase A runs on Windows Main first",
+    "Phase B runs on Ubuntu Worker after Main pushes",
+    "Phase C runs on Windows Main after Worker pushes result",
+    "Use a private GitHub repo — do not make public",
+    "Do not include sensitive files (ngrok tokens, .env) in the repo"
+  ],
+  "result_schema": {
+    "github_repo_url": "<URL of the shared repo>",
+    "windows_main_push_confirmed": true,
+    "ubuntu_worker_clone_confirmed": true,
+    "ubuntu_worker_push_confirmed": true,
+    "windows_main_pull_confirmed": true
+  }
+}
