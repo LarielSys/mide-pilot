@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0030",
+  "display_name": "Add Flask-CORS to Weather API",
+  "status": "approved_to_execute",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0030_add_flask_cors.sh",
+  "description": "Install flask-cors, patch site_kb_server.py to add CORS(app), restart server, and verify Access-Control-Allow-Origin header is present on weather endpoints. Required so browser GUI loaded from localhost can call Worker 1 API without CORS errors.",
+  "created_at": "2026-04-22T20:55:00Z"
+}
