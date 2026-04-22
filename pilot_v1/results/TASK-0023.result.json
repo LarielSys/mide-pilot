@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0023",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=TASK-0023\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nclone_domain_root=/home/larieladmin/mide-pilot/clone/larielsystems/larielsystems.com\nlocalhost_url=http://127.0.0.1:8787/",
+  "stderr_excerpt": "/home/larieladmin/mide-pilot/pilot_v1/scripts/exec_task_0023_open_localhost.sh: line 39: /home/larieladmin/mide-pilot/pilot_v1/scripts/open_worker_target.sh: Permission denied",
+  "timestamp_utc": "2026-04-22T19:43:06Z"
+}
