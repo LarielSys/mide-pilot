@@ -1,0 +1,7 @@
+Weather Live Compare Integration Notes
+
+1) GUI in IDE (Windows) calls Worker1 live compare endpoint over HTTP.
+2) Worker1 owns provider calls and comparison logic.
+3) Shared JSON contract decouples frontend from provider shape.
+4) MOSS schematic is dependency-first, not UI-first.
+5) Orchestrator mtasks are for build/deploy/change control, not live request transport.

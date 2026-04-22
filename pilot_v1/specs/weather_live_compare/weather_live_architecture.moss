@@ -1,0 +1,57 @@
+@MOSS:Weather_Live_Compare_Architecture
+@R:~/mide-pilot/pilot_v1/specs/weather_live_compare/
+
+systems:
+
+  IDE_GUI_Windows:
+    role: user-facing live interface in IDE
+    runtime: windows-main
+    depends_on: Worker1_Weather_API, Result_Contract
+    inputs: city_a, city_b
+    outputs: comparison_view, status_badge
+
+  Worker1_Weather_API:
+    role: authoritative weather comparison service
+    runtime: ubuntu-worker-01
+    transport: HTTP_JSON
+    endpoint: /api/weather/compare
+    depends_on: Weather_Provider_Adapter, Comparison_Engine, Result_Contract
+    outputs: normalized_comparison_payload
+
+  Weather_Provider_Adapter:
+    role: fetch and normalize external weather provider data
+    runtime: ubuntu-worker-01
+    depends_on: External_Weather_Source
+    outputs: weather_city_a, weather_city_b
+
+  Comparison_Engine:
+    role: compute differences and verdict
+    runtime: ubuntu-worker-01
+    depends_on: weather_city_a, weather_city_b
+    outputs: temperature_delta_c, condition_delta, humidity_delta, wind_delta, summary
+
+  Result_Contract:
+    role: shared schema between GUI and worker API
+    format: JSON
+    request_fields: city_a, city_b, units
+    response_fields: request_id, timestamp_utc, city_a, city_b, metrics, summary, source
+
+  Observability_Channel:
+    role: visibility for live requests and execution status
+    runtime: shared
+    depends_on: IDE_GUI_Windows, Worker1_Weather_API
+    outputs: request_log, response_log, health_state
+
+dependencies:
+  - IDE_GUI_Windows -> Worker1_Weather_API
+  - Worker1_Weather_API -> Weather_Provider_Adapter
+  - Worker1_Weather_API -> Comparison_Engine
+  - Worker1_Weather_API -> Result_Contract
+  - IDE_GUI_Windows -> Result_Contract
+  - Observability_Channel -> IDE_GUI_Windows
+  - Observability_Channel -> Worker1_Weather_API
+
+runtime_constraints:
+  - live_communication_required: true
+  - transport_mode: synchronous_http
+  - gui_must_not_use_git_task_loop: true
