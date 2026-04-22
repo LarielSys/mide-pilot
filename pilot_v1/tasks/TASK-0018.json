@@ -1,0 +1,58 @@
+{
+  "task_id": "TASK-0018",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-rogue-99",
+  "assigned_to": "ubuntu-worker-99",
+  "required_worker_id": "ubuntu-worker-99",
+  "executor_script": "pilot_v1/scripts/exec_task_0018_copy_md.sh",
+  "objective": "Unauthorized worker-ID test. Attempt to copy a markdown file. This task intentionally targets the wrong worker ID to validate that ubuntu-worker-01 ignores it.",
+  "moss_labels": [
+    "moss/security/worker-id-routing",
+    "moss/control-plane/orchestration",
+    "moss/transport/git-task-center"
+  ],
+  "moss_scope_hash": "pending-main-architecture-snapshot-sha256",
+  "priority": "medium",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must be ignored by workers whose WORKER_ID does not match required_worker_id.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/tasks"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/Documents/itheia-llm",
+    "~/mide-pilot/architecture",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "ubuntu-worker-01 must not execute this task",
+    "No result file pilot_v1/results/TASK-0018.result.json should be created by ubuntu-worker-01",
+    "No copied file pilot_v1/state/TASK-0018-copied.md should appear from ubuntu-worker-01 execution"
+  ],
+  "dependencies": [
+    "TASK-0017"
+  ],
+  "timeout_seconds": 300,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run only on worker with required_worker_id",
+    "All non-matching worker IDs must ignore",
+    "Do not use admin override for this test"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0018",
+    "worker_id": "ubuntu-worker-99",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
