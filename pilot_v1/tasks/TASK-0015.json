@@ -1,0 +1,74 @@
+{
+  "task_id": "TASK-0015",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Implement Phase-1 worker mtask autopilot so the worker can continuously run the loop: git pull -> detect next assigned approved_to_execute mtask -> execute bounded script -> write result -> git add/commit/push, without manual step-by-step intervention.",
+  "moss_labels": [
+    "moss/control-plane/orchestration",
+    "moss/transport/git-task-center",
+    "moss/worker/automation-loop",
+    "moss/policy/scope-gates"
+  ],
+  "moss_scope_hash": "pending-main-architecture-snapshot-sha256",
+  "priority": "high",
+  "risk_level": "medium",
+  "automation_mode": "review_required",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results",
+    "~/mide-pilot/pilot_v1"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/Documents/itheia-llm",
+    "~/mide-pilot/architecture",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Create worker autopilot script at pilot_v1/scripts/worker_mtask_autopilot.sh",
+    "Script must enforce single-instance lock (flock or lock file guard)",
+    "Script must perform git pull --ff-only before each cycle",
+    "Script must select only tasks assigned_to=ubuntu-worker-01 and status=approved_to_execute",
+    "Script must skip tasks that already have a result file",
+    "Script must execute only declared executor_script from task, if present",
+    "Script must write structured failure result on execution or validation failure",
+    "Script must git add/commit/push result artifacts after each processed task",
+    "Provide a dry-run mode showing candidate task selection and no writes",
+    "Run one real test cycle against a synthetic local test mtask and provide evidence"
+  ],
+  "dependencies": [
+    "TASK-0014"
+  ],
+  "timeout_seconds": 3600,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull --ff-only origin main",
+    "Implement pilot_v1/scripts/worker_mtask_autopilot.sh with strict bash options: set -euo pipefail",
+    "Use a lock guard to prevent concurrent runs",
+    "Find next task deterministically by task_id order from pilot_v1/tasks/*.json where assigned_to=ubuntu-worker-01 and status=approved_to_execute and no corresponding results/TASK-xxxx.result.json exists",
+    "If task has executor_script, run it from repo root; if missing, write failed result explaining missing executor_script",
+    "Always capture stdout/stderr excerpts into result JSON",
+    "Commit format for autopilot output: worker: autopilot result <TASK-ID>",
+    "Add dry-run flag: --dry-run",
+    "Create a short operator note in pilot_v1/state/worker_autopilot_status.json including last_run_utc and last_task_processed",
+    "Write pilot_v1/results/TASK-0015.result.json with implementation evidence and test-cycle output",
+    "git add, git commit -m 'worker: TASK-0015 result -- autopilot loop implemented', git push"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0015",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "autopilot_script_path": "pilot_v1/scripts/worker_mtask_autopilot.sh",
+    "dry_run_output": "<captured output>",
+    "test_cycle_output": "<captured output>",
+    "status_file": "pilot_v1/state/worker_autopilot_status.json",
+    "errors": [],
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
