@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-0006",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Operationalize the Chroma path fix by adding a repeatable verification script that proves /health and direct Chroma counts stay aligned for lariel_site_kb.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot",
+    "~/Documents/itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Create a script in ~/mide-pilot/pilot_v1/scripts named verify_site_kb_consistency.sh",
+    "Script checks /health on 127.0.0.1:8091 and extracts documents count",
+    "Script checks direct Chroma count from site_kb_chromadb/lariel_site_kb",
+    "Script exits 0 only when counts match and health status=ok",
+    "Script exits non-zero when mismatch or error occurs",
+    "Run script and capture one successful execution output"
+  ],
+  "dependencies": [
+    "TASK-0005"
+  ],
+  "timeout_seconds": 2400,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull",
+    "Create script with executable bit",
+    "Run script at least once and capture output",
+    "Write pilot_v1/results/TASK-0006.result.json with transcript and pass/fail details",
+    "git add pilot_v1/scripts/verify_site_kb_consistency.sh pilot_v1/results/TASK-0006.result.json",
+    "git commit -m 'worker: add TASK-0006 consistency verifier and result'",
+    "git push"
+  ],
+  "commands_expected": [
+    "cd ~/mide-pilot && git pull",
+    "chmod +x pilot_v1/scripts/verify_site_kb_consistency.sh",
+    "./pilot_v1/scripts/verify_site_kb_consistency.sh",
+    "git add pilot_v1/scripts/verify_site_kb_consistency.sh pilot_v1/results/TASK-0006.result.json",
+    "git commit -m 'worker: add TASK-0006 consistency verifier and result'",
+    "git push"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0006",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed|failed",
+    "commands_run": ["..."],
+    "validation_results": ["..."],
+    "errors": ["..."],
+    "evidence": {
+      "health_status": "ok|error",
+      "health_documents": 0,
+      "direct_chroma_count": 0,
+      "script_exit_code": 0,
+      "script_output_excerpt": "..."
+    }
+  }
+}
