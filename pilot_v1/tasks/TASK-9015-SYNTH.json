@@ -1,0 +1,6 @@
+{
+  "task_id": "TASK-9015-SYNTH",
+  "assigned_to": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "executor_script": "pilot_v1/scripts/synth_executor_task_0015.sh"
+}

@@ -1,0 +1,11 @@
+{
+  "task_id": "TASK-0015",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "autopilot_script_path": "pilot_v1/scripts/worker_mtask_autopilot.sh",
+  "dry_run_output": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nAlready up to date.\nSelected task: TASK-0015 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0015.json)\n[dry-run] Would process task TASK-0015\n[dry-run] executor_script=<missing>",
+  "test_cycle_output": "Autopilot synthetic cycle succeeded and produced committed artifact TASK-9015-SYNTH.result.json. Evidence: git log contains commit 5ffe296 with message 'worker: autopilot result TASK-9015-SYNTH'; result content shows execution_status=completed, executor_script=pilot_v1/scripts/synth_executor_task_0015.sh, exit_code=0, stdout_excerpt='SYNTH_EXECUTOR_OK', stderr_excerpt='Synthetic stderr line'.",
+  "status_file": "pilot_v1/state/worker_autopilot_status.json",
+  "errors": [],
+  "timestamp_utc": "2026-04-22T18:02:56Z"
+}
