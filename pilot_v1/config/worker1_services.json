@@ -1,0 +1,26 @@
+{
+  "worker_id": "ubuntu-worker-01",
+  "worker_name": "ubuntu-atlas-01",
+  "services": {
+    "site_kb_server": {
+      "local_port": 8091,
+      "public_url": "https://jawed-lapel-dispersed.ngrok-free.dev",
+      "status": "down"
+    },
+    "ollama": {
+      "local_port": 11434,
+      "model_primary": "qwen2.5",
+      "version": "ollama version is 0.21.0",
+      "proxy_endpoint": "https://jawed-lapel-dispersed.ngrok-free.dev/api/ollama",
+      "status": "ok"
+    },
+    "code_server": {
+      "local_port": 8092,
+      "public_url": "https://jawed-lapel-dispersed.ngrok-free.dev",
+      "password": "mide-ide-2026",
+      "project_root": "/home/larieladmin/mide-pilot",
+      "status": "down"
+    }
+  },
+  "timestamp_utc": "2026-04-22T22:29:39Z"
+}
