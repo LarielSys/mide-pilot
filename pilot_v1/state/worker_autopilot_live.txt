@@ -1,17 +1,13 @@
 Autopilot Live Status
-updated_utc: 2026-04-22T22:55:08Z
+updated_utc: 2026-04-22T22:55:42Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
-last_task_processed: TASK-0035
+last_task_processed: MTASK-0033-RETRY2
 poll_seconds: 180
 note: Task completed successfully.
 
 Recent Events (latest 20):
-2026-04-22T21:56:16Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=31, eligible=0, mismatched=1.
-2026-04-22T21:59:16Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=31, eligible=0, mismatched=1.
-2026-04-22T22:02:17Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=31, eligible=0, mismatched=1.
-2026-04-22T22:05:18Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=31, eligible=0, mismatched=1.
 2026-04-22T22:08:19Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=31, eligible=0, mismatched=1.
 2026-04-22T22:29:27Z | mode=running | last_task= | note=Autopilot started.
 2026-04-22T22:29:27Z | mode=running | last_task=MTASK-0030 | note=Task failed: executor script non-zero exit.
@@ -28,3 +24,7 @@ Recent Events (latest 20):
 2026-04-22T22:55:07Z | mode=idle | last_task=MTASK-0033-RETRY3 | note=Forced task cycle finished.
 2026-04-22T22:55:08Z | mode=running | last_task= | note=Autopilot started.
 2026-04-22T22:55:08Z | mode=running | last_task=TASK-0035 | note=Task completed successfully.
+2026-04-22T22:55:08Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-22T22:55:08Z | mode=idle | last_task=TASK-0035 | note=Forced task cycle finished.
+2026-04-22T22:55:38Z | mode=running | last_task= | note=Autopilot started.
+2026-04-22T22:55:42Z | mode=running | last_task=MTASK-0033-RETRY2 | note=Task completed successfully.

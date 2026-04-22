@@ -62,3 +62,7 @@
 2026-04-22T22:55:07Z | mode=idle | last_task=MTASK-0033-RETRY3 | note=Forced task cycle finished.
 2026-04-22T22:55:08Z | mode=running | last_task= | note=Autopilot started.
 2026-04-22T22:55:08Z | mode=running | last_task=TASK-0035 | note=Task completed successfully.
+2026-04-22T22:55:08Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-22T22:55:08Z | mode=idle | last_task=TASK-0035 | note=Forced task cycle finished.
+2026-04-22T22:55:38Z | mode=running | last_task= | note=Autopilot started.
+2026-04-22T22:55:42Z | mode=running | last_task=MTASK-0033-RETRY2 | note=Task completed successfully.
