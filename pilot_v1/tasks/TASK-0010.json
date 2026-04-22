@@ -1,0 +1,88 @@
+{
+  "task_id": "TASK-0010",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Final pilot audit. Worker reviews the full ledger and confirms all pilot exit criteria are met, then pushes a pilot completion summary.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/Documents/itheia-llm",
+    "larielsystems",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "Count total tasks in ledger and confirm >= 10 completed cycles",
+    "Confirm 0 file edits outside approved allowed_paths across all completed tasks",
+    "Confirm 100% approval-gated apply flow (no result applied without approval artifact)",
+    "Confirm quarantine flow was validated (TASK-0008)",
+    "Confirm full audit trail present for all completed tasks (task + result + approval JSON for each)",
+    "Confirm verify_site_kb_consistency.sh is present and executable",
+    "Confirm Architecture v1 baseline file is present",
+    "Confirm worker_ops_note.txt from TASK-0009 is present",
+    "Produce a pilot completion summary with pass/fail for each exit criterion"
+  ],
+  "dependencies": [
+    "TASK-0009"
+  ],
+  "timeout_seconds": 2400,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull",
+    "Read pilot_v1/state/ledger.json and validate each exit criterion",
+    "Check file presence for all expected artifacts",
+    "Write pilot_v1/results/TASK-0010.result.json",
+    "git add pilot_v1/results/TASK-0010.result.json",
+    "git commit -m 'worker: add TASK-0010 pilot audit completion result'",
+    "git push"
+  ],
+  "commands_expected": [
+    "cd ~/mide-pilot && git pull",
+    "cat pilot_v1/state/ledger.json | python3 -c \"import sys,json; d=json.load(sys.stdin); print(len(d['tasks']), 'tasks in ledger')\"",
+    "ls pilot_v1/tasks/ pilot_v1/results/ pilot_v1/approvals/",
+    "ls pilot_v1/scripts/verify_site_kb_consistency.sh",
+    "ls architecture/mide_architecture_v1.json",
+    "ls pilot_v1/state/worker_ops_note.txt"
+  ],
+  "pilot_exit_criteria": [
+    "10 tasks completed",
+    "0 unauthorized file edits",
+    "100% approval-gated apply flow",
+    "quarantine flow validated at least once",
+    "full task audit trail present for all completed tasks"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0010",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed|failed",
+    "commands_run": ["..."],
+    "validation_results": ["..."],
+    "errors": ["..."],
+    "evidence": {
+      "total_ledger_tasks": 0,
+      "unauthorized_edits": 0,
+      "approval_gated_tasks": 0,
+      "quarantine_validated": true,
+      "audit_trail_complete": true,
+      "artifacts_present": {
+        "verify_site_kb_consistency.sh": true,
+        "mide_architecture_v1.json": true,
+        "worker_ops_note.txt": true
+      }
+    },
+    "pilot_completion_summary": {
+      "10_tasks_completed": "PASS|FAIL",
+      "0_unauthorized_edits": "PASS|FAIL",
+      "100_pct_approval_gated": "PASS|FAIL",
+      "quarantine_validated": "PASS|FAIL",
+      "full_audit_trail": "PASS|FAIL",
+      "overall": "PASS|FAIL"
+    }
+  }
+}
