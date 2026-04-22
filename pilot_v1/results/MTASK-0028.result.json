@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0028",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0028\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nsite_server=/home/larieladmin/Documents/itheia-llm/site_kb_server.py\nweather_routes_patch=applied\nrestart_mode=nohup\nerror=local_endpoint_check_failed",
+  "stderr_excerpt": "curl: (7) Failed to connect to 127.0.0.1 port 8091 after 0 ms: Couldn't connect to server\ncurl: (7) Failed to connect to 127.0.0.1 port 8091 after 0 ms: Couldn't connect to server",
+  "timestamp_utc": "2026-04-22T20:43:49Z"
+}
