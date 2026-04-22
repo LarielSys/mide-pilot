@@ -1,0 +1,12 @@
+{
+  "task_id": "TASK-0005",
+  "reviewed_by": "windows-main",
+  "decision": "approve",
+  "decision_reason": "All required diagnostics passed. Worker identified the backend Chroma path mismatch and provided canonical verification commands with evidence.",
+  "approved_actions": [
+    "mark TASK-0005 completed",
+    "adopt site_kb_chromadb as canonical path for lariel_site_kb checks on port 8091 workflow",
+    "proceed to TASK-0006 planning"
+  ],
+  "timestamp_utc": "2026-04-21T00:00:00Z"
+}

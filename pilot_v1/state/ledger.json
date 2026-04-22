@@ -68,6 +68,18 @@
       "approval_file": "approvals/TASK-0004A.approval.json",
       "summary": "Approved with exception: evidence complete except direct Chroma query mismatch; follow-up issued as TASK-0005.",
       "timestamp_utc": "2026-04-21T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0005",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Diagnose and resolve Chroma collection path mismatch between Flask /health output and direct shell access.",
+      "result_file": "results/TASK-0005.result.json",
+      "approval_file": "approvals/TASK-0005.approval.json",
+      "summary": "Passed. Canonical backend Chroma path identified as site_kb_chromadb with lariel_site_kb count 49; mismatch explained by separate services and data dirs.",
+      "timestamp_utc": "2026-04-21T00:00:00Z"
     }
   ]
 }
