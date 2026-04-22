@@ -1,0 +1,20 @@
+{
+  "certification": "MIDE_PILOT_V1_COMPLETE",
+  "certified_by": "windows-main",
+  "certified_at": "2026-04-21T00:00:00Z",
+  "pilot_exit_criteria": {
+    "10_tasks_completed": "PASS",
+    "0_unauthorized_edits": "PASS",
+    "100_pct_approval_gated": "PASS",
+    "quarantine_validated": "PASS",
+    "full_audit_trail": "PASS",
+    "overall": "PASS"
+  },
+  "ledger_task_count": 10,
+  "worker_nodes_certified": ["ubuntu-worker-01"],
+  "transport_layer": "git/github (LarielSys/mide-pilot)",
+  "architecture_baseline": "architecture/mide_architecture_v1.json",
+  "guardrail_script": "pilot_v1/scripts/verify_site_kb_consistency.sh",
+  "status": "operational",
+  "note": "MIDE pilot_v1 is certified. The system is ready for real work dispatch under the approval-gated orchestration loop."
+}
