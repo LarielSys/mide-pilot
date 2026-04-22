@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-0008",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "commands_run": [
+    "cd ~/mide-pilot && git pull",
+    "bash -lc 'false'",
+    "bash -lc 'exit 2'",
+    "bash -lc 'python3 -c \"import sys; sys.exit(3)\"'",
+    "date -u +%Y-%m-%dT%H:%M:%SZ"
+  ],
+  "validation_results": [
+    "PASS: Simulated three consecutive bounded task failures without modifying protected paths",
+    "PASS: Recorded each failure event with timestamp, exit code, and simulated reason",
+    "PASS: Quarantine status activated at policy level after third failure based on ledger threshold=3 and checklist stop condition",
+    "PASS: Demonstrated post-quarantine behavior is currently flagged, not auto-blocked, because no runtime enforcement mechanism exists in pilot_v1",
+    "PASS: Included reset/unquarantine recommendation for Main approval"
+  ],
+  "errors": [],
+  "evidence": {
+    "failure_events": [
+      {
+        "attempt": 1,
+        "exit_code": 1,
+        "timestamp_utc": "2026-04-22T02:28:35Z",
+        "reason": "simulated"
+      },
+      {
+        "attempt": 2,
+        "exit_code": 2,
+        "timestamp_utc": "2026-04-22T02:28:35Z",
+        "reason": "simulated"
+      },
+      {
+        "attempt": 3,
+        "exit_code": 3,
+        "timestamp_utc": "2026-04-22T02:28:35Z",
+        "reason": "simulated"
+      }
+    ],
+    "quarantine_triggered": true,
+    "quarantine_rule": "3 consecutive failures",
+    "post_quarantine_enforcement": "flagged",
+    "post_quarantine_observation": {
+      "timestamp_utc": "2026-04-22T02:28:35Z",
+      "command": "bash -lc 'echo post-quarantine-attempt'",
+      "output": "post-quarantine-attempt",
+      "exit_code": 0,
+      "interpretation": "Execution is not auto-blocked by current repo tooling; it must be flagged and handled procedurally by Main review."
+    },
+    "policy_sources": {
+      "ledger_threshold": 3,
+      "checklist_stop_conditions": [
+        "Any blocked path touched -> reject and quarantine check",
+        "3 consecutive failures -> quarantine worker",
+        "Missing validation evidence -> reject"
+      ]
+    },
+    "reset_recommendation": "Require Main to review TASK-0008.result.json, explicitly acknowledge the simulated quarantine event, then write an approval or override artifact before assigning further worker tasks. If stronger enforcement is desired, add a persisted worker state/quarantine flag in pilot_v1/state and gate task execution against it."
+  }
+}
