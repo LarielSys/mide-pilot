@@ -5,7 +5,7 @@
   "assigned_to": "ubuntu-worker-01",
   "required_worker_id": "ubuntu-worker-01",
   "executor_script": "pilot_v1/scripts/exec_task_0032_recover_ap_and_drain_0033_retries.sh",
-  "objective": "Recover stalled autopilot logging by restarting AP cleanly and force-draining MTASK-0033-RETRY2 and MTASK-0033-RETRY3 if they are still pending.",
+  "objective": "DEPRECATED: replaced by MTASK protocol tasks. Do not execute.",
   "moss_labels": [
     "moss/worker/recovery",
     "moss/autopilot/logging",
@@ -40,7 +40,7 @@
   ],
   "dependencies": [],
   "timeout_seconds": 1800,
-  "status": "approved_to_execute",
+  "status": "deprecated_do_not_execute",
   "execution_instructions": [
     "Run on ubuntu-worker-01 via autopilot",
     "Execute only executor_script",

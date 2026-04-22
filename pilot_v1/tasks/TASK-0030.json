@@ -5,7 +5,7 @@
   "assigned_to": "ubuntu-worker-01",
   "required_worker_id": "ubuntu-worker-01",
   "executor_script": "pilot_v1/scripts/exec_task_0030_pull_and_force_mtask_0031.sh",
-  "objective": "Recover Worker 1 autopilot from stale/no-MTASK state by pulling latest repo, validating MTASK discovery support, force-executing MTASK-0031 once, and restarting autopilot continuous service.",
+  "objective": "DEPRECATED: replaced by MTASK protocol tasks. Do not execute.",
   "moss_labels": [
     "moss/worker/recovery",
     "moss/autopilot/mtask-queue",
@@ -40,7 +40,7 @@
   ],
   "dependencies": [],
   "timeout_seconds": 1200,
-  "status": "approved_to_execute",
+  "status": "deprecated_do_not_execute",
   "execution_instructions": [
     "Run on ubuntu-worker-01 via autopilot",
     "Execute only executor_script",

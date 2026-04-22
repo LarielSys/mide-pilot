@@ -5,7 +5,7 @@
   "assigned_to": "ubuntu-worker-01",
   "required_worker_id": "ubuntu-worker-01",
   "executor_script": "pilot_v1/scripts/exec_task_0031_require_vscode_human_for_password.sh",
-  "objective": "Enforce policy across MTASK executor scripts: if a command requires a password, the task must request VS human interaction instead of hanging or failing silently.",
+  "objective": "DEPRECATED: replaced by MTASK protocol tasks. Do not execute.",
   "moss_labels": [
     "moss/worker/policy",
     "moss/human-in-the-loop",
@@ -38,7 +38,7 @@
   ],
   "dependencies": [],
   "timeout_seconds": 900,
-  "status": "approved_to_execute",
+  "status": "deprecated_do_not_execute",
   "execution_instructions": [
     "Run on ubuntu-worker-01 via autopilot",
     "Execute only executor_script",
