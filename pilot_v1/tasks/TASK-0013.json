@@ -1,0 +1,49 @@
+{
+  "task_id": "TASK-0013",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Diagnose Flask 500 error on /api/chat. The frontend is now reaching the server (CORS fixed) but getting a 500 response. Check the Flask log and identify the crash cause.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1",
+    "~/Documents/itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "Capture the last 50 lines of ~/Documents/itheia-llm/site_kb.log",
+    "Send a test POST to /api/chat locally and capture the full response and any traceback",
+    "Report the exact exception and line number causing the 500"
+  ],
+  "dependencies": [
+    "TASK-0012"
+  ],
+  "timeout_seconds": 120,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull --ff-only origin main",
+    "Run: tail -50 ~/Documents/itheia-llm/site_kb.log",
+    "Run a local test POST: curl -s -X POST http://127.0.0.1:8091/api/chat -H 'Content-Type: application/json' -d '{\"message\": \"hello\", \"session_id\": null}' and capture full output",
+    "If the log does not show the error, check: curl -s -X POST http://127.0.0.1:8091/api/chat -H 'Content-Type: application/json' -d '{\"message\": \"hello\"}' -v 2>&1 | tail -40",
+    "Write pilot_v1/results/TASK-0013.result.json with the log tail and curl response",
+    "git add, git commit -m 'worker: TASK-0013 result — Flask 500 diagnostic', git push"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0013",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "log_tail": "<last 50 lines of site_kb.log>",
+    "curl_response": "<full curl output including any traceback>",
+    "error_summary": "<brief description of root cause>",
+    "errors": [],
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
