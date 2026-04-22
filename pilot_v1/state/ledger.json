@@ -188,6 +188,18 @@
       "approval_file": "approvals/TASK-0015.approval.json",
       "summary": "Approved. Autopilot script delivered with lock, polling, worker assignment filtering, and result commit/push behavior. Dry-run and synthetic cycle evidence provided (TASK-9015-SYNTH committed by worker).",
       "timestamp_utc": "2026-04-22T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0019",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Enable persistent worker autopilot service and heartbeat visibility.",
+      "result_file": "results/TASK-0019.result.json",
+      "approval_file": "approvals/TASK-0019.approval.json",
+      "summary": "Approved. Worker repaired service startup, confirmed systemd user service active, autopilot process running in background, status file updating, and heartbeat commit evidence present.",
+      "timestamp_utc": "2026-04-22T00:00:00Z"
     }
   ]
 }

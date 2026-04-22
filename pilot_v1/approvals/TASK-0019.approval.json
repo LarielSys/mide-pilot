@@ -1,0 +1,12 @@
+{
+  "task_id": "TASK-0019",
+  "reviewed_by": "windows-main",
+  "decision": "approve",
+  "decision_reason": "Autopilot persistence fix verified. Worker reported startup_mode=systemd-user, service_state=active, background process running, status file updating, and heartbeat commit evidence present (b39af2c).",
+  "approved_actions": [
+    "mark TASK-0019 completed",
+    "accept persistent worker autopilot service configuration",
+    "use heartbeat/status artifacts as ongoing poll visibility"
+  ],
+  "timestamp_utc": "2026-04-22T00:00:00Z"
+}
