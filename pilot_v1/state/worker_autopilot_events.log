@@ -75,3 +75,4 @@
 2026-04-22T23:14:17Z | mode=idle | last_task=MTASK-0036 | note=Forced task cycle finished.
 2026-04-22T23:14:17Z | mode=running | last_task= | note=Autopilot started.
 2026-04-22T23:14:17Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=39, eligible=0, mismatched=0.
+2026-04-22T23:17:18Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=39, eligible=0, mismatched=0.
