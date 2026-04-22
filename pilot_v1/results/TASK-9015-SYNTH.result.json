@@ -1,0 +1,11 @@
+{
+  "task_id": "TASK-9015-SYNTH",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "executor_script": "pilot_v1/scripts/synth_executor_task_0015.sh",
+  "exit_code": 0,
+  "stdout_excerpt": "SYNTH_EXECUTOR_OK",
+  "stderr_excerpt": "Synthetic stderr line",
+  "error": "",
+  "timestamp_utc": "2026-04-22T18:00:27Z"
+}

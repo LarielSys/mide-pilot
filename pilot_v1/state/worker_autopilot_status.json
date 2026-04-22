@@ -1,0 +1,6 @@
+{
+  "worker_id": "ubuntu-worker-01",
+  "mode": "live",
+  "last_run_utc": "2026-04-22T18:00:27Z",
+  "last_task_processed": "TASK-9015-SYNTH"
+}
