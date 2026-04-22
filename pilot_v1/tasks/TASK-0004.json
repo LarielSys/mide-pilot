@@ -1,0 +1,48 @@
+{
+  "task_id": "TASK-0004",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "First real two-machine Git loop. Pull this task from GitHub on Ubuntu, perform a RAG knowledge base status snapshot, push result back to GitHub for Main review.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot",
+    "~/Documents/itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Confirm git pull from origin/main succeeded on Ubuntu",
+    "Confirm ChromaDB collection name and document count",
+    "Confirm Ollama model name and status",
+    "Confirm Flask backend /health returns status=ok",
+    "List any .txt or .md files in the itheia-llm source folder not yet confirmed ingested",
+    "Report total tokens or chunk count if accessible"
+  ],
+  "dependencies": [
+    "TASK-0003"
+  ],
+  "timeout_seconds": 1800,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "On Ubuntu: cd ~/mide-pilot && git pull",
+    "Confirm this file (TASK-0004.json) is present after pull",
+    "Run the validation commands below",
+    "Write pilot_v1/results/TASK-0004.result.json",
+    "git add pilot_v1/results/TASK-0004.result.json",
+    "git commit -m 'worker: add TASK-0004 result'",
+    "git push",
+    "Tell Windows Main to pull"
+  ],
+  "commands_expected": [
+    "cd ~/mide-pilot && git pull",
+    "curl -s http://127.0.0.1:8091/health",
+    "ls ~/Documents/itheia-llm/",
+    "python3 -c \"import chromadb; c=chromadb.PersistentClient(path='chromadb_data'); col=c.get_collection('lariel_site_kb'); print(col.count())\"",
+    "ollama list"
+  ]
+}
