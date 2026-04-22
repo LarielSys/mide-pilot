@@ -6,6 +6,18 @@ Stand up MIDE as a supervisor-controlled orchestration workspace using:
 1. Main node: Windows machine (operator + Main IDE)
 2. Worker node: Ubuntu machine (execution agent)
 
+## Architecture Source Of Truth (Moss)
+MIDE uses the Moss system architecture as the canonical map of the system because it can connect, branch, and label moving parts.
+
+Main IDE orchestration should compare active program state against Moss architecture labels before assigning worker execution.
+
+## Task Center And Instruction Naming
+For the current phase, Git is the task center (task transport, audit trail, approvals, and ledger state).
+
+Main IDE instructions are called mtasks (Moss tasks).
+
+In v1 files, existing JSON filenames and folders still use task naming for compatibility.
+
 ## v1 Rules (Locked)
 1. Main IDE is sole orchestrator
 2. Exclusive file locks

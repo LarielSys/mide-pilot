@@ -1,5 +1,7 @@
 {
   "task_id": "TASK-0015",
+  "patch_version": "v1.1",
+  "patch_reason": "Clarify continuous worker handoff for follow-on mtasks in multi-worker mode.",
   "created_by": "windows-main",
   "assigned_to": "ubuntu-worker-01",
   "objective": "Implement Phase-1 worker mtask autopilot so the worker can continuously run the loop: git pull -> detect next assigned approved_to_execute mtask -> execute bounded script -> write result -> git add/commit/push, without manual step-by-step intervention.",
@@ -40,6 +42,7 @@
     "Script must execute only declared executor_script from task, if present",
     "Script must write structured failure result on execution or validation failure",
     "Script must git add/commit/push result artifacts after each processed task",
+    "After TASK-0015 result push, autopilot process remains active and ready to claim the next assigned task without manual restart",
     "Provide a dry-run mode showing candidate task selection and no writes",
     "Run one real test cycle against a synthetic local test mtask and provide evidence"
   ],
@@ -62,6 +65,7 @@
     "Commit format for autopilot output: worker: autopilot result <TASK-ID>",
     "Add dry-run flag: --dry-run",
     "Create a short operator note in pilot_v1/state/worker_autopilot_status.json including last_run_utc and last_task_processed",
+    "After pushing TASK-0015.result.json, keep autopilot running so it can immediately claim TASK-0016 if present and assigned",
     "Write pilot_v1/results/TASK-0015.result.json with implementation evidence and test-cycle output",
     "git add, git commit -m 'worker: TASK-0015 result -- autopilot loop implemented', git push"
   ],

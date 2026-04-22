@@ -3,6 +3,15 @@
 ## Purpose
 Define the exact operating loop for the Windows Main IDE acting as the supervisor in the two-machine MIDE pilot.
 
+## Moss Alignment Rule
+Moss architecture is the canonical system map.
+
+Before dispatch, Main IDE compares requested program changes against Moss-connected components, branches, and labels to prevent drift and route execution to the correct worker scope.
+
+Instruction unit naming: mtask (Moss task).
+
+In v1 repository paths, mtask artifacts are stored in existing task/result/approval JSON structures for backward compatibility.
+
 ## Main IDE Responsibilities
 The Main IDE is responsible for:
 
@@ -35,6 +44,8 @@ Write a task JSON file that includes:
 6. Dependencies
 7. Timeout
 8. Risk level
+
+Note: In operating language this is an mtask contract, even if the file path uses task naming.
 
 ### 3. Commit and push task state
 Main commits the new task to shared Git state and pushes it.
