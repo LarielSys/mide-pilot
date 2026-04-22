@@ -1,0 +1,254 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
+WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
+
+BACKEND_ROOT="${REPO_ROOT}/pilot_v1/customide/backend"
+APP_ROOT="${BACKEND_ROOT}/app"
+ROUTES_ROOT="${APP_ROOT}/routes"
+
+cd "${REPO_ROOT}"
+
+echo "task=MTASK-0037"
+echo "worker_name=${WORKER_NAME}"
+echo "worker_id=${WORKER_ID}"
+echo "repo_root=${REPO_ROOT}"
+
+git fetch origin
+git pull --ff-only origin main
+
+mkdir -p "${ROUTES_ROOT}"
+
+cat > "${BACKEND_ROOT}/requirements.txt" <<'REQ'
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+httpx==0.27.2
+pydantic==2.9.2
+pydantic-settings==2.5.2
+python-dotenv==1.0.1
+REQ
+
+cat > "${APP_ROOT}/__init__.py" <<'PY'
+PY
+
+cat > "${APP_ROOT}/settings.py" <<'PY'
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    app_name: str = "CustomIDE Backend"
+    app_env: str = "development"
+    app_host: str = "127.0.0.1"
+    app_port: int = 5555
+
+    # This file is produced by MTASK-0034 on Worker 1 and consumed by the backend.
+    worker_services_config_path: str = "pilot_v1/config/worker1_services.json"
+
+    request_timeout_seconds: int = 30
+
+    model_config = SettingsConfigDict(env_prefix="CUSTOMIDE_", extra="ignore")
+
+
+settings = Settings()
+PY
+
+cat > "${APP_ROOT}/services.py" <<'PY'
+import json
+from pathlib import Path
+from typing import Any, Dict
+
+from .settings import settings
+
+
+def load_worker_services(repo_root: Path) -> Dict[str, Any]:
+    cfg = repo_root / settings.worker_services_config_path
+    if not cfg.exists():
+        return {
+            "status": "missing",
+            "path": str(cfg),
+            "services": {},
+        }
+
+    with cfg.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    return {
+        "status": "ok",
+        "path": str(cfg),
+        "services": data,
+    }
+PY
+
+cat > "${ROUTES_ROOT}/__init__.py" <<'PY'
+PY
+
+cat > "${ROUTES_ROOT}/health.py" <<'PY'
+from datetime import datetime, timezone
+
+from fastapi import APIRouter
+
+from ..settings import settings
+
+router = APIRouter(prefix="/health", tags=["health"])
+
+
+@router.get("")
+def health() -> dict:
+    return {
+        "status": "ok",
+        "service": settings.app_name,
+        "env": settings.app_env,
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+    }
+PY
+
+cat > "${ROUTES_ROOT}/config.py" <<'PY'
+from pathlib import Path
+
+from fastapi import APIRouter
+
+from ..services import load_worker_services
+
+router = APIRouter(prefix="/api/config", tags=["config"])
+
+
+@router.get("/services")
+def get_services() -> dict:
+    repo_root = Path(__file__).resolve().parents[3]
+    return load_worker_services(repo_root)
+PY
+
+cat > "${ROUTES_ROOT}/ollama_proxy.py" <<'PY'
+from pathlib import Path
+
+import httpx
+from fastapi import APIRouter, HTTPException
+
+from ..services import load_worker_services
+from ..settings import settings
+
+router = APIRouter(prefix="/api/ollama", tags=["ollama"])
+
+
+def _resolve_target_url() -> str:
+    repo_root = Path(__file__).resolve().parents[3]
+    svc = load_worker_services(repo_root)
+    if svc.get("status") != "ok":
+        raise HTTPException(status_code=503, detail="worker1_services.json missing")
+
+    services = svc.get("services") or {}
+
+    for key in ("ollama_generate_url", "ollama_generate", "ollama_proxy_generate", "ollama_url"):
+        value = services.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+
+    raise HTTPException(status_code=503, detail="No Ollama endpoint found in worker services config")
+
+
+@router.get("/health")
+def ollama_health() -> dict:
+    target = _resolve_target_url()
+    return {
+        "status": "configured",
+        "target": target,
+    }
+
+
+@router.post("/generate")
+def ollama_generate(payload: dict) -> dict:
+    target = _resolve_target_url()
+
+    try:
+        with httpx.Client(timeout=settings.request_timeout_seconds) as client:
+            res = client.post(target, json=payload)
+            res.raise_for_status()
+            return res.json()
+    except httpx.HTTPError as exc:
+        raise HTTPException(status_code=502, detail=f"Upstream Ollama error: {exc}") from exc
+PY
+
+cat > "${APP_ROOT}/main.py" <<'PY'
+from fastapi import FastAPI
+
+from .routes import config, health, ollama_proxy
+from .settings import settings
+
+app = FastAPI(title=settings.app_name)
+
+app.include_router(health.router)
+app.include_router(config.router)
+app.include_router(ollama_proxy.router)
+
+
+@app.get("/")
+def root() -> dict:
+    return {
+        "name": settings.app_name,
+        "status": "running",
+        "health": "/health",
+    }
+PY
+
+cat > "${BACKEND_ROOT}/README.md" <<'MD'
+# CustomIDE Backend (Phase 3 Scaffold)
+
+This scaffold is generated by `MTASK-0037` and provides the initial FastAPI backend for the Windows IDE backend contract.
+
+## Layout
+
+- `app/main.py`: FastAPI entrypoint
+- `app/settings.py`: runtime config
+- `app/services.py`: worker services config loader
+- `app/routes/health.py`: health endpoint
+- `app/routes/config.py`: worker services endpoint
+- `app/routes/ollama_proxy.py`: basic Ollama passthrough
+
+## Local Run
+
+```bash
+cd pilot_v1/customide/backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --host 127.0.0.1 --port 5555 --reload
+```
+
+## Endpoints
+
+- `GET /health`
+- `GET /api/config/services`
+- `GET /api/ollama/health`
+- `POST /api/ollama/generate`
+MD
+
+python3 -m py_compile \
+  "${APP_ROOT}/settings.py" \
+  "${APP_ROOT}/services.py" \
+  "${ROUTES_ROOT}/health.py" \
+  "${ROUTES_ROOT}/config.py" \
+  "${ROUTES_ROOT}/ollama_proxy.py" \
+  "${APP_ROOT}/main.py"
+
+echo "backend_scaffold=created"
+echo "backend_root=${BACKEND_ROOT}"
+
+git add \
+  "pilot_v1/customide/backend/requirements.txt" \
+  "pilot_v1/customide/backend/README.md" \
+  "pilot_v1/customide/backend/app/__init__.py" \
+  "pilot_v1/customide/backend/app/settings.py" \
+  "pilot_v1/customide/backend/app/services.py" \
+  "pilot_v1/customide/backend/app/main.py" \
+  "pilot_v1/customide/backend/app/routes/__init__.py" \
+  "pilot_v1/customide/backend/app/routes/health.py" \
+  "pilot_v1/customide/backend/app/routes/config.py" \
+  "pilot_v1/customide/backend/app/routes/ollama_proxy.py"
+
+git commit -m "customide: scaffold phase3 backend FastAPI service (MTASK-0037)" || true
+git push origin main || true
+
+echo "timestamp_utc=$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
