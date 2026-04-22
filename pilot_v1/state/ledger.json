@@ -200,6 +200,18 @@
       "approval_file": "approvals/TASK-0019.approval.json",
       "summary": "Approved. Worker repaired service startup, confirmed systemd user service active, autopilot process running in background, status file updating, and heartbeat commit evidence present.",
       "timestamp_utc": "2026-04-22T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0020",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Autopilot smoke test: verify worker can autonomously pick up and execute a timestamp check task.",
+      "result_file": "results/TASK-0020.result.json",
+      "approval_file": "approvals/TASK-0020.approval.json",
+      "summary": "Approved. First fully autonomous execution confirmed. Worker picked up TASK-0020 without human trigger. Timestamp output: 2026-04-22T18:48:47Z / epoch 1776883727. Worker identity verified correct.",
+      "timestamp_utc": "2026-04-22T00:00:00Z"
     }
   ]
 }
