@@ -1,0 +1,55 @@
+{
+  "task_id": "TASK-0011",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "System restart recovery. Machine rebooted — restart all required backend services: Ollama, site_kb_server.py (Flask RAG on :8091), and ngrok tunnel. Confirm each is healthy before completing.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1",
+    "~/Documents/itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "Confirm Ollama is running (curl http://127.0.0.1:11434/ returns response)",
+    "Confirm site_kb_server.py is running on :8091 (curl http://127.0.0.1:8091/health returns HTTP 200 with documents count)",
+    "Confirm ngrok tunnel is active and public URL is obtained",
+    "Report the live ngrok public URL so Main can update the chat endpoint",
+    "If any service fails to start, report exact error output"
+  ],
+  "dependencies": [
+    "TASK-0010"
+  ],
+  "timeout_seconds": 300,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull --ff-only origin main",
+    "Step 1 — Ollama: check 'curl -s http://127.0.0.1:11434/' — if no response, run 'ollama serve &' and wait ~5s then recheck",
+    "Step 2 — Flask RAG: check 'curl -s http://127.0.0.1:8091/health' — if no response, run 'nohup python3 ~/Documents/itheia-llm/site_kb_server.py > ~/Documents/itheia-llm/site_kb.log 2>&1 &' and wait ~5s then recheck",
+    "Step 3 — ngrok: check 'curl -s http://127.0.0.1:4040/api/tunnels' — if no tunnels, start ngrok with 'nohup ngrok http 8091 > ~/ngrok.log 2>&1 &', wait ~5s, then query http://127.0.0.1:4040/api/tunnels and extract the public_url",
+    "Write pilot_v1/results/TASK-0011.result.json with evidence",
+    "git add, git commit -m 'worker: TASK-0011 result — backend services restored', git push"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0011",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "services": {
+      "ollama": "running | failed",
+      "site_kb_server": "running | failed",
+      "ngrok": "running | failed"
+    },
+    "ngrok_public_url": "<live URL or null>",
+    "health_check_response": "<paste of /health endpoint JSON>",
+    "errors": [],
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
