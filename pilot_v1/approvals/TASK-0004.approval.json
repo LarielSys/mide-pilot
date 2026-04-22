@@ -1,0 +1,19 @@
+{
+  "task_id": "TASK-0004",
+  "reviewed_by": "windows-main",
+  "decision": "reject",
+  "decision_reason": "Submitted result is a placeholder and does not include required validation evidence (health output, Chroma count, Ollama status, ingestion gap list, or command transcript).",
+  "required_rework": [
+    "Provide full command list actually executed on Ubuntu",
+    "Include raw /health JSON output",
+    "Include Chroma collection count output",
+    "Include ollama list output excerpt",
+    "Include candidate un-ingested .txt/.md files list",
+    "State any errors and workarounds"
+  ],
+  "approved_actions": [
+    "close TASK-0004 as rejected",
+    "issue TASK-0004A retry"
+  ],
+  "timestamp_utc": "2026-04-21T00:00:00Z"
+}

@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-0004A",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Retry TASK-0004 with full evidence. Produce a complete RAG knowledge base status snapshot from Ubuntu and push results through Git.",
+  "priority": "high",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot",
+    "~/Documents/itheia-llm"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Confirm git pull from origin/main succeeded on Ubuntu",
+    "Confirm Chroma collection name and document count",
+    "Confirm Ollama models list includes active model",
+    "Confirm backend /health status=ok",
+    "List .txt/.md files under ~/Documents/itheia-llm not yet confirmed ingested",
+    "Include command transcript with outputs"
+  ],
+  "dependencies": [
+    "TASK-0004"
+  ],
+  "timeout_seconds": 2400,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu only",
+    "cd ~/mide-pilot && git pull",
+    "Run required commands and capture outputs",
+    "Write pilot_v1/results/TASK-0004A.result.json using the schema below",
+    "git add pilot_v1/results/TASK-0004A.result.json",
+    "git commit -m 'worker: add TASK-0004A result'",
+    "git push"
+  ],
+  "commands_expected": [
+    "cd ~/mide-pilot && git pull",
+    "curl -s http://127.0.0.1:8091/health",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='chromadb_data'); col=c.get_collection('lariel_site_kb'); print({'collection': col.name, 'count': col.count()})\"",
+    "ollama list",
+    "cd ~/Documents/itheia-llm && find . -maxdepth 3 -type f \\( -name '*.txt' -o -name '*.md' \\) | sort"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0004A",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed|failed",
+    "commands_run": ["..."],
+    "validation_results": ["..."],
+    "errors": ["..."],
+    "evidence": {
+      "health_output": {},
+      "chroma": {"collection": "lariel_site_kb", "count": 0},
+      "ollama_models_excerpt": "...",
+      "candidate_uningested_files": ["..."]
+    }
+  }
+}

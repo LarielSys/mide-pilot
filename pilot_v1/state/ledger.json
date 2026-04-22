@@ -44,6 +44,18 @@
       "approval_file": "approvals/TASK-0003.approval.json",
       "summary": "Repo pushed to GitHub. Ubuntu Worker cloned successfully. Git sync loop confirmed operational.",
       "timestamp_utc": "2026-04-21T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0004",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "rejected",
+      "reviewed_by": "windows-main",
+      "objective": "First real two-machine Git loop. Pull this task from GitHub on Ubuntu, perform a RAG knowledge base status snapshot, push result back to GitHub for Main review.",
+      "result_file": "results/TASK-0004.result.json",
+      "approval_file": "approvals/TASK-0004.approval.json",
+      "summary": "Result was placeholder-only and failed required evidence checks; retried as TASK-0004A.",
+      "timestamp_utc": "2026-04-21T00:00:00Z"
     }
   ]
 }
