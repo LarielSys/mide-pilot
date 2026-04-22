@@ -1,0 +1,60 @@
+{
+  "task_id": "TASK-0023",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_task_0023_open_localhost.sh",
+  "objective": "Open the cloned Lariel site on Ubuntu desktop automatically by launching localhost in the browser after confirming HTTP readiness.",
+  "moss_labels": [
+    "moss/worker/automation-loop",
+    "moss/desktop/launcher",
+    "moss/web/localhost-visibility"
+  ],
+  "moss_scope_hash": "pending-main-architecture-snapshot-sha256",
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/results",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/clone"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/Documents/itheia-llm",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "stdout_excerpt confirms localhost server is available",
+    "stdout_excerpt includes opener mode=open-url and target localhost",
+    "stdout_excerpt includes launch_pid",
+    "Autopilot commits and pushes result to origin/main"
+  ],
+  "dependencies": [
+    "TASK-0022"
+  ],
+  "timeout_seconds": 300,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "Commit message format: worker: autopilot result TASK-0023"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0023",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
