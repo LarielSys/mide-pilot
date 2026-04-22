@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-0009",
+  "created_by": "windows-main",
+  "assigned_to": "ubuntu-worker-01",
+  "objective": "Perform the first real low-risk file edit under approval gate by adding a small operational note file and validating no out-of-scope changes.",
+  "priority": "medium",
+  "risk_level": "low",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/state"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/Documents/itheia-llm",
+    "larielsystems",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/approvals",
+    "~/mide-pilot/pilot_v1/results",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "Create exactly one new file: pilot_v1/state/worker_ops_note.txt",
+    "File must contain timestamp, worker id, and one-sentence health summary",
+    "Run git status to confirm only the allowed file changed",
+    "Include command transcript and file content excerpt in result",
+    "Push result and edited file for Main review"
+  ],
+  "dependencies": [
+    "TASK-0008"
+  ],
+  "timeout_seconds": 1800,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker",
+    "Start with cd ~/mide-pilot && git pull",
+    "Create/update only pilot_v1/state/worker_ops_note.txt",
+    "Write pilot_v1/results/TASK-0009.result.json",
+    "git add pilot_v1/state/worker_ops_note.txt pilot_v1/results/TASK-0009.result.json",
+    "git commit -m 'worker: add TASK-0009 low-risk state note edit + result'",
+    "git push"
+  ],
+  "commands_expected": [
+    "cd ~/mide-pilot && git pull",
+    "date -u +%Y-%m-%dT%H:%M:%SZ",
+    "printf 'timestamp_utc=...\\nworker_id=ubuntu-worker-01\\nsummary=...\\n' > pilot_v1/state/worker_ops_note.txt",
+    "git status --short",
+    "cat pilot_v1/state/worker_ops_note.txt"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0009",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed|failed",
+    "commands_run": ["..."],
+    "touched_files": ["..."],
+    "validation_results": ["..."],
+    "errors": ["..."],
+    "evidence": {
+      "git_status_excerpt": "...",
+      "created_file": "pilot_v1/state/worker_ops_note.txt",
+      "file_content_excerpt": "..."
+    }
+  }
+}
