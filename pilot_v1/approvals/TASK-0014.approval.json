@@ -1,0 +1,12 @@
+{
+  "task_id": "TASK-0014",
+  "reviewed_by": "windows-main",
+  "decision": "approve",
+  "decision_reason": "Root cause fixed. Worker patched site_kb_server upstream Ollama call from unsupported /api/chat to working /api/generate request shape. Validation passed: /health 200, local /api/chat 200, public ngrok /api/chat 200.",
+  "approved_actions": [
+    "mark TASK-0014 completed",
+    "accept Ollama endpoint repair as live",
+    "frontend chat is unblocked for production use"
+  ],
+  "timestamp_utc": "2026-04-22T00:00:00Z"
+}

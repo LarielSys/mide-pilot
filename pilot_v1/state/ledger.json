@@ -164,6 +164,18 @@
       "approval_file": "approvals/TASK-0012.approval.json",
       "summary": "CORS preflight now returns Access-Control-Allow-Headers: ngrok-skip-browser-warning. Health check OK. Chat from larielsystems.com is unblocked.",
       "timestamp_utc": "2026-04-22T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0014",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Repair site_kb_server upstream Ollama endpoint so /api/chat no longer returns 500.",
+      "result_file": "results/TASK-0014.result.json",
+      "approval_file": "approvals/TASK-0014.approval.json",
+      "summary": "Worker patched site_kb_server from unsupported Ollama /api/chat to working /api/generate request shape. Validation passed: /health 200, local /api/chat 200, public ngrok /api/chat 200.",
+      "timestamp_utc": "2026-04-22T00:00:00Z"
     }
   ]
 }
