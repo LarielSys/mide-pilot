@@ -1,0 +1,51 @@
+{
+  "task_id": "TASK-0005",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "commands_run": [
+    "cd ~/mide-pilot && git pull",
+    "cd ~/Documents/itheia-llm && pwd && ls -la",
+    "cd ~/Documents/itheia-llm && find . -maxdepth 4 -type d -name '*chroma*' | sort",
+    "cd ~/Documents/itheia-llm && python3 -c \"import os; print('CWD=', os.getcwd())\"",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='chromadb_data'); print([col.name for col in c.list_collections()])\"",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='data/chromadb'); print([col.name for col in c.list_collections()])\"",
+    "curl -s http://127.0.0.1:8091/health",
+    "pgrep -af 'python(3)? (site_kb_server.py|server.py)'",
+    "cd ~/Documents/itheia-llm && rg -n \"chromadb_data|site_kb_chromadb|data/chromadb|PersistentClient|SITE_KB_DB_DIR|CHROMA\" server.py site_kb_server.py ingest.py site_kb_ingest.py",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='site_kb_chromadb'); cols=[col.name for col in c.list_collections()]; print({'path':'site_kb_chromadb','collections':cols,'lariel_site_kb_count':(c.get_collection('lariel_site_kb').count() if 'lariel_site_kb' in cols else None)})\"",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='chromadb_data'); cols=[col.name for col in c.list_collections()]; print({'path':'chromadb_data','collections':cols,'lariel_site_kb_count':(c.get_collection('lariel_site_kb').count() if 'lariel_site_kb' in cols else None)})\""
+  ],
+  "validation_results": [
+    "PASS: Identified exact Chroma persist directory used by running Flask backend as site_kb_chromadb (site_kb_server.py)",
+    "PASS: Listed collections at backend directory: lariel_site_kb",
+    "PASS: Confirmed lariel_site_kb direct count at backend path = 49",
+    "PASS: Compared alternate path chromadb_data; it contains itheia_manual and not lariel_site_kb",
+    "PASS: Recommended canonical path and verification command set provided"
+  ],
+  "errors": [],
+  "evidence": {
+    "backend_reported_collection": "lariel_site_kb",
+    "backend_reported_count": 49,
+    "direct_query_results_by_path": {
+      "chromadb_data": {
+        "collections": [
+          "itheia_manual"
+        ],
+        "lariel_site_kb_count": null
+      },
+      "data/chromadb": {
+        "collections": [],
+        "lariel_site_kb_count": null
+      },
+      "site_kb_chromadb": {
+        "collections": [
+          "lariel_site_kb"
+        ],
+        "lariel_site_kb_count": 49
+      }
+    },
+    "recommended_canonical_path": "~/Documents/itheia-llm/site_kb_chromadb",
+    "recommended_verification_command": "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='site_kb_chromadb'); col=c.get_collection('lariel_site_kb'); print({'collection': col.name, 'count': col.count()})\"",
+    "mismatch_explanation": "Two separate Flask services were observed: server.py uses chromadb_data (collection itheia_manual), while site_kb_server.py uses site_kb_chromadb (collection lariel_site_kb). /health on port 8091 maps to site_kb_server.py and therefore reports lariel_site_kb with 49 docs."
+  }
+}
