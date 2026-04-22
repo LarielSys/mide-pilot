@@ -1,0 +1,12 @@
+{
+  "task_id": "TASK-0006",
+  "reviewed_by": "windows-main",
+  "decision": "approve",
+  "decision_reason": "All required validations passed. Consistency script verifies /health documents and direct Chroma count match (49) and exits 0 on success with explicit non-zero failure branches.",
+  "approved_actions": [
+    "mark TASK-0006 completed",
+    "adopt verify_site_kb_consistency.sh as standard preflight check",
+    "proceed to TASK-0007 planning"
+  ],
+  "timestamp_utc": "2026-04-21T00:00:00Z"
+}

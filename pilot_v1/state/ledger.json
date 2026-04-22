@@ -80,6 +80,18 @@
       "approval_file": "approvals/TASK-0005.approval.json",
       "summary": "Passed. Canonical backend Chroma path identified as site_kb_chromadb with lariel_site_kb count 49; mismatch explained by separate services and data dirs.",
       "timestamp_utc": "2026-04-21T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0006",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Operationalize the Chroma path fix by adding a repeatable verification script that proves /health and direct Chroma counts stay aligned for lariel_site_kb.",
+      "result_file": "results/TASK-0006.result.json",
+      "approval_file": "approvals/TASK-0006.approval.json",
+      "summary": "Passed. Verifier script confirms /health.documents equals direct lariel_site_kb count (49) with correct success/failure exit behavior.",
+      "timestamp_utc": "2026-04-21T00:00:00Z"
     }
   ]
 }
