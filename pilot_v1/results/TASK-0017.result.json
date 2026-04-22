@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0017",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "Hello World from TASK-0017\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\ntimestamp_utc=2026-04-22T18:22:10Z",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-22T18:22:10Z"
+}
