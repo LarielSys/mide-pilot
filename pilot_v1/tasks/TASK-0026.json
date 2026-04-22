@@ -1,0 +1,60 @@
+{
+  "task_id": "MTASK-0026",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_task_0026_weather_live_architecture.sh",
+  "objective": "Architect a live IDE-GUI to Worker-1 weather comparison system (San Diego vs NYC) using MOSS-style dependency schematic outputs.",
+  "moss_labels": [
+    "moss/architecture/system-dependencies",
+    "moss/gui-to-worker/live-http",
+    "moss/weather/compare"
+  ],
+  "moss_scope_hash": "pending-weather-live-architecture-v1",
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/results",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/specs"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/Documents/itheia-llm",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "Creates MOSS-style schematic file for live GUI-to-worker communication",
+    "Creates JSON API contract for compare endpoint",
+    "stdout_excerpt includes generated file paths",
+    "Autopilot commits and pushes result to origin/main"
+  ],
+  "dependencies": [
+    "TASK-0025"
+  ],
+  "timeout_seconds": 300,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "Commit message format: worker: autopilot result MTASK-0026"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0026",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
