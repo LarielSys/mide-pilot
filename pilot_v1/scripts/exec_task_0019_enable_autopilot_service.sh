@@ -12,6 +12,7 @@ WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
 POLL_SECONDS="${POLL_SECONDS:-180}"
 
 mkdir -p "${STATE_DIR}" "$HOME/.config/systemd/user" "$HOME/.config/mide"
+chmod +x "${AUTOPILOT_SCRIPT}"
 
 cat > "$HOME/.config/mide/worker.env" <<EOF
 WORKER_ID=${WORKER_ID}
@@ -31,7 +32,7 @@ Wants=network-online.target
 Type=simple
 WorkingDirectory=${REPO_ROOT}
 EnvironmentFile=%h/.config/mide/worker.env
-ExecStart=${AUTOPILOT_SCRIPT} --worker-id=${WORKER_ID} --poll-seconds=${POLL_SECONDS}
+ExecStart=/usr/bin/bash ${AUTOPILOT_SCRIPT} --worker-id=${WORKER_ID} --poll-seconds=${POLL_SECONDS}
 Restart=always
 RestartSec=5
 StandardOutput=append:${LOG_FILE}

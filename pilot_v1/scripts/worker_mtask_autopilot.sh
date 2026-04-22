@@ -6,7 +6,8 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 TASK_DIR="${REPO_ROOT}/pilot_v1/tasks"
 RESULT_DIR="${REPO_ROOT}/pilot_v1/results"
 STATE_DIR="${REPO_ROOT}/pilot_v1/state"
-LOCK_FILE="${STATE_DIR}/worker_mtask_autopilot.lock"
+RUNTIME_DIR="${HOME}/.config/mide"
+LOCK_FILE="${RUNTIME_DIR}/worker_mtask_autopilot.lock"
 STATUS_FILE="${STATE_DIR}/worker_autopilot_status.json"
 HEARTBEAT_FILE="${STATE_DIR}/worker_autopilot_heartbeat_epoch.txt"
 POLL_SECONDS="${POLL_SECONDS:-180}"
@@ -43,7 +44,13 @@ for arg in "$@"; do
   esac
 done
 
-mkdir -p "${STATE_DIR}" "${RESULT_DIR}"
+mkdir -p "${STATE_DIR}" "${RESULT_DIR}" "${RUNTIME_DIR}"
+
+cleanup() {
+  rm -f "${LOCK_FILE}"
+}
+
+trap cleanup EXIT
 
 now_utc() {
   date -u +"%Y-%m-%dT%H:%M:%SZ"
