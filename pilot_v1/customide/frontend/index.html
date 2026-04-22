@@ -17,6 +17,11 @@
     <section class="pane pane-left">
       <div class="pane-title">Windows Editor</div>
       <textarea id="editor" spellcheck="false">// Start coding here...</textarea>
+      <div class="controls">
+        <button id="btnRunLocal" type="button">Run Local Echo</button>
+        <button id="btnRunRemote" type="button">Run Remote Echo</button>
+      </div>
+      <pre id="execOutput"></pre>
     </section>
 
     <section class="pane pane-right">
@@ -26,6 +31,7 @@
     </section>
   </main>
 
+  <script src="js/config.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
