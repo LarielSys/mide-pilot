@@ -92,6 +92,18 @@
       "approval_file": "approvals/TASK-0006.approval.json",
       "summary": "Passed. Verifier script confirms /health.documents equals direct lariel_site_kb count (49) with correct success/failure exit behavior.",
       "timestamp_utc": "2026-04-21T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0007",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Validate Architecture v1 runtime assumptions on Ubuntu and return a fact-checked architecture evidence bundle.",
+      "result_file": "results/TASK-0007.result.json",
+      "approval_file": "approvals/TASK-0007.approval.json",
+      "summary": "All runtime checks passed. Architecture drift (kimi-k2.6:cloud) reconciled as inactive/scrapped. Baseline updated.",
+      "timestamp_utc": "2026-04-21T00:00:00Z"
     }
   ]
 }

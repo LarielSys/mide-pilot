@@ -83,6 +83,13 @@
         "models": [
           "qwen2.5:14b",
           "qwen2.5:7b"
+        ],
+      "inactive_models": [
+          {
+            "name": "kimi-k2.6:cloud",
+            "status": "inactive",
+            "reason": "requires subscription — trialed and scrapped"
+          }
         ]
       }
     ],
