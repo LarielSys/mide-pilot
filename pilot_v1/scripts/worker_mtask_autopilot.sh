@@ -128,30 +128,31 @@ approved_total = 0
 eligible = 0
 mismatch = 0
 
-for path in glob.glob(os.path.join(task_dir, "TASK-*.json")):
+for pattern in ("TASK-*.json", "MTASK-*.json"):
+  for path in glob.glob(os.path.join(task_dir, pattern)):
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            task = json.load(f)
+      with open(path, "r", encoding="utf-8") as f:
+        task = json.load(f)
     except Exception:
-        continue
+      continue
 
     if task.get("status") != "approved_to_execute":
-        continue
+      continue
 
     approved_total += 1
     task_id = task.get("task_id", "")
     if not task_id:
-        continue
+      continue
 
     result_path = os.path.join(result_dir, f"{task_id}.result.json")
     if os.path.exists(result_path):
-        continue
+      continue
 
     task_worker = task.get("required_worker_id") or task.get("assigned_to")
     if task_worker == worker_id:
-        eligible += 1
+      eligible += 1
     else:
-        mismatch += 1
+      mismatch += 1
 
 print(f"{approved_total}|{eligible}|{mismatch}")
 PY
@@ -181,25 +182,26 @@ import sys
 task_dir, result_dir, worker_id = sys.argv[1:4]
 
 candidates = []
-for path in glob.glob(os.path.join(task_dir, "TASK-*.json")):
+for pattern in ("TASK-*.json", "MTASK-*.json"):
+  for path in glob.glob(os.path.join(task_dir, pattern)):
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            task = json.load(f)
+      with open(path, "r", encoding="utf-8") as f:
+        task = json.load(f)
     except Exception:
-        continue
+      continue
 
     task_id = task.get("task_id", "")
     if not task_id:
-        continue
+      continue
     task_worker = task.get("required_worker_id") or task.get("assigned_to")
     if task_worker != worker_id:
-        continue
+      continue
     if task.get("status") != "approved_to_execute":
-        continue
+      continue
 
     result_path = os.path.join(result_dir, f"{task_id}.result.json")
     if os.path.exists(result_path):
-        continue
+      continue
 
     candidates.append((task_id, path))
 
