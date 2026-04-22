@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0035",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=TASK-0035\nworker_id=ubuntu-worker-01\nforce_once_timeout_seconds=900\nAlready up to date.\nautopilot_stop_mode=systemd-user\nforced_once_start=MTASK-0033-RETRY2\nAutopilot already running for worker ubuntu-worker-01.\nforced_once_done=MTASK-0033-RETRY2\nforced_once_start=MTASK-0033-RETRY3\nFrom https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\n[autopilot] Candidate task: MTASK-0033-RETRY3 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0033-RETRY3.json)\n[autopilot] Executing pilot_v1/scripts/exec_mtask_0033_codeserver_install.sh for MTASK-0033-RETRY3\n<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\nTo https://github.com/LarielSys/mide-pilot.git\n   590cc96..eafcee9  main -> main\nforced_once_done=MTASK-0033-RETRY3\nautopilot_start_mode=systemd-user\ntimestamp_utc=2026-04-22T22:55:08Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD",
+  "timestamp_utc": "2026-04-22T22:55:08Z"
+}
