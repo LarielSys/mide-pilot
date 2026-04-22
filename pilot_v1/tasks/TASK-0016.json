@@ -1,0 +1,65 @@
+{
+  "task_id": "TASK-0016",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_task_0016_poll_guard.sh",
+  "objective": "Validate end-of-task immediate rescan and 3-minute idle task search behavior. Worker must enforce unique worker_id matching and ignore tasks that do not target its ID unless admin password override is supplied.",
+  "moss_labels": [
+    "moss/control-plane/orchestration",
+    "moss/worker/automation-loop",
+    "moss/transport/git-task-center"
+  ],
+  "moss_scope_hash": "pending-main-architecture-snapshot-sha256",
+  "priority": "medium",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": true,
+  "admin_override_rule": "Tasks with mismatched required_worker_id are ignored unless admin override is invoked with a valid ADMIN_OVERRIDE_PASSWORD matching local ADMIN_PASSWORD_SHA256.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/results",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/tasks"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/Documents/itheia-llm",
+    "~/mide-pilot/architecture",
+    "larielsystems"
+  ],
+  "required_validation": [
+    "Autopilot claims TASK-0016 only when required_worker_id matches worker_id",
+    "After one completed task, autopilot immediately rescans for next task before sleeping",
+    "When idle, autopilot sleeps 180 seconds between git/task scans",
+    "Task with mismatched required_worker_id is ignored by default",
+    "Forced cross-worker execution is blocked without admin override password",
+    "Result file pilot_v1/results/TASK-0016.result.json is written",
+    "Autopilot commits and pushes result to origin/main"
+  ],
+  "dependencies": [
+    "TASK-0015"
+  ],
+  "timeout_seconds": 300,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on Ubuntu worker via autopilot",
+    "Worker identity is ubuntu-atlas-01 / ubuntu-worker-01",
+    "Do not execute any script other than executor_script",
+    "Capture stdout and stderr excerpts in result JSON",
+    "Commit message format: worker: autopilot result TASK-0016"
+  ],
+  "result_schema": {
+    "task_id": "TASK-0016",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}

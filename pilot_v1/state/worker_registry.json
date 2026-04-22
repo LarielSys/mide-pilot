@@ -1,0 +1,20 @@
+{
+  "workers": [
+    {
+      "worker_name": "ubuntu-atlas-01",
+      "worker_id": "ubuntu-worker-01",
+      "hostname": "47.17.251.15",
+      "rules": {
+        "task_match_field": "required_worker_id",
+        "fallback_match_field": "assigned_to",
+        "mismatch_action": "ignore",
+        "admin_override": {
+          "enabled": true,
+          "password_source": "worker-local env: ADMIN_OVERRIDE_PASSWORD",
+          "verification": "sha256(AdminOverridePassword) must equal worker-local ADMIN_PASSWORD_SHA256"
+        }
+      }
+    }
+  ],
+  "updated_at_utc": "2026-04-22T00:00:00Z"
+}

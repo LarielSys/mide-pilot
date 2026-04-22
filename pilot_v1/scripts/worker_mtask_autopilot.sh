@@ -10,8 +10,12 @@ LOCK_FILE="${STATE_DIR}/worker_mtask_autopilot.lock"
 STATUS_FILE="${STATE_DIR}/worker_autopilot_status.json"
 POLL_SECONDS="${POLL_SECONDS:-180}"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
+WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
+ADMIN_PASSWORD_SHA256="${ADMIN_PASSWORD_SHA256:-}"
+ADMIN_OVERRIDE_PASSWORD="${ADMIN_OVERRIDE_PASSWORD:-}"
 DRY_RUN="false"
 ONESHOT="false"
+FORCE_TASK_ID=""
 
 for arg in "$@"; do
   case "$arg" in
@@ -26,6 +30,9 @@ for arg in "$@"; do
       ;;
     --poll-seconds=*)
       POLL_SECONDS="${arg#*=}"
+      ;;
+    --force-task=*)
+      FORCE_TASK_ID="${arg#*=}"
       ;;
     *)
       echo "Unknown argument: ${arg}" >&2
@@ -48,6 +55,7 @@ write_status() {
   ts="$(now_utc)"
   cat >"${STATUS_FILE}" <<EOF
 {
+  "worker_name": "${WORKER_NAME}",
   "worker_id": "${WORKER_ID}",
   "mode": "${mode}",
   "last_run_utc": "${ts}",
@@ -56,6 +64,24 @@ write_status() {
   "note": "${note}"
 }
 EOF
+}
+
+hash_sha256() {
+  local input="$1"
+  python3 - "$input" <<'PY'
+import hashlib
+import sys
+
+text = sys.argv[1]
+print(hashlib.sha256(text.encode("utf-8")).hexdigest())
+PY
+}
+
+admin_override_authorized() {
+  if [[ -z "${ADMIN_PASSWORD_SHA256}" || -z "${ADMIN_OVERRIDE_PASSWORD}" ]]; then
+    return 1
+  fi
+  [[ "$(hash_sha256 "${ADMIN_OVERRIDE_PASSWORD}")" == "${ADMIN_PASSWORD_SHA256}" ]]
 }
 
 git_sync() {
@@ -82,7 +108,8 @@ for path in glob.glob(os.path.join(task_dir, "TASK-*.json")):
     task_id = task.get("task_id", "")
     if not task_id:
         continue
-    if task.get("assigned_to") != worker_id:
+    task_worker = task.get("required_worker_id") or task.get("assigned_to")
+    if task_worker != worker_id:
         continue
     if task.get("status") != "approved_to_execute":
         continue
@@ -97,6 +124,20 @@ candidates.sort(key=lambda x: x[0])
 if candidates:
     print(candidates[0][1])
 PY
+}
+
+force_task_file() {
+  if [[ -z "${FORCE_TASK_ID}" ]]; then
+    return 0
+  fi
+
+  local task_file="${TASK_DIR}/${FORCE_TASK_ID}.json"
+  if [[ ! -f "${task_file}" ]]; then
+    echo "[autopilot] Forced task not found: ${FORCE_TASK_ID}" >&2
+    return 1
+  fi
+
+  echo "${task_file}"
 }
 
 task_field() {
@@ -166,12 +207,27 @@ commit_and_push_result() {
 
 process_task() {
   local task_file="$1"
-  local task_id executor_script
+  local task_id executor_script assigned_to required_worker_id
   task_id="$(task_field "${task_file}" "task_id")"
   executor_script="$(task_field "${task_file}" "executor_script")"
+  assigned_to="$(task_field "${task_file}" "assigned_to")"
+  required_worker_id="$(task_field "${task_file}" "required_worker_id")"
 
   if [[ -z "${task_id}" ]]; then
     return 1
+  fi
+
+  if [[ -z "${required_worker_id}" ]]; then
+    required_worker_id="${assigned_to}"
+  fi
+
+  if [[ "${required_worker_id}" != "${WORKER_ID}" ]]; then
+    if [[ -n "${FORCE_TASK_ID}" && "${FORCE_TASK_ID}" == "${task_id}" ]] && admin_override_authorized; then
+      echo "[autopilot] Admin override accepted for ${task_id} (required_worker_id=${required_worker_id}, worker_id=${WORKER_ID})."
+    else
+      echo "[autopilot] Ignoring ${task_id}: required_worker_id=${required_worker_id}, worker_id=${WORKER_ID}."
+      return 0
+    fi
   fi
 
   echo "[autopilot] Candidate task: ${task_id} (${task_file})"
@@ -229,6 +285,18 @@ while true; do
   git_sync
 
   processed_any="false"
+
+  if [[ -n "${FORCE_TASK_ID}" ]]; then
+    task_file="$(force_task_file || true)"
+    if [[ -n "${task_file}" ]]; then
+      process_task "${task_file}"
+      processed_any="true"
+    fi
+
+    write_status "idle" "${FORCE_TASK_ID}" "Forced task cycle finished."
+    break
+  fi
+
   while true; do
     task_file="$(next_task_file || true)"
     if [[ -z "${task_file}" ]]; then

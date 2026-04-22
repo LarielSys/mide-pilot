@@ -1,7 +1,9 @@
 {
   "task_id": "TASK-0001",
   "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
   "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
   "executor_script": "pilot_v1/scripts/example_executor.sh",
   "objective": "Describe the goal clearly",
   "moss_labels": [
@@ -12,6 +14,8 @@
   "priority": "high",
   "risk_level": "medium",
   "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Cross-worker execution is denied unless ADMIN_OVERRIDE_PASSWORD matches local ADMIN_PASSWORD_SHA256 on the worker.",
   "allowed_paths": [
     "path/on/ubuntu/that/is/allowed"
   ],
