@@ -1,0 +1,40 @@
+{
+  "task_id": "TASK-0007",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "commands_run": [
+    "cd ~/mide-pilot && git pull",
+    "curl -s http://127.0.0.1:8091/health",
+    "cd ~/Documents/itheia-llm && python3 -c \"import chromadb; c=chromadb.PersistentClient(path='site_kb_chromadb'); col=c.get_collection('lariel_site_kb'); print({'collection': col.name, 'count': col.count()})\"",
+    "cd ~/mide-pilot && ./pilot_v1/scripts/verify_site_kb_consistency.sh",
+    "ollama list",
+    "cat ~/mide-pilot/architecture/mide_architecture_v1.json"
+  ],
+  "validation_results": [
+    "PASS: site_kb_server health endpoint reachable on 127.0.0.1:8091",
+    "PASS: /health status=ok and documents=49 (numeric)",
+    "PASS: Direct Chroma count for lariel_site_kb at site_kb_chromadb = 49",
+    "PASS: verify_site_kb_consistency.sh exists and ran successfully (exit code 0)",
+    "PASS: Ollama reachable and active models listed (qwen2.5:14b, qwen2.5:7b, kimi-k2.6:cloud)",
+    "INFO: Architecture drift detected — kimi-k2.6:cloud present on worker but not listed in mide_architecture_v1.json ollama.models"
+  ],
+  "errors": [],
+  "evidence": {
+    "health_output": {
+      "collection": "lariel_site_kb",
+      "documents": 49,
+      "ollama_model": "qwen2.5:14b",
+      "ollama_url": "http://127.0.0.1:11434",
+      "status": "ok"
+    },
+    "direct_chroma": {
+      "collection": "lariel_site_kb",
+      "count": 49
+    },
+    "guardrail_script_exit_code": 0,
+    "ollama_models_excerpt": "NAME               ID              SIZE      MODIFIED\nqwen2.5:14b        7cdf5a0187d5    9.0 GB    3 hours ago\nqwen2.5:7b         845dbda0ea48    4.7 GB    3 hours ago\nkimi-k2.6:cloud    a90cd0d1590c    -         4 hours ago",
+    "architecture_drift": [
+      "DRIFT: ollama model kimi-k2.6:cloud is present on ubuntu-worker-01 but not listed in mide_architecture_v1.json data_plane.runtime_services[ollama].models"
+    ]
+  }
+}
