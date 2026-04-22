@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0019",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "startup_mode=systemd-user\nservice_state=activating\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\npoll_seconds=180\nstatus_file=/home/larieladmin/mide-pilot/pilot_v1/state/worker_autopilot_status.json\nheartbeat_file=/home/larieladmin/mide-pilot/pilot_v1/state/worker_autopilot_heartbeat_epoch.txt\nlog_file=/home/larieladmin/mide-pilot/pilot_v1/state/worker_mtask_autopilot.log\ntimestamp_utc=2026-04-22T18:46:18Z",
+  "stderr_excerpt": "Created symlink /home/larieladmin/.config/systemd/user/default.target.wants/worker-mtask-autopilot.service \u2192 /home/larieladmin/.config/systemd/user/worker-mtask-autopilot.service.",
+  "timestamp_utc": "2026-04-22T18:46:18Z"
+}
