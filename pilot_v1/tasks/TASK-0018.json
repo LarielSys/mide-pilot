@@ -5,7 +5,7 @@
   "assigned_to": "ubuntu-worker-99",
   "required_worker_id": "ubuntu-worker-99",
   "executor_script": "pilot_v1/scripts/exec_task_0018_copy_md.sh",
-  "objective": "Unauthorized worker-ID test. Attempt to copy a markdown file. This task intentionally targets the wrong worker ID to validate that ubuntu-worker-01 ignores it.",
+  "objective": "DEPRECATED: replaced by MTASK protocol. Do not execute.",
   "moss_labels": [
     "moss/security/worker-id-routing",
     "moss/control-plane/orchestration",
@@ -39,7 +39,7 @@
     "TASK-0017"
   ],
   "timeout_seconds": 300,
-  "status": "approved_to_execute",
+  "status": "deprecated_do_not_execute",
   "execution_instructions": [
     "Run only on worker with required_worker_id",
     "All non-matching worker IDs must ignore",
