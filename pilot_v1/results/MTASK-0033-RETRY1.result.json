@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0033-RETRY1",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0033\nworker_id=ubuntu-worker-01\ncode_server_status=installing\n  PATH=\"$HOME/.local/bin:$PATH\"\nThen run with:\n  code-server\n\nDeploy code-server for your team with Coder: https://github.com/coder/coder\ncode_server_version=[2026-04-22T22:44:13.028Z] info  Wrote default config file to /home/larieladmin/.config/code-server/config.yaml\ncode_server_config=written\ncode_server_pid=21140\ncode_server_ready=true\ninstalled_extensions=\nInstalling extensions...\nInstalling extension 'continue.continue'...\nExtension 'continue.continue' v1.2.22 was successfully installed.\ncontinue_config=written\ntimestamp_utc=2026-04-22T22:44:27Z\nresult_written=/home/larieladmin/mide-pilot/pilot_v1/results/MTASK-0033.result.json",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-22T22:44:27Z"
+}
