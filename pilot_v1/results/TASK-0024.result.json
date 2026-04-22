@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0024",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=TASK-0024\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nclone_domain_root=/home/larieladmin/mide-pilot/clone/larielsystems/larielsystems.com\nlocalhost_url=http://127.0.0.1:8787/\nhttp_ready=true\ntimestamp_utc=2026-04-22T19:49:09Z\nmode=open-url\ntarget=http://127.0.0.1:8787/\nopener=xdg-open\nlaunch_pid=29586\nlaunch_log=/tmp/mide_open_url.log\ntimestamp_utc=2026-04-22T19:49:09Z\nbrowser_open_request=sent",
+  "stderr_excerpt": "curl: (7) Failed to connect to 127.0.0.1 port 8787 after 0 ms: Couldn't connect to server",
+  "timestamp_utc": "2026-04-22T19:49:09Z"
+}
