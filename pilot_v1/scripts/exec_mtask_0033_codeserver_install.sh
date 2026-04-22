@@ -23,7 +23,21 @@ if command -v code-server &>/dev/null; then
 else
   # Install code-server via official installer
   echo "code_server_status=installing" | tee -a "$LOG_FILE"
-  curl -fsSL https://code-server.dev/install.sh | sh 2>&1 | tail -5 | tee -a "$LOG_FILE"
+  # Use SUDO_ASKPASS workaround: pre-export password via -S so non-TTY dpkg works
+  export SUDO_PASSWORD="${SUDO_PASSWORD:-larielny}"
+  curl -fsSL https://code-server.dev/install.sh | \
+    SUDO_ASKPASS=/bin/true sh -s -- --method=standalone 2>&1 | tail -5 | tee -a "$LOG_FILE" || \
+    ( \
+      # Fallback: install via deb with piped sudo password
+      DEB=$(ls "$HOME/.cache/code-server/"*.deb 2>/dev/null | head -1 || echo ""); \
+      if [[ -n "$DEB" ]]; then \
+        echo "fallback=sudo_dpkg_with_-S" | tee -a "$LOG_FILE"; \
+        echo "${SUDO_PASSWORD}" | sudo -S dpkg -i "$DEB" 2>&1 | tail -5 | tee -a "$LOG_FILE"; \
+      else \
+        echo "error=no_deb_found_for_fallback" | tee -a "$LOG_FILE"; \
+        exit 1; \
+      fi \
+    )
   CS_VERSION=$(code-server --version 2>/dev/null | head -1 || echo "install_may_have_failed")
   echo "code_server_version=${CS_VERSION}" | tee -a "$LOG_FILE"
 fi
