@@ -1,0 +1,10 @@
+{
+  "task_id": "MTASK-0034",
+  "display_name": "Expose code-server via ngrok + Full Service Verification",
+  "status": "approved_to_execute",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0034_codeserver_ngrok_verify.sh",
+  "description": "Start ngrok HTTP tunnel for code-server (port 8092). Run full verification of all Worker 1 services: site_kb_server, Ollama qwen2.5, Ollama proxy via ngrok, code-server. Run qwen2.5 test generation. Write worker1_services.json config file and commit to repo so Windows IDE auto-discovers all endpoints.",
+  "depends_on": ["MTASK-0032", "MTASK-0033"],
+  "created_at": "2026-04-22T22:00:00Z"
+}

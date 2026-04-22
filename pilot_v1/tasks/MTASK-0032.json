@@ -1,0 +1,10 @@
+{
+  "task_id": "MTASK-0032",
+  "display_name": "Bootstrap SSH Access for Windows IDE Bridge",
+  "status": "approved_to_execute",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0032_ssh_bootstrap.sh",
+  "description": "Ensure SSH server is running. Generate MIDE IDE keypair. Add public key to authorized_keys. Start ngrok TCP tunnel on port 22 for direct SSH from Windows. Export private key (base64) and SSH connection details in result JSON so Windows IDE can configure its SSH bridge automatically.",
+  "depends_on": ["MTASK-0031"],
+  "created_at": "2026-04-22T22:00:00Z"
+}
