@@ -2,7 +2,7 @@
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
   "mode": "idle",
-  "last_run_utc": "2026-04-22T20:10:36Z",
+  "last_run_utc": "2026-04-22T20:13:37Z",
   "last_task_processed": "",
   "poll_seconds": 180,
   "note": "No assigned mtasks found; sleeping until next poll. approved=27, eligible=0, mismatched=1."
