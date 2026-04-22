@@ -1,17 +1,17 @@
 {
-  "task_id": "TASK-0035",
+  "task_id": "MTASK-0035",
   "created_by": "windows-main",
   "worker_name": "ubuntu-atlas-01",
   "assigned_to": "ubuntu-worker-01",
   "required_worker_id": "ubuntu-worker-01",
-  "executor_script": "pilot_v1/scripts/exec_task_0035_recover_ap_and_drain_0033_retries.sh",
-  "objective": "DEPRECATED: replaced by MTASK-0035 to follow MTASK naming protocol. Do not execute this task.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0035_recover_ap_and_drain_0033_retries.sh",
+  "objective": "Recover stalled autopilot logging by restarting AP cleanly and force-draining MTASK-0033-RETRY2 and MTASK-0033-RETRY3 if they are still pending.",
   "moss_labels": [
     "moss/worker/recovery",
     "moss/autopilot/logging",
     "moss/retry-drain/0033"
   ],
-  "moss_scope_hash": "customide-ap-recovery-0035",
+  "moss_scope_hash": "customide-ap-recovery-mtask-0035",
   "priority": "critical",
   "risk_level": "medium",
   "automation_mode": "review_required",
@@ -40,15 +40,15 @@
   ],
   "dependencies": [],
   "timeout_seconds": 1800,
-  "status": "deprecated_do_not_execute",
+  "status": "approved_to_execute",
   "execution_instructions": [
     "Run on ubuntu-worker-01 via autopilot",
     "Execute only executor_script",
     "Capture stdout/stderr in result JSON",
-    "Commit message format: worker: autopilot result TASK-0035"
+    "Commit message format: worker: autopilot result MTASK-0035"
   ],
   "result_schema": {
-    "task_id": "TASK-0035",
+    "task_id": "MTASK-0035",
     "worker_id": "ubuntu-worker-01",
     "execution_status": "completed | failed",
     "summary": "<short result summary>",
