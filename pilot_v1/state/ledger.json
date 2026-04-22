@@ -140,6 +140,18 @@
       "approval_file": "approvals/TASK-0010.approval.json",
       "summary": "All five pilot exit criteria PASS. MIDE pilot_v1 certified as complete and operational.",
       "timestamp_utc": "2026-04-21T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0011",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Post-reboot system recovery. Restart Ollama, site_kb_server, and ngrok.",
+      "result_file": "results/TASK-0011.result.json",
+      "approval_file": "approvals/TASK-0011.approval.json",
+      "summary": "All backend services restored. Ollama running, Flask RAG on :8091 healthy (49 docs), ngrok tunnel active at https://jawed-lapel-dispersed.ngrok-free.dev. Worker resolved missing chromadb module via pip install.",
+      "timestamp_utc": "2026-04-22T00:00:00Z"
     }
   ]
 }
