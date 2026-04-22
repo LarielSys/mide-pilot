@@ -37,6 +37,21 @@ function Get-TaskResult {
     return $null
 }
 
+function Get-LatestRetryResult {
+    param([string]$TaskId)
+    $pattern = Join-Path $MideRoot ("pilot_v1\results\" + $TaskId + "-RETRY*.result.json")
+    $files = Get-ChildItem -Path $pattern -ErrorAction SilentlyContinue | Sort-Object Name -Descending
+    foreach ($f in $files) {
+        try {
+            $r = Get-Content $f.FullName | ConvertFrom-Json
+            if ($r) { return $r }
+        } catch {
+            # Ignore malformed retry result and continue.
+        }
+    }
+    return $null
+}
+
 function Get-TaskDefinition {
     param([string]$TaskId)
     $path = Join-Path $MideRoot ("pilot_v1\tasks\" + $TaskId + ".json")
@@ -162,6 +177,14 @@ while ($true) {
         }
 
         $result = Get-TaskResult -TaskId $taskId
+        if ($result -and $result.execution_status -eq "failed") {
+            $retryResult = Get-LatestRetryResult -TaskId $taskId
+            if ($retryResult -and $retryResult.execution_status -eq "completed") {
+                $result = $retryResult
+                $result.summary = ("Recovered via retry: " + $retryResult.task_id)
+                Write-Log ($taskId + " - retry recovery detected from " + $retryResult.task_id) "OK"
+            }
+        }
         $statusMap[$taskId] = $result
 
         if (-not $result) {
