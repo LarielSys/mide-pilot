@@ -176,6 +176,18 @@
       "approval_file": "approvals/TASK-0014.approval.json",
       "summary": "Worker patched site_kb_server from unsupported Ollama /api/chat to working /api/generate request shape. Validation passed: /health 200, local /api/chat 200, public ngrok /api/chat 200.",
       "timestamp_utc": "2026-04-22T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-0015",
+      "assigned_to": "ubuntu-worker-01",
+      "status": "completed",
+      "decision": "approved",
+      "reviewed_by": "windows-main",
+      "objective": "Implement Phase-1 worker mtask autopilot loop (git pull, assigned-task selection, execution, result commit/push).",
+      "result_file": "results/TASK-0015.result.json",
+      "approval_file": "approvals/TASK-0015.approval.json",
+      "summary": "Approved. Autopilot script delivered with lock, polling, worker assignment filtering, and result commit/push behavior. Dry-run and synthetic cycle evidence provided (TASK-9015-SYNTH committed by worker).",
+      "timestamp_utc": "2026-04-22T00:00:00Z"
     }
   ]
 }
