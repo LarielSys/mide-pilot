@@ -1,6 +1,9 @@
 {
+  "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
-  "mode": "live",
-  "last_run_utc": "2026-04-22T18:02:56Z",
-  "last_task_processed": "TASK-9015-SYNTH"
+  "mode": "running",
+  "last_run_utc": "2026-04-22T18:22:09Z",
+  "last_task_processed": "TASK-0016",
+  "poll_seconds": 180,
+  "note": "Task completed successfully."
 }

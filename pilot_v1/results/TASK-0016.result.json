@@ -1,0 +1,9 @@
+{
+  "task_id": "TASK-0016",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "TASK-0016 validation: end-of-task + 3-minute search\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\ncheck: poll default 180 seconds = OK\ncheck: immediate post-task rescan = OK\ncheck: required_worker_id enforcement logic present = OK\ncheck: admin override password gate present = OK\ntimestamp_utc=2026-04-22T18:22:09Z",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-22T18:22:09Z"
+}
