@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0078",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0077\nobjective=restart customide backend with events fix (last-40 not first-40)\nAlready up to date.\nkilling_old_backend_pid=4801\n252978\nkilling_old_frontend_pid=252979\nbackend_pid=259656\nfrontend_pid=259657\nbackend_url=http://127.0.0.1:5555\nfrontend_url=http://127.0.0.1:5570\nStop with: kill 259656 259657\nbackend_health=passed\nbundle_health=passed\nbackend_restart=passed\ntimestamp_utc=2026-04-23T17:40:00Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\n/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/exec_mtask_0077_restart_customide_backend.sh: line 18: kill: 4801\n252978: arguments must be process or job IDs",
+  "timestamp_utc": "2026-04-23T17:40:00Z"
+}
