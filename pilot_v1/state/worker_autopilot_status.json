@@ -7,5 +7,5 @@
   "log_timezone": "America/New_York",
   "last_task_processed": "MTASK-0077",
   "poll_seconds": 60,
-  "note": "Task picked up; starting executor ."
+  "note": "Task failed: missing executor_script (MTASK-0077)."
 }

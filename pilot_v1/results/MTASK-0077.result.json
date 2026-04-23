@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0077",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Missing required executor_script field in task.",
+  "stdout_excerpt": "",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-23T17:37:51Z"
+}
