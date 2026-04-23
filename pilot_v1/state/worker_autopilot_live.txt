@@ -1,32 +1,10 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T14:12:54Z
+updated_utc: 2026-04-23T14:13:58Z
+updated_local: 2026-04-23T10:13:58-04:00
+log_timezone: America/New_York
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
-last_task_processed: MTASK-0070
+last_task_processed: 
 poll_seconds: 60
-note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-sync_gate_3x60: drift
-git_sync_last_error: none
-
-Recent Events (latest 20, newest first):
-2026-04-23T14:12:54Z | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T14:11:56Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:11:54Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:10:55Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:10:54Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:09:54Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:09:54Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:08:54Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:08:54Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:07:53Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:07:53Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=81, eligible=0, mismatched=0.
-2026-04-23T14:06:52Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
-2026-04-23T14:06:51Z | mode=running | last_task=MTASK-0069 | note=Task completed successfully (MTASK-0069).
-2026-04-23T14:06:49Z | mode=running | last_task=MTASK-0069 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0069_worker_log_timezone_eastern.sh.
-2026-04-23T14:05:50Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
-2026-04-23T14:05:49Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
-2026-04-23T14:04:49Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
-2026-04-23T14:04:49Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
-2026-04-23T14:03:49Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
-2026-04-23T14:03:48Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
+note: Autopilot started.
