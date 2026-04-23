@@ -95,3 +95,4 @@
 2026-04-23T00:05:40Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=44, eligible=0, mismatched=0.
 2026-04-23T00:08:41Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=44, eligible=0, mismatched=0.
 2026-04-23T00:20:41Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=44, eligible=0, mismatched=0.
+2026-04-23T00:23:46Z | mode=running | last_task=MTASK-0042 | note=Task completed successfully.
