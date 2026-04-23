@@ -7,24 +7,24 @@ last_task_processed:
 poll_seconds: 60
 note: No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
 
-Recent Events (latest 20, newest first):
-2026-04-23T04:15:19Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:14:18Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:13:18Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
-2026-04-23T04:12:18Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:11:17Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:10:16Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:09:16Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:08:15Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:07:14Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:06:14Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
-2026-04-23T04:05:14Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
-2026-04-23T04:04:14Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
-2026-04-23T04:03:13Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:02:12Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:01:11Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T04:00:11Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T03:59:10Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T03:58:10Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+Recent Events (latest 20):
+2026-04-23T03:56:09Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
 2026-04-23T03:57:09Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
-2026-04-23T03:56:08Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T03:58:10Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T03:59:11Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:00:11Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:01:12Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:02:12Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:03:13Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:04:14Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T04:05:14Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T04:06:14Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:07:15Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:08:15Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:09:16Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:10:16Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T04:11:17Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:12:17Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:13:18Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:14:19Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
+2026-04-23T04:15:19Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=62, eligible=0, mismatched=0.
