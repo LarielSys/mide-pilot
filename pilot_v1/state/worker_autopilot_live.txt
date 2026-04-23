@@ -4,7 +4,7 @@ worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: idle
 last_task_processed: 
-poll_seconds: 180
+poll_seconds: 60
 note: No assigned mtasks found; sleeping until next poll. approved=56, eligible=0, mismatched=0.
 
 Recent Events (latest 20):

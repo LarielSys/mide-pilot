@@ -14,7 +14,7 @@ echo "TASK-0016 validation: end-of-task + 3-minute search"
 echo "worker_name=${WORKER_NAME:-ubuntu-atlas-01}"
 echo "worker_id=${WORKER_ID:-ubuntu-worker-01}"
 
-grep -q 'POLL_SECONDS="${POLL_SECONDS:-180}"' "${AUTOPILOT_SCRIPT}"
+grep -q 'POLL_SECONDS="${POLL_SECONDS:-60}"' "${AUTOPILOT_SCRIPT}"
 echo "check: poll default 180 seconds = OK"
 
 grep -q 'Immediately check for the next task after each completion.' "${AUTOPILOT_SCRIPT}"

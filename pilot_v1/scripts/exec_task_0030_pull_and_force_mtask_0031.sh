@@ -6,7 +6,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 AUTOPILOT_SCRIPT="${REPO_ROOT}/pilot_v1/scripts/worker_mtask_autopilot.sh"
 SERVICE_NAME="worker-mtask-autopilot.service"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
-POLL_SECONDS="${POLL_SECONDS:-180}"
+POLL_SECONDS="${POLL_SECONDS:-60}"
 RESTART_MODE=""
 FORCE_ONCE_TIMEOUT_SECONDS="${FORCE_ONCE_TIMEOUT_SECONDS:-900}"
 

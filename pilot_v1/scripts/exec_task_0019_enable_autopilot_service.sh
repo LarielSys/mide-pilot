@@ -9,7 +9,7 @@ LOG_FILE="${STATE_DIR}/worker_mtask_autopilot.log"
 
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
-POLL_SECONDS="${POLL_SECONDS:-180}"
+POLL_SECONDS="${POLL_SECONDS:-60}"
 
 mkdir -p "${STATE_DIR}" "$HOME/.config/systemd/user" "$HOME/.config/mide"
 chmod +x "${AUTOPILOT_SCRIPT}"
