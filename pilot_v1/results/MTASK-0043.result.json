@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0043",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0043\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nAlready up to date.\nhealth_check={\"status\":\"ok\",\"service\":\"CustomIDE Backend\",\"env\":\"development\",\"timestamp_utc\":\"2026-04-23T00:35:52.945182+00:00\"}\nruntime_status={\"backend\":{\"status\":\"ok\",\"repo_root\":\"/home/larieladmin/mide-pilot/pilot_v1/customide\",\"execute_routes\":{\"local\":\"/api/execute/local\",\"remote\":\"/api/execute/remote\"}},\"worker\":{\"remote_url_available\":false,\"remote_url\":\"\"}}\nlocal_exec_ok={\"command\":\"echo hardened-ok\",\"argv\":[\"echo\",\"hardened-ok\"],\"cwd\":\"/home/larieladmin/mide-pilot/pilot_v1/customide/backend\",\"exit_code\":0,\"stdout\":\"hardened-ok\\n\",\"stderr\":\"\",\"ok\":true}\nlocal_exec_blocked={\"detail\":\"Command 'bash' is not allowed. Allowed: cat, echo, ls, pwd, python, python3\"}\nfrontend_reachable=yes\nexecute_hardening=completed\nui_command_inputs=completed\nlocal_allowlist_enforced=passed\n[main 0666493] customide: harden execute API and interactive command UI (MTASK-0043)\n 3 files changed, 183 insertions(+), 57 deletions(-)\ntimestamp_utc=2026-04-23T00:35:53Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nTo https://github.com/LarielSys/mide-pilot.git\n   c906c61..0666493  main -> main",
+  "timestamp_utc": "2026-04-23T00:35:53Z"
+}
