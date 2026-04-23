@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
+WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
+
+AUTOPILOT_SCRIPT="${REPO_ROOT}/pilot_v1/scripts/worker_mtask_autopilot.sh"
+SERVICE_BOOTSTRAP="${REPO_ROOT}/pilot_v1/scripts/exec_task_0019_enable_autopilot_service.sh"
+MTASK_RECOVERY="${REPO_ROOT}/pilot_v1/scripts/exec_mtask_0035_recover_ap_and_drain_0033_retries.sh"
+TASK_RECOVERY_0035="${REPO_ROOT}/pilot_v1/scripts/exec_task_0035_recover_ap_and_drain_0033_retries.sh"
+TASK_RECOVERY_0032="${REPO_ROOT}/pilot_v1/scripts/exec_task_0032_recover_ap_and_drain_0033_retries.sh"
+TASK_FORCE_0030="${REPO_ROOT}/pilot_v1/scripts/exec_task_0030_pull_and_force_mtask_0031.sh"
+POLL_GUARD="${REPO_ROOT}/pilot_v1/scripts/exec_task_0016_poll_guard.sh"
+STATUS_FILE="${REPO_ROOT}/pilot_v1/state/worker_autopilot_status.json"
+LIVE_FILE="${REPO_ROOT}/pilot_v1/state/worker_autopilot_live.txt"
+LOG_FILE="${REPO_ROOT}/pilot_v1/state/worker_mtask_autopilot.log"
+
+cd "${REPO_ROOT}"
+
+echo "task=MTASK-0051-RETRY1"
+echo "worker_name=${WORKER_NAME}"
+echo "worker_id=${WORKER_ID}"
+
+git fetch origin
+git pull --ff-only origin main
+
+python3 - <<'PY'
+from pathlib import Path
+
+replacements = {
+    Path("pilot_v1/scripts/worker_mtask_autopilot.sh"): [('POLL_SECONDS="${POLL_SECONDS:-180}"', 'POLL_SECONDS="${POLL_SECONDS:-60}"')],
+    Path("pilot_v1/scripts/exec_task_0019_enable_autopilot_service.sh"): [('POLL_SECONDS="${POLL_SECONDS:-180}"', 'POLL_SECONDS="${POLL_SECONDS:-60}"')],
+    Path("pilot_v1/scripts/exec_mtask_0035_recover_ap_and_drain_0033_retries.sh"): [('POLL_SECONDS="${POLL_SECONDS:-180}"', 'POLL_SECONDS="${POLL_SECONDS:-60}"')],
+    Path("pilot_v1/scripts/exec_task_0035_recover_ap_and_drain_0033_retries.sh"): [('POLL_SECONDS="${POLL_SECONDS:-180}"', 'POLL_SECONDS="${POLL_SECONDS:-60}"')],
+    Path("pilot_v1/scripts/exec_task_0032_recover_ap_and_drain_0033_retries.sh"): [('POLL_SECONDS="${POLL_SECONDS:-180}"', 'POLL_SECONDS="${POLL_SECONDS:-60}"')],
+    Path("pilot_v1/scripts/exec_task_0030_pull_and_force_mtask_0031.sh"): [('POLL_SECONDS="${POLL_SECONDS:-180}"', 'POLL_SECONDS="${POLL_SECONDS:-60}"')],
+    Path("pilot_v1/scripts/exec_task_0016_poll_guard.sh"): [('POLL_SECONDS="${POLL_SECONDS:-180}"', 'POLL_SECONDS="${POLL_SECONDS:-60}"')],
+}
+
+for path, pairs in replacements.items():
+    text = path.read_text(encoding="utf-8")
+    for old, new in pairs:
+        text = text.replace(old, new)
+    path.write_text(text, encoding="utf-8")
+PY
+
+for file in \
+  "${AUTOPILOT_SCRIPT}" \
+  "${SERVICE_BOOTSTRAP}" \
+  "${MTASK_RECOVERY}" \
+  "${TASK_RECOVERY_0035}" \
+  "${TASK_RECOVERY_0032}" \
+  "${TASK_FORCE_0030}"; do
+  if ! grep -q 'POLL_SECONDS="${POLL_SECONDS:-60}"' "$file"; then
+    echo "error=poll_seconds_not_updated_in_${file##*/}"
+    exit 1
+  fi
+done
+
+if ! grep -q 'POLL_SECONDS="${POLL_SECONDS:-60}"' "${POLL_GUARD}"; then
+  echo "error=poll_guard_not_updated"
+  exit 1
+fi
+
+POLL_SECONDS=60 WORKER_ID="${WORKER_ID}" WORKER_NAME="${WORKER_NAME}" bash "${SERVICE_BOOTSTRAP}"
+
+if systemctl --user status worker-mtask-autopilot.service >/dev/null 2>&1; then
+  systemctl --user daemon-reload >/dev/null 2>&1 || true
+  systemctl --user restart worker-mtask-autopilot.service
+  SERVICE_STATE="$(systemctl --user is-active worker-mtask-autopilot.service || true)"
+else
+  pkill -f "worker_mtask_autopilot.sh --worker-id=${WORKER_ID}" || true
+  nohup "${AUTOPILOT_SCRIPT}" --worker-id="${WORKER_ID}" --poll-seconds=60 >> "${LOG_FILE}" 2>&1 &
+  SERVICE_STATE="fallback-nohup"
+fi
+
+echo "service_state=${SERVICE_STATE}"
+
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  if grep -q '"poll_seconds": 60' "${STATUS_FILE}" && grep -q 'poll_seconds: 60' "${LIVE_FILE}"; then
+    break
+  fi
+  sleep 2
+done
+
+if ! grep -q '"poll_seconds": 60' "${STATUS_FILE}"; then
+  echo "error=status_snapshot_still_not_60"
+  exit 1
+fi
+if ! grep -q 'poll_seconds: 60' "${LIVE_FILE}"; then
+  echo "error=live_snapshot_still_not_60"
+  exit 1
+fi
+
+echo "autopilot_poll_default=60"
+echo "heartbeat_snapshot=60"
+echo "autopilot_service_restart=passed"
+echo "autopilot_heartbeat_retry=passed"
+
+git add \
+  "pilot_v1/scripts/worker_mtask_autopilot.sh" \
+  "pilot_v1/scripts/exec_task_0019_enable_autopilot_service.sh" \
+  "pilot_v1/scripts/exec_mtask_0035_recover_ap_and_drain_0033_retries.sh" \
+  "pilot_v1/scripts/exec_task_0035_recover_ap_and_drain_0033_retries.sh" \
+  "pilot_v1/scripts/exec_task_0032_recover_ap_and_drain_0033_retries.sh" \
+  "pilot_v1/scripts/exec_task_0030_pull_and_force_mtask_0031.sh" \
+  "pilot_v1/scripts/exec_task_0016_poll_guard.sh" \
+  "pilot_v1/state/worker_autopilot_status.json" \
+  "pilot_v1/state/worker_autopilot_live.txt" \
+  "pilot_v1/state/worker_autopilot_events.log" \
+  "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt"
+
+git commit -m "worker: restart autopilot at 60 second cadence (MTASK-0051-RETRY1)" >/dev/null || true
+git push origin main >/dev/null || true
+
+echo "timestamp_utc=$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
