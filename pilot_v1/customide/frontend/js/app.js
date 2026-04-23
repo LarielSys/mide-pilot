@@ -6,12 +6,21 @@
   const llmBadgeEl = document.getElementById("llmHealthBadge");
   const syncBadgeEl = document.getElementById("syncHealthBadge");
   const syncDebugPanelEl = document.getElementById("syncDebugPanel");
+  const syncCadencePanelEl = document.getElementById("syncCadencePanel");
 
   function renderLlmBadge(data) {
     if (!llmBadgeEl) return;
     const status = (data && data.status) || "unknown";
     const source = (data && data.source_key) || "n/a";
     llmBadgeEl.textContent = "LLM: " + status + " | source: " + source;
+  }
+
+  function renderSyncCadence(data) {
+    if (!syncCadencePanelEl) return;
+    const deltas = (data && data.deltas_seconds) ? data.deltas_seconds.join(", ") : "n/a";
+    const gate = (data && data.gate_3x60_pass) ? "pass" : "pending";
+    const status = (data && data.status) || "unknown";
+    syncCadencePanelEl.textContent = "Sync cadence\n- deltas_seconds: " + deltas + "\n- gate_3x60_pass: " + gate + "\n- status: " + status;
   }
 
   function renderSyncBadge(data) {
