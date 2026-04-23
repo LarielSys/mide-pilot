@@ -3944,3 +3944,4 @@
 2026-04-23T14:09:20-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=91, eligible=0, mismatched=0.
 2026-04-23T14:10:21-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=91, eligible=0, mismatched=0.
 2026-04-23T14:11:21-04:00 | mode=running | last_task=MTASK-0079 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
+2026-04-23T14:11:22-04:00 | mode=running | last_task=MTASK-0079 | note=Task completed successfully (MTASK-0079).
