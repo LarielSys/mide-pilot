@@ -65,6 +65,42 @@ now_epoch() {
   date -u +"%s"
 }
 
+
+
+sync_gate_3x60_state() {
+  python3 - "$EVENT_LOG_FILE" <<'PY2'
+import datetime
+import pathlib
+import re
+import sys
+
+event_file = pathlib.Path(sys.argv[1])
+if not event_file.exists():
+    print("missing")
+    raise SystemExit(0)
+
+lines = event_file.read_text(encoding="utf-8", errors="replace").splitlines()
+stamps = []
+for line in lines:
+    m = re.match(r'^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})Z', line)
+    if not m:
+        continue
+    stamps.append(datetime.datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%S"))
+    if len(stamps) >= 4:
+        break
+
+if len(stamps) < 4:
+    print("insufficient")
+    raise SystemExit(0)
+
+deltas = [(stamps[i] - stamps[i + 1]).total_seconds() for i in range(3)]
+if all(55 <= d <= 65 for d in deltas):
+    print("pass")
+else:
+    print("drift")
+PY2
+}
+
 write_status() {
   local mode="$1"
   local last_task="$2"
@@ -98,6 +134,7 @@ EOF
     echo "last_task_processed: ${last_task}"
     echo "poll_seconds: ${POLL_SECONDS}"
     echo "note: ${note}"
+    echo "sync_gate_3x60: $(sync_gate_3x60_state)"
     if [[ -f "${SYNC_ERROR_FILE}" ]]; then
       echo "git_sync_last_error: $(head -n 1 "${SYNC_ERROR_FILE}" 2>/dev/null || true)"
     else
