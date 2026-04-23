@@ -253,12 +253,12 @@ pathlib.Path(status_file).write_text(json.dumps(payload, indent=2) + "\n", encod
 PY
 
     python3 - "${STACK_HEALTH_FILE}" "${ts}" "${ts_local}" "${backend_state}" "${frontend_state}" "${stack_state}" "${CUSTOMIDE_BACKEND_HEALTH_URL}" "${CUSTOMIDE_FRONTEND_HEALTH_URL}" <<'PY'
-  import json
-  import pathlib
-  import sys
+import json
+import pathlib
+import sys
 
-  health_file, ts_utc, ts_local, backend_state, frontend_state, stack_state, backend_url, frontend_url = sys.argv[1:9]
-  payload = {
+health_file, ts_utc, ts_local, backend_state, frontend_state, stack_state, backend_url, frontend_url = sys.argv[1:9]
+payload = {
     "timestamp_utc": ts_utc,
     "timestamp_local": ts_local,
     "backend_url": backend_url,
@@ -266,9 +266,9 @@ PY
     "backend_state": backend_state,
     "frontend_state": frontend_state,
     "stack_state": stack_state,
-  }
-  pathlib.Path(health_file).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-  PY
+}
+pathlib.Path(health_file).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+PY
 
   {
     echo "Autopilot Live Status"
