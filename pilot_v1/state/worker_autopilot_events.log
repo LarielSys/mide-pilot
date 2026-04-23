@@ -4302,3 +4302,5 @@
 2026-04-23T15:23:58-04:00 | mode=running | last_task=MTASK-0091 | note=Task completed successfully (MTASK-0091).
 2026-04-23T15:23:59-04:00 | mode=running | last_task=MTASK-0092 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0092_force_restart_autopilot_detached.sh.
 2026-04-23T15:23:59-04:00 | mode=running | last_task=MTASK-0092 | note=Task completed successfully (MTASK-0092).
+2026-04-23T15:24:00-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:24:01-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
