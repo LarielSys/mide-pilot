@@ -8,7 +8,8 @@ window.CUSTOMIDE_CONFIG = {
   localStatePaths: {
     status: "../../state/worker_autopilot_status.json",
     events: "../../state/worker_autopilot_events.log",
-    tokens: "../TOKEN_COUNTER_TASKS.txt"
+    tokens: "../TOKEN_COUNTER_TASKS.txt",
+    hardReset: "../../state/cockpit_hard_reset_request.json"
   },
   workerServicesPath: "../../config/worker1_services.json"
 };

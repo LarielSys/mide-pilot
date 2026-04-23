@@ -12,6 +12,8 @@
   const seenLines = new Set();
   let userPinned = false; // true when user has scrolled up away from bottom
   let currentDay = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const resetNonceKey = "cockpit_hard_reset_last_nonce";
+  let hardResetInFlight = false;
 
   const statusEl = document.getElementById("backendStatus");
   const llmBadgeEl = document.getElementById("llmHealthBadge");
@@ -157,6 +159,48 @@
     }
     rows.sort((a, b) => String(b.task_id).localeCompare(String(a.task_id)));
     return rows;
+  }
+
+  function consumeAndReload(nonce, reason) {
+    if (hardResetInFlight) return;
+    hardResetInFlight = true;
+    try {
+      localStorage.setItem(resetNonceKey, String(nonce));
+    } catch (_err) {
+      // Continue even if storage is unavailable.
+    }
+    saveSession();
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set("_hr", String(nonce));
+    nextUrl.searchParams.set("_hrt", String(Date.now()));
+    nextUrl.searchParams.set("_reason", String(reason || "requested"));
+    window.location.replace(nextUrl.toString());
+  }
+
+  async function maybeApplyHardResetTrigger() {
+    const resetRaw = await tryFetchLocalText(cfg.localStatePaths?.hardReset || "../../state/cockpit_hard_reset_request.json");
+    if (!resetRaw) return;
+
+    let payload;
+    try {
+      payload = JSON.parse(resetRaw);
+    } catch (_err) {
+      return;
+    }
+
+    const nonce = payload && payload.nonce ? String(payload.nonce) : "";
+    if (!nonce) return;
+
+    let lastNonce = "";
+    try {
+      lastNonce = String(localStorage.getItem(resetNonceKey) || "");
+    } catch (_err) {
+      lastNonce = "";
+    }
+
+    if (nonce && nonce !== lastNonce) {
+      consumeAndReload(nonce, payload.reason || "requested");
+    }
   }
 
   async function tryFetchLocalText(relPath) {
@@ -453,6 +497,7 @@
   }
 
   async function boot() {
+    await maybeApplyHardResetTrigger();
     loadSession();
     await discoverBackend();
     try {
@@ -471,6 +516,7 @@
 
     setInterval(async () => {
       if (document.hidden) return;
+      await maybeApplyHardResetTrigger();
       tick += 1;
       const forceLlm = (tick % llmRefreshEvery) === 0;
       try {
