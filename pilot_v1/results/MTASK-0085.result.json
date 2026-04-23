@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0085",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0077\nobjective=restart customide backend with events fix (last-40 not first-40)\nAlready up to date.\nbackend_pid=279019\nfrontend_pid=279020\nbackend_url=http://127.0.0.1:5555\nfrontend_url=http://127.0.0.1:5570\nStop with: kill 279019 279020\nbackend_health=passed\nbundle_health=passed\nbackend_restart=passed\ntimestamp_utc=2026-04-23T18:32:33Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD",
+  "timestamp_utc": "2026-04-23T18:32:33Z"
+}
