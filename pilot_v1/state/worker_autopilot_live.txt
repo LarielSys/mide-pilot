@@ -1,34 +1,10 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T14:14:11Z
-updated_local: 2026-04-23T10:14:11-04:00
+updated_utc: 2026-04-23T14:14:12Z
+updated_local: 2026-04-23T10:14:12-04:00
 log_timezone: America/New_York
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
-last_task_processed: MTASK-0070
+last_task_processed: 
 poll_seconds: 60
-note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-sync_gate_3x60: drift
-git_sync_last_error: none
-
-Recent Events (latest 20, newest first):
-2026-04-23T10:14:11-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:11-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:11-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:11-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:11-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:10-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:10-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:10-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:10-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:09-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:09-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:09-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:09-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:09-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:08-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:08-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:08-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:08-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T10:14:08-04:00 | mode=running | last_task=MTASK-0070 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh.
-2026-04-23T10:14:07-04:00 | mode=running | last_task= | note=Autopilot started.
+note: Autopilot started.
