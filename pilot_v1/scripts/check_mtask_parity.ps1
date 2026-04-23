@@ -1,6 +1,8 @@
 param(
   [Parameter(Mandatory = $true)]
-  [string]$TaskId
+  [string]$TaskId,
+
+  [string[]]$RequireStdoutMarkers = @()
 )
 
 $ErrorActionPreference = 'Stop'
@@ -39,6 +41,19 @@ foreach ($line in $gitStatus) {
 if ($hasUnexpected) {
   Write-Host "error=parity_unexpected_local_changes"
   exit 1
+}
+
+
+
+if ($RequireStdoutMarkers.Count -gt 0) {
+  $stdoutText = [string]$resultJson.stdout_excerpt
+  foreach ($marker in $RequireStdoutMarkers) {
+    if (-not $stdoutText.Contains($marker)) {
+      Write-Host ("error=parity_stdout_marker_missing:{0}" -f $marker)
+      exit 1
+    }
+  }
+  Write-Host "parity_stdout_markers=passed"
 }
 
 Write-Host "parity_result_present=passed"
