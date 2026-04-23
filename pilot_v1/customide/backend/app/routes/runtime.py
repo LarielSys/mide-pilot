@@ -39,6 +39,49 @@ def get_runtime_status() -> dict:
 
 @router.get("/sync-health")
 def get_sync_health() -> dict:
+
+
+def get_sync_cadence() -> dict:
+    from datetime import datetime
+
+    repo_root = Path(__file__).resolve().parents[3]
+    event_file = repo_root / "pilot_v1/state/worker_autopilot_events.log"
+
+    if not event_file.exists():
+        return {
+            "samples": 0,
+            "deltas_seconds": [],
+            "gate_3x60_pass": False,
+            "status": "missing",
+            "source_file": str(event_file),
+        }
+
+    lines = event_file.read_text(encoding="utf-8", errors="replace").splitlines()
+    stamps = []
+    for line in lines:
+        if len(line) >= 20 and line[19] == "Z":
+            head = line[:20]
+            try:
+                stamps.append(datetime.strptime(head, "%Y-%m-%dT%H:%M:%SZ"))
+            except ValueError:
+                continue
+        if len(stamps) >= 4:
+            break
+
+    deltas = []
+    for i in range(len(stamps) - 1):
+        deltas.append(int((stamps[i] - stamps[i + 1]).total_seconds()))
+
+    gate = len(deltas) >= 3 and all(55 <= d <= 65 for d in deltas[:3])
+    status = "pass" if gate else ("insufficient" if len(deltas) < 3 else "drift")
+
+    return {
+        "samples": len(stamps),
+        "deltas_seconds": deltas,
+        "gate_3x60_pass": gate,
+        "status": status,
+        "source_file": str(event_file),
+    }
     repo_root = Path(__file__).resolve().parents[3]
     sync_error_file = repo_root / "pilot_v1/state/worker_autopilot_git_sync_last_error.txt"
 
@@ -60,4 +103,5 @@ def get_status_bundle() -> dict:
     return {
         "runtime": get_runtime_status(),
         "sync_health": get_sync_health(),
+        "sync_cadence": get_sync_cadence(),
     }
