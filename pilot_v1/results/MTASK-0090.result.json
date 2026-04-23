@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0090",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0072\nstrategy=delayed_detached_restart\nreason=allow_autopilot_result_commit_before_restart\nrestart_queued=true\ndelay_seconds=25\nqueued_stamp=/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/MTASK-0072.restart_queued.txt\nrestart_log=/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/MTASK-0072.restart.log\nstdout_excerpt includes restart_queued=true\nstdout_excerpt includes strategy=delayed_detached_restart\ntimestamp_utc=2026-04-23T18:58:13Z",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-23T18:58:13Z"
+}

@@ -7,15 +7,16 @@ worker_id: ubuntu-worker-01
 mode: running
 last_task_processed: MTASK-0090
 poll_seconds: 60
-note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
+note: Task completed successfully (MTASK-0090).
 sync_gate_3x60: drift
 git_branch: main
-git_local_head: 42b67a7
-git_origin_head: 42b67a7
+git_local_head: cc2c440
+git_origin_head: cc2c440
 git_heads_match: yes
 git_sync_last_error: none
 
 Recent Events (latest 20, newest first):
+2026-04-23T14:58:13-04:00 | mode=running | last_task=MTASK-0090 | note=Task completed successfully (MTASK-0090).
 2026-04-23T14:58:13-04:00 | mode=running | last_task=MTASK-0090 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
 2026-04-23T14:57:12-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=102, eligible=0, mismatched=0.
 2026-04-23T14:56:11-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=102, eligible=0, mismatched=0.
@@ -35,4 +36,3 @@ Recent Events (latest 20, newest first):
 2026-04-23T14:45:39-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
 2026-04-23T14:44:38-04:00 | mode=running | last_task=MTASK-0087 | note=Task completed successfully (MTASK-0087).
 2026-04-23T14:44:38-04:00 | mode=running | last_task=MTASK-0087 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh.
-2026-04-23T14:43:38-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=99, eligible=0, mismatched=0.
