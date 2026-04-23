@@ -5,6 +5,7 @@
   const dashboardEl = document.getElementById("dashboard");
   const llmBadgeEl = document.getElementById("llmHealthBadge");
   const syncBadgeEl = document.getElementById("syncHealthBadge");
+  const syncDebugPanelEl = document.getElementById("syncDebugPanel");
 
   function renderLlmBadge(data) {
     if (!llmBadgeEl) return;
@@ -14,6 +15,11 @@
   }
 
   function renderSyncBadge(data) {
+    if (syncDebugPanelEl) {
+      const syncError = (data && data.sync_error) || "unknown";
+      const syncFile = (data && data.sync_error_file) || "n/a";
+      syncDebugPanelEl.textContent = "Sync debug\n- sync_error: " + syncError + "\n- sync_error_file: " + syncFile;
+    }
     if (!syncBadgeEl) return;
     const value = (data && data.sync_error) || "unknown";
     syncBadgeEl.textContent = "Sync: " + value;
