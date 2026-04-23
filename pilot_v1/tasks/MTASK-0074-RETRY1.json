@@ -1,0 +1,63 @@
+{
+  "task_id": "MTASK-0074-RETRY1",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0074_cockpit_autopilot_token_panels.sh",
+  "objective": "Re-run cockpit panes task after executor cleanup to produce completed result artifact for MTASK-0074 scope.",
+  "moss_labels": [
+    "moss/customide/phase34",
+    "moss/worker",
+    "moss/frontend",
+    "moss/operations"
+  ],
+  "moss_scope_hash": "customide-phase34-cockpit-autopilot-token-panels-0074-retry1",
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/customide/backend/app/routes",
+    "~/mide-pilot/pilot_v1/customide/frontend",
+    "~/mide-pilot/pilot_v1/customide/TOKEN_COUNTER_TASKS.txt",
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "stdout_excerpt includes cockpit_layout=passed",
+    "stdout_excerpt includes autopilot_panes=passed",
+    "stdout_excerpt includes token_counters_panel=passed",
+    "stdout_excerpt includes ollama_cost_mode=passed",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0074"
+  ],
+  "timeout_seconds": 2400,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "Commit message format: worker: autopilot result MTASK-0074-RETRY1"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0074-RETRY1",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-23T00:00:00Z"
+}
