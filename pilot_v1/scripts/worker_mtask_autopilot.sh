@@ -222,6 +222,7 @@ commit_and_push_status_heartbeat() {
   fi
 
   git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
+  git -C "${REPO_ROOT}" add pilot_v1/results/*.result.json 2>/dev/null || true
   git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
   git -C "${REPO_ROOT}" push origin main >/dev/null || {
     echo "[autopilot] Warning: heartbeat push failed; will retry next cycle." >&2
@@ -415,6 +416,9 @@ process_task() {
     return 0
   fi
 
+  write_status "running" "${task_id}" "Task picked up; starting executor ${executor_script}."
+  commit_and_push_status_heartbeat || true
+
   local stdout_tmp stderr_tmp result_file
   stdout_tmp="$(mktemp)"
   stderr_tmp="$(mktemp)"
@@ -422,7 +426,7 @@ process_task() {
 
   if [[ -z "${executor_script}" ]]; then
     write_result_json "${result_file}" "${task_id}" "failed" "Missing required executor_script field in task." "${stdout_tmp}" "${stderr_tmp}"
-    write_status "running" "${task_id}" "Task failed: missing executor_script."
+    write_status "running" "${task_id}" "Task failed: missing executor_script (${task_id})."
     commit_and_push_result "${task_id}"
     rm -f "${stdout_tmp}" "${stderr_tmp}"
     return 0
@@ -432,7 +436,7 @@ process_task() {
   if [[ ! -f "${script_abs}" ]]; then
     echo "Executor script not found: ${executor_script}" >"${stderr_tmp}"
     write_result_json "${result_file}" "${task_id}" "failed" "Executor script not found." "${stdout_tmp}" "${stderr_tmp}"
-    write_status "running" "${task_id}" "Task failed: executor script not found."
+    write_status "running" "${task_id}" "Task failed: executor script not found (${task_id})."
     commit_and_push_result "${task_id}"
     rm -f "${stdout_tmp}" "${stderr_tmp}"
     return 0
@@ -441,10 +445,10 @@ process_task() {
   echo "[autopilot] Executing ${executor_script} for ${task_id}"
   if bash "${script_abs}" >"${stdout_tmp}" 2>"${stderr_tmp}"; then
     write_result_json "${result_file}" "${task_id}" "completed" "Executor script completed successfully." "${stdout_tmp}" "${stderr_tmp}"
-    write_status "running" "${task_id}" "Task completed successfully."
+    write_status "running" "${task_id}" "Task completed successfully (${task_id})."
   else
     write_result_json "${result_file}" "${task_id}" "failed" "Executor script exited with non-zero status." "${stdout_tmp}" "${stderr_tmp}"
-    write_status "running" "${task_id}" "Task failed: executor script non-zero exit."
+    write_status "running" "${task_id}" "Task failed: executor script non-zero exit (${task_id})."
   fi
 
   commit_and_push_result "${task_id}"
