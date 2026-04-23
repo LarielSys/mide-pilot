@@ -135,3 +135,4 @@ newest-line
 2026-04-23T04:42:37Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
 2026-04-23T04:43:37Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
 2026-04-23T04:44:37Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T04:45:37Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=65, eligible=0, mismatched=0.
