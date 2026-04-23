@@ -1,0 +1,67 @@
+{
+  "task_id": "MTASK-0046-RETRY2",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0046_retry2_dual_ide_shared_llm_degraded_mode.sh",
+  "objective": "Tonight bridge hardening: ensure both IDE channels can always hit the same shared LLM endpoint with structured success or degraded payload.",
+  "moss_labels": [
+    "moss/customide/phase11",
+    "moss/dual-ide",
+    "moss/shared-llm",
+    "moss/degraded-mode",
+    "moss/retry"
+  ],
+  "moss_scope_hash": "customide-phase11-dual-ide-shared-llm-0046-retry2",
+  "priority": "urgent",
+  "risk_level": "medium",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/customide",
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results",
+    "~/mide-pilot/pilot_v1/state"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "shared_llm health route returns configured or degraded status without crashing",
+    "llm chat local source returns payload with source local-ide",
+    "llm chat remote source returns payload with source remote-ide",
+    "both responses include degraded boolean and error field when upstream unavailable",
+    "stdout_excerpt includes dual_ide_visible=passed",
+    "stdout_excerpt includes shared_llm_local=passed",
+    "stdout_excerpt includes shared_llm_remote=passed",
+    "stdout_excerpt includes shared_llm_degraded_mode=enabled",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0046-RETRY1"
+  ],
+  "timeout_seconds": 2100,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "Commit message format: worker: autopilot result MTASK-0046-RETRY2"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0046-RETRY2",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
