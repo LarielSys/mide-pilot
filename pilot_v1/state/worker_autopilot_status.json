@@ -5,7 +5,7 @@
   "last_run_utc": "2026-04-23T14:15:19Z",
   "last_run_local": "2026-04-23T10:15:19-04:00",
   "log_timezone": "America/New_York",
-  "last_task_processed": "",
+  "last_task_processed": "MTASK-0070",
   "poll_seconds": 60,
-  "note": "Autopilot started."
+  "note": "Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh."
 }
