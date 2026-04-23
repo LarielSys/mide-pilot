@@ -37,7 +37,9 @@ LIVE_STATUS_FILE="${STATE_DIR}/worker_autopilot_live.txt"
 EVENT_LOG_FILE="${STATE_DIR}/worker_autopilot_events.log"
 SYNC_ERROR_FILE="${STATE_DIR}/worker_autopilot_git_sync_last_error.txt"
 LAST_PUSHED_SIGNATURE_FILE="${RUNTIME_DIR}/worker_autopilot_last_pushed_signature.txt"
+LAST_PUSHED_EPOCH_FILE="${RUNTIME_DIR}/worker_autopilot_last_pushed_epoch.txt"
 POLL_SECONDS="${POLL_SECONDS:-60}"
+HEARTBEAT_PUSH_MAX_AGE_SECONDS="${HEARTBEAT_PUSH_MAX_AGE_SECONDS:-90}"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
 WORKER_LOG_TZ="${WORKER_LOG_TZ:-America/New_York}"
@@ -334,7 +336,7 @@ git_commit_and_push() {
 }
 
 commit_and_push_status_heartbeat() {
-  local ts last_sig
+  local ts last_sig last_push_epoch age_seconds
   ts="$(now_epoch)"
   echo "${ts}" > "${HEARTBEAT_FILE}"
 
@@ -344,12 +346,26 @@ commit_and_push_status_heartbeat() {
     last_sig=""
   fi
 
+  if [[ -f "${LAST_PUSHED_EPOCH_FILE}" ]]; then
+    last_push_epoch="$(cat "${LAST_PUSHED_EPOCH_FILE}" 2>/dev/null || true)"
+  else
+    last_push_epoch=""
+  fi
+
   if [[ "${CURRENT_STATUS_SIGNATURE}" == "${last_sig}" ]]; then
-    return 0
+    if [[ -n "${last_push_epoch}" ]]; then
+      age_seconds=$(( ts - last_push_epoch ))
+      if (( age_seconds < HEARTBEAT_PUSH_MAX_AGE_SECONDS )); then
+        return 0
+      fi
+    else
+      return 0
+    fi
   fi
 
   if git_commit_and_push "worker: autopilot heartbeat ${WORKER_ID} ${ts}"; then
     printf "%s\n" "${CURRENT_STATUS_SIGNATURE}" > "${LAST_PUSHED_SIGNATURE_FILE}"
+    printf "%s\n" "${ts}" > "${LAST_PUSHED_EPOCH_FILE}"
     return 0
   fi
 
