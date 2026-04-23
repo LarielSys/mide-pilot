@@ -1,3 +1,4 @@
+2026-04-23T05:29:07Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
 2026-04-23T05:28:06Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
 2026-04-23T05:27:06Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
 2026-04-23T05:26:05Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
@@ -222,3 +223,4 @@ newest-line
 2026-04-23T05:26:05Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
 2026-04-23T05:27:06Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
 2026-04-23T05:28:06Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
+2026-04-23T05:29:07Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
