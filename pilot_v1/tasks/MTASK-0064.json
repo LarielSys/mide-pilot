@@ -1,0 +1,63 @@
+{
+  "task_id": "MTASK-0064",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0064_frontend_sync_cadence_panel.sh",
+  "objective": "Phase 26: add frontend sync cadence panel to display cadence deltas and 3x60 gate result from status bundle.",
+  "moss_labels": [
+    "moss/customide/phase26",
+    "moss/frontend/observability",
+    "moss/sync-health",
+    "moss/debugging"
+  ],
+  "moss_scope_hash": "customide-phase26-frontend-sync-cadence-panel-0064",
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/customide/frontend",
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "frontend index includes sync cadence panel element",
+    "frontend app.js renders cadence panel",
+    "cadence panel includes gate_3x60_pass value",
+    "stdout_excerpt includes frontend_sync_cadence_panel=passed",
+    "stdout_excerpt includes phase26_sync_cadence_ui=passed",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0063"
+  ],
+  "timeout_seconds": 1500,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "After Ubuntu result lands, run Windows mirror checker: powershell -ExecutionPolicy Bypass -File pilot_v1/scripts/check_mtask_parity.ps1 -TaskId MTASK-0064",
+    "Commit message format: worker: autopilot result MTASK-0064"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0064",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-23T00:00:00Z"
+}
