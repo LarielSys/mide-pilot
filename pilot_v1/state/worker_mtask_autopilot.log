@@ -6547,3 +6547,874 @@ To https://github.com/LarielSys/mide-pilot.git
    42b67a7..cc2c440  main -> main
 [autopilot] Executing pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh for MTASK-0090
 <stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   cc2c440..307c642  main -> main
+Terminated
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+  File "<stdin>", line 1
+    import json
+IndentationError: unexpected indent
+[autopilot] Candidate task: MTASK-0091 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0091.json)

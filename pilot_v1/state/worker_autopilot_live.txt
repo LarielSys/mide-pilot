@@ -1,38 +1,43 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T18:58:13Z
-updated_local: 2026-04-23T14:58:13-04:00
+updated_utc: 2026-04-23T19:23:52Z
+updated_local: 2026-04-23T15:23:52-04:00
 log_timezone: America/New_York
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
-last_task_processed: MTASK-0090
+last_task_processed: MTASK-0091
 poll_seconds: 60
-note: Task completed successfully (MTASK-0090).
+note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0032_ssh_bootstrap.sh.
 sync_gate_3x60: drift
 git_branch: main
-git_local_head: cc2c440
-git_origin_head: cc2c440
+git_local_head: 893740d
+git_origin_head: 893740d
 git_heads_match: yes
+customide_backend_state: down
+customide_frontend_state: down
+customide_stack_state: down
+customide_backend_url: http://127.0.0.1:5555/health
+customide_frontend_url: http://127.0.0.1:5570
 git_sync_last_error: none
 
 Recent Events (latest 20, newest first):
-2026-04-23T14:58:13-04:00 | mode=running | last_task=MTASK-0090 | note=Task completed successfully (MTASK-0090).
-2026-04-23T14:58:13-04:00 | mode=running | last_task=MTASK-0090 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
-2026-04-23T14:57:12-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=102, eligible=0, mismatched=0.
-2026-04-23T14:56:11-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=102, eligible=0, mismatched=0.
-2026-04-23T14:55:10-04:00 | mode=running | last_task=MTASK-0089 | note=Task completed successfully (MTASK-0089).
-2026-04-23T14:55:09-04:00 | mode=running | last_task=MTASK-0089 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh.
-2026-04-23T14:54:08-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=101, eligible=0, mismatched=0.
-2026-04-23T14:53:08-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=101, eligible=0, mismatched=0.
-2026-04-23T14:52:07-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=101, eligible=0, mismatched=0.
-2026-04-23T14:51:07-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=101, eligible=0, mismatched=0.
-2026-04-23T14:50:06-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=101, eligible=0, mismatched=0.
-2026-04-23T14:50:06-04:00 | mode=running | last_task= | note=Autopilot started.
-2026-04-23T14:49:40-04:00 | mode=running | last_task=MTASK-0088 | note=Task completed successfully (MTASK-0088).
-2026-04-23T14:49:40-04:00 | mode=running | last_task=MTASK-0088 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
-2026-04-23T14:48:40-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
-2026-04-23T14:47:40-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
-2026-04-23T14:46:39-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
-2026-04-23T14:45:39-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
-2026-04-23T14:44:38-04:00 | mode=running | last_task=MTASK-0087 | note=Task completed successfully (MTASK-0087).
-2026-04-23T14:44:38-04:00 | mode=running | last_task=MTASK-0087 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh.
+2026-04-23T15:23:52-04:00 | mode=running | last_task=MTASK-0091 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0032_ssh_bootstrap.sh.
+2026-04-23T15:23:52-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:46-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:41-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:36-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:31-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:25-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:20-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:15-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:10-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:23:04-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:59-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:54-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:49-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:43-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:38-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:33-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:28-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:22-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T15:22:17-04:00 | mode=running | last_task= | note=Autopilot started.
