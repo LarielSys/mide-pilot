@@ -18,6 +18,7 @@ git checkout -q main || true
 git merge --ff-only FETCH_HEAD
 
 python3 - <<'PY'
+import re
 from pathlib import Path
 
 path = Path('pilot_v1/customide/frontend/js/app.js')
@@ -65,6 +66,30 @@ replacements = {
 
 for old, new in replacements.items():
     text = text.replace(old, new)
+
+# If refresh button still manually renders bundle, route it through refreshFromBundle.
+text = text.replace(
+  '''      const bundle = await fetchStatusBundle();
+    if (bundle && bundle.runtime) renderDashboard(bundle.runtime);
+    if (bundle && bundle.runtime && bundle.runtime.worker && bundle.runtime.worker.remote_url) {
+    remoteFrame.src = bundle.runtime.worker.remote_url;
+    }
+    if (bundle && bundle.sync_health) renderSyncBadge(bundle.sync_health);
+''',
+  '      await refreshFromBundle();\n'
+)
+
+# Force at most one direct refreshSyncHealth call in the entire file.
+lines = text.splitlines()
+keep = []
+seen_sync_call = 0
+for line in lines:
+  if 'await refreshSyncHealth();' in line:
+    seen_sync_call += 1
+    if seen_sync_call > 1:
+      continue
+  keep.append(line)
+text = "\n".join(keep) + "\n"
 
 path.write_text(text, encoding='utf-8')
 PY
