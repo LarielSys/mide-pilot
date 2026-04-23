@@ -1,350 +1,177 @@
 (async function main() {
+  const cfg = window.CUSTOMIDE_CONFIG || { backendBaseUrl: "http://127.0.0.1:5555" };
+  const refreshIntervalMs = Number(cfg.refreshIntervalMs || 2500);
+  const llmRefreshEvery = 5;
+  let tick = 0;
+
   const statusEl = document.getElementById("backendStatus");
-  const remoteFrame = document.getElementById("remoteFrame");
-  const outputEl = document.getElementById("execOutput");
-  const dashboardEl = document.getElementById("dashboard");
   const llmBadgeEl = document.getElementById("llmHealthBadge");
   const syncBadgeEl = document.getElementById("syncHealthBadge");
-  const syncDebugPanelEl = document.getElementById("syncDebugPanel");
-  const gitPanelEl = document.getElementById("gitPanel");
-  const workerLogPanelEl = document.getElementById("workerLogPanel");
   const lastRefreshEl = document.getElementById("lastRefresh");
-  let lastGateStatus = "unknown";
+  const remoteFrame = document.getElementById("remoteFrame");
+  const autopilotSummaryEl = document.getElementById("autopilotSummary");
+  const workerLogPanelEl = document.getElementById("workerLogPanel");
+  const gitPanelEl = document.getElementById("gitPanel");
   const syncCadencePanelEl = document.getElementById("syncCadencePanel");
+  const tokenPanelEl = document.getElementById("tokenPanel");
+  const ollamaPanelEl = document.getElementById("ollamaPanel");
 
-  function renderLlmBadge(data) {
-    if (!llmBadgeEl) return;
-    const status = (data && data.status) || "unknown";
-    lastGateStatus = (data && data.gate_3x60_pass) ? "pass" : status;
-    const source = (data && data.source_key) || "n/a";
-    llmBadgeEl.textContent = "LLM: " + status + " | source: " + source;
+  function asNum(v) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : 0;
   }
 
-  function renderSyncCadence(data) {
-    if (!syncCadencePanelEl) return;
-    const deltas = (data && data.deltas_seconds) ? data.deltas_seconds.join(", ") : "n/a";
-    const gate = (data && data.gate_3x60_pass) ? "pass" : "pending";
-    const status = (data && data.status) || "unknown";
-    lastGateStatus = (data && data.gate_3x60_pass) ? "pass" : status;
-    syncCadencePanelEl.textContent = "Sync cadence\n- deltas_seconds: " + deltas + "\n- gate_3x60_pass: " + gate + "\n- status: " + status;
+  function setBackendStatus(ok, msg) {
+    statusEl.textContent = ok ? "Backend: online" : "Backend: offline";
+    if (msg) statusEl.textContent += " | " + msg;
   }
 
-  function renderSyncBadge(data) {
-    if (syncDebugPanelEl) {
-      const syncError = (data && data.sync_error) || "unknown";
-      const syncFile = (data && data.sync_error_file) || "n/a";
-      const source = (data && data.sync_error_source) || "n/a";
-      syncDebugPanelEl.textContent = "Sync debug\n- sync_error: " + syncError + "\n- sync_error_file: " + syncFile + "\n- source: " + source;
-    }
-    if (!syncBadgeEl) return;
-    const value = (data && data.sync_error) || "unknown";
-    syncBadgeEl.textContent = "Sync: " + value + " | gate: " + lastGateStatus;
-  }
+  function renderSync(sync) {
+    const err = (sync && sync.sync_error) || "unknown";
+    const gate = (sync && sync.heads_match) ? "heads_match" : "heads_diff";
+    syncBadgeEl.textContent = "Sync: " + err + " | " + gate;
 
-  function renderGitPanel(data) {
-    if (!gitPanelEl) return;
     gitPanelEl.textContent = [
-      "Git visibility",
-      "- branch: " + ((data && data.branch) || "unknown"),
-      "- local_head: " + ((data && data.local_head_short) || "unknown"),
-      "- origin_head: " + ((data && data.origin_head_short) || "unknown"),
-      "- heads_match: " + ((data && data.heads_match) ? "yes" : "no"),
-      "- working_tree: " + ((data && data.working_tree) || "unknown"),
-      "- reported_at_utc: " + ((data && data.reported_at_utc) || "n/a")
+      "Git sync health",
+      "- branch: " + ((sync && sync.branch) || "unknown"),
+      "- local_head: " + ((sync && sync.local_head_short) || "unknown"),
+      "- origin_head: " + ((sync && sync.origin_head_short) || "unknown"),
+      "- heads_match: " + (((sync && sync.heads_match) ? "yes" : "no")),
+      "- working_tree: " + ((sync && sync.working_tree) || "unknown"),
+      "- sync_error: " + err,
+      "- source: " + ((sync && sync.sync_error_source) || "n/a"),
+      "- reported_at_utc: " + ((sync && sync.reported_at_utc) || "n/a")
     ].join("\n");
   }
 
-  function renderWorkerLog(data) {
-    if (!workerLogPanelEl) return;
-    const events = (data && data.recent_events) ? data.recent_events : [];
-    workerLogPanelEl.textContent = [
-      "Worker log (real-time)",
-      "- mode: " + ((data && data.mode) || "unknown"),
-      "- last_run_local: " + ((data && data.last_run_local) || "n/a"),
-      "- log_timezone: " + ((data && data.log_timezone) || "n/a"),
-      "- stale_seconds: " + ((data && typeof data.stale_seconds === "number") ? data.stale_seconds : "n/a"),
-      "- status_source: " + ((data && data.status_source) || "n/a"),
-      "- events_source: " + ((data && data.events_source) || "n/a"),
+  function renderCadence(cadence) {
+    const deltas = (cadence && cadence.deltas_seconds) ? cadence.deltas_seconds.join(", ") : "n/a";
+    syncCadencePanelEl.textContent = [
+      "Worker cadence",
+      "- status: " + ((cadence && cadence.status) || "unknown"),
+      "- gate_3x60_pass: " + (((cadence && cadence.gate_3x60_pass) ? "yes" : "no")),
+      "- deltas_seconds: " + deltas,
+      "- source: " + ((cadence && cadence.source) || "n/a"),
+      "- reported_at_utc: " + ((cadence && cadence.reported_at_utc) || "n/a")
+    ].join("\n");
+  }
+
+  function renderWorkerLog(worker) {
+    const events = (worker && worker.recent_events) ? worker.recent_events : [];
+    autopilotSummaryEl.textContent = [
+      "Worker summary",
+      "- worker: " + ((worker && worker.worker_id) || "n/a"),
+      "- mode: " + ((worker && worker.mode) || "unknown"),
+      "- last_run_local: " + ((worker && worker.last_run_local) || "n/a"),
+      "- stale_seconds: " + ((worker && typeof worker.stale_seconds === "number") ? worker.stale_seconds : "n/a"),
+      "- last_task: " + ((worker && worker.last_task_processed) || ""),
+      "- note: " + ((worker && worker.note) || ""),
+      "- status_source: " + ((worker && worker.status_source) || "n/a"),
+      "- events_source: " + ((worker && worker.events_source) || "n/a")
+    ].join("\n");
+
+    workerLogPanelEl.textContent = events.length ? events.join("\n") : "(no events)";
+  }
+
+  function renderTokens(tokens) {
+    const summary = (tokens && tokens.summary) || {};
+    const rows = (tokens && tokens.rows) ? tokens.rows.slice(0, 12) : [];
+    const table = rows.map(r => {
+      return [
+        (r.task_id || "").padEnd(12, " "),
+        String(asNum(r.ollama_total)).padStart(7, " "),
+        String(asNum(r.vs_total)).padStart(7, " "),
+        String(asNum(r.total_tokens)).padStart(8, " ")
+      ].join(" | ");
+    });
+
+    tokenPanelEl.textContent = [
+      "Token counters (cost-down cockpit)",
+      "- source: " + ((tokens && tokens.source) || "n/a"),
+      "- tasks_tracked: " + (summary.tasks_tracked || 0),
+      "- ollama_tokens_total: " + (summary.ollama_tokens_total || 0),
+      "- vs_tokens_total: " + (summary.vs_tokens_total || 0),
+      "- all_tokens_total: " + (summary.all_tokens_total || 0),
+      "- estimated_cost_usd_total: " + (summary.estimated_cost_usd_total || 0),
       "",
-      events.length ? events.join("\n") : "(no events)"
+      "task_id      | ollama |      vs |    total",
+      "--------------------------------------------",
+      ...table
     ].join("\n");
   }
 
-  async function fetchStatusBundle() {
-    const res = await fetch(cfg.backendBaseUrl + "/api/status/bundle");
-    if (!res.ok) throw new Error("status bundle failed");
+  function renderOllama(runtime, llm) {
+    const costMode = runtime && runtime.cost_mode ? runtime.cost_mode : {};
+    const llmStatus = llm ? (llm.status || "unknown") : "pending";
+    const source = llm ? (llm.source_key || "n/a") : "n/a";
+    llmBadgeEl.textContent = "LLM: " + llmStatus + " | source: " + source;
+
+    ollamaPanelEl.textContent = [
+      "Inference policy",
+      "- mode: " + (costMode.inference_policy || "ollama_local_first"),
+      "- note: " + (costMode.notes || "Prefer local Ollama for low cost."),
+      "- llm_status: " + llmStatus,
+      "- llm_source: " + source,
+      "- refresh_interval_ms: " + refreshIntervalMs
+    ].join("\n");
+  }
+
+  async function fetchJson(path) {
+    const res = await fetch(cfg.backendBaseUrl + path);
+    if (!res.ok) throw new Error(path + " failed (" + res.status + ")");
     return await res.json();
   }
 
-  async function refreshSyncHealth() {
-    const res = await fetch(cfg.backendBaseUrl + "/api/status/sync-health");
-    if (!res.ok) throw new Error("sync health failed");
-    const data = await res.json();
-    renderSyncBadge(data);
-    return data;
-  }
+  async function refreshAll(forceLlm) {
+    const bundle = await fetchJson("/api/status/bundle");
+    const runtime = bundle.runtime || {};
+    const sync = bundle.sync_health || {};
+    const cadence = bundle.sync_cadence || {};
+    const worker = bundle.worker_log || {};
+    const tokens = bundle.token_counters || {};
 
-  async function refreshFromBundle() {
-    const bundle = await fetchStatusBundle();
-    if (bundle && bundle.runtime) renderDashboard(bundle.runtime);
-    if (bundle && bundle.runtime && bundle.runtime.worker && bundle.runtime.worker.remote_url) {
-      remoteFrame.src = bundle.runtime.worker.remote_url;
-    }
-    if (bundle && bundle.sync_health) renderSyncBadge(bundle.sync_health);
-    if (bundle && bundle.sync_health) renderGitPanel(bundle.sync_health);
-    if (bundle && bundle.sync_cadence) renderSyncCadence(bundle.sync_cadence);
-    if (bundle && bundle.worker_log) renderWorkerLog(bundle.worker_log);
-    if (lastRefreshEl) {
-      lastRefreshEl.textContent = "Last refresh: " + new Date().toLocaleTimeString();
-    }
-    return bundle;
-  }
+    setBackendStatus(true, "bundle ok");
+    renderSync(sync);
+    renderCadence(cadence);
+    renderWorkerLog(worker);
+    renderTokens(tokens);
 
-  async function refreshLlmHealth() {
-    const res = await fetch(cfg.backendBaseUrl + "/api/llm/health");
-    if (!res.ok) throw new Error("llm health failed");
-    const data = await res.json();
-    renderLlmBadge(data);
-    return data;
-  }
-
-  const btnRefresh = document.getElementById("btnRefreshStatus");
-  const btnLocal = document.getElementById("btnRunLocal");
-  const btnRemote = document.getElementById("btnRunRemote");
-  const btnAskLocalLLM = document.getElementById("btnAskLocalLLM");
-  const btnAskRemoteLLM = document.getElementById("btnAskRemoteLLM");
-
-  const localInput = document.getElementById("localCommand");
-  const remoteInput = document.getElementById("remoteCommand");
-  const sharedPrompt = document.getElementById("sharedPrompt");
-
-  const cfg = window.CUSTOMIDE_CONFIG || {
-    backendBaseUrl: "http://127.0.0.1:5555",
-  };
-  const refreshIntervalMs = Number(cfg.refreshIntervalMs || 5000);
-
-  function renderJson(data) {
-    outputEl.textContent = JSON.stringify(data, null, 2);
-  }
-
-  function setBusy(isBusy, label) {
-    btnLocal.disabled = isBusy;
-    btnRemote.disabled = isBusy;
-    btnRefresh.disabled = isBusy;
-    btnAskLocalLLM.disabled = isBusy;
-    btnAskRemoteLLM.disabled = isBusy;
-    if (isBusy) {
-      statusEl.textContent = label || "Running...";
-    }
-  }
-
-  function renderDashboard(data) {
-    const remote = data && data.worker ? data.worker : {};
-    const backend = data && data.backend ? data.backend : {};
-    const remoteUrl = remote.remote_url || "(not available yet)";
-
-    dashboardEl.textContent = [
-      "Runtime Dashboard",
-      "- Backend: " + (backend.status || "unknown"),
-      "- Local execute: " + ((backend.execute_routes || {}).local || "missing"),
-      "- Remote execute: " + ((backend.execute_routes || {}).remote || "missing"),
-      "- Shared LLM: /api/llm/chat",
-      "- Remote URL available: " + (remote.remote_url_available ? "yes" : "no"),
-      "- Remote URL: " + remoteUrl
-    ].join("\n");
-  }
-
-  async function checkBackend() {
-    try {
-      const res = await fetch(cfg.backendBaseUrl + "/health");
-      if (!res.ok) throw new Error("health failed");
-      const data = await res.json();
-      statusEl.textContent = "Backend: " + (data.status || "ok");
-      return true;
-    } catch (_err) {
-      statusEl.textContent = "Backend: offline (start uvicorn on :5555)";
-      return false;
-    }
-  }
-
-  async function fetchRuntimeStatus() {
-    const res = await fetch(cfg.backendBaseUrl + "/api/status/runtime");
-    if (!res.ok) {
-      throw new Error("runtime status failed");
+    if (runtime.worker && runtime.worker.remote_url) {
+      remoteFrame.src = runtime.worker.remote_url;
     }
 
-    const data = await res.json();
-    renderDashboard(data);
-
-    if (data.worker && data.worker.remote_url) {
-      remoteFrame.src = data.worker.remote_url;
-    }
-
-    return data;
-  }
-
-  async function runLocal() {
-    const payload = {
-      command: localInput.value.trim(),
-      cwd: ".",
-      timeout_seconds: 20,
-    };
-
-    if (!payload.command) {
-      throw new Error("Local command is empty");
-    }
-
-    const res = await fetch(cfg.backendBaseUrl + "/api/execute/local", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.detail || "Local execution failed");
-    }
-
-    renderJson(data);
-  }
-
-  async function runRemote() {
-    const payload = {
-      command: remoteInput.value.trim(),
-      use_worker_config: true,
-      timeout_seconds: 25,
-    };
-
-    if (!payload.command) {
-      throw new Error("Remote command is empty");
-    }
-
-    const res = await fetch(cfg.backendBaseUrl + "/api/execute/remote", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.detail || "Remote execution failed");
-    }
-
-    renderJson(data);
-  }
-
-  async function askSharedLlm(source) {
-    const prompt = sharedPrompt.value.trim();
-    if (!prompt) {
-      throw new Error("Shared prompt is empty");
-    }
-
-    const res = await fetch(cfg.backendBaseUrl + "/api/llm/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt, source }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.detail || "Shared LLM call failed");
-    }
-
-    renderJson(data);
-  }
-
-  btnRefresh.addEventListener("click", async () => {
-    try {
-      setBusy(true, "Refreshing status...");
-      const bundle = await fetchStatusBundle();
-      if (bundle && bundle.runtime) renderDashboard(bundle.runtime);
-      if (bundle && bundle.runtime && bundle.runtime.worker && bundle.runtime.worker.remote_url) {
-        remoteFrame.src = bundle.runtime.worker.remote_url;
+    if (forceLlm) {
+      try {
+        const llm = await fetchJson("/api/llm/health");
+        renderOllama(runtime, llm);
+      } catch (_err) {
+        renderOllama(runtime, { status: "offline", source_key: "n/a" });
       }
-      if (bundle && bundle.sync_health) renderSyncBadge(bundle.sync_health);
-      await checkBackend();
-      await refreshLlmHealth();
-      await refreshSyncHealth();
-    } catch (err) {
-      outputEl.textContent = "status refresh failed: " + err;
-    } finally {
-      setBusy(false);
+    } else {
+      renderOllama(runtime, null);
     }
-  });
 
-  btnLocal.addEventListener("click", async () => {
-    try {
-      setBusy(true, "Running local command...");
-      await runLocal();
-      await refreshFromBundle();
-      await checkBackend();
-      await refreshLlmHealth();
-    } catch (err) {
-      outputEl.textContent = "local run failed: " + err;
-    } finally {
-      setBusy(false);
-    }
-  });
-
-  btnRemote.addEventListener("click", async () => {
-    try {
-      setBusy(true, "Running remote command...");
-      await runRemote();
-      await refreshFromBundle();
-      await checkBackend();
-      await refreshLlmHealth();
-    } catch (err) {
-      outputEl.textContent = "remote run failed: " + err;
-    } finally {
-      setBusy(false);
-    }
-  });
-
-  btnAskLocalLLM.addEventListener("click", async () => {
-    try {
-      setBusy(true, "Asking shared LLM from local IDE...");
-      await askSharedLlm("local-ide");
-      await refreshFromBundle();
-      await checkBackend();
-      await refreshLlmHealth();
-    } catch (err) {
-      outputEl.textContent = "shared llm local failed: " + err;
-    } finally {
-      setBusy(false);
-    }
-  });
-
-  btnAskRemoteLLM.addEventListener("click", async () => {
-    try {
-      setBusy(true, "Asking shared LLM from remote IDE...");
-      await askSharedLlm("remote-ide");
-      await refreshFromBundle();
-      await checkBackend();
-      await refreshLlmHealth();
-    } catch (err) {
-      outputEl.textContent = "shared llm remote failed: " + err;
-    } finally {
-      setBusy(false);
-    }
-  });
-
-  const backendOk = await checkBackend();
-  if (backendOk) {
-    try {
-      await refreshFromBundle();
-      await refreshLlmHealth();
-      setInterval(async () => {
-        if (document.hidden) return;
-        try {
-          await refreshFromBundle();
-        } catch (_err) {
-          // Keep UI usable if periodic refresh fails temporarily.
-        }
-      }, refreshIntervalMs);
-    } catch (err) {
-      outputEl.textContent = "status bootstrap failed: " + err;
-    }
-  } else {
-    statusEl.textContent += " | Run pilot_v1/customide/scripts/start_local_stack.sh";
+    lastRefreshEl.textContent = "Last refresh: " + new Date().toLocaleTimeString();
   }
+
+  async function boot() {
+    try {
+      await refreshAll(true);
+    } catch (err) {
+      setBackendStatus(false, String(err));
+    }
+
+    setInterval(async () => {
+      if (document.hidden) return;
+      tick += 1;
+      const forceLlm = (tick % llmRefreshEvery) === 0;
+      try {
+        await refreshAll(forceLlm);
+      } catch (err) {
+        setBackendStatus(false, String(err));
+      }
+    }, refreshIntervalMs);
+  }
+
+  boot();
 })();

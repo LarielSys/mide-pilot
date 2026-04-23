@@ -3,61 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>CustomIDE - Dual Pane</title>
+  <title>CustomIDE Cockpit</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="bg-orbit"></div>
+
   <header class="topbar">
-    <div class="brand">CustomIDE</div>
+    <div class="brand">CustomIDE Cockpit</div>
     <div class="status" id="backendStatus">Backend: checking...</div>
     <div class="status" id="llmHealthBadge">LLM: checking...</div>
     <div class="status" id="syncHealthBadge">Sync: checking...</div>
     <div class="status" id="lastRefresh">Last refresh: --</div>
   </header>
 
-  <main class="layout">
-    <section class="pane pane-left">
-      <div class="pane-title">Windows Editor</div>
-      <textarea id="editor" spellcheck="false">// Start coding here...</textarea>
-
-      <div class="controls">
-        <button id="btnRefreshStatus" type="button">Refresh Status</button>
-      </div>
-
-      <div class="exec-card">
-        <label for="localCommand">Local command</label>
-        <input id="localCommand" type="text" value="echo local-ok" />
-        <button id="btnRunLocal" type="button">Run Local</button>
-      </div>
-
-      <div class="exec-card">
-        <label for="remoteCommand">Remote command</label>
-        <input id="remoteCommand" type="text" value="echo remote-ok" />
-        <button id="btnRunRemote" type="button">Run Remote</button>
-      </div>
-
-      <div class="exec-card">
-        <label for="sharedPrompt">Shared LLM prompt (both IDEs use same backend route)</label>
-        <textarea id="sharedPrompt" rows="3">Give me a short coding tip for tonight.</textarea>
-        <div class="controls">
-          <button id="btnAskLocalLLM" type="button">Ask Shared LLM (Local IDE)</button>
-          <button id="btnAskRemoteLLM" type="button">Ask Shared LLM (Remote IDE)</button>
-        </div>
-      </div>
-
-      <div id="dashboard" class="dashboard"></div>
-      <pre id="syncDebugPanel">Sync debug: waiting...</pre>
-      <pre id="syncCadencePanel">Sync cadence: waiting...</pre>
-      <pre id="gitPanel">Git: waiting...</pre>
-      <pre id="workerLogPanel">Worker log: waiting...</pre>
-      <pre id="execOutput"></pre>
+  <main class="cockpit-grid">
+    <section class="panel">
+      <h3>Autopilot Live</h3>
+      <pre id="autopilotSummary">waiting...</pre>
     </section>
 
-    <section class="pane pane-right">
-      <div class="pane-title">Worker 1 Remote View</div>
+    <section class="panel panel-tall">
+      <h3>Autopilot Events</h3>
+      <pre id="workerLogPanel">waiting...</pre>
+    </section>
+
+    <section class="panel">
+      <h3>Git Sync</h3>
+      <pre id="gitPanel">waiting...</pre>
+    </section>
+
+    <section class="panel">
+      <h3>Sync Cadence</h3>
+      <pre id="syncCadencePanel">waiting...</pre>
+    </section>
+
+    <section class="panel panel-wide">
+      <h3>Token Counters</h3>
+      <pre id="tokenPanel">waiting...</pre>
+    </section>
+
+    <section class="panel">
+      <h3>Ollama / Cost Mode</h3>
+      <pre id="ollamaPanel">waiting...</pre>
+    </section>
+
+    <section class="panel panel-wide">
+      <h3>Worker 1 Remote View</h3>
       <iframe id="remoteFrame" title="Worker 1 code-server view"></iframe>
-      <div class="hint">Set remote URL in config when MTASK-0034 services are available.</div>
     </section>
   </main>
 

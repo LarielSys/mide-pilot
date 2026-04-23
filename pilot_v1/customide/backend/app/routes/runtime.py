@@ -9,7 +9,7 @@ from fastapi import APIRouter
 from ..services import load_worker_services
 
 router = APIRouter(prefix="/api/status", tags=["status"])
-_FETCH_TTL_SECONDS = 5.0
+_FETCH_TTL_SECONDS = 4.0
 _last_fetch_monotonic = 0.0
 
 
@@ -74,6 +74,45 @@ def _parse_event_timestamp(line: str):
     return parsed.astimezone(timezone.utc)
 
 
+def _parse_token_counter_lines(raw_text: str) -> list[dict]:
+    rows: list[dict] = []
+    for raw in raw_text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+
+        parts = [p.strip() for p in line.split("|")]
+        if len(parts) != 12:
+            continue
+
+        task_id = parts[0]
+        if not task_id.startswith("MTASK-"):
+            continue
+
+        try:
+            row = {
+                "task_id": task_id,
+                "ollama_build": int(parts[1]),
+                "ollama_debug": int(parts[2]),
+                "ollama_fix": int(parts[3]),
+                "vs_build": int(parts[4]),
+                "vs_debug": int(parts[5]),
+                "vs_fix": int(parts[6]),
+                "ollama_total": int(parts[7]),
+                "vs_total": int(parts[8]),
+                "total_tokens": int(parts[9]),
+                "est_cost_usd": float(parts[10]),
+                "updated_utc": parts[11],
+            }
+        except ValueError:
+            continue
+
+        rows.append(row)
+
+    rows.sort(key=lambda x: x["task_id"], reverse=True)
+    return rows
+
+
 @router.get("/runtime")
 def get_runtime_status() -> dict:
     repo_root = _repo_root()
@@ -100,6 +139,10 @@ def get_runtime_status() -> dict:
         "worker": {
             "remote_url_available": bool(code_server_url),
             "remote_url": code_server_url,
+        },
+        "cost_mode": {
+            "inference_policy": "ollama_local_first",
+            "notes": "Use local Ollama for chat/summaries; reserve paid endpoints for exceptions.",
         },
     }
 
@@ -152,6 +195,7 @@ def get_sync_cadence() -> dict:
             "status": "missing",
             "source_file": str(event_file),
             "source": source,
+            "reported_at_utc": _utc_now_iso(),
         }
 
     stamps = []
@@ -196,7 +240,7 @@ def get_worker_log() -> dict:
 
     recent_events = []
     if events_text:
-        recent_events = [line for line in events_text.splitlines() if line.strip()][:20]
+        recent_events = [line for line in events_text.splitlines() if line.strip()][:40]
 
     stale_seconds = None
     last_run_utc = status.get("last_run_utc")
@@ -226,6 +270,33 @@ def get_worker_log() -> dict:
     }
 
 
+@router.get("/token-counters")
+def get_token_counters() -> dict:
+    repo_root = _repo_root()
+    rel_counter = "pilot_v1/customide/TOKEN_COUNTER_TASKS.txt"
+    raw_text, source = _read_state_text(repo_root, rel_counter)
+
+    rows = _parse_token_counter_lines(raw_text)
+    ollama_total = sum(r["ollama_total"] for r in rows)
+    vs_total = sum(r["vs_total"] for r in rows)
+    token_total = sum(r["total_tokens"] for r in rows)
+    cost_total = round(sum(r["est_cost_usd"] for r in rows), 6)
+
+    return {
+        "source": source,
+        "source_file": str(repo_root / rel_counter),
+        "rows": rows[:30],
+        "summary": {
+            "tasks_tracked": len(rows),
+            "ollama_tokens_total": ollama_total,
+            "vs_tokens_total": vs_total,
+            "all_tokens_total": token_total,
+            "estimated_cost_usd_total": cost_total,
+        },
+        "reported_at_utc": _utc_now_iso(),
+    }
+
+
 @router.get("/bundle")
 def get_status_bundle() -> dict:
     return {
@@ -233,4 +304,5 @@ def get_status_bundle() -> dict:
         "sync_health": get_sync_health(),
         "sync_cadence": get_sync_cadence(),
         "worker_log": get_worker_log(),
+        "token_counters": get_token_counters(),
     }
