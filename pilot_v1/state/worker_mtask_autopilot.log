@@ -1,0 +1,3287 @@
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   f5de6c0..b39af2c  main -> main
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   b39af2c..bac35c5  main       -> origin/main
+[autopilot] Candidate task: TASK-0020 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0020.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0020_timestamp.sh for TASK-0020
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   bac35c5..15de8be  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   37ad208..b4723d9  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   b4723d9..885d50a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   885d50a..99b0212  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   99b0212..3476907  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   3476907..3d95cd6  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   3d95cd6..5dac032  main       -> origin/main
+[autopilot] Candidate task: TASK-0021 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0021.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0021_hello.sh for TASK-0021
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   5dac032..c6db835  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c6db835..2e38e4e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   2e38e4e..d4512e9  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   d4512e9..a976385  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   a976385..af51785  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   af51785..f1c44b9  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   f1c44b9..9b46247  main       -> origin/main
+[autopilot] Candidate task: TASK-0022 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0022.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0022_clone_lariel.sh for TASK-0022
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   9b46247..74fd63a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   74fd63a..f881aae  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   f881aae..7385452  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7385452..548bd2d  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   548bd2d..c4d67f1  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   c4d67f1..47aa9a6  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   47aa9a6..fb9e19a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   fb9e19a..251d7ca  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   251d7ca..445ab50  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   445ab50..7dabfd3  main       -> origin/main
+[autopilot] Candidate task: TASK-0023 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0023.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0023_open_localhost.sh for TASK-0023
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   7dabfd3..c64a3d9  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c64a3d9..451112b  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   451112b..315ca2d  main       -> origin/main
+[autopilot] Candidate task: TASK-0024 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0024.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0024_open_localhost_retry.sh for TASK-0024
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   315ca2d..a7a2948  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   a7a2948..103921d  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   103921d..8b614a7  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   8b614a7..daa7c51  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   daa7c51..ec2af0b  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: TASK-0025 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0025.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0025_persist_ngrok.sh for TASK-0025
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   74bd7d9..88ebe13  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   88ebe13..0d2ee34  main -> main
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   0d2ee34..3ee84a0  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   3ee84a0..54c3017  main -> main
+Autopilot already running for worker ubuntu-worker-01.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   3afc423..bf59cb5  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   bf59cb5..7f41650  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7f41650..f05e311  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   f05e311..d298146  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   d298146..e2d9864  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   e2d9864..953b9f6  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   953b9f6..446abfb  main       -> origin/main
+[autopilot] Candidate task: MTASK-0026 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0026.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0026_weather_live_architecture.sh for MTASK-0026
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   446abfb..1d52570  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   1d52570..e65860f  main       -> origin/main
+[autopilot] Candidate task: MTASK-0027 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0027.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0027_sync_weather_specs.sh for MTASK-0027
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   536de5a..2ff2d94  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   2ff2d94..d66462d  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   d66462d..97410b9  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   97410b9..7ee4127  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7ee4127..9c57751  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   9c57751..4431b96  main       -> origin/main
+[autopilot] Candidate task: MTASK-0028 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0028.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0028_enable_weather_live_api.sh for MTASK-0028
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   4431b96..930fee8  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   930fee8..e488fb6  main       -> origin/main
+[autopilot] Candidate task: MTASK-0029 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0029.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0029_enable_weather_live_api_retry.sh for MTASK-0029
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   e488fb6..db7a535  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   db7a535..b049e15  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   b049e15..16ea75c  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   16ea75c..f158596  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   f158596..e340002  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   e340002..fb64a3b  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   fb64a3b..7008467  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7008467..ba6c716  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   ba6c716..0751be3  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   0751be3..1a8dc82  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   1a8dc82..7857ac5  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7857ac5..27bd3c0  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   27bd3c0..95ae540  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   95ae540..c8af65a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c8af65a..b024fdb  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   b024fdb..248c1e4  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   248c1e4..4c1e708  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   4c1e708..8a80749  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   8a80749..8c9f620  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   8c9f620..3f1e508  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   3f1e508..7ad6ee2  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   7ad6ee2..b651050  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   b651050..780b1b4  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   780b1b4..cb2d9b6  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   cb2d9b6..66da115  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   66da115..297e7b0  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   297e7b0..acd8729  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   acd8729..458b4fc  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   458b4fc..f20051b  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   f20051b..2e2a5b4  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   2e2a5b4..2cbfebb  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   2cbfebb..13f58f5  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   13f58f5..1fdb8cc  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   1fdb8cc..a13a2be  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   a13a2be..769ec75  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+   769ec75..a3c2826  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   a3c2826..c85c9d6  main       -> origin/main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   c85c9d6..f7bd743  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   f7bd743..bf712a7  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   bf712a7..0432dca  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   0432dca..c89792d  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   c89792d..3bb1e16  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   3bb1e16..110515b  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   110515b..f8537e1  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   f8537e1..84a8225  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   84a8225..25abd45  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   25abd45..23ec5f3  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   23ec5f3..3b75dab  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0030 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0030.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0030_add_flask_cors.sh for MTASK-0030
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   3b75dab..e68f7d8  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0031 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0031.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0031_ollama_proxy.sh for MTASK-0031
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   e68f7d8..913ba46  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0032 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0032.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0032_ssh_bootstrap.sh for MTASK-0032
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   913ba46..924fae2  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0033 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0033.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0033_codeserver_install.sh for MTASK-0033
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   924fae2..2b158b0  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0034 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0034.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0034_codeserver_ngrok_verify.sh for MTASK-0034
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   c7bfd2f..ca76824  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: TASK-0030 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0030.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0030_pull_and_force_mtask_0031.sh for TASK-0030
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit eafcee9a872ac7229c9d82de46341aabe8a9ede9.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+error: The following untracked working tree files would be overwritten by merge:
+	pilot_v1/results/TASK-0035.result.json
+Please move or remove them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff eafcee9a872ac7229c9d82de46341aabe8a9ede9
+output, run
+$ git reset --hard
+to recover.
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: TASK-0030 (/home/larieladmin/mide-pilot/pilot_v1/tasks/TASK-0030.json)
+[autopilot] Executing pilot_v1/scripts/exec_task_0030_pull_and_force_mtask_0031.sh for TASK-0030
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0035 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0035.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0035_recover_ap_and_drain_0033_retries.sh for MTASK-0035
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0035 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0035.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0035_recover_ap_and_drain_0033_retries.sh for MTASK-0035
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c971d74..319096c  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   319096c..e9a8628  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   e9a8628..b1107de  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   b1107de..1a28372  main       -> origin/main
+[autopilot] Candidate task: MTASK-0037 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0037.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0037_scaffold_ide_backend.sh for MTASK-0037
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   03fc241..c66f58d  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c66f58d..d389289  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   d389289..f3d64a1  main       -> origin/main
+[autopilot] Candidate task: MTASK-0038 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0038.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0038_scaffold_ide_frontend.sh for MTASK-0038
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   19e6398..d3b8c28  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0039 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0039.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0039_wire_frontend_backend.sh for MTASK-0039
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   aaab039..0d6a7ff  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   0d6a7ff..31b11fa  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   31b11fa..5d8a874  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   5d8a874..b7c53cc  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   b7c53cc..3949fbe  main       -> origin/main
+[autopilot] Candidate task: MTASK-0040 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0040.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0040_phase5_smoke_verify.sh for MTASK-0040
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   3949fbe..07db7af  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   07db7af..bebfc87  main       -> origin/main
+[autopilot] Candidate task: MTASK-0041 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0041.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0041_add_execution_endpoints_and_ui.sh for MTASK-0041
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   767da45..1059a5f  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   1059a5f..7e220cb  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7e220cb..8710299  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   8710299..0f8b72e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   0f8b72e..192f591  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   192f591..74ccf1c  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   74ccf1c..7bc7a7e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7bc7a7e..978185e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   978185e..709bf3d  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   709bf3d..c80d97b  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   c80d97b..992f85f  main       -> origin/main
+[autopilot] Candidate task: MTASK-0042 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0042.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0042_local_launch_and_dashboard.sh for MTASK-0042
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   80a6b35..5762bd9  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   5762bd9..06f7dc6  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   06f7dc6..c0a0bbc  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c0a0bbc..a8bcaaf  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   a8bcaaf..c906c61  main       -> origin/main
+[autopilot] Candidate task: MTASK-0043 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0043.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0043_harden_execute_and_ui.sh for MTASK-0043
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   0666493..a2df968  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   a2df968..5d6f833  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   5d6f833..422c586  main       -> origin/main
+[autopilot] Candidate task: MTASK-0044 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0044.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0044_smoke_verify_hardened_exec.sh for MTASK-0044
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   422c586..5dbf394  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   5dbf394..9b48184  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   9b48184..6a74d93  main       -> origin/main
+[autopilot] Candidate task: MTASK-0045 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0045.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0045_remote_target_validation_and_reins.sh for MTASK-0045
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   6a74d93..1e0cbfa  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   1e0cbfa..fdb61fa  main       -> origin/main
+[autopilot] Candidate task: MTASK-0045-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0045-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0045_retry1_remote_target_validation_and_reins.sh for MTASK-0045-RETRY1
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   fdb61fa..7a78e5a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7a78e5a..0e5e33b  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   0e5e33b..8897acc  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   8897acc..f541c8f  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   f541c8f..af15d31  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   af15d31..a615d3c  main       -> origin/main
+[autopilot] Candidate task: MTASK-0046 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0046.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0046_dual_ide_shared_llm_barebones.sh for MTASK-0046
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   a615d3c..df8b44e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   df8b44e..420ceef  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   420ceef..0152815  main       -> origin/main
+[autopilot] Candidate task: MTASK-0046-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0046-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0046_retry1_dual_ide_shared_llm_barebones.sh for MTASK-0046-RETRY1
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   0152815..74a168a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   74a168a..72536d8  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   72536d8..1afd49c  main       -> origin/main
+[autopilot] Candidate task: MTASK-0046-RETRY2 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0046-RETRY2.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0046_retry2_dual_ide_shared_llm_degraded_mode.sh for MTASK-0046-RETRY2
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   1ec2324..347ebad  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   347ebad..8512b9a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   8512b9a..1bdaa4b  main       -> origin/main
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/customide/backend/app/main.py
+	pilot_v1/customide/frontend/index.html
+	pilot_v1/customide/frontend/js/app.js
+Please commit your changes or stash them before you merge.
+Aborting
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
