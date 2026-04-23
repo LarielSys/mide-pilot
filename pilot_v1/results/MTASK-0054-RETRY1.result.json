@@ -3,7 +3,7 @@
   "worker_id": "ubuntu-worker-01",
   "execution_status": "completed",
   "summary": "Executor script completed successfully.",
-  "stdout_excerpt": "task=MTASK-0054-RETRY1\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nAlready up to date.\ngit_sync=passed\nollama_version_file=passed\nollama_version_runbook=passed\nollama_version_contract_ready=passed\ntimestamp_utc=2026-04-23T04:34:31Z",
-  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nTo https://github.com/LarielSys/mide-pilot.git\n   2849ede..78d9cb4  main -> main",
-  "timestamp_utc": "2026-04-23T04:34:31Z"
+  "stdout_excerpt": "task=MTASK-0054-RETRY1\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nAlready up to date.\ngit_sync=passed\nollama_version_file=passed\nollama_version_runbook=passed\nollama_version_contract_ready=passed\ntimestamp_utc=2026-04-23T04:34:32Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nTo https://github.com/LarielSys/mide-pilot.git\n ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at ebc9f2098a82381d07b1cb8c44ad88dcad8da714 but expected 78d9cb400d7bb4f6e053830d7387a7a4f8481801)\nerror: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'",
+  "timestamp_utc": "2026-04-23T04:34:32Z"
 }
