@@ -3285,3 +3285,3245 @@ hint: 	git rebase
 hint: 
 hint: Disable this message with "git config advice.diverging false"
 fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0051-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0051-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0051_retry1_autopilot_heartbeat_60s_restart.sh for MTASK-0051-RETRY1
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0051-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0051-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0051_retry1_autopilot_heartbeat_60s_restart.sh for MTASK-0051-RETRY1
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0051-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0051-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0051_retry1_autopilot_heartbeat_60s_restart.sh for MTASK-0051-RETRY1
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0051-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0051-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0051_retry1_autopilot_heartbeat_60s_restart.sh for MTASK-0051-RETRY1
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0051-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0051-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0051_retry1_autopilot_heartbeat_60s_restart.sh for MTASK-0051-RETRY1
+Terminated
+Autopilot already running for worker ubuntu-worker-01.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0051-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0051-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0051_retry1_autopilot_heartbeat_60s_restart.sh for MTASK-0051-RETRY1
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit b80ef92a74a08c09790115fc19bd6ae6b3c795c1.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff b80ef92a74a08c09790115fc19bd6ae6b3c795c1
+output, run
+$ git reset --hard
+to recover.
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   2290627..d955b81  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   d955b81..b5a425c  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   b5a425c..c6809ea  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c6809ea..8e8d724  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   8e8d724..6848907  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   6848907..c619bb2  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c619bb2..eb6a158  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   eb6a158..1ae9705  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   1ae9705..2fd03df  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   2fd03df..b6bb93d  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   b6bb93d..ffbc7b2  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   ffbc7b2..f9e9600  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   f9e9600..e9beadd  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   e9beadd..9bee862  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   9bee862..a3b6ae4  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   a3b6ae4..97c481a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   97c481a..74737c8  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   74737c8..6060e27  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   6060e27..59b3557  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   59b3557..efa108a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   efa108a..059b91a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   059b91a..b493cda  main       -> origin/main
+[autopilot] Candidate task: MTASK-0052 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0052.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0052_autopilot_events_newest_first.sh for MTASK-0052
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   b493cda..5b5e51c  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 5b5e51c81f7015d1e0f2e0af7c2b917994c5d7cb but expected b493cda4d5e075fdb8adef454eb4b06a4fe1bf3f)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit 3169e6fdf8249e58fb148a4065fd1ab1eaa0fa12.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_heartbeat_epoch.txt
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff 3169e6fdf8249e58fb148a4065fd1ab1eaa0fa12
+output, run
+$ git reset --hard
+to recover.
+To https://github.com/LarielSys/mide-pilot.git
+   5b5e51c..0f81cd9  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   0f81cd9..e5f32f1  main       -> origin/main
+[autopilot] Candidate task: MTASK-0052-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0052-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0052_retry1_autopilot_events_newest_first.sh for MTASK-0052-RETRY1
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+[autopilot] Candidate task: MTASK-0052-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0052-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0052_retry1_autopilot_events_newest_first.sh for MTASK-0052-RETRY1
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   e5f32f1..6453468  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 64534684f54e26c16eaf9092f23779a344f894ac but expected e5f32f1d04f7f6379f5769059518280a749aabc5)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: push failed for MTASK-0052-RETRY1; result remains local until next successful push.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   6453468..a111fb2  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at a111fb20995f27ed07a27e98727da75cc3386162 but expected 64534684f54e26c16eaf9092f23779a344f894ac)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   a111fb2..0e84ecf  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 0e84ecfde9596d9ea10bab4db27762e9c49c7c84 but expected a111fb20995f27ed07a27e98727da75cc3386162)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   0e84ecf..3f2e446  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 3f2e446db0085e49cc9ca9f06f4eafbf7f6a1ee8 but expected 0e84ecfde9596d9ea10bab4db27762e9c49c7c84)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit 1eb393f47498be1c4f63115c133019c3ff961a30.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_heartbeat_epoch.txt
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff 1eb393f47498be1c4f63115c133019c3ff961a30
+output, run
+$ git reset --hard
+to recover.
+To https://github.com/LarielSys/mide-pilot.git
+   3f2e446..65093d1  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   65093d1..5636756  main       -> origin/main
+[autopilot] Candidate task: MTASK-0052-RETRY2 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0052-RETRY2.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0052_retry2_autopilot_events_newest_first.sh for MTASK-0052-RETRY2
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   dc3bffa..b2f7a23  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   b2f7a23..e7102f9  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   e7102f9..b8b8224  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   b8b8224..e0288b9  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   e0288b9..5d45599  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   5d45599..ba9dbdd  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   ba9dbdd..4e3cc5a  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   4e3cc5a..2fec17d  main       -> origin/main
+[autopilot] Candidate task: MTASK-0053 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0053.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0053_repair_events_order_and_restart.sh for MTASK-0053
+Terminated
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit 2fec17d2bfa3222daaf86697386e942051e7c202.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff 2fec17d2bfa3222daaf86697386e942051e7c202
+output, run
+$ git reset --hard
+to recover.
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   117f34b..2ed127e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   2ed127e..8ad9971  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   8ad9971..6d8fb36  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   6d8fb36..89e8f96  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   89e8f96..97cdf14  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   97cdf14..a492464  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   a492464..6efec45  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   6efec45..85b4132  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   85b4132..1422d66  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   1422d66..a796a99  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   a796a99..24037a5  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   24037a5..6116574  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   6116574..9fe5e2b  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   9fe5e2b..c8a7159  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c8a7159..4a6e0cf  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   4a6e0cf..0b98523  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   0b98523..877ce2e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   877ce2e..c45cae9  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c45cae9..840de10  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   840de10..9843201  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   9843201..41d91f0  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   41d91f0..9d53f9e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   9d53f9e..ac3eb6f  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   ac3eb6f..78c5191  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   78c5191..d66a336  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   d66a336..54cea89  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   54cea89..dc31d60  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   dc31d60..85c838f  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   85c838f..eeb8f11  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   eeb8f11..a466974  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   a466974..3d2680f  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   3d2680f..893965f  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   893965f..3f2bca2  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   3f2bca2..9144aaf  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 9144aafa22e5d9d67dac82dd9b112ed6e9b55954 but expected 3f2bca2b4fa47998577ef3b952e6081f3812e0f5)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   9144aaf..2137653  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 2137653d6a24354673ca1170d1cee900c4539518 but expected 9144aafa22e5d9d67dac82dd9b112ed6e9b55954)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+fatal: Cannot fast-forward to multiple branches.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+fatal: Cannot fast-forward to multiple branches.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+To https://github.com/LarielSys/mide-pilot.git
+   2137653..f96d7bf  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   f96d7bf..407258d  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   407258d..8c18773  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   8c18773..e5819a9  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   e5819a9..031f7ba  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   031f7ba..4231b3f  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 4231b3f96b8f93e3532ab5d82f7d0dcd8432cf8a but expected 031f7bac900863822d642bf0020730663128983e)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit 1299171cdd831c6b51e15c32ffd211a92cd242a9.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_heartbeat_epoch.txt
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff 1299171cdd831c6b51e15c32ffd211a92cd242a9
+output, run
+$ git reset --hard
+to recover.
+To https://github.com/LarielSys/mide-pilot.git
+   4231b3f..bcb2cdb  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   bcb2cdb..7264043  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 726404301009e0295547b14909de3d7e47f992cb but expected bcb2cdb198d17a99941693bdfa465e32a038a5d6)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   7264043..0c21d13  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 0c21d13d1f9634036c72d8204a85ea3d2d742c19 but expected 726404301009e0295547b14909de3d7e47f992cb)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit 8033f614f6dabb472e1782627285f7cafea91ebf.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_heartbeat_epoch.txt
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff 8033f614f6dabb472e1782627285f7cafea91ebf
+output, run
+$ git reset --hard
+to recover.
+To https://github.com/LarielSys/mide-pilot.git
+   0c21d13..e2c4584  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   e2c4584..d7d9ede  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at d7d9ede383f829228044444e8ca1a483a10a276b but expected e2c4584c23778ba34b8a638f0eafb30720e5b746)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   d7d9ede..6a2b98b  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 6a2b98bc26a1c3fa57d1aea197cfb72b999402b8 but expected d7d9ede383f829228044444e8ca1a483a10a276b)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+To https://github.com/LarielSys/mide-pilot.git
+   6a2b98b..f2fd3e0  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   f2fd3e0..dcc814d  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   dcc814d..65dc410  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   65dc410..ebd103e  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   ebd103e..0550c96  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   0550c96..4561812  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 456181260fefd04e1929fae8266bd5b54cd5dd5b but expected 0550c96df4f56e366fabf9e52357e6b5d3998b1c)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   4561812..194710a  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 194710abd95c572657e83311d8df5ca2458aef43 but expected 456181260fefd04e1929fae8266bd5b54cd5dd5b)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit 7648e9d9a0296b33a69a5ab1b9f841c929653fbe.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_heartbeat_epoch.txt
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff 7648e9d9a0296b33a69a5ab1b9f841c929653fbe
+output, run
+$ git reset --hard
+to recover.
+To https://github.com/LarielSys/mide-pilot.git
+   194710a..c1fc151  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c1fc151..54de601  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 54de601a04c066a5b6bdd0deb25440418e125259 but expected c1fc151c22af269f479c189893878f6346286364)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   54de601..5260baa  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 5260baab0d8214e4ed0c6601375b518ea2a2f2a1 but expected 54de601a04c066a5b6bdd0deb25440418e125259)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+To https://github.com/LarielSys/mide-pilot.git
+   5260baa..ab4f740  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   ab4f740..9912cbf  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   9912cbf..e7a0ff8  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   e7a0ff8..2b84bd5  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 2b84bd53ca8227e706c604fc56eac3df7e19b64f but expected e7a0ff80c37c9e40fde366abc903266d18f98156)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   2b84bd5..5048512  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 50485122e9c929c6259bafaad8565cbd7971ebdd but expected 2b84bd53ca8227e706c604fc56eac3df7e19b64f)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit 38668f7e394ab107c0804ec2d7bd1037bf71a07a.
+To https://github.com/LarielSys/mide-pilot.git
+   5048512..c31c080  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at ef188fa825a8301debd3ce1e918c208cb1d5ecf1 but expected 50485122e9c929c6259bafaad8565cbd7971ebdd)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   c31c080..ef188fa  main       -> origin/main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit ef188fa825a8301debd3ce1e918c208cb1d5ecf1.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_heartbeat_epoch.txt
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff ef188fa825a8301debd3ce1e918c208cb1d5ecf1
+output, run
+$ git reset --hard
+to recover.
+To https://github.com/LarielSys/mide-pilot.git
+   ef188fa..82c84a4  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   82c84a4..7364f40  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7364f40..a9ce9dc  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   a9ce9dc..fb36178  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   fb36178..caded86  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   caded86..661f842  main       -> origin/main
+[autopilot] Candidate task: MTASK-0054 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0054.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0054_ollama_version_coordinator.sh for MTASK-0054
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   661f842..c4c58b6  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   c4c58b6..da2c30e  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   da2c30e..c08e5a0  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   c08e5a0..2849ede  main       -> origin/main
+[autopilot] Candidate task: MTASK-0054-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0054-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0054_retry1_ollama_version_coordinator.sh for MTASK-0054-RETRY1
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+[autopilot] Candidate task: MTASK-0054-RETRY1 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0054-RETRY1.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0054_retry1_ollama_version_coordinator.sh for MTASK-0054-RETRY1
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   78d9cb4..ebc9f20  main -> main
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit ebc9f2098a82381d07b1cb8c44ad88dcad8da714.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/results/MTASK-0054-RETRY1.result.json
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff ebc9f2098a82381d07b1cb8c44ad88dcad8da714
+output, run
+$ git reset --hard
+to recover.
+[autopilot] Warning: git_sync failed after task completion; continuing with local queue state.
+To https://github.com/LarielSys/mide-pilot.git
+   ebc9f20..8f080dc  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   8f080dc..c1b800a  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   c1b800a..3e83ea4  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   3e83ea4..75cad4e  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   75cad4e..595d57f  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   595d57f..11ac580  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 11ac5803be172c2f2b690d28e5d9f1f7c1ca7a0a but expected 595d57f71426645195eba96fa92a34b049537e91)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   11ac580..1637a1e  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 1637a1edb97521dd1ea1ed2a5d8107d061c6df4a but expected 11ac5803be172c2f2b690d28e5d9f1f7c1ca7a0a)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+warning: fetch updated the current branch head.
+fast-forwarding your working tree from
+commit 303b65550bef433c40bdde678907c7971e30887d.
+error: Your local changes to the following files would be overwritten by merge:
+	pilot_v1/state/worker_autopilot_events.log
+	pilot_v1/state/worker_autopilot_heartbeat_epoch.txt
+	pilot_v1/state/worker_autopilot_live.txt
+	pilot_v1/state/worker_autopilot_status.json
+Please commit your changes or stash them before you merge.
+Aborting
+fatal: Cannot fast-forward your working tree.
+After making sure that you saved anything precious from
+$ git diff 303b65550bef433c40bdde678907c7971e30887d
+output, run
+$ git reset --hard
+to recover.
+To https://github.com/LarielSys/mide-pilot.git
+   1637a1e..2b41856  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   2b41856..55b8959  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   55b8959..fbd8f7f  main -> main
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+To https://github.com/LarielSys/mide-pilot.git
+   fbd8f7f..baa42c6  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at baa42c6373f1de1d9e89cd3a4b15f6f7466cb899 but expected fbd8f7ff1feb5cbf394dde269252be298ae17a20)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+   baa42c6..8b143bc  main       -> origin/main
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+hint: Diverging branches can't be fast-forwarded, you need to either:
+hint: 
+hint: 	git merge --no-ff
+hint: 
+hint: or:
+hint: 
+hint: 	git rebase
+hint: 
+hint: Disable this message with "git config advice.diverging false"
+fatal: Not possible to fast-forward, aborting.
+From https://github.com/LarielSys/mide-pilot
+ * branch            main       -> FETCH_HEAD
+fatal: Cannot fast-forward to multiple branches.
+To https://github.com/LarielSys/mide-pilot.git
+   55b8745..111c6c9  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   d39059b..5142854  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   3325bf4..3739aba  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   acd53ab..9d1b95c  main -> main
+[autopilot] Candidate task: MTASK-0056 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0056.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0056_autopilot_sync_observability.sh for MTASK-0056
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   d2dda4e..e1a05f5  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   02fbb16..9fdb6f6  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   4123153..0e5c15e  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   1000ab2..69ea8bd  main -> main
+[autopilot] Candidate task: MTASK-0058 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0058.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0058_sync_stability_gate.sh for MTASK-0058
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   1078340..d153a58  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   104dbc9..b10260a  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   dcbf5b9..461ea89  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   26014d6..b8707ff  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   b3a5c8a..aeba820  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   5668b50..218cfe8  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   cb9a20b..9c9db40  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   392d076..1697f9d  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7f82483..2ad76ba  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   6dd34ba..87c6920  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   9dd0d12..e248e9b  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   1c993f4..60fb05c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   9481a70..d66792d  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   b978407..9989a8b  main -> main
+[autopilot] Candidate task: MTASK-0059 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0059.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0059_frontend_sync_health_badge.sh for MTASK-0059
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   75bf8c9..210a73d  main -> main
+[autopilot] Candidate task: MTASK-0060 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0060.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0060_frontend_sync_debug_panel.sh for MTASK-0060
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 06cd0cc49f4573f5b865bc74f643b679f5694d9b but expected 05e0d8336a4872d506688f35704b3a179914fa95)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: push failed for MTASK-0060; result remains local until next successful push.
+[autopilot] Candidate task: MTASK-0061 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0061.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0061_backend_status_bundle.sh for MTASK-0061
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at d4df1651bc3cdce6c9a0d0965efaae8552960a67 but expected 0b3e69a31a4d79f602e473b572632c6cf106114e)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: push failed for MTASK-0061; result remains local until next successful push.
+To https://github.com/LarielSys/mide-pilot.git
+   d4df165..afd3f64  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   e72b584..a70930d  main -> main
+[autopilot] Candidate task: MTASK-0062 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0062.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0062_frontend_bundle_refresh.sh for MTASK-0062
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   f442329..9d5c99a  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 4987ee435efca4ce20e9d61e01013e07b079ed3b but expected 9d5c99af246772d23dffd87ff982df5e583fc0a0)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 1d17b0f5bc4b476978dd5a3ec2329729e7f5b0c1 but expected 4987ee435efca4ce20e9d61e01013e07b079ed3b)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at b5b4f649db60bdc1b4f8540a21bb6b0e8c90ae23 but expected 1d17b0f5bc4b476978dd5a3ec2329729e7f5b0c1)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 7fcc76d43e4797de90050c9b065d4f6b656c2fc4 but expected b5b4f649db60bdc1b4f8540a21bb6b0e8c90ae23)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 48ef401855f8bae03f157e9a00a66a0b4c864e08 but expected 7fcc76d43e4797de90050c9b065d4f6b656c2fc4)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 92cd1d70d249f81edbdeaa145cefa55a2f24f6c9 but expected 48ef401855f8bae03f157e9a00a66a0b4c864e08)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at cd64a752b4e5d164f19ed0e33ebe57dd2dc40517 but expected 92cd1d70d249f81edbdeaa145cefa55a2f24f6c9)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   cd64a75..4f43f26  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   6341a36..8b9d6dc  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   eeb1f0c..74ccdaa  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   0422d04..f74bc5c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   4845b46..1ec8f6c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 23ee6b45231116f52d7e6f4b54ade54857e43685 but expected 1ec8f6c3113d9d4fa53a61e6fe455ab10f6d7dec)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 09d155184d54f9a9eb0885795b004b8a5a3f8a28 but expected 23ee6b45231116f52d7e6f4b54ade54857e43685)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 8fbdb8cbbdf04d6adee69da318d84c13d2c796f9 but expected 09d155184d54f9a9eb0885795b004b8a5a3f8a28)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   8fbdb8c..36bb095  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   1e6cb80..b8cd57d  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   bdf13fc..13844b6  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 126e3e68edff4171e442c7736bd623dfbf43119e but expected 13844b60561be4ce3bf69974d7ed6ca649c96aa4)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 8343c98620a2c60c75740c074479955211fa97e8 but expected 126e3e68edff4171e442c7736bd623dfbf43119e)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 93c8f2086e78c6d9406ba622775e034d8804e83f but expected 8343c98620a2c60c75740c074479955211fa97e8)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   93c8f20..4dbd9aa  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   301e88d..ac4ce6b  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   b6fe216..e6d502c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   034627b..4a41883  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 6d2e26a378419b56e620af7b0d96e7c264562560 but expected 4a41883fdc8c94e801b91d1cb350fa1e1ce06e36)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at c820ed19918531d46f7daa0edd175c0526be4452 but expected 6d2e26a378419b56e620af7b0d96e7c264562560)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at b1f612e663c33c8aac81e954098ed9dcd489abaa but expected c820ed19918531d46f7daa0edd175c0526be4452)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at b95cf151e82ee5b33fcbba1e1e7593162dcd945b but expected b1f612e663c33c8aac81e954098ed9dcd489abaa)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   b95cf15..13de8b9  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   a5343ce..494b02f  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   12fb646..baf8d1f  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 693973cdb28d17fab3cfdc1bc614d9bcefeaa0e7 but expected baf8d1faa8590682c09f2ee89f95a2c57a3020e6)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 471378ace04785cfa87de747c47647135d14fe68 but expected 693973cdb28d17fab3cfdc1bc614d9bcefeaa0e7)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 700ae2211c4d7a755b5b78c5abcf96b620e7e4aa but expected 471378ace04785cfa87de747c47647135d14fe68)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   700ae22..5ff1704  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   30f77ac..23cd813  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   1a57f04..b67c055  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7cf5c94..03435bc  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 366a3b6a37593f552946af2d15e4d47b0135c726 but expected 03435bcfaf4feec2ddcbf08fa6b94fc6cffd4817)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 6312aeb1f308d50532ae2977484a84459e4cea92 but expected 366a3b6a37593f552946af2d15e4d47b0135c726)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   2fe6180..5401e44  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   2f36922..c6673c5  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   f5244d0..43bfa70  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   b1524a6..58c8a7d  main -> main
+[autopilot] Candidate task: MTASK-0063 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0063.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0063_backend_sync_cadence_bundle.sh for MTASK-0063
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   48326d7..2b15f7c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   5ec8307..4ce0ac2  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+ ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 285d2b6dfd7bd2febfd92ae4ac30428cbfd1ace9 but expected 4ce0ac287af6f932cbfff03827f92e5ed401fc05)
+error: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   99f3644..125606b  main -> main
+Terminated
+To https://github.com/LarielSys/mide-pilot.git
+   2b12096..b850728  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   3c1b4b2..4c5d1fa  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   ec41d85..f5cb4cb  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   eec482c..8202bdc  main -> main
+Terminated
+To https://github.com/LarielSys/mide-pilot.git
+   8202bdc..b9e9586  main -> main
+Terminated
+[autopilot] Candidate task: MTASK-0066 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0066.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0066_worker_sync_gate_live_status.sh for MTASK-0066
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   2d17d7a..89f4493  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   0ad9c8c..6085448  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7cdad3d..5257b93  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   745af7d..6e53815  main -> main
+Terminated
+[autopilot] Candidate task: MTASK-0069 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0069.json)
+To https://github.com/LarielSys/mide-pilot.git
+   42de233..43d08db  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0069_worker_log_timezone_eastern.sh for MTASK-0069
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   ef2fd21..6c10bb6  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   6c10bb6..d58dee9  main -> main
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0070.json)
+To https://github.com/LarielSys/mide-pilot.git
+   3a59527..bba3537  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Terminated
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Terminated
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Terminated
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Terminated
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Terminated
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Terminated
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+[autopilot] Candidate task: MTASK-0070 (/home/larieladmin/mide-pilot/pilot_v1/tasks/MTASK-0070.json)
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh for MTASK-0070
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+Autopilot already running for worker ubuntu-worker-01.
+To https://github.com/LarielSys/mide-pilot.git
+   939e8fa..8f4e1bf  main -> main
+[autopilot] Candidate task: MTASK-0071 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0071.json)
+To https://github.com/LarielSys/mide-pilot.git
+   e5b711c..8164092  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0071_autopilot_logging_system_rewrite.sh for MTASK-0071
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   55128d8..351b588  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   351b588..ca8ee1f  main -> main
+[autopilot] Candidate task: MTASK-0072 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0072.json)
+To https://github.com/LarielSys/mide-pilot.git
+   cfde44f..9c0e234  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh for MTASK-0072
+<stdin>:26: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   9c0e234..460e6ad  main -> main
+Terminated
+To https://github.com/LarielSys/mide-pilot.git
+   460e6ad..0b6a418  main -> main
+[autopilot] Candidate task: MTASK-0073 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0073.json)
+To https://github.com/LarielSys/mide-pilot.git
+   a6e591a..36ed111  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh for MTASK-0073
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   36ed111..e04da6c  main -> main
+Terminated
+remote: Internal Server Error
+fatal: unable to access 'https://github.com/LarielSys/mide-pilot.git/': The requested URL returned error: 500
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   e04da6c..b85214a  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   b85214a..465fcbe  main -> main
+remote: Internal Server Error
+fatal: unable to access 'https://github.com/LarielSys/mide-pilot.git/': The requested URL returned error: 500
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   465fcbe..b286ee7  main -> main
+Terminated
+To https://github.com/LarielSys/mide-pilot.git
+   b286ee7..dce7005  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   dce7005..d35b4a9  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   d35b4a9..4411614  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   4411614..55de14d  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   55de14d..13143ae  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   13143ae..012a54b  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   012a54b..2375b47  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   2375b47..c94a43d  main -> main
+error: RPC failed; HTTP 500 curl 22 The requested URL returned error: 500
+send-pack: unexpected disconnect while reading sideband packet
+fatal: the remote end hung up unexpectedly
+Everything up-to-date
+[autopilot] Warning: heartbeat push failed; will retry next cycle.
+To https://github.com/LarielSys/mide-pilot.git
+   c94a43d..ec2a629  main -> main
+[autopilot] Candidate task: MTASK-0074 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0074.json)
+To https://github.com/LarielSys/mide-pilot.git
+   510179c..6735e1b  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0074_cockpit_autopilot_token_panels.sh for MTASK-0074
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   fade3dd..f972bf1  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   f6701e6..793b5a7  main -> main
+[autopilot] Candidate task: MTASK-0074-RETRY1 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0074-RETRY1.json)
+To https://github.com/LarielSys/mide-pilot.git
+   4f9e0c0..8303d73  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0074_cockpit_autopilot_token_panels.sh for MTASK-0074-RETRY1
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   8303d73..f0cf8b2  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   f0cf8b2..fc2459c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   fc2459c..2868369  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   2868369..6ea083c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   6ea083c..d501077  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   d501077..7c7d088  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7c7d088..af45bff  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   af45bff..cafcdda  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   cafcdda..d2a7025  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   458e66d..53abfe8  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   53abfe8..7ad4a4c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7ad4a4c..aaf8b5b  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   aaf8b5b..94f25c1  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   94f25c1..d48f3fc  main -> main
+[autopilot] Candidate task: MTASK-0075 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0075.json)
+To https://github.com/LarielSys/mide-pilot.git
+   590cb8c..701e52c  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0075_restore_customide_backends.sh for MTASK-0075
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   701e52c..ba5fb06  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   ba5fb06..2fd1851  main -> main
+[autopilot] Candidate task: MTASK-0076 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0076.json)
+To https://github.com/LarielSys/mide-pilot.git
+   c543592..bfe01f2  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0075_restore_customide_backends.sh for MTASK-0076
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   bfe01f2..e83627d  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   e83627d..5c89227  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   5c89227..1847183  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   1847183..ac75906  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   ac75906..0b0f6f6  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   0b0f6f6..60820c2  main -> main
+[autopilot] Candidate task: MTASK-0077 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0077.json)
+To https://github.com/LarielSys/mide-pilot.git
+   db6568c..c9b468a  main -> main
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   c9b468a..10cc3bb  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   10cc3bb..b06b87e  main -> main
+[autopilot] Candidate task: MTASK-0078 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0078.json)
+To https://github.com/LarielSys/mide-pilot.git
+   750e309..80f04d6  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0077_restart_customide_backend.sh for MTASK-0078
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   80f04d6..6ea4e61  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   6ea4e61..067db75  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   067db75..7f6bc97  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7f6bc97..c56529a  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   c56529a..fd9b971  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   fd9b971..1f32c03  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   1f32c03..33c4b38  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7af7d58..ec6bd7f  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   ec6bd7f..40d0308  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   40d0308..3038c92  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   3038c92..2889ba0  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   2889ba0..cb3ce53  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   cb3ce53..f026b4a  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   4071728..7a6df6c  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   7a6df6c..f9789f8  main -> main
+To https://github.com/LarielSys/mide-pilot.git
+   f9789f8..468b2ea  main -> main
+[autopilot] Candidate task: MTASK-0079 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0079.json)
+To https://github.com/LarielSys/mide-pilot.git
+   f008060..df77ab9  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh for MTASK-0079
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+To https://github.com/LarielSys/mide-pilot.git
+   df77ab9..321289e  main -> main
+Terminated
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Candidate task: MTASK-0080 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0080.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0075_restore_customide_backends.sh for MTASK-0080
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   49d5733..33e44ff  main -> main
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Candidate task: MTASK-0081 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0081.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0077_restart_customide_backend.sh for MTASK-0081
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   3cb1ce2..9e24364  main -> main
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Candidate task: MTASK-0082 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0082.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh for MTASK-0082
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   17e5e08..165b596  main -> main
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Candidate task: MTASK-0084 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0084.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh for MTASK-0084
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   e4a9eec..d2b51b0  main -> main
+Terminated
+[autopilot] Candidate task: MTASK-0083 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0083.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh for MTASK-0083
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   639ba07..b58d282  main -> main
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Candidate task: MTASK-0085 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0085.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0077_restart_customide_backend.sh for MTASK-0085
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   fe87d36..27b2b85  main -> main
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Candidate task: MTASK-0086 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0086.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh for MTASK-0086
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   74a57b7..19dc44c  main -> main
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Candidate task: MTASK-0087 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0087.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh for MTASK-0087
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   24f71c8..06c6687  main -> main
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Candidate task: MTASK-0088 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0088.json)
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh for MTASK-0088
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+fatal: pathspec 'pilot_v1/state/worker_autopilot_git_sync_last_error.txt' did not match any files
+To https://github.com/LarielSys/mide-pilot.git
+   8f090f3..320af0b  main -> main
+Terminated

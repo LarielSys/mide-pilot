@@ -3945,3 +3945,55 @@
 2026-04-23T14:10:21-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=91, eligible=0, mismatched=0.
 2026-04-23T14:11:21-04:00 | mode=running | last_task=MTASK-0079 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
 2026-04-23T14:11:22-04:00 | mode=running | last_task=MTASK-0079 | note=Task completed successfully (MTASK-0079).
+2026-04-23T14:11:47-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T14:11:48-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=92, eligible=0, mismatched=0.
+2026-04-23T14:12:48-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=92, eligible=0, mismatched=0.
+2026-04-23T14:13:48-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=92, eligible=0, mismatched=0.
+2026-04-23T14:14:49-04:00 | mode=running | last_task=MTASK-0080 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0075_restore_customide_backends.sh.
+2026-04-23T14:14:49-04:00 | mode=running | last_task=MTASK-0080 | note=Task failed: executor script non-zero exit (MTASK-0080).
+2026-04-23T14:15:50-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=93, eligible=0, mismatched=0.
+2026-04-23T14:16:50-04:00 | mode=running | last_task=MTASK-0081 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0077_restart_customide_backend.sh.
+2026-04-23T14:16:57-04:00 | mode=running | last_task=MTASK-0081 | note=Task completed successfully (MTASK-0081).
+2026-04-23T14:17:58-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=94, eligible=0, mismatched=0.
+2026-04-23T14:18:58-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=94, eligible=0, mismatched=0.
+2026-04-23T14:19:58-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=94, eligible=0, mismatched=0.
+2026-04-23T14:20:59-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=94, eligible=0, mismatched=0.
+2026-04-23T14:21:59-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=94, eligible=0, mismatched=0.
+2026-04-23T14:22:59-04:00 | mode=running | last_task=MTASK-0082 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh.
+2026-04-23T14:22:59-04:00 | mode=running | last_task=MTASK-0082 | note=Task completed successfully (MTASK-0082).
+2026-04-23T14:24:00-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=95, eligible=0, mismatched=0.
+2026-04-23T14:25:01-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=95, eligible=0, mismatched=0.
+2026-04-23T14:26:01-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=95, eligible=0, mismatched=0.
+2026-04-23T14:27:01-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=95, eligible=0, mismatched=0.
+2026-04-23T14:28:01-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=95, eligible=0, mismatched=0.
+2026-04-23T14:29:02-04:00 | mode=running | last_task=MTASK-0084 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
+2026-04-23T14:29:02-04:00 | mode=running | last_task=MTASK-0084 | note=Task completed successfully (MTASK-0084).
+2026-04-23T14:29:27-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T14:29:27-04:00 | mode=running | last_task=MTASK-0083 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh.
+2026-04-23T14:29:28-04:00 | mode=running | last_task=MTASK-0083 | note=Task completed successfully (MTASK-0083).
+2026-04-23T14:30:29-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=97, eligible=0, mismatched=0.
+2026-04-23T14:31:29-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=97, eligible=0, mismatched=0.
+2026-04-23T14:32:30-04:00 | mode=running | last_task=MTASK-0085 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0077_restart_customide_backend.sh.
+2026-04-23T14:32:33-04:00 | mode=running | last_task=MTASK-0085 | note=Task completed successfully (MTASK-0085).
+2026-04-23T14:33:34-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=98, eligible=0, mismatched=0.
+2026-04-23T14:34:34-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=98, eligible=0, mismatched=0.
+2026-04-23T14:35:35-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=98, eligible=0, mismatched=0.
+2026-04-23T14:36:35-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=98, eligible=0, mismatched=0.
+2026-04-23T14:37:35-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=98, eligible=0, mismatched=0.
+2026-04-23T14:38:36-04:00 | mode=running | last_task=MTASK-0086 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh.
+2026-04-23T14:38:36-04:00 | mode=running | last_task=MTASK-0086 | note=Task completed successfully (MTASK-0086).
+2026-04-23T14:39:37-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=99, eligible=0, mismatched=0.
+2026-04-23T14:40:37-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=99, eligible=0, mismatched=0.
+2026-04-23T14:41:37-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=99, eligible=0, mismatched=0.
+2026-04-23T14:42:38-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=99, eligible=0, mismatched=0.
+2026-04-23T14:43:38-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=99, eligible=0, mismatched=0.
+2026-04-23T14:44:38-04:00 | mode=running | last_task=MTASK-0087 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh.
+2026-04-23T14:44:38-04:00 | mode=running | last_task=MTASK-0087 | note=Task completed successfully (MTASK-0087).
+2026-04-23T14:45:39-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
+2026-04-23T14:46:39-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
+2026-04-23T14:47:40-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
+2026-04-23T14:48:40-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=100, eligible=0, mismatched=0.
+2026-04-23T14:49:40-04:00 | mode=running | last_task=MTASK-0088 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
+2026-04-23T14:49:40-04:00 | mode=running | last_task=MTASK-0088 | note=Task completed successfully (MTASK-0088).
+2026-04-23T14:50:06-04:00 | mode=running | last_task= | note=Autopilot started.
+2026-04-23T14:50:06-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=101, eligible=0, mismatched=0.
