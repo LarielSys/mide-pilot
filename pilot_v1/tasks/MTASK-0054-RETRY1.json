@@ -43,7 +43,7 @@
     "Result file written with timestamp"
   ],
   "dependencies": [
-    "MTASK-0054"
+    "MTASK-0053"
   ],
   "timeout_seconds": 1500,
   "status": "approved_to_execute",
