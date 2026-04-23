@@ -1,0 +1,26 @@
+{
+  "task_id": "MTASK-0080",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0075_restore_customide_backends.sh",
+  "objective": "Urgent recovery: restore CustomIDE backend/frontend and verify :5555 and :5570 availability.",
+  "moss_labels": [
+    "moss/customide/phase35",
+    "moss/worker",
+    "moss/operations"
+  ],
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "status": "approved_to_execute",
+  "required_validation": [
+    "stdout_excerpt includes backend_stack_start=passed",
+    "stdout_excerpt includes backend_health=passed",
+    "stdout_excerpt includes status_bundle=passed",
+    "stdout_excerpt includes llm_health=passed"
+  ],
+  "timeout_seconds": 900,
+  "created_at_utc": "2026-04-23T00:00:00Z"
+}
