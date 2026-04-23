@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0046-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0046-RETRY2\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nAlready up to date.\nhealth_check={\"status\":\"ok\",\"service\":\"CustomIDE Backend\",\"env\":\"development\",\"timestamp_utc\":\"2026-04-23T01:18:23.316459+00:00\"}\nllm_health={\"status\":\"degraded\",\"generate_url\":\"\",\"reason\":\"worker1_services.json missing\"}\nllm_local={\"source\":\"local-ide\",\"target\":\"\",\"model\":\"qwen2.5\",\"text\":\"\",\"degraded\":true,\"error\":\"worker1_services.json missing\",\"raw\":{}}\nllm_remote={\"source\":\"remote-ide\",\"target\":\"\",\"model\":\"qwen2.5\",\"text\":\"\",\"degraded\":true,\"error\":\"worker1_services.json missing\",\"raw\":{}}\nfrontend_reachable=yes\ndual_ide_visible=passed\nshared_llm_local=passed\nshared_llm_remote=passed\nshared_llm_degraded_mode=enabled\n[main 1ec2324] customide: shared llm degraded mode for tonight bridge (MTASK-0046-RETRY2)\n 1 file changed, 122 insertions(+)\n create mode 100644 pilot_v1/customide/backend/app/routes/shared_llm.py\ntimestamp_utc=2026-04-23T01:18:23Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nTo https://github.com/LarielSys/mide-pilot.git\n   1afd49c..1ec2324  main -> main",
+  "timestamp_utc": "2026-04-23T01:18:23Z"
+}
