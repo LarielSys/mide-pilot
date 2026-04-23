@@ -5,5 +5,10 @@ window.CUSTOMIDE_CONFIG = {
     "http://localhost:5555"
   ],
   refreshIntervalMs: 2500,
+  localStatePaths: {
+    status: "../../state/worker_autopilot_status.json",
+    events: "../../state/worker_autopilot_events.log",
+    tokens: "../TOKEN_COUNTER_TASKS.txt"
+  },
   workerServicesPath: "../../config/worker1_services.json"
 };

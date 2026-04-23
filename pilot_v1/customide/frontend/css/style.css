@@ -66,12 +66,15 @@ body {
 .cockpit-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-areas:
+    "live live live live events events events events events events events events"
+    "git git git git cadence cadence cadence cadence ollama ollama ollama ollama"
+    "token token token token token token token token token token token token";
   gap: 10px;
   padding: 10px;
 }
 
 .panel {
-  grid-column: span 4;
   min-height: 180px;
   border: 1px solid var(--line);
   background: linear-gradient(180deg, rgba(3, 9, 3, 0.98), rgba(0, 0, 0, 0.98));
@@ -91,14 +94,12 @@ body {
   background: rgba(0, 0, 0, 0.55);
 }
 
-.panel-tall {
-  grid-column: span 8;
-  min-height: 360px;
-}
-
-.panel-wide {
-  grid-column: span 8;
-}
+.panel-live { grid-area: live; min-height: 260px; }
+.panel-events { grid-area: events; min-height: 260px; }
+.panel-git { grid-area: git; min-height: 190px; }
+.panel-cadence { grid-area: cadence; min-height: 190px; }
+.panel-ollama { grid-area: ollama; min-height: 190px; }
+.panel-token { grid-area: token; min-height: 210px; }
 
 pre {
   margin: 0;
@@ -123,25 +124,18 @@ pre::-webkit-scrollbar-thumb {
   border-radius: 8px;
 }
 
-#remoteFrame {
-  width: 100%;
-  height: 360px;
-  border: 0;
-  background: #000;
-}
-
 .status-offline {
   color: var(--alert);
 }
 
 @media (max-width: 1200px) {
-  .panel,
-  .panel-tall,
-  .panel-wide {
-    grid-column: span 12;
-  }
-
-  #remoteFrame {
-    height: 300px;
+  .cockpit-grid {
+    grid-template-areas:
+      "live live live live live live live live live live live live"
+      "events events events events events events events events events events events events"
+      "git git git git git git git git git git git git"
+      "cadence cadence cadence cadence cadence cadence cadence cadence cadence cadence cadence cadence"
+      "ollama ollama ollama ollama ollama ollama ollama ollama ollama ollama ollama ollama"
+      "token token token token token token token token token token token token";
   }
 }
