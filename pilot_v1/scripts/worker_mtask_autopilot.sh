@@ -52,6 +52,8 @@ done
 
 mkdir -p "${STATE_DIR}" "${RESULT_DIR}" "${RUNTIME_DIR}"
 
+touch "${EVENT_LOG_FILE}"
+
 cleanup() {
   rm -f "${LOCK_FILE}"
 }
@@ -70,28 +72,32 @@ now_local_ts() {
   TZ="${WORKER_LOG_TZ}" date +"%Y-%m-%dT%H:%M:%S%:z"
 }
 
+status_signature() {
+  local mode="$1"
+  local last_task="$2"
+  local note="$3"
+  printf "%s|%s|%s|%s|%s" "${WORKER_ID}" "${POLL_SECONDS}" "${mode}" "${last_task}" "${note}"
+}
 
 sync_gate_3x60_state() {
-  python3 - "$EVENT_LOG_FILE" <<'PY2'
+  python3 - "${EVENT_LOG_FILE}" <<'PY'
 import datetime
 import pathlib
-import re
 import sys
 
-event_file = pathlib.Path(sys.argv[1])
-if not event_file.exists():
+path = pathlib.Path(sys.argv[1])
+if not path.exists():
     print("missing")
     raise SystemExit(0)
 
-lines = event_file.read_text(encoding="utf-8", errors="replace").splitlines()
 stamps = []
-for line in lines:
-    token = line.split(" | ", 1)[0].strip()
+for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
+    token = raw.split(" | ", 1)[0].strip()
     if not token:
         continue
-    token_iso = token.replace("Z", "+00:00")
+    token = token.replace("Z", "+00:00")
     try:
-        parsed = datetime.datetime.fromisoformat(token_iso)
+        parsed = datetime.datetime.fromisoformat(token)
     except ValueError:
         continue
     if parsed.tzinfo is None:
@@ -105,39 +111,42 @@ if len(stamps) < 4:
     raise SystemExit(0)
 
 deltas = [(stamps[i] - stamps[i + 1]).total_seconds() for i in range(3)]
-if all(55 <= d <= 65 for d in deltas):
-    print("pass")
-else:
-    print("drift")
-PY2
+print("pass" if all(55 <= d <= 65 for d in deltas) else "drift")
+PY
 }
 
 write_status() {
   local mode="$1"
   local last_task="$2"
   local note="$3"
-  local ts ts_local
+  local ts ts_local gate_state sig
   ts="$(now_utc)"
   ts_local="$(now_local_ts)"
+  gate_state="$(sync_gate_3x60_state)"
+  sig="$(status_signature "${mode}" "${last_task}" "${note}")"
 
-  local event_line
-  event_line="${ts_local} | mode=${mode} | last_task=${last_task} | note=${note}"
-  CURRENT_STATUS_SIGNATURE="${WORKER_ID}|${POLL_SECONDS}|${mode}|${last_task}|${note}"
-  printf "%s\n" "${event_line}" >>"${EVENT_LOG_FILE}"
+  CURRENT_STATUS_SIGNATURE="${sig}"
+  printf "%s | mode=%s | last_task=%s | note=%s\n" "${ts_local}" "${mode}" "${last_task}" "${note}" >> "${EVENT_LOG_FILE}"
 
-  cat >"${STATUS_FILE}" <<EOF
-{
-  "worker_name": "${WORKER_NAME}",
-  "worker_id": "${WORKER_ID}",
-  "mode": "${mode}",
-  "last_run_utc": "${ts}",
-  "last_run_local": "${ts_local}",
-  "log_timezone": "${WORKER_LOG_TZ}",
-  "last_task_processed": "${last_task}",
-  "poll_seconds": ${POLL_SECONDS},
-  "note": "${note}"
+  python3 - "${STATUS_FILE}" "${WORKER_NAME}" "${WORKER_ID}" "${mode}" "${ts}" "${ts_local}" "${WORKER_LOG_TZ}" "${last_task}" "${POLL_SECONDS}" "${note}" <<'PY'
+import json
+import pathlib
+import sys
+
+status_file, worker_name, worker_id, mode, ts_utc, ts_local, tz_name, last_task, poll_seconds, note = sys.argv[1:11]
+payload = {
+    "worker_name": worker_name,
+    "worker_id": worker_id,
+    "mode": mode,
+    "last_run_utc": ts_utc,
+    "last_run_local": ts_local,
+    "log_timezone": tz_name,
+    "last_task_processed": last_task,
+    "poll_seconds": int(poll_seconds),
+    "note": note,
 }
-EOF
+pathlib.Path(status_file).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+PY
 
   {
     echo "Autopilot Live Status"
@@ -150,7 +159,7 @@ EOF
     echo "last_task_processed: ${last_task}"
     echo "poll_seconds: ${POLL_SECONDS}"
     echo "note: ${note}"
-    echo "sync_gate_3x60: $(sync_gate_3x60_state)"
+    echo "sync_gate_3x60: ${gate_state}"
     if [[ -f "${SYNC_ERROR_FILE}" ]]; then
       echo "git_sync_last_error: $(head -n 1 "${SYNC_ERROR_FILE}" 2>/dev/null || true)"
     else
@@ -159,7 +168,7 @@ EOF
     echo
     echo "Recent Events (latest 20, newest first):"
     tail -n 20 "${EVENT_LOG_FILE}" 2>/dev/null | tac || true
-  } >"${LIVE_STATUS_FILE}"
+  } > "${LIVE_STATUS_FILE}"
 }
 
 hash_sha256() {
@@ -167,9 +176,7 @@ hash_sha256() {
   python3 - "$input" <<'PY'
 import hashlib
 import sys
-
-text = sys.argv[1]
-print(hashlib.sha256(text.encode("utf-8")).hexdigest())
+print(hashlib.sha256(sys.argv[1].encode("utf-8")).hexdigest())
 PY
 }
 
@@ -181,7 +188,7 @@ admin_override_authorized() {
 }
 
 queue_summary() {
-  python3 - "$TASK_DIR" "$RESULT_DIR" "$WORKER_ID" <<'PY'
+  python3 - "${TASK_DIR}" "${RESULT_DIR}" "${WORKER_ID}" <<'PY'
 import glob
 import json
 import os
@@ -193,59 +200,68 @@ eligible = 0
 mismatch = 0
 
 for pattern in ("TASK-*.json", "MTASK-*.json"):
-  for path in glob.glob(os.path.join(task_dir, pattern)):
-    try:
-      with open(path, "r", encoding="utf-8") as f:
-        task = json.load(f)
-    except Exception:
-      continue
+    for path in glob.glob(os.path.join(task_dir, pattern)):
+        try:
+            task = json.loads(open(path, "r", encoding="utf-8").read())
+        except Exception:
+            continue
 
-    if task.get("status") != "approved_to_execute":
-      continue
+        if task.get("status") != "approved_to_execute":
+            continue
 
-    approved_total += 1
-    task_id = task.get("task_id", "")
-    if not task_id:
-      continue
+        approved_total += 1
+        task_id = task.get("task_id", "")
+        if not task_id:
+            continue
 
-    result_path = os.path.join(result_dir, f"{task_id}.result.json")
-    if os.path.exists(result_path):
-      continue
+        if os.path.exists(os.path.join(result_dir, f"{task_id}.result.json")):
+            continue
 
-    task_worker = task.get("required_worker_id") or task.get("assigned_to")
-    if task_worker == worker_id:
-      eligible += 1
-    else:
-      mismatch += 1
+        task_worker = task.get("required_worker_id") or task.get("assigned_to")
+        if task_worker == worker_id:
+            eligible += 1
+        else:
+            mismatch += 1
 
 print(f"{approved_total}|{eligible}|{mismatch}")
 PY
 }
 
-commit_and_push_status_heartbeat() {
-  local ts last_pushed_signature
-  ts="$(now_epoch)"
-  echo "${ts}" >"${HEARTBEAT_FILE}"
+git_commit_and_push() {
+  local commit_msg="$1"
+  git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
+  git -C "${REPO_ROOT}" add pilot_v1/results/*.result.json 2>/dev/null || true
 
-  if [[ -f "${LAST_PUSHED_SIGNATURE_FILE}" ]]; then
-    last_pushed_signature="$(cat "${LAST_PUSHED_SIGNATURE_FILE}" 2>/dev/null || true)"
-  else
-    last_pushed_signature=""
+  if ! git -C "${REPO_ROOT}" diff --cached --quiet; then
+    git -C "${REPO_ROOT}" commit -m "${commit_msg}" >/dev/null || true
+    git -C "${REPO_ROOT}" push origin main >/dev/null || return 1
   fi
 
-  if [[ "${CURRENT_STATUS_SIGNATURE}" == "${last_pushed_signature}" ]]; then
+  return 0
+}
+
+commit_and_push_status_heartbeat() {
+  local ts last_sig
+  ts="$(now_epoch)"
+  echo "${ts}" > "${HEARTBEAT_FILE}"
+
+  if [[ -f "${LAST_PUSHED_SIGNATURE_FILE}" ]]; then
+    last_sig="$(cat "${LAST_PUSHED_SIGNATURE_FILE}" 2>/dev/null || true)"
+  else
+    last_sig=""
+  fi
+
+  if [[ "${CURRENT_STATUS_SIGNATURE}" == "${last_sig}" ]]; then
     return 0
   fi
 
-  git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
-  git -C "${REPO_ROOT}" add pilot_v1/results/*.result.json 2>/dev/null || true
-  git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
-  git -C "${REPO_ROOT}" push origin main >/dev/null || {
-    echo "[autopilot] Warning: heartbeat push failed; will retry next cycle." >&2
-    return 1
-  }
+  if git_commit_and_push "worker: autopilot heartbeat ${WORKER_ID} ${ts}"; then
+    printf "%s\n" "${CURRENT_STATUS_SIGNATURE}" > "${LAST_PUSHED_SIGNATURE_FILE}"
+    return 0
+  fi
 
-  printf "%s\n" "${CURRENT_STATUS_SIGNATURE}" >"${LAST_PUSHED_SIGNATURE_FILE}"
+  echo "[autopilot] Warning: heartbeat push failed; will retry next cycle." >&2
+  return 1
 }
 
 git_sync() {
@@ -259,12 +275,9 @@ git_sync() {
        git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>>"${err}" && \
        git -C "${REPO_ROOT}" merge --ff-only FETCH_HEAD >/dev/null 2>>"${err}"; then
       sync_ok="true"
-    else
-      # Fallback path: preserve local changes while rebasing to remote tip.
-      if git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>>"${err}" && \
+    elif git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>>"${err}" && \
          git -C "${REPO_ROOT}" pull --rebase --autostash origin main >/dev/null 2>>"${err}"; then
-        sync_ok="true"
-      fi
+      sync_ok="true"
     fi
 
     if [[ "${sync_ok}" == "true" ]]; then
@@ -274,44 +287,43 @@ git_sync() {
   done
 
   if [[ -f "${err}" ]]; then
-    head -n 1 "${err}" >"${SYNC_ERROR_FILE}" || true
+    head -n 1 "${err}" > "${SYNC_ERROR_FILE}" || true
     rm -f "${err}"
   fi
   return 1
 }
 
 next_task_file() {
-  python3 - "$TASK_DIR" "$RESULT_DIR" "$WORKER_ID" <<'PY'
+  python3 - "${TASK_DIR}" "${RESULT_DIR}" "${WORKER_ID}" <<'PY'
 import glob
 import json
 import os
 import sys
 
 task_dir, result_dir, worker_id = sys.argv[1:4]
-
 candidates = []
+
 for pattern in ("TASK-*.json", "MTASK-*.json"):
-  for path in glob.glob(os.path.join(task_dir, pattern)):
-    try:
-      with open(path, "r", encoding="utf-8") as f:
-        task = json.load(f)
-    except Exception:
-      continue
+    for path in glob.glob(os.path.join(task_dir, pattern)):
+        try:
+            task = json.loads(open(path, "r", encoding="utf-8").read())
+        except Exception:
+            continue
 
-    task_id = task.get("task_id", "")
-    if not task_id:
-      continue
-    task_worker = task.get("required_worker_id") or task.get("assigned_to")
-    if task_worker != worker_id:
-      continue
-    if task.get("status") != "approved_to_execute":
-      continue
+        task_id = task.get("task_id", "")
+        if not task_id:
+            continue
+        if task.get("status") != "approved_to_execute":
+            continue
 
-    result_path = os.path.join(result_dir, f"{task_id}.result.json")
-    if os.path.exists(result_path):
-      continue
+        task_worker = task.get("required_worker_id") or task.get("assigned_to")
+        if task_worker != worker_id:
+            continue
 
-    candidates.append((task_id, path))
+        if os.path.exists(os.path.join(result_dir, f"{task_id}.result.json")):
+            continue
+
+        candidates.append((task_id, path))
 
 candidates.sort(key=lambda x: x[0])
 if candidates:
@@ -320,33 +332,31 @@ PY
 }
 
 force_task_file() {
-  if [[ -z "${FORCE_TASK_ID}" ]]; then
-    return 0
-  fi
+  [[ -z "${FORCE_TASK_ID}" ]] && return 0
 
   local task_file="${TASK_DIR}/${FORCE_TASK_ID}.json"
-  if [[ ! -f "${task_file}" ]]; then
+  [[ -f "${task_file}" ]] && echo "${task_file}" || {
     echo "[autopilot] Forced task not found: ${FORCE_TASK_ID}" >&2
     return 1
-  fi
-
-  echo "${task_file}"
+  }
 }
 
 task_field() {
   local task_file="$1"
   local field_name="$2"
-  python3 - "$task_file" "$field_name" <<'PY'
+  python3 - "${task_file}" "${field_name}" <<'PY'
 import json
 import sys
 
-path, field = sys.argv[1:3]
-with open(path, "r", encoding="utf-8") as f:
-    data = json.load(f)
-value = data.get(field, "")
-if value is None:
-    value = ""
-print(value)
+task_file, field_name = sys.argv[1:3]
+try:
+    data = json.loads(open(task_file, "r", encoding="utf-8").read())
+except Exception:
+    print("")
+    raise SystemExit(0)
+
+value = data.get(field_name, "")
+print("" if value is None else value)
 PY
 }
 
@@ -358,7 +368,7 @@ write_result_json() {
   local stdout_file="$5"
   local stderr_file="$6"
 
-  python3 - "$result_file" "$task_id" "$status" "$summary" "$stdout_file" "$stderr_file" "$WORKER_ID" <<'PY'
+  python3 - "${result_file}" "${task_id}" "${status}" "${summary}" "${stdout_file}" "${stderr_file}" "${WORKER_ID}" <<'PY'
 import datetime
 import json
 import pathlib
@@ -366,15 +376,13 @@ import sys
 
 result_file, task_id, status, summary, stdout_file, stderr_file, worker_id = sys.argv[1:8]
 
-def load_excerpt(path):
+def excerpt(path):
     p = pathlib.Path(path)
     if not p.exists():
         return ""
-    text = p.read_text(encoding="utf-8", errors="replace")
-    lines = text.splitlines()
-    max_lines = 120
-    if len(lines) > max_lines:
-        lines = lines[-max_lines:]
+    lines = p.read_text(encoding="utf-8", errors="replace").splitlines()
+    if len(lines) > 120:
+        lines = lines[-120:]
     return "\n".join(lines)
 
 payload = {
@@ -382,39 +390,32 @@ payload = {
     "worker_id": worker_id,
     "execution_status": status,
     "summary": summary,
-    "stdout_excerpt": load_excerpt(stdout_file),
-    "stderr_excerpt": load_excerpt(stderr_file),
+    "stdout_excerpt": excerpt(stdout_file),
+    "stderr_excerpt": excerpt(stderr_file),
     "timestamp_utc": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
 }
-
 pathlib.Path(result_file).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 PY
 }
 
 commit_and_push_result() {
   local task_id="$1"
-  git -C "${REPO_ROOT}" add "pilot_v1/results/${task_id}.result.json" "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" || true
-  git -C "${REPO_ROOT}" commit -m "worker: autopilot result ${task_id}" >/dev/null || true
-  git -C "${REPO_ROOT}" push origin main >/dev/null || {
+  if ! git_commit_and_push "worker: autopilot result ${task_id}"; then
     echo "[autopilot] Warning: push failed for ${task_id}; result remains local until next successful push." >&2
-  }
+  fi
 }
 
 process_task() {
   local task_file="$1"
   local task_id executor_script assigned_to required_worker_id
+
   task_id="$(task_field "${task_file}" "task_id")"
   executor_script="$(task_field "${task_file}" "executor_script")"
   assigned_to="$(task_field "${task_file}" "assigned_to")"
   required_worker_id="$(task_field "${task_file}" "required_worker_id")"
 
-  if [[ -z "${task_id}" ]]; then
-    return 1
-  fi
-
-  if [[ -z "${required_worker_id}" ]]; then
-    required_worker_id="${assigned_to}"
-  fi
+  [[ -z "${task_id}" ]] && return 1
+  [[ -z "${required_worker_id}" ]] && required_worker_id="${assigned_to}"
 
   if [[ "${required_worker_id}" != "${WORKER_ID}" ]]; then
     if [[ -n "${FORCE_TASK_ID}" && "${FORCE_TASK_ID}" == "${task_id}" ]] && admin_override_authorized; then
@@ -450,7 +451,7 @@ process_task() {
 
   local script_abs="${REPO_ROOT}/${executor_script}"
   if [[ ! -f "${script_abs}" ]]; then
-    echo "Executor script not found: ${executor_script}" >"${stderr_tmp}"
+    echo "Executor script not found: ${executor_script}" > "${stderr_tmp}"
     write_result_json "${result_file}" "${task_id}" "failed" "Executor script not found." "${stdout_tmp}" "${stderr_tmp}"
     write_status "running" "${task_id}" "Task failed: executor script not found (${task_id})."
     commit_and_push_result "${task_id}"
@@ -459,7 +460,7 @@ process_task() {
   fi
 
   echo "[autopilot] Executing ${executor_script} for ${task_id}"
-  if bash "${script_abs}" >"${stdout_tmp}" 2>"${stderr_tmp}"; then
+  if bash "${script_abs}" > "${stdout_tmp}" 2> "${stderr_tmp}"; then
     write_result_json "${result_file}" "${task_id}" "completed" "Executor script completed successfully." "${stdout_tmp}" "${stderr_tmp}"
     write_status "running" "${task_id}" "Task completed successfully (${task_id})."
   else
@@ -491,7 +492,6 @@ while true; do
   remaining_stats="${queue_stats#*|}"
   eligible_count="${remaining_stats%%|*}"
   mismatch_count="${remaining_stats#*|}"
-
   processed_any="false"
 
   if [[ -n "${FORCE_TASK_ID}" ]]; then
@@ -507,18 +507,13 @@ while true; do
 
   while true; do
     task_file="$(next_task_file || true)"
-    if [[ -z "${task_file}" ]]; then
-      break
-    fi
+    [[ -z "${task_file}" ]] && break
 
     process_task "${task_file}"
     processed_any="true"
 
-    if [[ "${DRY_RUN}" == "true" ]]; then
-      break
-    fi
+    [[ "${DRY_RUN}" == "true" ]] && break
 
-    # Immediately check for the next task after each completion.
     if ! git_sync; then
       echo "[autopilot] Warning: git_sync failed after task completion; continuing with local queue state." >&2
     fi
@@ -531,9 +526,8 @@ while true; do
 
   if [[ "${processed_any}" == "false" ]]; then
     write_status "idle" "" "No assigned mtasks found; sleeping until next poll. approved=${approved_total}, eligible=${eligible_count}, mismatched=${mismatch_count}."
-
     if [[ "${PUSH_IDLE_HEARTBEAT}" == "true" ]]; then
-      commit_and_push_status_heartbeat
+      commit_and_push_status_heartbeat || true
     fi
   fi
 
