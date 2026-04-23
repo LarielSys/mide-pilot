@@ -1,0 +1,65 @@
+{
+  "task_id": "MTASK-0053",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0053_repair_events_order_and_restart.sh",
+  "objective": "Recover autopilot events visibility by migrating existing logs to newest-first order, restarting autopilot, and validating continuous feed behavior.",
+  "moss_labels": [
+    "moss/autopilot",
+    "moss/logging",
+    "moss/recovery",
+    "moss/observability"
+  ],
+  "moss_scope_hash": "autopilot-events-recovery-newest-first-0053",
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "existing worker_autopilot_events.log is migrated to newest-first if needed",
+    "autopilot service restarts and continues writing events",
+    "new top event appears after restart/one-shot cycle",
+    "worker_autopilot_live.txt aligns first shown event with top of worker_autopilot_events.log",
+    "stdout_excerpt includes events_log_recovered=passed",
+    "stdout_excerpt includes events_order_newest_first=passed",
+    "stdout_excerpt includes events_feed_continuous=passed",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0052-RETRY2"
+  ],
+  "timeout_seconds": 1200,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "After result lands, review pass/fail before any next MTASK is queued",
+    "Commit message format: worker: autopilot result MTASK-0053"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0053",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
