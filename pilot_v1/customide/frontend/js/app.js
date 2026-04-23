@@ -3,6 +3,8 @@
   const refreshIntervalMs = Number(cfg.refreshIntervalMs || 2500);
   const llmRefreshEvery = 5;
   let tick = 0;
+  let activeBackendBaseUrl = "";
+  let lastErrorText = "";
 
   const statusEl = document.getElementById("backendStatus");
   const llmBadgeEl = document.getElementById("llmHealthBadge");
@@ -16,6 +18,62 @@
   const tokenPanelEl = document.getElementById("tokenPanel");
   const ollamaPanelEl = document.getElementById("ollamaPanel");
 
+  function normalizeBaseUrl(url) {
+    return String(url || "").replace(/\/+$/, "");
+  }
+
+  function buildBackendCandidates() {
+    const candidates = [];
+
+    if (Array.isArray(cfg.backendCandidates)) {
+      for (const c of cfg.backendCandidates) {
+        const n = normalizeBaseUrl(c);
+        if (n) candidates.push(n);
+      }
+    }
+
+    const configured = normalizeBaseUrl(cfg.backendBaseUrl);
+    if (configured) candidates.push(configured);
+
+    if (location.protocol === "http:" || location.protocol === "https:") {
+      candidates.push(normalizeBaseUrl(location.origin.replace(/:\d+$/, "") + ":5555"));
+    }
+
+    candidates.push("http://127.0.0.1:5555");
+    candidates.push("http://localhost:5555");
+
+    return [...new Set(candidates.filter(Boolean))];
+  }
+
+  async function fetchWithTimeout(url, timeoutMs) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, { signal: controller.signal });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function discoverBackend() {
+    const candidates = buildBackendCandidates();
+    for (const base of candidates) {
+      try {
+        const res = await fetchWithTimeout(base + "/health", 2200);
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (data && data.status === "ok") {
+          activeBackendBaseUrl = base;
+          return base;
+        }
+      } catch (_err) {
+        // Try next candidate.
+      }
+    }
+    activeBackendBaseUrl = "";
+    return "";
+  }
+
   function asNum(v) {
     const n = Number(v);
     return Number.isFinite(n) ? n : 0;
@@ -23,7 +81,31 @@
 
   function setBackendStatus(ok, msg) {
     statusEl.textContent = ok ? "Backend: online" : "Backend: offline";
+    statusEl.classList.toggle("status-offline", !ok);
     if (msg) statusEl.textContent += " | " + msg;
+  }
+
+  function renderDisconnected(reason) {
+    const hints = [
+      "COCKPIT LINK DOWN",
+      "",
+      "No backend endpoint responded.",
+      "Expected backend: uvicorn on :5555",
+      "",
+      "Try:",
+      "- start backend stack",
+      "- verify CUSTOMIDE_CONFIG.backendBaseUrl",
+      "- open page over http:// instead of file:// when possible",
+      "",
+      "error: " + (reason || "network_error")
+    ].join("\n");
+
+    autopilotSummaryEl.textContent = hints;
+    workerLogPanelEl.textContent = hints;
+    gitPanelEl.textContent = hints;
+    syncCadencePanelEl.textContent = hints;
+    tokenPanelEl.textContent = hints;
+    ollamaPanelEl.textContent = hints;
   }
 
   function renderSync(sync) {
@@ -117,7 +199,14 @@
   }
 
   async function fetchJson(path) {
-    const res = await fetch(cfg.backendBaseUrl + path);
+    if (!activeBackendBaseUrl) {
+      await discoverBackend();
+    }
+    if (!activeBackendBaseUrl) {
+      throw new Error("no_backend_discovered");
+    }
+
+    const res = await fetchWithTimeout(activeBackendBaseUrl + path, 5000);
     if (!res.ok) throw new Error(path + " failed (" + res.status + ")");
     return await res.json();
   }
@@ -137,7 +226,9 @@
     renderTokens(tokens);
 
     if (runtime.worker && runtime.worker.remote_url) {
-      remoteFrame.src = runtime.worker.remote_url;
+      if (remoteFrame.src !== runtime.worker.remote_url) {
+        remoteFrame.src = runtime.worker.remote_url;
+      }
     }
 
     if (forceLlm) {
@@ -155,10 +246,14 @@
   }
 
   async function boot() {
+    await discoverBackend();
     try {
       await refreshAll(true);
+      setBackendStatus(true, "endpoint: " + activeBackendBaseUrl);
     } catch (err) {
-      setBackendStatus(false, String(err));
+      lastErrorText = String(err);
+      setBackendStatus(false, (activeBackendBaseUrl || "none") + " | " + lastErrorText);
+      renderDisconnected(lastErrorText);
     }
 
     setInterval(async () => {
@@ -167,8 +262,13 @@
       const forceLlm = (tick % llmRefreshEvery) === 0;
       try {
         await refreshAll(forceLlm);
+        setBackendStatus(true, "endpoint: " + activeBackendBaseUrl);
       } catch (err) {
-        setBackendStatus(false, String(err));
+        lastErrorText = String(err);
+        activeBackendBaseUrl = "";
+        await discoverBackend();
+        setBackendStatus(false, (activeBackendBaseUrl || "none") + " | " + lastErrorText);
+        renderDisconnected(lastErrorText);
       }
     }, refreshIntervalMs);
   }
