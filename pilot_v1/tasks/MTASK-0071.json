@@ -1,0 +1,66 @@
+{
+  "task_id": "MTASK-0071",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0071_autopilot_logging_system_rewrite.sh",
+  "objective": "Phase 33: rewrite worker autopilot logging system end-to-end across worker script, service bootstrap, and backend status parser to stop drift and patch churn.",
+  "moss_labels": [
+    "moss/customide/phase33",
+    "moss/worker",
+    "moss/operations",
+    "moss/observability"
+  ],
+  "moss_scope_hash": "customide-phase33-autopilot-logging-system-rewrite-0071",
+  "priority": "high",
+  "risk_level": "medium",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/customide/backend/app/routes",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "worker_mtask_autopilot.sh rewritten and executable",
+    "exec_task_0019_enable_autopilot_service.sh rewritten with WORKER_LOG_TZ env",
+    "runtime.py sync-health and sync-cadence routes parse offset timestamps",
+    "events include task pickup and explicit success/failure notes",
+    "status json always includes last_run_utc and last_run_local",
+    "stdout_excerpt includes autopilot_logging_rewrite=passed",
+    "stdout_excerpt includes phase33_autopilot_logging_rewrite=passed",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0070"
+  ],
+  "timeout_seconds": 1800,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "After Ubuntu result lands, run Windows mirror checker: powershell -ExecutionPolicy Bypass -File pilot_v1/scripts/check_mtask_parity.ps1 -TaskId MTASK-0071",
+    "Commit message format: worker: autopilot result MTASK-0071"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0071",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-23T00:00:00Z"
+}
