@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0047",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0047\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nAlready up to date.\nllm_health={\"status\":\"degraded\",\"generate_url\":\"\",\"source_key\":\"none\",\"reason\":\"worker1_services.json missing\"}\nllm_local={\"source\":\"local-ide\",\"target\":\"\",\"model\":\"qwen2.5\",\"text\":\"\",\"degraded\":true,\"error\":\"worker1_services.json missing\",\"source_key\":\"none\",\"raw\":{}}\nllm_remote={\"source\":\"remote-ide\",\"target\":\"\",\"model\":\"qwen2.5\",\"text\":\"\",\"degraded\":true,\"error\":\"worker1_services.json missing\",\"source_key\":\"none\",\"raw\":{}}\nphase12_config_resolution=passed\nshared_llm_health_contract=passed\nshared_llm_chat_contract=passed\n[main e455e24] customide: stabilize shared llm config contract (MTASK-0047)\n 1 file changed, 33 insertions(+), 20 deletions(-)\ntimestamp_utc=2026-04-23T02:51:42Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nTo https://github.com/LarielSys/mide-pilot.git\n   a86d454..e455e24  main -> main",
+  "timestamp_utc": "2026-04-23T02:51:42Z"
+}
