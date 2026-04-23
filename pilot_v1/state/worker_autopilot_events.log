@@ -4004,3 +4004,5 @@
 2026-04-23T14:55:09-04:00 | mode=running | last_task=MTASK-0089 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh.
 2026-04-23T14:55:10-04:00 | mode=running | last_task=MTASK-0089 | note=Task completed successfully (MTASK-0089).
 2026-04-23T14:56:11-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=102, eligible=0, mismatched=0.
+2026-04-23T14:57:12-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=102, eligible=0, mismatched=0.
+2026-04-23T14:58:13-04:00 | mode=running | last_task=MTASK-0090 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
