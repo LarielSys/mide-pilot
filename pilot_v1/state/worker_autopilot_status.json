@@ -2,10 +2,10 @@
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
   "mode": "running",
-  "last_run_utc": "2026-04-23T14:15:11Z",
-  "last_run_local": "2026-04-23T10:15:11-04:00",
+  "last_run_utc": "2026-04-23T14:15:12Z",
+  "last_run_local": "2026-04-23T10:15:12-04:00",
   "log_timezone": "America/New_York",
-  "last_task_processed": "MTASK-0070",
+  "last_task_processed": "",
   "poll_seconds": 60,
-  "note": "Task picked up; starting executor pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh."
+  "note": "Autopilot started."
 }
