@@ -1,0 +1,63 @@
+{
+  "task_id": "MTASK-0055",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0055_harden_autopilot_git_sync.sh",
+  "objective": "Phase 17: harden autopilot git sync behavior with retry-based fast-forward flow and verify worker loop stability under 60-second cadence.",
+  "moss_labels": [
+    "moss/customide/phase17",
+    "moss/git-integration",
+    "moss/autopilot/resilience",
+    "moss/observability"
+  ],
+  "moss_scope_hash": "customide-phase17-autopilot-git-sync-hardening-0055",
+  "priority": "high",
+  "risk_level": "medium",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "worker_mtask_autopilot.sh git_sync function uses retry loop",
+    "git_sync function performs fetch origin main + merge --ff-only FETCH_HEAD",
+    "autopilot one-shot cycle returns without crash",
+    "stdout_excerpt includes git_sync_retry_logic=passed",
+    "stdout_excerpt includes git_sync_smoke=passed",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0054-RETRY1"
+  ],
+  "timeout_seconds": 1500,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "After Ubuntu result lands, run Windows mirror checker: powershell -ExecutionPolicy Bypass -File pilot_v1/scripts/check_mtask_parity.ps1 -TaskId MTASK-0055",
+    "Commit message format: worker: autopilot result MTASK-0055"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0055",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-23T00:00:00Z"
+}
