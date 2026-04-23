@@ -77,14 +77,12 @@ write_status() {
   # Keep events in newest-first order while preserving full history.
   if [[ -f "${EVENT_LOG_FILE}" ]]; then
     {
-      printf "%s
-" "${event_line}"
+      printf "%s\n" "${event_line}"
       cat "${EVENT_LOG_FILE}"
     } >"${tmp_events}"
     mv "${tmp_events}" "${EVENT_LOG_FILE}"
   else
-    printf "%s
-" "${event_line}" >"${EVENT_LOG_FILE}"
+    printf "%s\n" "${event_line}" >"${EVENT_LOG_FILE}"
   fi
 
   cat >"${STATUS_FILE}" <<EOF
@@ -192,10 +190,25 @@ commit_and_push_status_heartbeat() {
 }
 
 git_sync() {
-  local attempt err
+  local attempt err sync_ok
   err="${SYNC_ERROR_FILE}.tmp"
+
   for attempt in 1 2 3; do
-    if git -C "${REPO_ROOT}" fetch origin main >/dev/null 2>"${err}" &&        git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>>"${err}" &&        git -C "${REPO_ROOT}" merge --ff-only FETCH_HEAD >/dev/null 2>>"${err}"; then
+    sync_ok="false"
+
+    if git -C "${REPO_ROOT}" fetch origin main >/dev/null 2>"${err}" && \
+       git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>>"${err}" && \
+       git -C "${REPO_ROOT}" merge --ff-only FETCH_HEAD >/dev/null 2>>"${err}"; then
+      sync_ok="true"
+    else
+      # Fallback path: preserve local changes while rebasing to remote tip.
+      if git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>>"${err}" && \
+         git -C "${REPO_ROOT}" pull --rebase --autostash origin main >/dev/null 2>>"${err}"; then
+        sync_ok="true"
+      fi
+    fi
+
+    if [[ "${sync_ok}" == "true" ]]; then
       rm -f "${err}" "${SYNC_ERROR_FILE}"
       return 0
     fi
