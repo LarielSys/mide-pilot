@@ -2,8 +2,15 @@
   "task_id": "MTASK-0032",
   "worker_id": "ubuntu-worker-01",
   "execution_status": "completed",
-  "summary": "Executor script completed successfully.",
-  "stdout_excerpt": "task=MTASK-0032\nworker_id=ubuntu-worker-01\nsshd_status=active\nGenerating public/private ed25519 key pair.\nYour identification has been saved in /home/larieladmin/.ssh/mide_ide_key\nYour public key has been saved in /home/larieladmin/.ssh/mide_ide_key.pub\nThe key fingerprint is:\nSHA256:wwPN3NCuCEJI44jesgGiVaHzuGTTy5rkYvaercQQhN8 mide-ide-windows@customide\nThe key's randomart image is:\n+--[ED25519 256]--+\n|o=  o.  ..       |\n|B oo   + o.      |\n|==+.  . +..      |\n|=.==E  o  .      |\n|.==oo. .S.       |\n| o*+ .. .o       |\n| .ooo            |\n|.=.oo            |\n|o.*=..           |\n+----[SHA256]-----+\nmide_key_generated=yes\nauthorized_keys=added\nlocal_ip=192.168.1.21\nngrok_ssh_started_pid=19531\nngrok_ssh_url=not_available\ntimestamp_utc=2026-04-22T22:29:34Z\nresult_written=/home/larieladmin/mide-pilot/pilot_v1/results/MTASK-0032.result.json",
+  "summary": "SSH bootstrap complete. ngrok TCP tunnel active. Private key exported for Windows IDE.",
+  "ssh_host": "not_available",
+  "ssh_port": "not_available",
+  "ssh_user": "larieladmin",
+  "ssh_ngrok_url": "not_available",
+  "local_ip": "192.168.1.21",
+  "privkey_b64": "LS0tLS1CRUdJTiBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0KYjNCbGJuTnphQzFyWlhrdGRqRUFBQUFBQkc1dmJtVUFBQUFFYm05dVpRQUFBQUFBQUFBQkFBQUFNd0FBQUF0emMyZ3RaVwpReU5UVXhPUUFBQUNBWlh6ZlhnZlZoUEFoRCtEdDNFb0JzK0tSUWlINE82ZHFoRGswNHEvZCttUUFBQUtDZ3RGRjNvTFJSCmR3QUFBQXR6YzJndFpXUXlOVFV4T1FBQUFDQVpYemZYZ2ZWaFBBaEQrRHQzRW9CcytLUlFpSDRPNmRxaERrMDRxL2QrbVEKQUFBRUI2QmQ3TjR6bGp0b2VMRUlTYk5mMCtFa0RneEJOSlc4MWhocnNtYzc0Q1BSbGZOOWVCOVdFOENFUDRPM2NTZ0d6NApwRkNJZmc3cDJxRU9UVGlyOTM2WkFBQUFHbTFwWkdVdGFXUmxMWGRwYm1SdmQzTkFZM1Z6ZEc5dGFXUmxBUUlECi0tLS0tRU5EIE9QRU5TU0ggUFJJVkFURSBLRVktLS0tLQo=",
+  "pubkey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlfN9eB9WE8CEP4O3cSgGz4pFCIfg7p2qEOTTir936Z mide-ide-windows@customide",
+  "stdout_excerpt": "task=MTASK-0032\worker_id=ubuntu-worker-01\sshd_status=active\mide_key_generated=already_exists\authorized_keys=already_present\local_ip=192.168.1.21\ngrok_ssh_started_pid=298049\ngrok_ssh_url=not_available\timestamp_utc=2026-04-23T19:23:58Z\",
   "stderr_excerpt": "",
-  "timestamp_utc": "2026-04-22T22:29:34Z"
+  "timestamp_utc": "2026-04-23T19:23:58Z"
 }

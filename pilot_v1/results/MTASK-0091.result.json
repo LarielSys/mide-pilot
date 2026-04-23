@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0091",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0032\nworker_id=ubuntu-worker-01\nsshd_status=active\nmide_key_generated=already_exists\nauthorized_keys=already_present\nlocal_ip=192.168.1.21\nngrok_ssh_started_pid=298049\nngrok_ssh_url=not_available\ntimestamp_utc=2026-04-23T19:23:58Z\nresult_written=/home/larieladmin/mide-pilot/pilot_v1/results/MTASK-0032.result.json",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-04-23T19:23:58Z"
+}

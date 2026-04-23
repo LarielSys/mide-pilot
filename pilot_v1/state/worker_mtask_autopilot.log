@@ -7418,3 +7418,7 @@ IndentationError: unexpected indent
     import json
 IndentationError: unexpected indent
 [autopilot] Candidate task: MTASK-0091 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0091.json)
+To https://github.com/LarielSys/mide-pilot.git
+   893740d..be9750a  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0032_ssh_bootstrap.sh for MTASK-0091
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
