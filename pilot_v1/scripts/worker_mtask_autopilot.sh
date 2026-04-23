@@ -70,20 +70,9 @@ write_status() {
   local ts
   ts="$(now_utc)"
 
-  local event_line tmp_events
+  local event_line
   event_line="${ts} | mode=${mode} | last_task=${last_task} | note=${note}"
-  tmp_events="${EVENT_LOG_FILE}.tmp"
-
-  # Keep events in newest-first order while preserving full history.
-  if [[ -f "${EVENT_LOG_FILE}" ]]; then
-    {
-      printf "%s\n" "${event_line}"
-      cat "${EVENT_LOG_FILE}"
-    } >"${tmp_events}"
-    mv "${tmp_events}" "${EVENT_LOG_FILE}"
-  else
-    printf "%s\n" "${event_line}" >"${EVENT_LOG_FILE}"
-  fi
+  printf "%s\n" "${event_line}" >>"${EVENT_LOG_FILE}"
 
   cat >"${STATUS_FILE}" <<EOF
 {
@@ -113,7 +102,7 @@ EOF
     fi
     echo
     echo "Recent Events (latest 20, newest first):"
-    head -n 20 "${EVENT_LOG_FILE}" 2>/dev/null || true
+    tail -n 20 "${EVENT_LOG_FILE}" 2>/dev/null | tac || true
   } >"${LIVE_STATUS_FILE}"
 }
 
@@ -183,7 +172,6 @@ commit_and_push_status_heartbeat() {
   echo "${ts}" >"${HEARTBEAT_FILE}"
 
   git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
-  git -C "${REPO_ROOT}" add pilot_v1/results/*.result.json 2>/dev/null || true
   git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
   git -C "${REPO_ROOT}" push origin main >/dev/null || {
     echo "[autopilot] Warning: heartbeat push failed; will retry next cycle." >&2
