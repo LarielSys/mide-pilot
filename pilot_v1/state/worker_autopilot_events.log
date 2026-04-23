@@ -105,3 +105,4 @@
 2026-04-23T00:44:59Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=47, eligible=0, mismatched=0.
 2026-04-23T00:48:01Z | mode=running | last_task=MTASK-0045 | note=Task failed: executor script non-zero exit.
 2026-04-23T00:51:05Z | mode=running | last_task=MTASK-0045-RETRY1 | note=Task completed successfully.
+2026-04-23T00:54:06Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=49, eligible=0, mismatched=0.
