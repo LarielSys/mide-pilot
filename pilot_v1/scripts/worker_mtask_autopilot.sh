@@ -13,6 +13,7 @@ HEARTBEAT_FILE="${STATE_DIR}/worker_autopilot_heartbeat_epoch.txt"
 LIVE_STATUS_FILE="${STATE_DIR}/worker_autopilot_live.txt"
 EVENT_LOG_FILE="${STATE_DIR}/worker_autopilot_events.log"
 SYNC_ERROR_FILE="${STATE_DIR}/worker_autopilot_git_sync_last_error.txt"
+LAST_PUSHED_SIGNATURE_FILE="${RUNTIME_DIR}/worker_autopilot_last_pushed_signature.txt"
 POLL_SECONDS="${POLL_SECONDS:-60}"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
@@ -22,6 +23,7 @@ PUSH_IDLE_HEARTBEAT="${PUSH_IDLE_HEARTBEAT:-true}"
 DRY_RUN="false"
 ONESHOT="false"
 FORCE_TASK_ID=""
+CURRENT_STATUS_SIGNATURE=""
 
 for arg in "$@"; do
   case "$arg" in
@@ -72,6 +74,7 @@ write_status() {
 
   local event_line
   event_line="${ts} | mode=${mode} | last_task=${last_task} | note=${note}"
+  CURRENT_STATUS_SIGNATURE="${WORKER_ID}|${POLL_SECONDS}|${mode}|${last_task}|${note}"
   printf "%s\n" "${event_line}" >>"${EVENT_LOG_FILE}"
 
   cat >"${STATUS_FILE}" <<EOF
@@ -167,15 +170,28 @@ PY
 }
 
 commit_and_push_status_heartbeat() {
-  local ts
+  local ts last_pushed_signature
   ts="$(now_epoch)"
   echo "${ts}" >"${HEARTBEAT_FILE}"
+
+  if [[ -f "${LAST_PUSHED_SIGNATURE_FILE}" ]]; then
+    last_pushed_signature="$(cat "${LAST_PUSHED_SIGNATURE_FILE}" 2>/dev/null || true)"
+  else
+    last_pushed_signature=""
+  fi
+
+  if [[ "${CURRENT_STATUS_SIGNATURE}" == "${last_pushed_signature}" ]]; then
+    return 0
+  fi
 
   git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
   git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
   git -C "${REPO_ROOT}" push origin main >/dev/null || {
     echo "[autopilot] Warning: heartbeat push failed; will retry next cycle." >&2
+    return 1
   }
+
+  printf "%s\n" "${CURRENT_STATUS_SIGNATURE}" >"${LAST_PUSHED_SIGNATURE_FILE}"
 }
 
 git_sync() {
