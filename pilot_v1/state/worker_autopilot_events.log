@@ -115,3 +115,20 @@
 2026-04-23T01:15:19Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=51, eligible=0, mismatched=0.
 2026-04-23T01:18:23Z | mode=running | last_task=MTASK-0046-RETRY2 | note=Task completed successfully.
 2026-04-23T01:21:24Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=52, eligible=0, mismatched=0.
+2026-04-23T01:24:25Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:27:25Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:30:25Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:33:26Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:36:26Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:39:26Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:42:26Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:45:26Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:48:27Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:51:27Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:54:27Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T01:57:27Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T02:00:27Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T02:03:28Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T02:06:28Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T02:09:28Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T02:12:28Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=52, eligible=0, mismatched=0.
