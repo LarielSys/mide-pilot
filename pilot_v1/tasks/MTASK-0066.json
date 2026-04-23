@@ -1,0 +1,62 @@
+{
+  "task_id": "MTASK-0066",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0066_worker_sync_gate_live_status.sh",
+  "objective": "Phase 28: expose 3x60 sync gate state directly in worker live status output to reduce false desync calls.",
+  "moss_labels": [
+    "moss/customide/phase28",
+    "moss/worker",
+    "moss/sync-health",
+    "moss/operations"
+  ],
+  "moss_scope_hash": "customide-phase28-worker-sync-gate-live-status-0066",
+  "priority": "high",
+  "risk_level": "medium",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "worker script defines sync_gate_3x60_state helper",
+    "worker live status writes sync_gate_3x60 line",
+    "stdout_excerpt includes worker_sync_gate_live_status=passed",
+    "stdout_excerpt includes phase28_worker_sync_gate=passed",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0065"
+  ],
+  "timeout_seconds": 1800,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "After Ubuntu result lands, run Windows mirror checker: powershell -ExecutionPolicy Bypass -File pilot_v1/scripts/check_mtask_parity.ps1 -TaskId MTASK-0066",
+    "Commit message format: worker: autopilot result MTASK-0066"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0066",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-23T00:00:00Z"
+}
