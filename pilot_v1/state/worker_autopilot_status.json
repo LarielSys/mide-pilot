@@ -7,7 +7,7 @@
   "log_timezone": "America/New_York",
   "last_task_processed": "MTASK-0092",
   "poll_seconds": 60,
-  "note": "Task picked up; starting executor pilot_v1/scripts/exec_mtask_0092_force_restart_autopilot_detached.sh.",
+  "note": "Task completed successfully (MTASK-0092).",
   "customide_backend_state": "down",
   "customide_frontend_state": "down",
   "customide_stack_state": "down"

@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0092",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0092\nstrategy=delayed_detached_force_restart\nreason=recover_stalled_autopilot_without_systemctl_dependency\nrestart_queued=true\ndelay_seconds=20\nqueued_stamp=/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/MTASK-0092.restart_queued.txt\nrestart_log=/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/MTASK-0092.restart.log\nstdout_excerpt includes restart_queued=true\nstdout_excerpt includes strategy=delayed_detached_force_restart\ntimestamp_utc=2026-04-23T19:23:59Z",
+  "stderr_excerpt": "/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/exec_mtask_0092_force_restart_autopilot_detached.sh: line 19: $!: unbound variable",
+  "timestamp_utc": "2026-04-23T19:23:59Z"
+}
