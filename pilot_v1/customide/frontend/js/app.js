@@ -4,12 +4,27 @@
   const outputEl = document.getElementById("execOutput");
   const dashboardEl = document.getElementById("dashboard");
   const llmBadgeEl = document.getElementById("llmHealthBadge");
+  const syncBadgeEl = document.getElementById("syncHealthBadge");
 
   function renderLlmBadge(data) {
     if (!llmBadgeEl) return;
     const status = (data && data.status) || "unknown";
     const source = (data && data.source_key) || "n/a";
     llmBadgeEl.textContent = "LLM: " + status + " | source: " + source;
+  }
+
+  function renderSyncBadge(data) {
+    if (!syncBadgeEl) return;
+    const value = (data && data.sync_error) || "unknown";
+    syncBadgeEl.textContent = "Sync: " + value;
+  }
+
+  async function refreshSyncHealth() {
+    const res = await fetch(cfg.backendBaseUrl + "/api/status/sync-health");
+    if (!res.ok) throw new Error("sync health failed");
+    const data = await res.json();
+    renderSyncBadge(data);
+    return data;
   }
 
   async function refreshLlmHealth() {
@@ -170,6 +185,12 @@
       await fetchRuntimeStatus();
       await checkBackend();
       await refreshLlmHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "status refresh failed: " + err;
     } finally {
@@ -183,6 +204,12 @@
       await runLocal();
       await checkBackend();
       await refreshLlmHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "local run failed: " + err;
     } finally {
@@ -196,6 +223,12 @@
       await runRemote();
       await checkBackend();
       await refreshLlmHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "remote run failed: " + err;
     } finally {
@@ -209,6 +242,12 @@
       await askSharedLlm("local-ide");
       await checkBackend();
       await refreshLlmHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "shared llm local failed: " + err;
     } finally {
@@ -222,6 +261,12 @@
       await askSharedLlm("remote-ide");
       await checkBackend();
       await refreshLlmHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "shared llm remote failed: " + err;
     } finally {
@@ -234,6 +279,12 @@
     try {
       await fetchRuntimeStatus();
       await refreshLlmHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
+      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "status bootstrap failed: " + err;
     }
