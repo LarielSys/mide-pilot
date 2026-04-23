@@ -48,6 +48,17 @@
     return data;
   }
 
+  async function refreshFromBundle() {
+    const bundle = await fetchStatusBundle();
+    if (bundle && bundle.runtime) renderDashboard(bundle.runtime);
+    if (bundle && bundle.runtime && bundle.runtime.worker && bundle.runtime.worker.remote_url) {
+      remoteFrame.src = bundle.runtime.worker.remote_url;
+    }
+    if (bundle && bundle.sync_health) renderSyncBadge(bundle.sync_health);
+    if (bundle && bundle.sync_cadence) renderSyncCadence(bundle.sync_cadence);
+    return bundle;
+  }
+
   async function refreshLlmHealth() {
     const res = await fetch(cfg.backendBaseUrl + "/api/llm/health");
     if (!res.ok) throw new Error("llm health failed");
@@ -212,10 +223,6 @@
       await checkBackend();
       await refreshLlmHealth();
       await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "status refresh failed: " + err;
     } finally {
@@ -227,14 +234,9 @@
     try {
       setBusy(true, "Running local command...");
       await runLocal();
+      await refreshFromBundle();
       await checkBackend();
       await refreshLlmHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "local run failed: " + err;
     } finally {
@@ -246,14 +248,9 @@
     try {
       setBusy(true, "Running remote command...");
       await runRemote();
+      await refreshFromBundle();
       await checkBackend();
       await refreshLlmHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "remote run failed: " + err;
     } finally {
@@ -265,14 +262,9 @@
     try {
       setBusy(true, "Asking shared LLM from local IDE...");
       await askSharedLlm("local-ide");
+      await refreshFromBundle();
       await checkBackend();
       await refreshLlmHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "shared llm local failed: " + err;
     } finally {
@@ -284,14 +276,9 @@
     try {
       setBusy(true, "Asking shared LLM from remote IDE...");
       await askSharedLlm("remote-ide");
+      await refreshFromBundle();
       await checkBackend();
       await refreshLlmHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "shared llm remote failed: " + err;
     } finally {
@@ -302,14 +289,8 @@
   const backendOk = await checkBackend();
   if (backendOk) {
     try {
-      await fetchRuntimeStatus();
+      await refreshFromBundle();
       await refreshLlmHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
-      await refreshSyncHealth();
     } catch (err) {
       outputEl.textContent = "status bootstrap failed: " + err;
     }
