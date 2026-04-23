@@ -732,4 +732,3 @@ git add \
 
 git commit -m "customide: add cockpit panes for autopilot, git, tokens, and ollama mode (MTASK-0074)" >/dev/null || true
 git push origin main >/dev/null || true
-EOF
