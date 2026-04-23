@@ -399,3 +399,4 @@ newest-line
 2026-04-23T13:41:15Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=78, eligible=0, mismatched=0.
 2026-04-23T13:41:53Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=78, eligible=0, mismatched=0.
 2026-04-23T13:42:18Z | mode=running | last_task=MTASK-0067 | note=Task completed successfully.
+2026-04-23T13:42:53Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=79, eligible=0, mismatched=0.
