@@ -13,7 +13,7 @@
   ],
   "priority": "high",
   "risk_level": "low",
-  "status": "draft",
+  "status": "approved_to_execute",
   "required_validation": [
     "stdout_excerpt includes hard_reset_requested=true",
     "stdout_excerpt includes hard_reset_nonce=",
