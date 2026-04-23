@@ -1,0 +1,64 @@
+{
+  "task_id": "MTASK-0043",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0043_harden_execute_and_ui.sh",
+  "objective": "Phase 8: harden local/remote execution API and add interactive command UI with safer runtime behavior.",
+  "moss_labels": [
+    "moss/customide/phase8",
+    "moss/backend/security-hardening",
+    "moss/frontend/interactive-exec"
+  ],
+  "moss_scope_hash": "customide-phase8-exec-hardening-ui-0043",
+  "priority": "high",
+  "risk_level": "high",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/customide",
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results",
+    "~/mide-pilot/pilot_v1/state"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "backend execute route removes shell=True local execution",
+    "backend local execution enforces command allowlist",
+    "frontend includes command input boxes for local and remote runs",
+    "frontend disables run buttons while execution is active",
+    "stdout_excerpt includes execute_hardening=completed",
+    "stdout_excerpt includes ui_command_inputs=completed",
+    "stdout_excerpt includes local_allowlist_enforced=passed",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0042"
+  ],
+  "timeout_seconds": 1800,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "Commit message format: worker: autopilot result MTASK-0043"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0043",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-22T00:00:00Z"
+}
