@@ -51,16 +51,26 @@ fi
 
 pushd "${BACKEND_ROOT}" >/dev/null
 if [[ ! -d .venv ]]; then
-  python3 -m venv .venv
+  if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OS" == "Windows_NT" ]]; then
+    python -m venv .venv
+  else
+    python3 -m venv .venv
+  fi
 fi
-source .venv/bin/activate
-pip install -r requirements.txt >/dev/null
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OS" == "Windows_NT" ]]; then
+  source .venv/Scripts/activate
+  PY=python
+else
+  source .venv/bin/activate
+  PY=python3
+fi
+$PY -m pip install -r requirements.txt >/dev/null
 uvicorn app.main:app --host 127.0.0.1 --port 5555 >/tmp/mtask0045r1-backend.log 2>&1 &
 BACK_PID=$!
 popd >/dev/null
 
 pushd "${FRONTEND_ROOT}" >/dev/null
-python3 -m http.server 5570 >/tmp/mtask0045r1-frontend.log 2>&1 &
+$PY -m http.server 5570 >/tmp/mtask0045r1-frontend.log 2>&1 &
 FRONT_PID=$!
 popd >/dev/null
 
