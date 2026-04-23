@@ -25,6 +25,12 @@
     syncBadgeEl.textContent = "Sync: " + value;
   }
 
+  async function fetchStatusBundle() {
+    const res = await fetch(cfg.backendBaseUrl + "/api/status/bundle");
+    if (!res.ok) throw new Error("status bundle failed");
+    return await res.json();
+  }
+
   async function refreshSyncHealth() {
     const res = await fetch(cfg.backendBaseUrl + "/api/status/sync-health");
     if (!res.ok) throw new Error("sync health failed");
@@ -188,10 +194,14 @@
   btnRefresh.addEventListener("click", async () => {
     try {
       setBusy(true, "Refreshing status...");
-      await fetchRuntimeStatus();
+      const bundle = await fetchStatusBundle();
+      if (bundle && bundle.runtime) renderDashboard(bundle.runtime);
+      if (bundle && bundle.runtime && bundle.runtime.worker && bundle.runtime.worker.remote_url) {
+        remoteFrame.src = bundle.runtime.worker.remote_url;
+      }
+      if (bundle && bundle.sync_health) renderSyncBadge(bundle.sync_health);
       await checkBackend();
       await refreshLlmHealth();
-      await refreshSyncHealth();
       await refreshSyncHealth();
       await refreshSyncHealth();
       await refreshSyncHealth();
