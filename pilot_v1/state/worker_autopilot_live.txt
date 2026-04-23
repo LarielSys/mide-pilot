@@ -1,21 +1,23 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T16:53:17Z
-updated_local: 2026-04-23T12:53:17-04:00
+updated_utc: 2026-04-23T16:55:18Z
+updated_local: 2026-04-23T12:55:18-04:00
 log_timezone: America/New_York
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
-mode: idle
-last_task_processed: 
+mode: running
+last_task_processed: MTASK-0074
 poll_seconds: 60
-note: No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
+note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0074_cockpit_autopilot_token_panels.sh.
 sync_gate_3x60: drift
 git_branch: main
-git_local_head: 4af2b31
-git_origin_head: c94a43d
-git_heads_match: no
+git_local_head: 510179c
+git_origin_head: 510179c
+git_heads_match: yes
 git_sync_last_error: none
 
 Recent Events (latest 20, newest first):
+2026-04-23T12:55:18-04:00 | mode=running | last_task=MTASK-0074 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0074_cockpit_autopilot_token_panels.sh.
+2026-04-23T12:54:18-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
 2026-04-23T12:53:17-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
 2026-04-23T12:52:11-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
 2026-04-23T12:51:02-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
@@ -34,5 +36,3 @@ Recent Events (latest 20, newest first):
 2026-04-23T12:37:51-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
 2026-04-23T12:36:38-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
 2026-04-23T12:35:31-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
-2026-04-23T12:34:18-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=85, eligible=0, mismatched=0.
-2026-04-23T12:34:18-04:00 | mode=running | last_task= | note=Autopilot started.
