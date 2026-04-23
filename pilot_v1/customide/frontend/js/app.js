@@ -3,6 +3,22 @@
   const remoteFrame = document.getElementById("remoteFrame");
   const outputEl = document.getElementById("execOutput");
   const dashboardEl = document.getElementById("dashboard");
+  const llmBadgeEl = document.getElementById("llmHealthBadge");
+
+  function renderLlmBadge(data) {
+    if (!llmBadgeEl) return;
+    const status = (data && data.status) || "unknown";
+    const source = (data && data.source_key) || "n/a";
+    llmBadgeEl.textContent = "LLM: " + status + " | source: " + source;
+  }
+
+  async function refreshLlmHealth() {
+    const res = await fetch(cfg.backendBaseUrl + "/api/llm/health");
+    if (!res.ok) throw new Error("llm health failed");
+    const data = await res.json();
+    renderLlmBadge(data);
+    return data;
+  }
 
   const btnRefresh = document.getElementById("btnRefreshStatus");
   const btnLocal = document.getElementById("btnRunLocal");
@@ -153,6 +169,7 @@
       setBusy(true, "Refreshing status...");
       await fetchRuntimeStatus();
       await checkBackend();
+      await refreshLlmHealth();
     } catch (err) {
       outputEl.textContent = "status refresh failed: " + err;
     } finally {
@@ -165,6 +182,7 @@
       setBusy(true, "Running local command...");
       await runLocal();
       await checkBackend();
+      await refreshLlmHealth();
     } catch (err) {
       outputEl.textContent = "local run failed: " + err;
     } finally {
@@ -177,6 +195,7 @@
       setBusy(true, "Running remote command...");
       await runRemote();
       await checkBackend();
+      await refreshLlmHealth();
     } catch (err) {
       outputEl.textContent = "remote run failed: " + err;
     } finally {
@@ -189,6 +208,7 @@
       setBusy(true, "Asking shared LLM from local IDE...");
       await askSharedLlm("local-ide");
       await checkBackend();
+      await refreshLlmHealth();
     } catch (err) {
       outputEl.textContent = "shared llm local failed: " + err;
     } finally {
@@ -201,6 +221,7 @@
       setBusy(true, "Asking shared LLM from remote IDE...");
       await askSharedLlm("remote-ide");
       await checkBackend();
+      await refreshLlmHealth();
     } catch (err) {
       outputEl.textContent = "shared llm remote failed: " + err;
     } finally {
@@ -212,6 +233,7 @@
   if (backendOk) {
     try {
       await fetchRuntimeStatus();
+      await refreshLlmHealth();
     } catch (err) {
       outputEl.textContent = "status bootstrap failed: " + err;
     }
