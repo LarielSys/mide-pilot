@@ -72,6 +72,62 @@ now_local_ts() {
   TZ="${WORKER_LOG_TZ}" date +"%Y-%m-%dT%H:%M:%S%:z"
 }
 
+sanitize_event_log() {
+  python3 - "${EVENT_LOG_FILE}" "${WORKER_LOG_TZ}" <<'PY'
+from datetime import datetime, timezone
+from pathlib import Path
+from zoneinfo import ZoneInfo
+import sys
+
+event_file = Path(sys.argv[1])
+tz_name = sys.argv[2]
+
+if not event_file.exists():
+  raise SystemExit(0)
+
+try:
+  target_tz = ZoneInfo(tz_name)
+except Exception:
+  target_tz = timezone.utc
+
+raw_lines = event_file.read_text(encoding="utf-8", errors="replace").splitlines()
+normalized_lines = []
+changed = False
+
+for raw in raw_lines:
+  line = raw.strip()
+  if not line:
+    changed = True
+    continue
+
+  if " | " not in line:
+    changed = True
+    continue
+
+  token, remainder = line.split(" | ", 1)
+  token = token.strip().lstrip("Z").strip()
+  token = token.replace("Z", "+00:00")
+
+  try:
+    parsed = datetime.fromisoformat(token)
+  except ValueError:
+    changed = True
+    continue
+
+  if parsed.tzinfo is None:
+    parsed = parsed.replace(tzinfo=timezone.utc)
+
+  local_ts = parsed.astimezone(target_tz).isoformat(timespec="seconds")
+  rebuilt = f"{local_ts} | {remainder.strip()}"
+  normalized_lines.append(rebuilt)
+  if rebuilt != line:
+    changed = True
+
+if changed:
+  event_file.write_text("\n".join(normalized_lines) + ("\n" if normalized_lines else ""), encoding="utf-8")
+PY
+}
+
 status_signature() {
   local mode="$1"
   local last_task="$2"
@@ -120,6 +176,7 @@ write_status() {
   local last_task="$2"
   local note="$3"
   local ts ts_local gate_state sig
+  sanitize_event_log
   ts="$(now_utc)"
   ts_local="$(now_local_ts)"
   gate_state="$(sync_gate_3x60_state)"
