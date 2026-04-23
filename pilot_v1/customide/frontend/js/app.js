@@ -6,11 +6,13 @@
   const llmBadgeEl = document.getElementById("llmHealthBadge");
   const syncBadgeEl = document.getElementById("syncHealthBadge");
   const syncDebugPanelEl = document.getElementById("syncDebugPanel");
+  let lastGateStatus = "unknown";
   const syncCadencePanelEl = document.getElementById("syncCadencePanel");
 
   function renderLlmBadge(data) {
     if (!llmBadgeEl) return;
     const status = (data && data.status) || "unknown";
+    lastGateStatus = (data && data.gate_3x60_pass) ? "pass" : status;
     const source = (data && data.source_key) || "n/a";
     llmBadgeEl.textContent = "LLM: " + status + " | source: " + source;
   }
@@ -20,6 +22,7 @@
     const deltas = (data && data.deltas_seconds) ? data.deltas_seconds.join(", ") : "n/a";
     const gate = (data && data.gate_3x60_pass) ? "pass" : "pending";
     const status = (data && data.status) || "unknown";
+    lastGateStatus = (data && data.gate_3x60_pass) ? "pass" : status;
     syncCadencePanelEl.textContent = "Sync cadence\n- deltas_seconds: " + deltas + "\n- gate_3x60_pass: " + gate + "\n- status: " + status;
   }
 
@@ -31,7 +34,7 @@
     }
     if (!syncBadgeEl) return;
     const value = (data && data.sync_error) || "unknown";
-    syncBadgeEl.textContent = "Sync: " + value;
+    syncBadgeEl.textContent = "Sync: " + value + " | gate: " + lastGateStatus;
   }
 
   async function fetchStatusBundle() {
