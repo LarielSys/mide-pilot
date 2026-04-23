@@ -1,11 +1,11 @@
 {
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
-  "mode": "idle",
-  "last_run_utc": "2026-04-23T17:22:37Z",
-  "last_run_local": "2026-04-23T13:22:37-04:00",
+  "mode": "running",
+  "last_run_utc": "2026-04-23T17:23:38Z",
+  "last_run_local": "2026-04-23T13:23:38-04:00",
   "log_timezone": "America/New_York",
-  "last_task_processed": "",
+  "last_task_processed": "MTASK-0075",
   "poll_seconds": 60,
-  "note": "No assigned mtasks found; sleeping until next poll. approved=87, eligible=0, mismatched=0."
+  "note": "Task picked up; starting executor pilot_v1/scripts/exec_mtask_0075_restore_customide_backends.sh."
 }
