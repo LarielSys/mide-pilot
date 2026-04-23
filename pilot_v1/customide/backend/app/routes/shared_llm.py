@@ -17,30 +17,37 @@ class ChatRequest(BaseModel):
     model: str | None = Field(default=None, max_length=120)
 
 
-def _resolve_generate_url() -> tuple[str | None, str | None]:
+def _map_source(raw: str) -> str:
+    value = (raw or "").strip().lower()
+    if value in ("remote", "remote-ide"):
+        return "remote-ide"
+    return "local-ide"
+
+
+def _resolve_generate_url() -> tuple[str | None, str, str | None]:
+    env_url = (settings.ollama_url or "").strip() if hasattr(settings, "ollama_url") else ""
+    if env_url:
+        return env_url, "settings.ollama_url", None
+
     repo_root = Path(__file__).resolve().parents[3]
     svc = load_worker_services(repo_root)
     if svc.get("status") != "ok":
-        return None, "worker1_services.json missing"
+        return None, "none", "worker1_services.json missing"
 
     raw = svc.get("services") or {}
     services_obj = raw.get("services") or {}
     ollama = services_obj.get("ollama") or {}
 
-    for bucket in (raw, services_obj, ollama):
-        for key in ("ollama_generate_url", "ollama_generate", "ollama_proxy_generate", "ollama_url"):
+    for bucket_name, bucket in (("services", raw), ("services.services", services_obj), ("services.services.ollama", ollama)):
+        for key in ("ollama_generate_url", "ollama_generate", "ollama_proxy_generate", "ollama_url", "proxy_endpoint"):
             value = bucket.get(key)
             if isinstance(value, str) and value.strip():
-                return value.strip(), None
+                url = value.strip().rstrip("/")
+                if url.endswith("/api"):
+                    url = f"{url}/generate"
+                return url, f"{bucket_name}.{key}", None
 
-    proxy_endpoint = ollama.get("proxy_endpoint")
-    if isinstance(proxy_endpoint, str) and proxy_endpoint.strip():
-        base = proxy_endpoint.strip().rstrip("/")
-        if base.endswith("/generate"):
-            return base, None
-        return f"{base}/generate", None
-
-    return None, "No Ollama endpoint found in worker services config"
+    return None, "none", "No Ollama endpoint found in worker services config"
 
 
 def _extract_text(data: dict[str, Any]) -> str:
@@ -58,34 +65,38 @@ def _extract_text(data: dict[str, Any]) -> str:
 
 
 @router.get("/health")
-def llm_health() -> dict:
-    target, reason = _resolve_generate_url()
+def llm_health() -> dict[str, Any]:
+    target, source_key, reason = _resolve_generate_url()
     if target:
         return {
             "status": "configured",
             "generate_url": target,
+            "source_key": source_key,
         }
 
     return {
         "status": "degraded",
         "generate_url": "",
+        "source_key": source_key,
         "reason": reason,
     }
 
 
 @router.post("/chat")
-def llm_chat(payload: ChatRequest) -> dict:
-    target, reason = _resolve_generate_url()
+def llm_chat(payload: ChatRequest) -> dict[str, Any]:
+    target, source_key, reason = _resolve_generate_url()
     model = payload.model or "qwen2.5"
+    mapped_source = _map_source(payload.source)
 
     if not target:
         return {
-            "source": payload.source,
+            "source": mapped_source,
             "target": "",
             "model": model,
             "text": "",
             "degraded": True,
             "error": reason,
+            "source_key": source_key,
             "raw": {},
         }
 
@@ -102,21 +113,23 @@ def llm_chat(payload: ChatRequest) -> dict:
             data = res.json()
     except httpx.HTTPError as exc:
         return {
-            "source": payload.source,
+            "source": mapped_source,
             "target": target,
             "model": model,
             "text": "",
             "degraded": True,
             "error": f"Upstream LLM error: {exc}",
+            "source_key": source_key,
             "raw": {},
         }
 
     return {
-        "source": payload.source,
+        "source": mapped_source,
         "target": target,
         "model": model,
         "text": _extract_text(data),
         "degraded": False,
         "error": "",
+        "source_key": source_key,
         "raw": data,
     }
