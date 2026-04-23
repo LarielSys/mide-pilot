@@ -1,0 +1,24 @@
+{
+  "task_id": "MTASK-0089",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0082_request_cockpit_hard_reset.sh",
+  "objective": "Issue fresh cockpit hard reset after autopilot reload so live state and UI both resync.",
+  "moss_labels": [
+    "moss/customide/phase35",
+    "moss/worker",
+    "moss/operations"
+  ],
+  "priority": "high",
+  "risk_level": "low",
+  "status": "draft",
+  "required_validation": [
+    "stdout_excerpt includes hard_reset_requested=true",
+    "stdout_excerpt includes hard_reset_nonce=",
+    "stdout_excerpt includes hard_reset_state_file=pilot_v1/state/cockpit_hard_reset_request.json"
+  ],
+  "timeout_seconds": 180,
+  "created_at_utc": "2026-04-23T00:00:00Z"
+}

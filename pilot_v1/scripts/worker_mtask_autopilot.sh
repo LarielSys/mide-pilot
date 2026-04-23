@@ -301,7 +301,19 @@ PY
 
 git_commit_and_push() {
   local commit_msg="$1"
-  git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" "pilot_v1/state/worker_autopilot_git_sync_last_error.txt" "pilot_v1/state/cockpit_hard_reset_request.json" || true
+
+  # Clear any sticky index flags that would keep tracked state files from staging.
+  git -C "${REPO_ROOT}" update-index \
+    --no-assume-unchanged \
+    --no-skip-worktree \
+    "pilot_v1/state/worker_autopilot_status.json" \
+    "pilot_v1/state/worker_autopilot_live.txt" \
+    "pilot_v1/state/worker_autopilot_events.log" \
+    "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" \
+    "pilot_v1/state/worker_autopilot_git_sync_last_error.txt" \
+    "pilot_v1/state/cockpit_hard_reset_request.json" 2>/dev/null || true
+
+  git -C "${REPO_ROOT}" add -A pilot_v1/state || true
   git -C "${REPO_ROOT}" add pilot_v1/results/*.result.json 2>/dev/null || true
 
   if ! git -C "${REPO_ROOT}" diff --cached --quiet; then
