@@ -1,21 +1,22 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T17:23:38Z
-updated_local: 2026-04-23T13:23:38-04:00
+updated_utc: 2026-04-23T17:23:39Z
+updated_local: 2026-04-23T13:23:39-04:00
 log_timezone: America/New_York
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
 last_task_processed: MTASK-0075
 poll_seconds: 60
-note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0075_restore_customide_backends.sh.
+note: Task failed: executor script non-zero exit (MTASK-0075).
 sync_gate_3x60: drift
 git_branch: main
-git_local_head: 590cb8c
-git_origin_head: 590cb8c
+git_local_head: 701e52c
+git_origin_head: 701e52c
 git_heads_match: yes
 git_sync_last_error: none
 
 Recent Events (latest 20, newest first):
+2026-04-23T13:23:39-04:00 | mode=running | last_task=MTASK-0075 | note=Task failed: executor script non-zero exit (MTASK-0075).
 2026-04-23T13:23:38-04:00 | mode=running | last_task=MTASK-0075 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0075_restore_customide_backends.sh.
 2026-04-23T13:22:37-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=87, eligible=0, mismatched=0.
 2026-04-23T13:21:36-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=87, eligible=0, mismatched=0.
@@ -35,4 +36,3 @@ Recent Events (latest 20, newest first):
 2026-04-23T13:07:29-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=87, eligible=0, mismatched=0.
 2026-04-23T13:06:28-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=87, eligible=0, mismatched=0.
 2026-04-23T13:05:28-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=87, eligible=0, mismatched=0.
-2026-04-23T13:04:27-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=87, eligible=0, mismatched=0.

@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0075",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0075\nobjective=restore customide backends and verify health endpoints\nAlready up to date.\nbackend_pid=252978\nfrontend_pid=252979\nbackend_url=http://127.0.0.1:5555\nfrontend_url=http://127.0.0.1:5570\nStop with: kill 252978 252979\nbackend_stack_start=passed\nbackend_health=failed",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\ncurl: (7) Failed to connect to 127.0.0.1 port 5555 after 0 ms: Couldn't connect to server\ncurl: (7) Failed to connect to 127.0.0.1 port 5555 after 0 ms: Couldn't connect to server\ncurl: (7) Failed to connect to 127.0.0.1 port 5555 after 0 ms: Couldn't connect to server",
+  "timestamp_utc": "2026-04-23T17:23:39Z"
+}
