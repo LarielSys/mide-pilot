@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0074",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0074\nobjective=cockpit panes for autopilot windows, token counters, ollama-first status\ncost_policy=keep_costs_down_ollama_local_first\nAlready up to date.\ncockpit_layout=passed\nautopilot_panes=passed\ntoken_counters_panel=passed\nollama_cost_mode=passed\ntimestamp_utc=2026-04-23T16:55:19Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nTo https://github.com/LarielSys/mide-pilot.git\n   6735e1b..fade3dd  main -> main\n/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/exec_mtask_0074_cockpit_autopilot_token_panels.sh: line 735: EOF: command not found",
+  "timestamp_utc": "2026-04-23T16:55:20Z"
+}
