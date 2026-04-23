@@ -13,10 +13,14 @@ HEARTBEAT_FILE="${STATE_DIR}/worker_autopilot_heartbeat_epoch.txt"
 LIVE_STATUS_FILE="${STATE_DIR}/worker_autopilot_live.txt"
 EVENT_LOG_FILE="${STATE_DIR}/worker_autopilot_events.log"
 SYNC_ERROR_FILE="${STATE_DIR}/worker_autopilot_git_sync_last_error.txt"
+STACK_HEALTH_FILE="${STATE_DIR}/customide_stack_health.json"
 LAST_PUSHED_SIGNATURE_FILE="${RUNTIME_DIR}/worker_autopilot_last_pushed_signature.txt"
 LAST_PUSHED_EPOCH_FILE="${RUNTIME_DIR}/worker_autopilot_last_pushed_epoch.txt"
+LAST_STACK_STATE_FILE="${RUNTIME_DIR}/customide_stack_last_state.txt"
 POLL_SECONDS="${POLL_SECONDS:-60}"
 HEARTBEAT_PUSH_MAX_AGE_SECONDS="${HEARTBEAT_PUSH_MAX_AGE_SECONDS:-90}"
+CUSTOMIDE_BACKEND_HEALTH_URL="${CUSTOMIDE_BACKEND_HEALTH_URL:-http://127.0.0.1:5555/health}"
+CUSTOMIDE_FRONTEND_HEALTH_URL="${CUSTOMIDE_FRONTEND_HEALTH_URL:-http://127.0.0.1:5570}"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
 WORKER_LOG_TZ="${WORKER_LOG_TZ:-America/New_York}"
@@ -178,10 +182,32 @@ write_status() {
   local last_task="$2"
   local note="$3"
   local ts ts_local gate_state sig git_branch git_local_head git_origin_head git_heads_match
+  local backend_state frontend_state stack_state last_stack_state
   sanitize_event_log
   ts="$(now_utc)"
   ts_local="$(now_local_ts)"
   gate_state="$(sync_gate_3x60_state)"
+
+  if curl -fsS --max-time 2 "${CUSTOMIDE_BACKEND_HEALTH_URL}" >/dev/null 2>&1; then
+    backend_state="up"
+  else
+    backend_state="down"
+  fi
+
+  if curl -fsS --max-time 2 "${CUSTOMIDE_FRONTEND_HEALTH_URL}" >/dev/null 2>&1; then
+    frontend_state="up"
+  else
+    frontend_state="down"
+  fi
+
+  if [[ "${backend_state}" == "up" && "${frontend_state}" == "up" ]]; then
+    stack_state="healthy"
+  elif [[ "${backend_state}" == "down" && "${frontend_state}" == "down" ]]; then
+    stack_state="down"
+  else
+    stack_state="degraded"
+  fi
+
   sig="$(status_signature "${mode}" "${last_task}" "${note}")"
 
   git_branch="$(git -C "${REPO_ROOT}" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")"
@@ -194,14 +220,21 @@ write_status() {
   fi
 
   CURRENT_STATUS_SIGNATURE="${sig}"
+
+  last_stack_state="$(cat "${LAST_STACK_STATE_FILE}" 2>/dev/null || true)"
+  if [[ "${stack_state}" != "${last_stack_state}" ]]; then
+    printf "%s | mode=%s | last_task=%s | note=CustomIDE stack state changed: %s (backend=%s frontend=%s)\n" "${ts_local}" "${mode}" "${last_task}" "${stack_state}" "${backend_state}" "${frontend_state}" >> "${EVENT_LOG_FILE}"
+    printf "%s\n" "${stack_state}" > "${LAST_STACK_STATE_FILE}"
+  fi
+
   printf "%s | mode=%s | last_task=%s | note=%s\n" "${ts_local}" "${mode}" "${last_task}" "${note}" >> "${EVENT_LOG_FILE}"
 
-  python3 - "${STATUS_FILE}" "${WORKER_NAME}" "${WORKER_ID}" "${mode}" "${ts}" "${ts_local}" "${WORKER_LOG_TZ}" "${last_task}" "${POLL_SECONDS}" "${note}" <<'PY'
+  python3 - "${STATUS_FILE}" "${WORKER_NAME}" "${WORKER_ID}" "${mode}" "${ts}" "${ts_local}" "${WORKER_LOG_TZ}" "${last_task}" "${POLL_SECONDS}" "${note}" "${backend_state}" "${frontend_state}" "${stack_state}" <<'PY'
 import json
 import pathlib
 import sys
 
-status_file, worker_name, worker_id, mode, ts_utc, ts_local, tz_name, last_task, poll_seconds, note = sys.argv[1:11]
+status_file, worker_name, worker_id, mode, ts_utc, ts_local, tz_name, last_task, poll_seconds, note, backend_state, frontend_state, stack_state = sys.argv[1:14]
 payload = {
     "worker_name": worker_name,
     "worker_id": worker_id,
@@ -212,9 +245,30 @@ payload = {
     "last_task_processed": last_task,
     "poll_seconds": int(poll_seconds),
     "note": note,
+    "customide_backend_state": backend_state,
+    "customide_frontend_state": frontend_state,
+    "customide_stack_state": stack_state,
 }
 pathlib.Path(status_file).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 PY
+
+    python3 - "${STACK_HEALTH_FILE}" "${ts}" "${ts_local}" "${backend_state}" "${frontend_state}" "${stack_state}" "${CUSTOMIDE_BACKEND_HEALTH_URL}" "${CUSTOMIDE_FRONTEND_HEALTH_URL}" <<'PY'
+  import json
+  import pathlib
+  import sys
+
+  health_file, ts_utc, ts_local, backend_state, frontend_state, stack_state, backend_url, frontend_url = sys.argv[1:9]
+  payload = {
+    "timestamp_utc": ts_utc,
+    "timestamp_local": ts_local,
+    "backend_url": backend_url,
+    "frontend_url": frontend_url,
+    "backend_state": backend_state,
+    "frontend_state": frontend_state,
+    "stack_state": stack_state,
+  }
+  pathlib.Path(health_file).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+  PY
 
   {
     echo "Autopilot Live Status"
@@ -232,6 +286,11 @@ PY
     echo "git_local_head: ${git_local_head}"
     echo "git_origin_head: ${git_origin_head}"
     echo "git_heads_match: ${git_heads_match}"
+    echo "customide_backend_state: ${backend_state}"
+    echo "customide_frontend_state: ${frontend_state}"
+    echo "customide_stack_state: ${stack_state}"
+    echo "customide_backend_url: ${CUSTOMIDE_BACKEND_HEALTH_URL}"
+    echo "customide_frontend_url: ${CUSTOMIDE_FRONTEND_HEALTH_URL}"
     if [[ -f "${SYNC_ERROR_FILE}" ]]; then
       echo "git_sync_last_error: $(head -n 1 "${SYNC_ERROR_FILE}" 2>/dev/null || true)"
     else
@@ -311,6 +370,7 @@ git_commit_and_push() {
     "pilot_v1/state/worker_autopilot_events.log" \
     "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" \
     "pilot_v1/state/worker_autopilot_git_sync_last_error.txt" \
+    "pilot_v1/state/customide_stack_health.json" \
     "pilot_v1/state/cockpit_hard_reset_request.json" 2>/dev/null || true
 
   git -C "${REPO_ROOT}" add -A pilot_v1/state || true
