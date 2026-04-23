@@ -4,6 +4,6 @@
   "execution_status": "completed",
   "summary": "Executor script completed successfully.",
   "stdout_excerpt": "task=MTASK-0061\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nAlready up to date.\nbackend_status_bundle=passed\nphase23_status_bundle=passed\ntimestamp_utc=2026-04-23T05:09:54Z",
-  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nTo https://github.com/LarielSys/mide-pilot.git\n   a8f90bf..0b3e69a  main -> main",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nTo https://github.com/LarielSys/mide-pilot.git\n ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 0b3e69a31a4d79f602e473b572632c6cf106114e but expected a8f90bfe423ae2acf29dfda52a8c7e09abef3611)\nerror: failed to push some refs to 'https://github.com/LarielSys/mide-pilot.git'",
   "timestamp_utc": "2026-04-23T05:09:54Z"
 }
