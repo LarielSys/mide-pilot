@@ -1,9 +1,9 @@
 {
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
-  "mode": "running",
+  "mode": "idle",
   "last_run_utc": "2026-04-23T04:53:40Z",
-  "last_task_processed": "MTASK-0058",
+  "last_task_processed": "",
   "poll_seconds": 60,
-  "note": "Task completed successfully."
+  "note": "Autopilot one-shot cycle finished. approved=68, eligible=1, mismatched=0."
 }
