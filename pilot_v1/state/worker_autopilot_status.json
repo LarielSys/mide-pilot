@@ -1,11 +1,11 @@
 {
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
-  "mode": "running",
-  "last_run_utc": "2026-04-23T17:37:51Z",
-  "last_run_local": "2026-04-23T13:37:51-04:00",
+  "mode": "idle",
+  "last_run_utc": "2026-04-23T17:38:52Z",
+  "last_run_local": "2026-04-23T13:38:52-04:00",
   "log_timezone": "America/New_York",
-  "last_task_processed": "MTASK-0077",
+  "last_task_processed": "",
   "poll_seconds": 60,
-  "note": "Task failed: missing executor_script (MTASK-0077)."
+  "note": "No assigned mtasks found; sleeping until next poll. approved=90, eligible=0, mismatched=0."
 }
