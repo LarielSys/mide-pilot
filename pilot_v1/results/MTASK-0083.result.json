@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0083",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "Already up to date.\nhard_reset_requested=true\nhard_reset_nonce=20260423T182927Z-20187\nhard_reset_scope=customide_frontend\nhard_reset_state_file=pilot_v1/state/cockpit_hard_reset_request.json\ntimestamp_utc=2026-04-23T18:29:27Z",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD",
+  "timestamp_utc": "2026-04-23T18:29:28Z"
+}
