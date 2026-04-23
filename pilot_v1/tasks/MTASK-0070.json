@@ -1,0 +1,65 @@
+{
+  "task_id": "MTASK-0070",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0070_restart_autopilot_log_runtime.sh",
+  "objective": "Phase 32: restart worker autopilot runtime so East Coast timestamp logic is active in live logging and status output.",
+  "moss_labels": [
+    "moss/customide/phase32",
+    "moss/worker",
+    "moss/operations",
+    "moss/observability"
+  ],
+  "moss_scope_hash": "customide-phase32-restart-autopilot-log-runtime-0070",
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": false,
+  "admin_override_rule": "Must execute only on worker whose required_worker_id matches.",
+  "allowed_paths": [
+    "~/mide-pilot/pilot_v1/scripts",
+    "~/mide-pilot/pilot_v1/state",
+    "~/mide-pilot/pilot_v1/tasks",
+    "~/mide-pilot/pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "/etc",
+    "/var",
+    "/home/*/.ssh",
+    "~/mide-pilot/architecture"
+  ],
+  "required_validation": [
+    "worker service restarted or fallback nohup started",
+    "events log top line uses timezone offset (not Z)",
+    "status json contains last_run_local",
+    "status json log_timezone equals America/New_York",
+    "live status contains updated_local and log_timezone",
+    "stdout_excerpt includes autopilot_runtime_restarted=passed",
+    "stdout_excerpt includes phase32_log_runtime_restart=passed",
+    "Result file written with timestamp"
+  ],
+  "dependencies": [
+    "MTASK-0069"
+  ],
+  "timeout_seconds": 1500,
+  "status": "approved_to_execute",
+  "execution_instructions": [
+    "Run on ubuntu-worker-01 via autopilot",
+    "Execute only executor_script",
+    "Capture stdout/stderr in result JSON",
+    "After Ubuntu result lands, run Windows mirror checker: powershell -ExecutionPolicy Bypass -File pilot_v1/scripts/check_mtask_parity.ps1 -TaskId MTASK-0070",
+    "Commit message format: worker: autopilot result MTASK-0070"
+  ],
+  "result_schema": {
+    "task_id": "MTASK-0070",
+    "worker_id": "ubuntu-worker-01",
+    "execution_status": "completed | failed",
+    "summary": "<short result summary>",
+    "stdout_excerpt": "<captured stdout>",
+    "stderr_excerpt": "<captured stderr>",
+    "timestamp_utc": "<ISO8601>"
+  },
+  "created_at_utc": "2026-04-23T00:00:00Z"
+}
