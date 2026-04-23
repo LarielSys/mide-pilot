@@ -1,13 +1,14 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T03:44:01Z
+updated_utc: 2026-04-23T03:45:01Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
-mode: idle
+mode: running
 last_task_processed: 
 poll_seconds: 60
-note: No assigned mtasks found; sleeping until next poll. approved=61, eligible=0, mismatched=0.
+note: Autopilot started.
 
-Recent Events (latest 20):
+Recent Events (latest 20, newest first):
+2026-04-23T03:45:01Z | mode=running | last_task= | note=Autopilot started.
 synthetic-new-top
 oldest-line
 middle-line
