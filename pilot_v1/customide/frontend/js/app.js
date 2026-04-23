@@ -7,9 +7,12 @@
   const btnRefresh = document.getElementById("btnRefreshStatus");
   const btnLocal = document.getElementById("btnRunLocal");
   const btnRemote = document.getElementById("btnRunRemote");
+  const btnAskLocalLLM = document.getElementById("btnAskLocalLLM");
+  const btnAskRemoteLLM = document.getElementById("btnAskRemoteLLM");
 
   const localInput = document.getElementById("localCommand");
   const remoteInput = document.getElementById("remoteCommand");
+  const sharedPrompt = document.getElementById("sharedPrompt");
 
   const cfg = window.CUSTOMIDE_CONFIG || {
     backendBaseUrl: "http://127.0.0.1:5555",
@@ -23,6 +26,8 @@
     btnLocal.disabled = isBusy;
     btnRemote.disabled = isBusy;
     btnRefresh.disabled = isBusy;
+    btnAskLocalLLM.disabled = isBusy;
+    btnAskRemoteLLM.disabled = isBusy;
     if (isBusy) {
       statusEl.textContent = label || "Running...";
     }
@@ -38,6 +43,7 @@
       "- Backend: " + (backend.status || "unknown"),
       "- Local execute: " + ((backend.execute_routes || {}).local || "missing"),
       "- Remote execute: " + ((backend.execute_routes || {}).remote || "missing"),
+      "- Shared LLM: /api/llm/chat",
       "- Remote URL available: " + (remote.remote_url_available ? "yes" : "no"),
       "- Remote URL: " + remoteUrl
     ].join("\n");
@@ -122,6 +128,26 @@
     renderJson(data);
   }
 
+  async function askSharedLlm(source) {
+    const prompt = sharedPrompt.value.trim();
+    if (!prompt) {
+      throw new Error("Shared prompt is empty");
+    }
+
+    const res = await fetch(cfg.backendBaseUrl + "/api/llm/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt, source }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.detail || "Shared LLM call failed");
+    }
+
+    renderJson(data);
+  }
+
   btnRefresh.addEventListener("click", async () => {
     try {
       setBusy(true, "Refreshing status...");
@@ -153,6 +179,30 @@
       await checkBackend();
     } catch (err) {
       outputEl.textContent = "remote run failed: " + err;
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  btnAskLocalLLM.addEventListener("click", async () => {
+    try {
+      setBusy(true, "Asking shared LLM from local IDE...");
+      await askSharedLlm("local-ide");
+      await checkBackend();
+    } catch (err) {
+      outputEl.textContent = "shared llm local failed: " + err;
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  btnAskRemoteLLM.addEventListener("click", async () => {
+    try {
+      setBusy(true, "Asking shared LLM from remote IDE...");
+      await askSharedLlm("remote-ide");
+      await checkBackend();
+    } catch (err) {
+      outputEl.textContent = "shared llm remote failed: " + err;
     } finally {
       setBusy(false);
     }

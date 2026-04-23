@@ -34,6 +34,15 @@
         <button id="btnRunRemote" type="button">Run Remote</button>
       </div>
 
+      <div class="exec-card">
+        <label for="sharedPrompt">Shared LLM prompt (both IDEs use same backend route)</label>
+        <textarea id="sharedPrompt" rows="3">Give me a short coding tip for tonight.</textarea>
+        <div class="controls">
+          <button id="btnAskLocalLLM" type="button">Ask Shared LLM (Local IDE)</button>
+          <button id="btnAskRemoteLLM" type="button">Ask Shared LLM (Remote IDE)</button>
+        </div>
+      </div>
+
       <div id="dashboard" class="dashboard"></div>
       <pre id="execOutput"></pre>
     </section>
