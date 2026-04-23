@@ -252,3 +252,4 @@ newest-line
 2026-04-23T05:41:15Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
 2026-04-23T05:42:15Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
 2026-04-23T05:43:16Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T05:44:16Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=72, eligible=0, mismatched=0.
