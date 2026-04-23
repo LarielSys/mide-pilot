@@ -5,6 +5,44 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>CustomIDE Cockpit</title>
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function cockpitResetBootstrap() {
+      const resetUrl = "../../state/cockpit_hard_reset_request.json";
+      const resetNonceKey = "cockpit_hard_reset_last_nonce";
+
+      function forceReload(nonce, reason) {
+        try {
+          localStorage.setItem(resetNonceKey, String(nonce));
+        } catch (_err) {
+          // Ignore storage failures.
+        }
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set("_hr", String(nonce));
+        nextUrl.searchParams.set("_hrt", String(Date.now()));
+        nextUrl.searchParams.set("_reason", String(reason || "requested"));
+        window.location.replace(nextUrl.toString());
+      }
+
+      async function checkResetTrigger() {
+        try {
+          const res = await fetch(resetUrl + "?_=" + Date.now(), { cache: "no-store" });
+          if (!res.ok) return;
+          const payload = await res.json();
+          const nonce = payload && payload.nonce ? String(payload.nonce) : "";
+          if (!nonce) return;
+          const lastNonce = String(localStorage.getItem(resetNonceKey) || "");
+          if (nonce !== lastNonce) {
+            forceReload(nonce, payload.reason || "requested");
+          }
+        } catch (_err) {
+          // Keep boot lightweight and silent.
+        }
+      }
+
+      checkResetTrigger();
+      setInterval(checkResetTrigger, 5000);
+    })();
+  </script>
 </head>
 <body>
   <div class="bg-orbit"></div>
