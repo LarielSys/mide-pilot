@@ -186,7 +186,13 @@ commit_and_push_status_heartbeat() {
 }
 
 git_sync() {
-  git -C "${REPO_ROOT}" pull --ff-only origin main >/dev/null
+  local attempt
+  for attempt in 1 2 3; do
+    if git -C "${REPO_ROOT}" fetch origin main >/dev/null 2>&1 &&        git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>&1 &&        git -C "${REPO_ROOT}" merge --ff-only FETCH_HEAD >/dev/null 2>&1; then
+      return 0
+    fi
+  done
+  return 1
 }
 
 next_task_file() {
