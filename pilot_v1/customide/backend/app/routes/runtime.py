@@ -53,3 +53,11 @@ def get_sync_health() -> dict:
         "sync_error": sync_error,
         "sync_error_file": str(sync_error_file),
     }
+
+
+@router.get("/bundle")
+def get_status_bundle() -> dict:
+    return {
+        "runtime": get_runtime_status(),
+        "sync_health": get_sync_health(),
+    }
