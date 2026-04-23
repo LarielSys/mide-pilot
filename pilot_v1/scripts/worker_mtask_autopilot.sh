@@ -301,7 +301,7 @@ PY
 
 git_commit_and_push() {
   local commit_msg="$1"
-  git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
+  git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" "pilot_v1/state/worker_autopilot_git_sync_last_error.txt" || true
   git -C "${REPO_ROOT}" add pilot_v1/results/*.result.json 2>/dev/null || true
 
   if ! git -C "${REPO_ROOT}" diff --cached --quiet; then
@@ -352,10 +352,15 @@ commit_and_push_status_heartbeat() {
 
 git_sync() {
   local attempt err sync_ok
-  err="${SYNC_ERROR_FILE}.tmp"
+  err="$(mktemp -p "${RUNTIME_DIR}" worker_git_sync_err.XXXXXX)"
 
   for attempt in 1 2 3; do
     sync_ok="false"
+
+    # Clear stale in-progress git operations that block fetch/rebase flows.
+    git -C "${REPO_ROOT}" rebase --abort >/dev/null 2>>"${err}" || true
+    git -C "${REPO_ROOT}" merge --abort >/dev/null 2>>"${err}" || true
+    git -C "${REPO_ROOT}" cherry-pick --abort >/dev/null 2>>"${err}" || true
 
     if git -C "${REPO_ROOT}" fetch origin main >/dev/null 2>"${err}" && \
        git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>>"${err}" && \
@@ -373,7 +378,10 @@ git_sync() {
   done
 
   if [[ -f "${err}" ]]; then
-    head -n 1 "${err}" > "${SYNC_ERROR_FILE}" || true
+    {
+      echo "$(now_utc) | git_sync_failed"
+      head -n 20 "${err}"
+    } > "${SYNC_ERROR_FILE}" || true
     rm -f "${err}"
   fi
   return 1
