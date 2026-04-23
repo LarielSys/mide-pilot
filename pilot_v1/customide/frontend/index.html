@@ -13,6 +13,7 @@
     <div class="status" id="backendStatus">Backend: checking...</div>
     <div class="status" id="llmHealthBadge">LLM: checking...</div>
     <div class="status" id="syncHealthBadge">Sync: checking...</div>
+    <div class="status" id="lastRefresh">Last refresh: --</div>
   </header>
 
   <main class="layout">
@@ -48,6 +49,8 @@
       <div id="dashboard" class="dashboard"></div>
       <pre id="syncDebugPanel">Sync debug: waiting...</pre>
       <pre id="syncCadencePanel">Sync cadence: waiting...</pre>
+      <pre id="gitPanel">Git: waiting...</pre>
+      <pre id="workerLogPanel">Worker log: waiting...</pre>
       <pre id="execOutput"></pre>
     </section>
 

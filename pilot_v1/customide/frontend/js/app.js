@@ -6,6 +6,9 @@
   const llmBadgeEl = document.getElementById("llmHealthBadge");
   const syncBadgeEl = document.getElementById("syncHealthBadge");
   const syncDebugPanelEl = document.getElementById("syncDebugPanel");
+  const gitPanelEl = document.getElementById("gitPanel");
+  const workerLogPanelEl = document.getElementById("workerLogPanel");
+  const lastRefreshEl = document.getElementById("lastRefresh");
   let lastGateStatus = "unknown";
   const syncCadencePanelEl = document.getElementById("syncCadencePanel");
 
@@ -30,11 +33,41 @@
     if (syncDebugPanelEl) {
       const syncError = (data && data.sync_error) || "unknown";
       const syncFile = (data && data.sync_error_file) || "n/a";
-      syncDebugPanelEl.textContent = "Sync debug\n- sync_error: " + syncError + "\n- sync_error_file: " + syncFile;
+      const source = (data && data.sync_error_source) || "n/a";
+      syncDebugPanelEl.textContent = "Sync debug\n- sync_error: " + syncError + "\n- sync_error_file: " + syncFile + "\n- source: " + source;
     }
     if (!syncBadgeEl) return;
     const value = (data && data.sync_error) || "unknown";
     syncBadgeEl.textContent = "Sync: " + value + " | gate: " + lastGateStatus;
+  }
+
+  function renderGitPanel(data) {
+    if (!gitPanelEl) return;
+    gitPanelEl.textContent = [
+      "Git visibility",
+      "- branch: " + ((data && data.branch) || "unknown"),
+      "- local_head: " + ((data && data.local_head_short) || "unknown"),
+      "- origin_head: " + ((data && data.origin_head_short) || "unknown"),
+      "- heads_match: " + ((data && data.heads_match) ? "yes" : "no"),
+      "- working_tree: " + ((data && data.working_tree) || "unknown"),
+      "- reported_at_utc: " + ((data && data.reported_at_utc) || "n/a")
+    ].join("\n");
+  }
+
+  function renderWorkerLog(data) {
+    if (!workerLogPanelEl) return;
+    const events = (data && data.recent_events) ? data.recent_events : [];
+    workerLogPanelEl.textContent = [
+      "Worker log (real-time)",
+      "- mode: " + ((data && data.mode) || "unknown"),
+      "- last_run_local: " + ((data && data.last_run_local) || "n/a"),
+      "- log_timezone: " + ((data && data.log_timezone) || "n/a"),
+      "- stale_seconds: " + ((data && typeof data.stale_seconds === "number") ? data.stale_seconds : "n/a"),
+      "- status_source: " + ((data && data.status_source) || "n/a"),
+      "- events_source: " + ((data && data.events_source) || "n/a"),
+      "",
+      events.length ? events.join("\n") : "(no events)"
+    ].join("\n");
   }
 
   async function fetchStatusBundle() {
@@ -58,7 +91,12 @@
       remoteFrame.src = bundle.runtime.worker.remote_url;
     }
     if (bundle && bundle.sync_health) renderSyncBadge(bundle.sync_health);
+    if (bundle && bundle.sync_health) renderGitPanel(bundle.sync_health);
     if (bundle && bundle.sync_cadence) renderSyncCadence(bundle.sync_cadence);
+    if (bundle && bundle.worker_log) renderWorkerLog(bundle.worker_log);
+    if (lastRefreshEl) {
+      lastRefreshEl.textContent = "Last refresh: " + new Date().toLocaleTimeString();
+    }
     return bundle;
   }
 
@@ -83,6 +121,7 @@
   const cfg = window.CUSTOMIDE_CONFIG || {
     backendBaseUrl: "http://127.0.0.1:5555",
   };
+  const refreshIntervalMs = Number(cfg.refreshIntervalMs || 5000);
 
   function renderJson(data) {
     outputEl.textContent = JSON.stringify(data, null, 2);
@@ -294,6 +333,14 @@
     try {
       await refreshFromBundle();
       await refreshLlmHealth();
+      setInterval(async () => {
+        if (document.hidden) return;
+        try {
+          await refreshFromBundle();
+        } catch (_err) {
+          // Keep UI usable if periodic refresh fails temporarily.
+        }
+      }, refreshIntervalMs);
     } catch (err) {
       outputEl.textContent = "status bootstrap failed: " + err;
     }
