@@ -69,7 +69,22 @@ write_status() {
   local ts
   ts="$(now_utc)"
 
-  printf "%s | mode=%s | last_task=%s | note=%s\n" "${ts}" "${mode}" "${last_task}" "${note}" >>"${EVENT_LOG_FILE}"
+  local event_line tmp_events
+  event_line="${ts} | mode=${mode} | last_task=${last_task} | note=${note}"
+  tmp_events="${EVENT_LOG_FILE}.tmp"
+
+  # Keep events in newest-first order while preserving full history.
+  if [[ -f "${EVENT_LOG_FILE}" ]]; then
+    {
+      printf "%s
+" "${event_line}"
+      cat "${EVENT_LOG_FILE}"
+    } >"${tmp_events}"
+    mv "${tmp_events}" "${EVENT_LOG_FILE}"
+  else
+    printf "%s
+" "${event_line}" >"${EVENT_LOG_FILE}"
+  fi
 
   cat >"${STATUS_FILE}" <<EOF
 {
@@ -93,8 +108,8 @@ EOF
     echo "poll_seconds: ${POLL_SECONDS}"
     echo "note: ${note}"
     echo
-    echo "Recent Events (latest 20):"
-    tail -n 20 "${EVENT_LOG_FILE}" 2>/dev/null || true
+    echo "Recent Events (latest 20, newest first):"
+    head -n 20 "${EVENT_LOG_FILE}" 2>/dev/null || true
   } >"${LIVE_STATUS_FILE}"
 }
 
