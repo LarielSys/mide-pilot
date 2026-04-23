@@ -199,13 +199,14 @@ def get_sync_cadence() -> dict:
         }
 
     stamps = []
-    for line in events_text.splitlines():
+    for line in reversed(events_text.splitlines()):
         parsed = _parse_event_timestamp(line)
         if parsed is None:
             continue
         stamps.append(parsed)
         if len(stamps) >= 4:
             break
+    stamps.reverse()  # back to chronological order for delta calc
 
     deltas = [int((stamps[i] - stamps[i + 1]).total_seconds()) for i in range(len(stamps) - 1)]
     gate = len(deltas) >= 3 and all(55 <= d <= 65 for d in deltas[:3])
@@ -240,7 +241,7 @@ def get_worker_log() -> dict:
 
     recent_events = []
     if events_text:
-        recent_events = [line for line in events_text.splitlines() if line.strip()][:40]
+        recent_events = [line for line in events_text.splitlines() if line.strip()][-40:]
 
     stale_seconds = None
     last_run_utc = status.get("last_run_utc")

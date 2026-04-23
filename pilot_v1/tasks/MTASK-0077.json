@@ -1,0 +1,10 @@
+{
+  "task_id": "MTASK-0077",
+  "title": "Restart customide backend to pick up events fix",
+  "objective": "Kill existing backend (uvicorn :5555), pull latest code, restart backend so recent_events now returns last 40 lines instead of first 40.",
+  "assigned_to": "ubuntu-worker-01",
+  "executor": "pilot_v1/scripts/exec_mtask_0077_restart_customide_backend.sh",
+  "status": "approved_to_execute",
+  "priority": "high",
+  "created_utc": "2026-04-23T17:40:00Z"
+}

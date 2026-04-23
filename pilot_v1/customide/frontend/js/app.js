@@ -107,7 +107,7 @@
     }
 
     const events = eventsRaw
-      ? eventsRaw.split(/\r?\n/).map(s => s.trim()).filter(Boolean).slice(0, 40)
+      ? eventsRaw.split(/\r?\n/).map(s => s.trim()).filter(Boolean).slice(-40)
       : [];
 
     const rows = parseTokenRows(tokenRaw);
@@ -115,10 +115,12 @@
     const lastRunMs = status.last_run_utc ? Date.parse(String(status.last_run_utc).replace("Z", "+00:00")) : NaN;
     const staleSeconds = Number.isFinite(lastRunMs) ? Math.max(0, Math.floor((nowMs - lastRunMs) / 1000)) : null;
 
+    // Compute cadence deltas from the 4 most recent events (most-recent first)
+    const recentDesc = events.slice().reverse();
     const deltas = [];
-    for (let i = 0; i < Math.min(events.length - 1, 3); i += 1) {
-      const a = parseEventTimestamp(events[i]);
-      const b = parseEventTimestamp(events[i + 1]);
+    for (let i = 0; i < Math.min(recentDesc.length - 1, 3); i += 1) {
+      const a = parseEventTimestamp(recentDesc[i]);
+      const b = parseEventTimestamp(recentDesc[i + 1]);
       if (Number.isFinite(a) && Number.isFinite(b)) {
         deltas.push(Math.round((a - b) / 1000));
       }
