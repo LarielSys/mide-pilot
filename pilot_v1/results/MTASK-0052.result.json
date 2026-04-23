@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0052",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0052\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01\nAlready up to date.\nerror=live_view_not_newest_first",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD",
+  "timestamp_utc": "2026-04-23T03:33:54Z"
+}
