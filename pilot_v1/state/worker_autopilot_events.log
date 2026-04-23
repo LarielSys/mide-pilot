@@ -1,3 +1,4 @@
+2026-04-23T12:50:05Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=77, eligible=0, mismatched=0.
 2026-04-23T12:49:05Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
 2026-04-23T12:48:05Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
 2026-04-23T12:47:04Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
