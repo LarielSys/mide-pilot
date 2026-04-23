@@ -1,15 +1,13 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T03:22:46Z
+updated_utc: 2026-04-23T03:22:47Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
-last_task_processed: 
+last_task_processed: MTASK-0051-RETRY1
 poll_seconds: 60
-note: Autopilot started.
+note: Task completed successfully.
 
 Recent Events (latest 20):
-2026-04-23T02:51:51Z | mode=running | last_task=MTASK-0049 | note=Task completed successfully.
-2026-04-23T02:51:52Z | mode=running | last_task=MTASK-0050 | note=Task completed successfully.
 2026-04-23T02:54:53Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=56, eligible=0, mismatched=0.
 2026-04-23T02:57:54Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=56, eligible=0, mismatched=0.
 2026-04-23T03:00:55Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=56, eligible=0, mismatched=0.
@@ -28,3 +26,5 @@ Recent Events (latest 20):
 2026-04-23T03:22:42Z | mode=idle | last_task=MTASK-0051-RETRY1 | note=Forced task cycle finished.
 2026-04-23T03:22:46Z | mode=running | last_task= | note=Autopilot started.
 2026-04-23T03:22:46Z | mode=running | last_task= | note=Autopilot started.
+2026-04-23T03:22:46Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T03:22:47Z | mode=running | last_task=MTASK-0051-RETRY1 | note=Task completed successfully.
