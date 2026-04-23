@@ -20,8 +20,18 @@
 
       <div class="controls">
         <button id="btnRefreshStatus" type="button">Refresh Status</button>
-        <button id="btnRunLocal" type="button">Run Local Echo</button>
-        <button id="btnRunRemote" type="button">Run Remote Echo</button>
+      </div>
+
+      <div class="exec-card">
+        <label for="localCommand">Local command</label>
+        <input id="localCommand" type="text" value="echo local-ok" />
+        <button id="btnRunLocal" type="button">Run Local</button>
+      </div>
+
+      <div class="exec-card">
+        <label for="remoteCommand">Remote command</label>
+        <input id="remoteCommand" type="text" value="echo remote-ok" />
+        <button id="btnRunRemote" type="button">Run Remote</button>
       </div>
 
       <div id="dashboard" class="dashboard"></div>
