@@ -12,6 +12,7 @@ STATUS_FILE="${STATE_DIR}/worker_autopilot_status.json"
 HEARTBEAT_FILE="${STATE_DIR}/worker_autopilot_heartbeat_epoch.txt"
 LIVE_STATUS_FILE="${STATE_DIR}/worker_autopilot_live.txt"
 EVENT_LOG_FILE="${STATE_DIR}/worker_autopilot_events.log"
+SYNC_ERROR_FILE="${STATE_DIR}/worker_autopilot_git_sync_last_error.txt"
 POLL_SECONDS="${POLL_SECONDS:-60}"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
@@ -107,6 +108,11 @@ EOF
     echo "last_task_processed: ${last_task}"
     echo "poll_seconds: ${POLL_SECONDS}"
     echo "note: ${note}"
+    if [[ -f "${SYNC_ERROR_FILE}" ]]; then
+      echo "git_sync_last_error: $(head -n 1 "${SYNC_ERROR_FILE}" 2>/dev/null || true)"
+    else
+      echo "git_sync_last_error: none"
+    fi
     echo
     echo "Recent Events (latest 20, newest first):"
     head -n 20 "${EVENT_LOG_FILE}" 2>/dev/null || true
@@ -186,12 +192,19 @@ commit_and_push_status_heartbeat() {
 }
 
 git_sync() {
-  local attempt
+  local attempt err
+  err="${SYNC_ERROR_FILE}.tmp"
   for attempt in 1 2 3; do
-    if git -C "${REPO_ROOT}" fetch origin main >/dev/null 2>&1 &&        git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>&1 &&        git -C "${REPO_ROOT}" merge --ff-only FETCH_HEAD >/dev/null 2>&1; then
+    if git -C "${REPO_ROOT}" fetch origin main >/dev/null 2>"${err}" &&        git -C "${REPO_ROOT}" checkout -q main >/dev/null 2>>"${err}" &&        git -C "${REPO_ROOT}" merge --ff-only FETCH_HEAD >/dev/null 2>>"${err}"; then
+      rm -f "${err}" "${SYNC_ERROR_FILE}"
       return 0
     fi
   done
+
+  if [[ -f "${err}" ]]; then
+    head -n 1 "${err}" >"${SYNC_ERROR_FILE}" || true
+    rm -f "${err}"
+  fi
   return 1
 }
 
