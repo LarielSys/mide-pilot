@@ -175,12 +175,21 @@ write_status() {
   local mode="$1"
   local last_task="$2"
   local note="$3"
-  local ts ts_local gate_state sig
+  local ts ts_local gate_state sig git_branch git_local_head git_origin_head git_heads_match
   sanitize_event_log
   ts="$(now_utc)"
   ts_local="$(now_local_ts)"
   gate_state="$(sync_gate_3x60_state)"
   sig="$(status_signature "${mode}" "${last_task}" "${note}")"
+
+  git_branch="$(git -C "${REPO_ROOT}" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")"
+  git_local_head="$(git -C "${REPO_ROOT}" rev-parse --short HEAD 2>/dev/null || echo "unknown")"
+  git_origin_head="$(git -C "${REPO_ROOT}" rev-parse --short origin/main 2>/dev/null || echo "unknown")"
+  if [[ -n "${git_local_head}" && -n "${git_origin_head}" && "${git_local_head}" == "${git_origin_head}" ]]; then
+    git_heads_match="yes"
+  else
+    git_heads_match="no"
+  fi
 
   CURRENT_STATUS_SIGNATURE="${sig}"
   printf "%s | mode=%s | last_task=%s | note=%s\n" "${ts_local}" "${mode}" "${last_task}" "${note}" >> "${EVENT_LOG_FILE}"
@@ -217,6 +226,10 @@ PY
     echo "poll_seconds: ${POLL_SECONDS}"
     echo "note: ${note}"
     echo "sync_gate_3x60: ${gate_state}"
+    echo "git_branch: ${git_branch}"
+    echo "git_local_head: ${git_local_head}"
+    echo "git_origin_head: ${git_origin_head}"
+    echo "git_heads_match: ${git_heads_match}"
     if [[ -f "${SYNC_ERROR_FILE}" ]]; then
       echo "git_sync_last_error: $(head -n 1 "${SYNC_ERROR_FILE}" 2>/dev/null || true)"
     else
