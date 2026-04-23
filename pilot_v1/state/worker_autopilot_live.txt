@@ -7,11 +7,12 @@ worker_id: ubuntu-worker-01
 mode: running
 last_task_processed: MTASK-0073
 poll_seconds: 60
-note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
+note: Task completed successfully (MTASK-0073).
 sync_gate_3x60: drift
 git_sync_last_error: none
 
 Recent Events (latest 20, newest first):
+2026-04-23T12:26:54-04:00 | mode=running | last_task=MTASK-0073 | note=Task completed successfully (MTASK-0073).
 2026-04-23T12:26:54-04:00 | mode=running | last_task=MTASK-0073 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0072_safe_restart_autopilot_once.sh.
 2026-04-23T12:25:53-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=84, eligible=0, mismatched=0.
 2026-04-23T12:24:37-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=84, eligible=0, mismatched=0.
@@ -31,4 +32,3 @@ Recent Events (latest 20, newest first):
 2026-04-23T12:10:16-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=84, eligible=0, mismatched=0.
 2026-04-23T12:09:16-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=84, eligible=0, mismatched=0.
 2026-04-23T12:08:11-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=84, eligible=0, mismatched=0.
-2026-04-23T12:07:10-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=84, eligible=0, mismatched=0.
