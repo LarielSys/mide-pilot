@@ -1,14 +1,13 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T03:09:58Z
+updated_utc: 2026-04-23T03:12:59Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
-mode: running
-last_task_processed: MTASK-0051
+mode: idle
+last_task_processed: 
 poll_seconds: 180
-note: Task completed successfully.
+note: No assigned mtasks found; sleeping until next poll. approved=57, eligible=0, mismatched=0.
 
 Recent Events (latest 20):
-2026-04-23T02:21:30Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=52, eligible=0, mismatched=0.
 2026-04-23T02:24:31Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=52, eligible=0, mismatched=0.
 2026-04-23T02:27:32Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=52, eligible=0, mismatched=0.
 2026-04-23T02:30:33Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=52, eligible=0, mismatched=0.
@@ -28,3 +27,4 @@ Recent Events (latest 20):
 2026-04-23T03:03:55Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=56, eligible=0, mismatched=0.
 2026-04-23T03:06:56Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=56, eligible=0, mismatched=0.
 2026-04-23T03:09:58Z | mode=running | last_task=MTASK-0051 | note=Task completed successfully.
+2026-04-23T03:12:59Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=57, eligible=0, mismatched=0.
