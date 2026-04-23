@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0070",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0070\nworker_name=ubuntu-atlas-01\nworker_id=ubuntu-worker-01",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch            main       -> FETCH_HEAD\nerror: cannot lock ref 'refs/remotes/origin/main': is at 48034ddad0e0600500b130bb9f261d8278a2cad3 but expected 86e8310548a2509dcee1b36306cfa73d7c5ff778\n ! 86e8310..48034dd  main       -> origin/main  (unable to update local ref)",
+  "timestamp_utc": "2026-04-23T14:27:06Z"
+}

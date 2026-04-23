@@ -5,7 +5,7 @@
   "last_run_utc": "2026-04-23T14:27:06Z",
   "last_run_local": "2026-04-23T10:27:06-04:00",
   "log_timezone": "America/New_York",
-  "last_task_processed": "",
+  "last_task_processed": "MTASK-0070",
   "poll_seconds": 60,
-  "note": "Autopilot started."
+  "note": "Task failed: executor script non-zero exit (MTASK-0070)."
 }
