@@ -17,6 +17,7 @@ LAST_PUSHED_SIGNATURE_FILE="${RUNTIME_DIR}/worker_autopilot_last_pushed_signatur
 POLL_SECONDS="${POLL_SECONDS:-60}"
 WORKER_ID="${WORKER_ID:-ubuntu-worker-01}"
 WORKER_NAME="${WORKER_NAME:-ubuntu-atlas-01}"
+WORKER_LOG_TZ="${WORKER_LOG_TZ:-America/New_York}"
 ADMIN_PASSWORD_SHA256="${ADMIN_PASSWORD_SHA256:-}"
 ADMIN_OVERRIDE_PASSWORD="${ADMIN_OVERRIDE_PASSWORD:-}"
 PUSH_IDLE_HEARTBEAT="${PUSH_IDLE_HEARTBEAT:-true}"
@@ -65,6 +66,9 @@ now_epoch() {
   date -u +"%s"
 }
 
+now_local_ts() {
+  TZ="${WORKER_LOG_TZ}" date +"%Y-%m-%dT%H:%M:%S%:z"
+}
 
 
 sync_gate_3x60_state() {
@@ -82,10 +86,17 @@ if not event_file.exists():
 lines = event_file.read_text(encoding="utf-8", errors="replace").splitlines()
 stamps = []
 for line in lines:
-    m = re.match(r'^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})Z', line)
-    if not m:
+    token = line.split(" | ", 1)[0].strip()
+    if not token:
         continue
-    stamps.append(datetime.datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%S"))
+    token_iso = token.replace("Z", "+00:00")
+    try:
+        parsed = datetime.datetime.fromisoformat(token_iso)
+    except ValueError:
+        continue
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=datetime.timezone.utc)
+    stamps.append(parsed.astimezone(datetime.timezone.utc))
     if len(stamps) >= 4:
         break
 
@@ -105,11 +116,12 @@ write_status() {
   local mode="$1"
   local last_task="$2"
   local note="$3"
-  local ts
+  local ts ts_local
   ts="$(now_utc)"
+  ts_local="$(now_local_ts)"
 
   local event_line
-  event_line="${ts} | mode=${mode} | last_task=${last_task} | note=${note}"
+  event_line="${ts_local} | mode=${mode} | last_task=${last_task} | note=${note}"
   CURRENT_STATUS_SIGNATURE="${WORKER_ID}|${POLL_SECONDS}|${mode}|${last_task}|${note}"
   printf "%s\n" "${event_line}" >>"${EVENT_LOG_FILE}"
 
@@ -119,6 +131,8 @@ write_status() {
   "worker_id": "${WORKER_ID}",
   "mode": "${mode}",
   "last_run_utc": "${ts}",
+  "last_run_local": "${ts_local}",
+  "log_timezone": "${WORKER_LOG_TZ}",
   "last_task_processed": "${last_task}",
   "poll_seconds": ${POLL_SECONDS},
   "note": "${note}"
@@ -128,6 +142,8 @@ EOF
   {
     echo "Autopilot Live Status"
     echo "updated_utc: ${ts}"
+    echo "updated_local: ${ts_local}"
+    echo "log_timezone: ${WORKER_LOG_TZ}"
     echo "worker_name: ${WORKER_NAME}"
     echo "worker_id: ${WORKER_ID}"
     echo "mode: ${mode}"
