@@ -1,5 +1,5 @@
 Autopilot Live Status
-updated_utc: 2026-04-23T14:01:36Z
+updated_utc: 2026-04-23T14:03:48Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: idle
@@ -8,10 +8,6 @@ poll_seconds: 60
 note: No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
 
 Recent Events (latest 20):
-2026-04-23T13:52:28Z | mode=running | last_task=MTASK-0068 | note=Task completed successfully.
-2026-04-23T13:52:56Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
-2026-04-23T13:53:29Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
-2026-04-23T13:53:57Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
 2026-04-23T13:54:30Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
 2026-04-23T13:54:58Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
 2026-04-23T13:55:31Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
@@ -28,3 +24,7 @@ Recent Events (latest 20):
 2026-04-23T14:00:35Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
 2026-04-23T14:00:43Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
 2026-04-23T14:01:36Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
+2026-04-23T14:01:43Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
+2026-04-23T14:02:48Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-23T14:02:48Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
+2026-04-23T14:03:48Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=80, eligible=0, mismatched=0.
