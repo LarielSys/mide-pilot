@@ -7,10 +7,11 @@
   let lastErrorText = "";
 
   // --- Event buffer state ---
-  let eventBuffer = [];   // { line, batch, color, ts }
-  let batchIndex = 0;
+  let eventBuffer = [];   // { line, color, ts_iso }
+  let lineIndex = 0;      // global per-line counter drives green/yellow alternation
   const seenLines = new Set();
   let userPinned = false; // true when user has scrolled up away from bottom
+  let currentDay = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
   const statusEl = document.getElementById("backendStatus");
   const llmBadgeEl = document.getElementById("llmHealthBadge");
@@ -64,59 +65,70 @@
   }
 
   function appendEventLines(newLines) {
-    const batchColor = (batchIndex % 2 === 0) ? "a" : "b";
     let anyNew = false;
     for (const line of newLines) {
       if (!line || seenLines.has(line)) continue;
       seenLines.add(line);
-      const item = { line, batch: batchIndex, color: batchColor, ts: Date.now() };
+      const color = (lineIndex % 2 === 0) ? "a" : "b";
+      const ts_iso = new Date().toISOString();
+      const item = { line, color, ts_iso };
       eventBuffer.push(item);
+      lineIndex++;
       const div = document.createElement("div");
-      div.className = "log-line log-line-" + batchColor;
+      div.className = "log-line log-line-" + color;
       div.innerHTML = escHtml(line);
       workerLogPanelEl.appendChild(div);
       anyNew = true;
     }
-    if (anyNew) {
-      batchIndex++;
-      if (!userPinned) {
-        workerLogPanelEl.scrollTop = workerLogPanelEl.scrollHeight;
-      }
+    if (anyNew && !userPinned) {
+      workerLogPanelEl.scrollTop = workerLogPanelEl.scrollHeight;
     }
   }
 
+  function todayKey() {
+    return "cockpit_events_" + new Date().toISOString().slice(0, 10);
+  }
+
   function saveSession() {
-    const today = new Date().toISOString().slice(0, 10);
-    const key = "cockpit_session_" + today;
     try {
-      localStorage.setItem(key, JSON.stringify(eventBuffer));
+      localStorage.setItem(todayKey(), JSON.stringify(eventBuffer));
     } catch (_) {}
   }
 
+  function checkMidnightReset() {
+    const day = new Date().toISOString().slice(0, 10);
+    if (day !== currentDay) {
+      // Save final state for the old day, then reset
+      saveSession();
+      eventBuffer = [];
+      seenLines.clear();
+      lineIndex = 0;
+      currentDay = day;
+      workerLogPanelEl.innerHTML = "";
+    }
+  }
+
   function loadSession() {
-    const today = new Date().toISOString().slice(0, 10);
-    const key = "cockpit_session_" + today;
     try {
-      const saved = JSON.parse(localStorage.getItem(key) || "[]");
+      const saved = JSON.parse(localStorage.getItem(todayKey()) || "[]");
       if (!Array.isArray(saved) || saved.length === 0) return;
       for (const item of saved) {
         if (!item.line || seenLines.has(item.line)) continue;
         seenLines.add(item.line);
         eventBuffer.push(item);
+        lineIndex++;
         const div = document.createElement("div");
         div.className = "log-line log-line-" + (item.color || "a");
         div.innerHTML = escHtml(item.line);
         workerLogPanelEl.appendChild(div);
       }
-      // After restoring, set batchIndex to next unused batch
-      const maxBatch = eventBuffer.reduce((m, i) => Math.max(m, i.batch || 0), 0);
-      batchIndex = maxBatch + 1;
       workerLogPanelEl.scrollTop = workerLogPanelEl.scrollHeight;
     } catch (_) {}
   }
 
-  // Save session to localStorage every hour
+  // Save to localStorage every hour; check for day rollover every minute
   setInterval(saveSession, 3600000);
+  setInterval(checkMidnightReset, 60000);
 
   function parseEventTimestamp(line) {
     const token = String(line || "").split(" | ", 1)[0].trim();
