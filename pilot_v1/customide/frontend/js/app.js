@@ -14,6 +14,9 @@
   let currentDay = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const resetNonceKey = "cockpit_hard_reset_last_nonce";
   let hardResetInFlight = false;
+  const autopilotStaleResetMs = Number(cfg.autopilotStaleResetMs || 120000);
+  let lastAutopilotFingerprint = "";
+  let lastAutopilotChangeMs = Date.now();
 
   const statusEl = document.getElementById("backendStatus");
   const llmBadgeEl = document.getElementById("llmHealthBadge");
@@ -159,6 +162,28 @@
     }
     rows.sort((a, b) => String(b.task_id).localeCompare(String(a.task_id)));
     return rows;
+  }
+
+  function updateAutopilotWatchdog(worker) {
+    const recentEvents = Array.isArray(worker && worker.recent_events) ? worker.recent_events : [];
+    const fingerprint = [
+      (worker && worker.worker_id) || "",
+      (worker && worker.mode) || "",
+      (worker && worker.last_run_local) || "",
+      (worker && worker.last_task_processed) || "",
+      (worker && worker.note) || "",
+      recentEvents.slice(-5).join("\n")
+    ].join("||");
+
+    if (fingerprint !== lastAutopilotFingerprint) {
+      lastAutopilotFingerprint = fingerprint;
+      lastAutopilotChangeMs = Date.now();
+      return;
+    }
+
+    if ((Date.now() - lastAutopilotChangeMs) >= autopilotStaleResetMs) {
+      consumeAndReload("local-stale-" + Date.now(), "autopilot_stale_120s");
+    }
   }
 
   function consumeAndReload(nonce, reason) {
@@ -480,6 +505,7 @@
     renderSync(sync);
     renderCadence(cadence);
     renderWorkerLog(worker);
+    updateAutopilotWatchdog(worker);
     renderTokens(tokens);
 
     if (forceLlm) {
@@ -507,6 +533,14 @@
       lastErrorText = String(err);
       const fallbackOk = await refreshFromLocalFiles();
       if (fallbackOk) {
+        updateAutopilotWatchdog({
+          worker_id: statusEl.textContent,
+          mode: "snapshot",
+          last_run_local: "snapshot",
+          last_task_processed: "",
+          note: "snapshot mode",
+          recent_events: []
+        });
         setBackendStatus(false, "snapshot mode | backend down");
       } else {
         setBackendStatus(false, (activeBackendBaseUrl || "none") + " | " + lastErrorText);
@@ -528,6 +562,14 @@
         await discoverBackend();
         const fallbackOk = await refreshFromLocalFiles();
         if (fallbackOk) {
+          updateAutopilotWatchdog({
+            worker_id: statusEl.textContent,
+            mode: "snapshot",
+            last_run_local: "snapshot",
+            last_task_processed: "",
+            note: "snapshot mode",
+            recent_events: []
+          });
           setBackendStatus(false, "snapshot mode | backend down");
         } else {
           setBackendStatus(false, (activeBackendBaseUrl || "none") + " | " + lastErrorText);
