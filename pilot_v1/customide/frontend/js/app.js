@@ -6,12 +6,24 @@
   let activeBackendBaseUrl = "";
   let lastErrorText = "";
 
+  // --- Event buffer state ---
+  let eventBuffer = [];   // { line, batch, color, ts }
+  let batchIndex = 0;
+  const seenLines = new Set();
+  let userPinned = false; // true when user has scrolled up away from bottom
+
   const statusEl = document.getElementById("backendStatus");
   const llmBadgeEl = document.getElementById("llmHealthBadge");
   const syncBadgeEl = document.getElementById("syncHealthBadge");
   const lastRefreshEl = document.getElementById("lastRefresh");
   const autopilotSummaryEl = document.getElementById("autopilotSummary");
   const workerLogPanelEl = document.getElementById("workerLogPanel");
+
+  // Scroll-pin: stop auto-scroll when user scrolls up; resume when they reach bottom
+  workerLogPanelEl.addEventListener("scroll", () => {
+    const el = workerLogPanelEl;
+    userPinned = el.scrollTop < el.scrollHeight - el.clientHeight - 12;
+  });
   const gitPanelEl = document.getElementById("gitPanel");
   const syncCadencePanelEl = document.getElementById("syncCadencePanel");
   const tokenPanelEl = document.getElementById("tokenPanel");
@@ -43,6 +55,68 @@
 
     return [...new Set(candidates.filter(Boolean))];
   }
+
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function appendEventLines(newLines) {
+    const batchColor = (batchIndex % 2 === 0) ? "a" : "b";
+    let anyNew = false;
+    for (const line of newLines) {
+      if (!line || seenLines.has(line)) continue;
+      seenLines.add(line);
+      const item = { line, batch: batchIndex, color: batchColor, ts: Date.now() };
+      eventBuffer.push(item);
+      const div = document.createElement("div");
+      div.className = "log-line log-line-" + batchColor;
+      div.innerHTML = escHtml(line);
+      workerLogPanelEl.appendChild(div);
+      anyNew = true;
+    }
+    if (anyNew) {
+      batchIndex++;
+      if (!userPinned) {
+        workerLogPanelEl.scrollTop = workerLogPanelEl.scrollHeight;
+      }
+    }
+  }
+
+  function saveSession() {
+    const today = new Date().toISOString().slice(0, 10);
+    const key = "cockpit_session_" + today;
+    try {
+      localStorage.setItem(key, JSON.stringify(eventBuffer));
+    } catch (_) {}
+  }
+
+  function loadSession() {
+    const today = new Date().toISOString().slice(0, 10);
+    const key = "cockpit_session_" + today;
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || "[]");
+      if (!Array.isArray(saved) || saved.length === 0) return;
+      for (const item of saved) {
+        if (!item.line || seenLines.has(item.line)) continue;
+        seenLines.add(item.line);
+        eventBuffer.push(item);
+        const div = document.createElement("div");
+        div.className = "log-line log-line-" + (item.color || "a");
+        div.innerHTML = escHtml(item.line);
+        workerLogPanelEl.appendChild(div);
+      }
+      // After restoring, set batchIndex to next unused batch
+      const maxBatch = eventBuffer.reduce((m, i) => Math.max(m, i.batch || 0), 0);
+      batchIndex = maxBatch + 1;
+      workerLogPanelEl.scrollTop = workerLogPanelEl.scrollHeight;
+    } catch (_) {}
+  }
+
+  // Save session to localStorage every hour
+  setInterval(saveSession, 3600000);
 
   function parseEventTimestamp(line) {
     const token = String(line || "").split(" | ", 1)[0].trim();
@@ -227,7 +301,8 @@
     ].join("\n");
 
     autopilotSummaryEl.textContent = hints;
-    workerLogPanelEl.textContent = hints;
+    // Append a separator to the live log rather than wiping it
+    appendEventLines(["-- BACKEND OFFLINE: " + (reason || "network_error") + " --"]);
     gitPanelEl.textContent = hints;
     syncCadencePanelEl.textContent = hints;
     tokenPanelEl.textContent = hints;
@@ -278,7 +353,7 @@
       "- events_source: " + ((worker && worker.events_source) || "n/a")
     ].join("\n");
 
-    workerLogPanelEl.textContent = events.length ? events.join("\n") : "(no events)";
+    appendEventLines(events);
   }
 
   function renderTokens(tokens) {
@@ -366,6 +441,7 @@
   }
 
   async function boot() {
+    loadSession();
     await discoverBackend();
     try {
       await refreshAll(true);

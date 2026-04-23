@@ -6,6 +6,7 @@
   --line-soft: #0f3d0f;
   --ink: #78ff62;
   --ink-dim: #49be3e;
+  --ink-alt: #ffd700;
   --alert: #ff5d5d;
 }
 
@@ -123,6 +124,36 @@ pre::-webkit-scrollbar-thumb {
   background: #1a581a;
   border-radius: 8px;
 }
+
+.scroll-log {
+  margin: 0;
+  padding: 10px;
+  background: transparent;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  line-height: 1.36;
+  max-height: 340px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.scroll-log::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-log::-webkit-scrollbar-thumb {
+  background: #1a581a;
+  border-radius: 8px;
+}
+
+.log-line {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.log-line-a { color: var(--ink); }
+.log-line-b { color: var(--ink-alt); }
 
 .status-offline {
   color: var(--alert);
