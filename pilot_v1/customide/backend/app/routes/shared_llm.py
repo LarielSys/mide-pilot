@@ -85,7 +85,7 @@ def llm_health() -> dict[str, Any]:
 @router.post("/chat")
 def llm_chat(payload: ChatRequest) -> dict[str, Any]:
     target, source_key, reason = _resolve_generate_url()
-    model = payload.model or "qwen2.5"
+    model = payload.model or "qwen2.5-coder:14b"
     mapped_source = _map_source(payload.source)
 
     if not target:
