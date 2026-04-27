@@ -7702,3 +7702,5 @@
 2026-04-26T20:35:30-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
 2026-04-26T20:36:31-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
 2026-04-26T20:37:32-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
+2026-04-26T20:38:32-04:00 | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-04-26T21:15:15-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
