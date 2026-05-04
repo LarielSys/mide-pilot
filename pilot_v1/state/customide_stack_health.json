@@ -1,6 +1,6 @@
 {
-  "timestamp_utc": "2026-05-04T17:15:26Z",
-  "timestamp_local": "2026-05-04T13:15:26-04:00",
+  "timestamp_utc": "2026-05-04T17:17:32Z",
+  "timestamp_local": "2026-05-04T13:17:32-04:00",
   "backend_url": "http://127.0.0.1:5555/health",
   "frontend_url": "http://127.0.0.1:5570",
   "backend_state": "up",
