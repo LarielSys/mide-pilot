@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0094",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0094\nobjective=autopilot_status_report\n--- autopilot_status_file ---\n{\n  \"worker_name\": \"ubuntu-atlas-01\",\n  \"worker_id\": \"ubuntu-worker-01\",\n  \"mode\": \"running\",\n  \"last_run_utc\": \"2026-05-05T02:38:09Z\",\n  \"last_run_local\": \"2026-05-04T22:38:09-04:00\",\n  \"log_timezone\": \"America/New_York\",\n  \"last_task_processed\": \"MTASK-0094\",\n  \"poll_seconds\": 60,\n  \"note\": \"Task picked up; starting executor pilot_v1/scripts/exec_mtask_0094_autopilot_status_report.sh.\",\n  \"customide_backend_state\": \"up\",\n  \"customide_frontend_state\": \"up\",\n  \"customide_stack_state\": \"healthy\"\n}\n--- end ---\nautopilot_mode=running\nlast_task_processed=MTASK-0094\ncustomide_stack_state=healthy\nlast_heartbeat_epoch=1777948689\nheartbeat_age_seconds=1\nheartbeat_health=FRESH\n--- last_live_status_lines ---\n2026-05-04T22:23:44-04:00 | mode=running | last_task=MTASK-0093 | note=Task failed: executor script not found (MTASK-0093).\n2026-05-04T22:23:43-04:00 | mode=running | last_task=MTASK-0093 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0093_operator_ping.sh.\n2026-05-04T22:22:43-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.\n2026-05-04T22:21:41-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.\n2026-05-04T22:20:41-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.\n--- end ---\nreport=complete",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-05T02:38:10Z"
+}
