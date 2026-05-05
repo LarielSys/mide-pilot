@@ -1,0 +1,35 @@
+{
+  "task_id": "MTASK-0097",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "code-server binary not found (MTASK-0096 FAIL_NOT_INSTALLED). Install code-server via standalone method, write config for port 8092 password mide-ide-2026, start detached, verify HTTP response. Required for CustomIDE right pane.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0097_install_code_server.sh",
+  "moss_labels": [
+    "moss/customide",
+    "worker/code-server",
+    "worker/install"
+  ],
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": [
+    "pilot_v1/results",
+    "pilot_v1/state"
+  ],
+  "blocked_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/approvals"
+  ],
+  "required_validation": [
+    "code_server_status=UP",
+    "install_and_start=complete"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 180,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T03:10:00Z"
+}
