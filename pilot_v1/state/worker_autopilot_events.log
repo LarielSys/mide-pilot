@@ -8187,3 +8187,5 @@
 2026-05-04T21:51:46-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
 2026-05-04T21:52:47-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
 2026-05-04T21:53:48-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
+2026-05-04T22:08:31-04:00 | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-05-04T22:09:32-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
