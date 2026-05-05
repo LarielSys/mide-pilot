@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0095",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0095\nobjective=system_status_snapshot_post_reconnect\ntimestamp_utc=2026-05-05T02:52:25Z\nhostname=lariel-cloud\n=== SERVICES ===\ncustomide_backend_port5555=200\ncustomide_frontend_port5570=200\nollama_port11434=200\ncodeserver_port8092=000unreachable\ntunnels=['https://jawed-lapel-dispersed.ngrok-free.dev']\n=== PROCESSES ===\n/bin/ollama\n/home/larieladmin/mide-pilot/pilot_v1/customide/backend/.venv/bin/python3\n/snap/ngrok/375/ngrok\ntail\n/usr/bin/bash\n/usr/local/bin/ollama\n/usr/local/bin/python3\n=== WORKER1 CONFIG ===\n{\n  \"worker_id\": \"ubuntu-worker-01\",\n  \"worker_name\": \"ubuntu-atlas-01\",\n  \"services\": {\n    \"site_kb_server\": {\n      \"local_port\": 8091,\n      \"public_url\": \"https://jawed-lapel-dispersed.ngrok-free.dev\",\n      \"status\": \"down\"\n    },\n    \"ollama\": {\n      \"local_port\": 11434,\n      \"model_primary\": \"qwen2.5-coder:14b\",\n      \"version\": \"ollama version is 0.21.0\",\n      \"ollama_generate_url\": \"http://127.0.0.1:11434/api/generate\",\n      \"proxy_endpoint\": \"http://127.0.0.1:11434\",\n      \"status\": \"ok\"\n    },\n    \"code_server\": {\n      \"local_port\": 8092,\n      \"public_url\": \"https://jawed-lapel-dispersed.ngrok-free.dev\",\n      \"password\": \"mide-ide-2026\",\n      \"project_root\": \"/home/larieladmin/mide-pilot\",\n      \"status\": \"down\"\n    }\n  },\n  \"timestamp_utc\": \"2026-04-22T22:29:39Z\"\n}\n=== DISK ===\n/dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /\nstatus_snapshot=complete",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-05T02:52:25Z"
+}
