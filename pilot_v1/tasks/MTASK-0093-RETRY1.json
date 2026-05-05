@@ -1,0 +1,36 @@
+{
+  "task_id": "MTASK-0093-RETRY1",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "Operator reconnect ping (RETRY1 - executor script now present on GitHub). Confirm worker is live and autopilot is scanning. Echo hostname, date, autopilot status, and last heartbeat timestamp. No changes to any files.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0093_operator_ping.sh",
+  "moss_labels": [
+    "system/operator-reconnect",
+    "worker/health-check"
+  ],
+  "priority": "low",
+  "risk_level": "none",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": [
+    "pilot_v1/state",
+    "pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/approvals"
+  ],
+  "required_validation": [
+    "hostname echoed",
+    "date echoed",
+    "autopilot status confirmed",
+    "result JSON written to pilot_v1/results/MTASK-0093-RETRY1.result.json"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 60,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T02:35:00Z"
+}
