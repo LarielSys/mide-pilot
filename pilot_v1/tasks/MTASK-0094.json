@@ -1,0 +1,36 @@
+{
+  "task_id": "MTASK-0094",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "Read and report full autopilot status: mode, last task processed, heartbeat age, stack health, and last live status lines. No changes to any files.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0094_autopilot_status_report.sh",
+  "moss_labels": [
+    "system/autopilot-status",
+    "worker/health-check"
+  ],
+  "priority": "low",
+  "risk_level": "none",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": [
+    "pilot_v1/state",
+    "pilot_v1/results"
+  ],
+  "blocked_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/approvals"
+  ],
+  "required_validation": [
+    "autopilot_mode echoed",
+    "heartbeat_health echoed",
+    "customide_stack_state echoed",
+    "result JSON written to pilot_v1/results/MTASK-0094.result.json"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 60,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T02:40:00Z"
+}
