@@ -1,17 +1,17 @@
 Autopilot Live Status
-updated_utc: 2026-05-05T02:54:27Z
-updated_local: 2026-05-04T22:54:27-04:00
+updated_utc: 2026-05-05T02:54:29Z
+updated_local: 2026-05-04T22:54:29-04:00
 log_timezone: America/New_York
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
 last_task_processed: MTASK-0096
 poll_seconds: 60
-note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0096_restart_code_server.sh.
+note: Task failed: executor script non-zero exit (MTASK-0096).
 sync_gate_3x60: drift
 git_branch: main
-git_local_head: 7890db01
-git_origin_head: 7890db01
+git_local_head: 6b5e4213
+git_origin_head: 6b5e4213
 git_heads_match: yes
 customide_backend_state: up
 customide_frontend_state: up
@@ -21,6 +21,7 @@ customide_frontend_url: http://127.0.0.1:5570
 git_sync_last_error: none
 
 Recent Events (latest 20, newest first):
+2026-05-04T22:54:29-04:00 | mode=running | last_task=MTASK-0096 | note=Task failed: executor script non-zero exit (MTASK-0096).
 2026-05-04T22:54:27-04:00 | mode=running | last_task=MTASK-0096 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0096_restart_code_server.sh.
 2026-05-04T22:53:26-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=109, eligible=0, mismatched=0.
 2026-05-04T22:52:25-04:00 | mode=running | last_task=MTASK-0095 | note=Task completed successfully (MTASK-0095).
@@ -40,4 +41,3 @@ Recent Events (latest 20, newest first):
 2026-05-04T22:39:13-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=108, eligible=0, mismatched=0.
 2026-05-04T22:38:10-04:00 | mode=running | last_task=MTASK-0094 | note=Task completed successfully (MTASK-0094).
 2026-05-04T22:38:09-04:00 | mode=running | last_task=MTASK-0094 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0094_autopilot_status_report.sh.
-2026-05-04T22:37:08-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=107, eligible=0, mismatched=0.
