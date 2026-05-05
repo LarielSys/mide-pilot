@@ -1,0 +1,37 @@
+{
+  "task_id": "MTASK-0095",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "Full system status snapshot after 11-day reconnect gap. Report: customIDE backend/frontend port status, Ollama availability, code-server, ngrok tunnels, running processes, worker1 config endpoints, disk usage. Read-only — no changes to any files.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0095_system_status_snapshot.sh",
+  "moss_labels": [
+    "system/status-snapshot",
+    "moss/customide",
+    "worker/health-check"
+  ],
+  "priority": "high",
+  "risk_level": "none",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": [
+    "pilot_v1/state",
+    "pilot_v1/results",
+    "pilot_v1/config"
+  ],
+  "blocked_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/approvals"
+  ],
+  "required_validation": [
+    "customide_backend port status echoed",
+    "ollama port status echoed",
+    "status_snapshot=complete"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 90,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T03:00:00Z"
+}
