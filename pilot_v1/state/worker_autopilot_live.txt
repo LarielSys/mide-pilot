@@ -1,18 +1,18 @@
 Autopilot Live Status
-updated_utc: 2026-05-05T03:13:17Z
-updated_local: 2026-05-04T23:13:17-04:00
+updated_utc: 2026-05-05T03:17:20Z
+updated_local: 2026-05-04T23:17:20-04:00
 log_timezone: America/New_York
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
-last_task_processed: MTASK-0098
+last_task_processed: MTASK-0099
 poll_seconds: 60
-note: Task completed successfully (MTASK-0098).
+note: Task picked up; starting executor pilot_v1/scripts/exec_mtask_0099_restart_customide_backend.sh.
 sync_gate_3x60: drift
 git_branch: main
-git_local_head: de6ea60c
-git_origin_head: de6ea60c
-git_heads_match: yes
+git_local_head: 276c5dae
+git_origin_head: 91a6ed49
+git_heads_match: no
 customide_backend_state: up
 customide_frontend_state: up
 customide_stack_state: healthy
@@ -21,6 +21,10 @@ customide_frontend_url: http://127.0.0.1:5570
 git_sync_last_error: none
 
 Recent Events (latest 20, newest first):
+2026-05-04T23:17:20-04:00 | mode=running | last_task=MTASK-0099 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0099_restart_customide_backend.sh.
+2026-05-04T23:16:20-04:00 | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-05-04T23:15:19-04:00 | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
+2026-05-04T23:14:18-04:00 | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
 2026-05-04T23:13:17-04:00 | mode=running | last_task=MTASK-0098 | note=Task completed successfully (MTASK-0098).
 2026-05-04T23:13:09-04:00 | mode=running | last_task=MTASK-0098 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0098_restart_site_kb_server.sh.
 2026-05-04T23:12:08-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=111, eligible=0, mismatched=0.
@@ -37,7 +41,3 @@ Recent Events (latest 20, newest first):
 2026-05-04T23:00:46-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=111, eligible=0, mismatched=0.
 2026-05-04T22:59:45-04:00 | mode=running | last_task=MTASK-0097 | note=Task completed successfully (MTASK-0097).
 2026-05-04T22:59:33-04:00 | mode=running | last_task=MTASK-0097 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0097_install_code_server.sh.
-2026-05-04T22:58:33-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=110, eligible=0, mismatched=0.
-2026-05-04T22:57:31-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=110, eligible=0, mismatched=0.
-2026-05-04T22:56:31-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=110, eligible=0, mismatched=0.
-2026-05-04T22:55:30-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=110, eligible=0, mismatched=0.
