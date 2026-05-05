@@ -1,0 +1,107 @@
+@MOSS:CBSA_OCCA_BNK1CCA_Execution_v1
+@R:~/mide-pilot/pilot_v1/specs/cbsa_occa_execution/
+
+systems:
+
+  OCCA_Transaction_Entry:
+    role: BNKMENU action A dispatch target entering customer accounts listing flow
+    runtime: cics_transaction_flow
+    transid: OCCA
+    program_id: BNK1CCA
+    depends_on: Program_BNK1CCA, Customer_Accounts_Map, Aid_Key_Router
+
+  Program_BNK1CCA:
+    role: customer account listing program with customer lookup and account array projection
+    runtime: cics_cobol
+    program_id: BNK1CCA
+    transid: OCCA
+    mapset: BNK1ACC
+    depends_on: Customer_Accounts_Map, Process_Map_Controller, Edit_Data_Validator, Lookup_Link_INQACCCU, Return_Paths, Guard_Paths
+
+  Customer_Accounts_Map:
+    role: BMS map for customer number input and account list output
+    runtime: cics_bms
+    mapset: BNK1ACC
+    map: BNK1ACCO
+    key_fields: CUSTNOI, MESSAGEO, ACCOUNTO, NUMBER-OF-ACCOUNTS-DISPLAY
+
+  Aid_Key_Router:
+    role: EIBAID branching for BNK1CCA
+    runtime: cics_control_semantics
+    keys: DFHENTER, DFHPF3, DFHPF12, DFHCLEAR, OTHER
+    semantics:
+      - enter_process_map
+      - pf3_return_to_omen
+      - pf12_terminate_session
+      - clear_erase_and_return_occa
+      - other_invalid_key_redisplay
+
+  Process_Map_Controller:
+    role: PM010 receives map then validates customer and retrieves linked account list
+    runtime: semantic_contract
+    sequence:
+      - receive_map
+      - edit_data
+      - if_valid_get_customer_accounts
+      - send_map
+
+  Edit_Data_Validator:
+    role: customer number validation gate
+    runtime: semantic_contract
+    checks:
+      - customer_number_numeric
+
+  Lookup_Link_INQACCCU:
+    role: customer-account aggregation lookup link
+    runtime: cics_link_contract
+    target_program: INQACCCU
+    call_site: GCD010
+    mode: SYNCONRETURN
+
+  Return_Paths:
+    role: return semantics across BNK1CCA cycle
+    runtime: cics_return_semantics
+    paths:
+      - pf3_to_omen
+      - cycle_return_to_occa
+
+  Guard_Paths:
+    role: explicit non-happy-path semantics for BNK1CCA
+    runtime: semantic_contract
+    guards:
+      - invalid_key_message_and_alarm
+      - validation_failure_message
+      - inqacccu_link_failure_to_abndproc
+      - customer_not_found_or_no_accounts_paths
+      - return_resp_not_normal_to_abndproc
+
+  Field_Lineage_Map:
+    role: field lineage across customer lookup and account-list map projection
+    runtime: semantic_contract
+    lineage_rules:
+      - custnoi_to_customer_number_lookup
+      - inqacccu_rows_to_accounto_lines
+      - account_balances_to_signed_display_columns
+
+dependencies:
+  - OCCA_Transaction_Entry -> Program_BNK1CCA
+  - Program_BNK1CCA -> Aid_Key_Router
+  - Program_BNK1CCA -> Process_Map_Controller
+  - Process_Map_Controller -> Edit_Data_Validator
+  - Process_Map_Controller -> Lookup_Link_INQACCCU
+  - Program_BNK1CCA -> Return_Paths
+  - Program_BNK1CCA -> Guard_Paths
+  - Process_Map_Controller -> Field_Lineage_Map
+  - Guard_Paths -> Field_Lineage_Map
+
+interfaces:
+  - customer_accounts_interface:
+      from: Program_BNK1CCA
+      to: Lookup_Link_INQACCCU
+      mode: cics_link_synconreturn
+      key: CUSTNOI
+
+runtime_constraints:
+  - scope_is_occa_bnk1cca_only: true
+  - no_non_occa_program_semantics_except_explicit_link_targets: true
+  - customer_account_listing_is_validation_guarded: true

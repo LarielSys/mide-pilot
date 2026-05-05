@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COBOL PROJECT4 - MOSS Overview</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .top-link, .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      text-decoration: none;
+    }
+    .top-link:hover { background: rgba(0, 212, 255, 0.08); }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 1.9fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 940px; }
+    .edge { stroke: rgba(0, 212, 255, 0.3); stroke-width: 1.6; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 115px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ PROJECT4 Merge/Sort Overview</div>
+    <div class="top-meta">merge pipeline · sorted read loop · hierarchical breaks</div>
+    <div class="top-actions">
+      <a class="top-link" href="cobol_project4_execution_visualization.html">execution view</a>
+      <a class="top-link" href="cobol_project4_break_control_visualization.html">break-control view</a>
+      <span class="top-badge">project4_overview · 2026-04-23</span>
+    </div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">PROJECT4 key modules</span>
+        <span class="code-line" data-node="Main_Module"><span class="code-key">100-MAIN-MODULE:</span> orchestrates merge, sort, report run</span>
+        <span class="code-line" data-node="Merge_Routine"><span class="code-key">105-MERGE-FILE:</span> merge PR4FA17A + PR4FA17B -> PR4 MERGED</span>
+        <span class="code-line" data-node="Sort_Routine"><span class="code-key">110-SORT-FILE:</span> sort merged records by state/city/customer</span>
+        <span class="code-line" data-node="Housekeeping"><span class="code-key">125-HOUSEKEEPING:</span> open sorted/report files and write title/page</span>
+        <span class="code-line" data-node="Read_Loop"><span class="code-key">150-READ-SOURCE-FILE:</span> read sorted file until EOF</span>
+        <span class="code-line" data-node="Construct_Data"><span class="code-key">175-CONSTRUCT-DATA:</span> per-product detail rows + customer total</span>
+        <span class="code-line" data-node="Break_Control"><span class="code-key">180-BREAK-CONTROL:</span> state/city/customer break hierarchy</span>
+        <span class="code-line" data-node="Totals"><span class="code-key">225-PUBLISH-FINAL-TOTALS:</span> city/state/grand totals</span>
+        <span class="code-line" data-node="Close_Routine"><span class="code-key">250-CLOSE-ROUTINE:</span> close files and stop</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Data contracts</span>
+        <span class="code-line" data-node="Input_A">PR4FA17A.txt (warehouse feed A)</span>
+        <span class="code-line" data-node="Input_B">PR4FA17B.txt (warehouse feed B)</span>
+        <span class="code-line" data-node="Merged_File">PR4 MERGED.txt (merge output)</span>
+        <span class="code-line" data-node="Sorted_File">PR4 SORTED.TXT (sorted input)</span>
+        <span class="code-line" data-node="Report_File">PROJECT 4 REPORT.TXT (report output)</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">ARCHITECTURE DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1420 940" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M180 125 L460 125"></path>
+          <path class="edge" d="M180 235 L460 165"></path>
+          <path class="edge" d="M650 145 L830 145"></path>
+          <path class="edge" d="M990 145 L990 230"></path>
+          <path class="edge" d="M990 280 L990 365"></path>
+          <path class="edge" d="M990 415 L990 500"></path>
+          <path class="edge" d="M990 550 L990 635"></path>
+          <path class="edge" d="M1090 525 L1180 525"></path>
+          <path class="edge" d="M1090 415 L1180 415"></path>
+          <path class="edge" d="M1090 635 L1180 635"></path>
+          <path class="edge trace" d="M620 500 L900 500"></path>
+          <path class="edge trace" d="M620 500 L900 635"></path>
+
+          <text class="edge-label" x="270" y="116">USING feed A</text>
+          <text class="edge-label" x="270" y="190">USING feed B</text>
+          <text class="edge-label" x="715" y="136">GIVING merged file</text>
+          <text class="edge-label" x="997" y="195">SORT USING merged</text>
+          <text class="edge-label" x="997" y="330">open + headings</text>
+          <text class="edge-label" x="997" y="462">perform until EOF</text>
+          <text class="edge-label" x="997" y="595">AT END publish totals</text>
+          <text class="edge-label" x="1110" y="407">detail rows</text>
+          <text class="edge-label" x="1110" y="517">break outputs</text>
+          <text class="edge-label" x="1110" y="627">totals lines</text>
+
+          <rect class="node storage node-hit" data-node="Input_A" x="40" y="95" width="140" height="60"></rect>
+          <text class="n-title" x="110" y="130" text-anchor="middle">PR4FA17A</text>
+
+          <rect class="node storage node-hit" data-node="Input_B" x="40" y="205" width="140" height="60"></rect>
+          <text class="n-title" x="110" y="240" text-anchor="middle">PR4FA17B</text>
+
+          <rect class="node core node-hit" data-node="Merge_Routine" x="460" y="110" width="190" height="70"></rect>
+          <text class="n-title" x="555" y="150" text-anchor="middle">105-MERGE-FILE</text>
+
+          <rect class="node storage node-hit" data-node="Merged_File" x="830" y="110" width="160" height="70"></rect>
+          <text class="n-title" x="910" y="150" text-anchor="middle">PR4 MERGED</text>
+
+          <rect class="node core node-hit" data-node="Sort_Routine" x="910" y="230" width="160" height="50"></rect>
+          <text class="n-title" x="990" y="260" text-anchor="middle">110-SORT-FILE</text>
+
+          <rect class="node storage node-hit" data-node="Sorted_File" x="910" y="365" width="160" height="50"></rect>
+          <text class="n-title" x="990" y="395" text-anchor="middle">PR4 SORTED</text>
+
+          <rect class="node worker node-hit" data-node="Housekeeping" x="910" y="500" width="160" height="50"></rect>
+          <text class="n-title" x="990" y="530" text-anchor="middle">125-HOUSEKEEPING</text>
+
+          <rect class="node worker node-hit" data-node="Read_Loop" x="910" y="635" width="160" height="50"></rect>
+          <text class="n-title" x="990" y="665" text-anchor="middle">150-READ-LOOP</text>
+
+          <rect class="node aux node-hit" data-node="Construct_Data" x="1180" y="390" width="180" height="50"></rect>
+          <text class="n-title" x="1270" y="420" text-anchor="middle">175-CONSTRUCT</text>
+
+          <rect class="node aux node-hit" data-node="Break_Control" x="1180" y="500" width="180" height="50"></rect>
+          <text class="n-title" x="1270" y="530" text-anchor="middle">180-BREAK-CONTROL</text>
+
+          <rect class="node aux node-hit" data-node="Totals" x="1180" y="610" width="180" height="50"></rect>
+          <text class="n-title" x="1270" y="640" text-anchor="middle">225-FINAL-TOTALS</text>
+
+          <rect class="node storage node-hit" data-node="Report_File" x="460" y="470" width="160" height="60"></rect>
+          <text class="n-title" x="540" y="505" text-anchor="middle">REPORT FILE</text>
+
+          <rect class="node core node-hit" data-node="Main_Module" x="460" y="610" width="230" height="70"></rect>
+          <text class="n-title" x="575" y="650" text-anchor="middle">100-MAIN-MODULE</text>
+
+          <rect class="node core node-hit" data-node="Close_Routine" x="460" y="750" width="190" height="60"></rect>
+          <text class="n-title" x="555" y="785" text-anchor="middle">250-CLOSE-ROUTINE</text>
+
+          <path class="edge" d="M575 680 L555 750"></path>
+          <text class="edge-label" x="582" y="725">final close</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Program</span><span class="v">PROJECT4 merge/sort/report pipeline.</span></div>
+      <div class="kv"><span class="k">Focus</span><span class="v">Merge two feeds, sort by control keys, then execute hierarchical control-break reporting.</span></div>
+      <div class="kv"><span class="k">Flow</span><span class="v">MERGE -> SORT -> READ LOOP -> BREAK CONTROL -> TOTALS -> CLOSE.</span></div>
+      <div class="kv"><span class="k">Keys</span><span class="v">WAREHOUSE-STATE, WAREHOUSE-CITY, CUSTOMER-ID.</span></div>
+    `;
+
+    const details = {
+      Main_Module: { type: "core", desc: "Top-level orchestration paragraph performs merge, sort, housekeeping, read/process loop, and close.", links: "Merge_Routine, Sort_Routine, Housekeeping, Read_Loop, Close_Routine" },
+      Merge_Routine: { type: "core", desc: "MERGE statement combines PR4FA17A and PR4FA17B using ascending state/city/customer keys.", links: "Input_A, Input_B, Merged_File" },
+      Sort_Routine: { type: "core", desc: "SORT statement normalizes merged output into PR4 SORTED for deterministic break processing.", links: "Merged_File, Sorted_File" },
+      Housekeeping: { type: "worker", desc: "Opens files, initializes spacing and counters, writes title and page header lines.", links: "Sorted_File, Report_File" },
+      Read_Loop: { type: "worker", desc: "PERFORM UNTIL EOF read loop dispatches each record to construct-data and publishes final totals at end.", links: "Construct_Data, Totals, Sorted_File" },
+      Construct_Data: { type: "aux", desc: "Builds per-product detail lines, maps product and month codes, computes month/customer totals.", links: "Break_Control, Report_File" },
+      Break_Control: { type: "aux", desc: "Applies FIRST/STATE/CITY/CUSTOMER break transitions and writes intermediate subtotals.", links: "Totals, Report_File" },
+      Totals: { type: "aux", desc: "At EOF writes final city subtotal, state subtotal, and grand total lines.", links: "Report_File" },
+      Close_Routine: { type: "core", desc: "Closes SORTED-FILE and REPORT-FILE then STOP RUN.", links: "Sorted_File, Report_File" },
+      Input_A: { type: "storage", desc: "First raw warehouse file feed.", links: "Merge_Routine" },
+      Input_B: { type: "storage", desc: "Second raw warehouse file feed.", links: "Merge_Routine" },
+      Merged_File: { type: "storage", desc: "Intermediate merged output prior to explicit SORT.", links: "Sort_Routine" },
+      Sorted_File: { type: "storage", desc: "Sorted customer stream consumed by read loop.", links: "Housekeeping, Read_Loop, Close_Routine" },
+      Report_File: { type: "storage", desc: "Final output report receiving headings, details, subtotals, and grand total.", links: "Housekeeping, Construct_Data, Break_Control, Totals, Close_Routine" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

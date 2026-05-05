@@ -1,0 +1,387 @@
+@MOSS:COBOL_PROJECT4_MERGE_SORT_REPORT_v1
+@R:~/mide-pilot/pilot_v1/specs/cobol_project4_merge_sort/
+
+systems:
+
+  COBOL_Program_PROJECT4:
+    role: batch report generator that merges two warehouse feeds sorts customers and emits formatted sales report with break totals
+    runtime: cobol_batch
+    source_language: COBOL
+    divisions: identification, environment, data, procedure
+    depends_on: Merge_Routine, Sort_Routine, Housekeeping_Routine, Read_Source_Loop, Detail_Construct_Routine, Break_Control_Routine, Totals_Publish_Routine, Close_Routine
+    outputs: merged_file_sorted_file_and_final_report
+
+  Merge_Routine:
+    role: merges two line-sequential warehouse files into merged output keyed by state city and customer id
+    runtime: procedure_division
+    paragraph: 105_MERGE_FILE
+    depends_on: Unmerge_File_A, Unmerge_File_B, Merge_Output_File, Sort_Work_File
+
+  Sort_Routine:
+    role: sorts merged records by state city and customer id into canonical sorted input for reporting
+    runtime: procedure_division
+    paragraph: 110_SORT_FILE
+    depends_on: Merge_Output_File, Sorted_File, Sort_Work_File
+
+  Housekeeping_Routine:
+    role: opens sorted input and report output writes title and page header and initializes line counters
+    runtime: procedure_division
+    paragraph: 125_HOUSEKEEPING
+    depends_on: Sorted_File, Report_File, Page_Heading_Routine, Report_Layouts, Working_Accumulators
+
+  Page_Heading_Routine:
+    role: increments page number and writes report page heading
+    runtime: procedure_division
+    paragraph: 145_PAGE_HEADING_ROUTINE
+    depends_on: Report_File, Report_Layouts, Working_Accumulators
+
+  Read_Source_Loop:
+    role: reads sorted records until EOF and dispatches each record into report construction or final totals publish
+    runtime: procedure_division
+    paragraph: 150_READ_SOURCE_FILE
+    control_pattern: perform_until_eof_flag_n
+    depends_on: Sorted_File, Detail_Construct_Routine, Totals_Publish_Routine, EOF_Controller, File_IO_State_Semantics
+
+  Field_Lineage_Map:
+    role: explicit source-to-transform-to-target mapping for generated detail and accumulator fields
+    runtime: semantic_contract
+    lineage_rules:
+      - NUMBER_BOXES_times_BOX_PRICE_to_SALES_MONTH_TOTAL
+      - SALES_MONTH_TOTAL_to_SALES_CUST_TOTAL_and_WS_CITY_TOTAL_and_WS_STATE_TOTAL_and_WS_GRAND_TOTAL
+      - MOUNTH_BOUGHT_to_DL_MOUNTH_BOUGHT_via_MONTH_TABLE
+      - PRODUCT_CODE_to_DL_PRODUCT_TYPE_via_EVALUATE_gate
+
+  File_IO_State_Semantics:
+    role: captures cursor movement eof transitions record-buffer reuse and write side effects for sequential report processing
+    runtime: semantic_contract
+    semantics:
+      - READ_advances_sorted_file_cursor
+      - AT_END_sets_EOF_FLAG_to_N_and_triggers_225
+      - NOT_AT_END_reuses_current_record_buffer_for_175
+      - WRITE_updates_report_position_and_line_count
+      - LINE_COUNT_guard_can_force_page_advance_and_header_rewrite
+
+  Control_Break_Side_Effects:
+    role: models precise side-effect ordering for break transitions and scoped total resets
+    runtime: semantic_contract
+    ordered_sequences:
+      - STATE_CHANGED:WRITE_CITY_TOTAL_then_RESET_CITY_then_WRITE_STATE_TOTAL_then_RESET_STATE_then_185
+      - CITY_CHANGED:WRITE_CITY_TOTAL_then_190_then_RESET_CITY
+      - CUSTOMER_CHANGED:PERFORM_195_only
+
+  Evaluate_Branch_Semantics:
+    role: models practical branch behavior including default and invalid-code handling needed for regeneration safety
+    runtime: semantic_contract
+    semantics:
+      - PRODUCT_CODE_branches_E_O_C_OTHER
+      - OTHER_branch_maps_to_BAD_CODE_text
+      - mapping_gate_is_single_entry_with_explicit_default_branch
+
+  Detail_Construct_Routine:
+    role: materializes product detail rows for up to six product slots computes monthly and customer totals and writes detail output
+    runtime: procedure_division
+    paragraph: 175_CONSTRUCT_DATA
+    depends_on: Break_Control_Routine, Month_Lookup_Table, Report_File, Report_Layouts, Line_Count_Check, Working_Accumulators, Field_Lineage_Map, Evaluate_Branch_Semantics
+
+  Break_Control_Routine:
+    role: handles first-record initialization and state city customer breaks with correct subtotal publishing and accumulator resets
+    runtime: procedure_division
+    paragraph: 180_BREAK_CONTROL_ROUTINE
+    branch_paths:
+      - [FIRST_RECORD] -> State_Break_Routine
+      - [STATE_CHANGED] -> State_City_Subtotals_then_State_Break
+      - [CITY_CHANGED] -> City_Subtotal_then_City_Break
+      - [CUSTOMER_CHANGED] -> Customer_Header_Routine
+    depends_on: State_Break_Routine, City_Break_Routine, Customer_Header_Routine, Report_File, Report_Layouts, Working_Accumulators, Control_Break_Side_Effects
+
+  State_Break_Routine:
+    role: resolves state code to state name writes state heading and triggers city break
+    runtime: procedure_division
+    paragraph: 185_STATE_BREAK
+    depends_on: State_Lookup_Table, City_Break_Routine, Line_Count_Check, Report_File
+
+  City_Break_Routine:
+    role: resolves city code to city name writes city heading and triggers customer heading output
+    runtime: procedure_division
+    paragraph: 190_CITY_BREAK
+    depends_on: City_Lookup_Table, Customer_Header_Routine, Line_Count_Check, Report_File
+
+  Customer_Header_Routine:
+    role: writes customer id name rating and column headers before detail rows
+    runtime: procedure_division
+    paragraph: 195_ID_BREAK
+    depends_on: Activity_Lookup_Table, Line_Count_Check, Report_File, Report_Layouts
+
+  Line_Count_Check:
+    role: enforces page break threshold and rewrites page and customer headers after form feed
+    runtime: procedure_division
+    paragraph: 200_LINE_COUNT_CHECK
+    depends_on: Page_Heading_Routine, Report_File, Report_Layouts, Working_Accumulators
+
+  Totals_Publish_Routine:
+    role: publishes final city state and grand totals when source file reaches EOF
+    runtime: procedure_division
+    paragraph: 225_PUBLISH_FINAL_TOTALS
+    depends_on: Report_File, Report_Layouts, Working_Accumulators
+
+  Close_Routine:
+    role: closes sorted input and report output and terminates run
+    runtime: procedure_division
+    paragraph: 250_CLOSE_ROUTINE
+    depends_on: Sorted_File, Report_File
+
+  Unmerge_File_A:
+    role: first warehouse input feed
+    runtime: filesystem
+    dataset_name: PR4FA17A.txt
+    operations: open_input, read, close
+
+  Unmerge_File_B:
+    role: second warehouse input feed
+    runtime: filesystem
+    dataset_name: PR4FA17B.txt
+    operations: open_input, read, close
+
+  Merge_Output_File:
+    role: intermediate merged records output
+    runtime: filesystem
+    dataset_name: PR4_MERGED.txt
+    operations: open_output, write, close
+
+  Sorted_File:
+    role: sorted records consumed by report construction loop
+    runtime: filesystem
+    dataset_name: PR4_SORTED.TXT
+    operations: open_input, read, close
+
+  Report_File:
+    role: final printable report destination
+    runtime: report_output
+    dataset_name: PROJECT_4_REPORT.TXT
+    operations: open_output, write, close
+
+  Sort_Work_File:
+    role: sort/merge temporary file used by COBOL MERGE and SORT statements
+    runtime: sort_workspace
+    dataset_name: SORT.TMP_and_MERGE.TMP
+
+  EOF_Controller:
+    role: read-loop control flags
+    runtime: working_storage
+    fields: EOF_FLAG, FIRST_RECORD
+
+  Working_Accumulators:
+    role: running totals page counters and per-customer arithmetic values
+    runtime: working_storage
+    fields: LINE_COUNT, PAGE_NO, SALES_MONTH_TOTAL, SALES_CUST_TOTAL, WS_CITY_TOTAL, WS_STATE_TOTAL, WS_GRAND_TOTAL, SUB
+
+  State_Lookup_Table:
+    role: state code to state name lookup table
+    runtime: data_division
+    fields: ST_CODE, ST_NAME
+
+  City_Lookup_Table:
+    role: city code to city name lookup table
+    runtime: data_division
+    fields: CT_CODE, CT_NAME
+
+  Month_Lookup_Table:
+    role: month number to month name lookup table
+    runtime: data_division
+    fields: MO_CODE, MO_NAME
+
+  Activity_Lookup_Table:
+    role: customer rating code to activity label lookup table
+    runtime: data_division
+    fields: AC_CODE, AC_NAME
+
+  Report_Layouts:
+    role: fixed-format headings detail lines and total lines written to report
+    runtime: report_layout
+    records: TITLE_HEADING, PAGE_HEADER_LINE, STATE_HEADING, CITY_HEADING, ID_HEADING, NAME_HEADING, RATING_HEADING, DETAIL_LINE, TOTAL_CITY_SOLD_LINE, TOTAL_STATE_SOLD_LINE, GRAND_TOTAL_SOLD_LINE
+
+dependencies:
+  - COBOL_Program_PROJECT4 -> Merge_Routine
+  - COBOL_Program_PROJECT4 -> Sort_Routine
+  - COBOL_Program_PROJECT4 -> Housekeeping_Routine
+  - COBOL_Program_PROJECT4 -> Read_Source_Loop
+  - COBOL_Program_PROJECT4 -> Close_Routine
+
+  - Merge_Routine -> Unmerge_File_A
+  - Merge_Routine -> Unmerge_File_B
+  - Merge_Routine -> Merge_Output_File
+  - Merge_Routine -> Sort_Work_File
+
+  - Sort_Routine -> Merge_Output_File
+  - Sort_Routine -> Sorted_File
+  - Sort_Routine -> Sort_Work_File
+
+  - Housekeeping_Routine -> Sorted_File
+  - Housekeeping_Routine -> Report_File
+  - Housekeeping_Routine -> Page_Heading_Routine
+  - Housekeeping_Routine -> Working_Accumulators
+
+  - Read_Source_Loop -> Sorted_File
+  - Read_Source_Loop -> Detail_Construct_Routine
+  - Read_Source_Loop -> Totals_Publish_Routine
+  - Read_Source_Loop -> EOF_Controller
+  - Read_Source_Loop -> File_IO_State_Semantics
+
+  - Detail_Construct_Routine -> Break_Control_Routine
+  - Detail_Construct_Routine -> Month_Lookup_Table
+  - Detail_Construct_Routine -> Report_File
+  - Detail_Construct_Routine -> Line_Count_Check
+  - Detail_Construct_Routine -> Working_Accumulators
+  - Detail_Construct_Routine -> Field_Lineage_Map
+  - Detail_Construct_Routine -> Evaluate_Branch_Semantics
+
+  - Break_Control_Routine -> State_Break_Routine
+  - Break_Control_Routine -> City_Break_Routine
+  - Break_Control_Routine -> Customer_Header_Routine
+  - Break_Control_Routine -> Report_File
+  - Break_Control_Routine -> Working_Accumulators
+  - Break_Control_Routine -> Control_Break_Side_Effects
+
+  - State_Break_Routine -> State_Lookup_Table
+  - State_Break_Routine -> City_Break_Routine
+  - State_Break_Routine -> Line_Count_Check
+  - State_Break_Routine -> Report_File
+
+  - City_Break_Routine -> City_Lookup_Table
+  - City_Break_Routine -> Customer_Header_Routine
+  - City_Break_Routine -> Line_Count_Check
+  - City_Break_Routine -> Report_File
+
+  - Customer_Header_Routine -> Activity_Lookup_Table
+  - Customer_Header_Routine -> Line_Count_Check
+  - Customer_Header_Routine -> Report_File
+  - Customer_Header_Routine -> Report_Layouts
+
+  - Line_Count_Check -> Page_Heading_Routine
+  - Line_Count_Check -> Report_File
+  - Line_Count_Check -> Working_Accumulators
+
+  - Totals_Publish_Routine -> Report_File
+  - Totals_Publish_Routine -> Working_Accumulators
+  - Totals_Publish_Routine -> Report_Layouts
+
+  - Close_Routine -> Sorted_File
+  - Close_Routine -> Report_File
+
+interfaces:
+
+  Merge_Input_Contract:
+    protocol: line_sequential_merge
+    inputs:
+      - PR4FA17A.txt
+      - PR4FA17B.txt
+    key_order: warehouse_state_then_city_then_customer_id
+
+  Sort_Contract:
+    protocol: cobol_sort
+    input: PR4_MERGED.txt
+    output: PR4_SORTED.TXT
+    key_order: warehouse_state_then_city_then_customer_id
+
+  Record_Expansion_Contract:
+    protocol: fixed_record_with_product_occurs_6
+    semantics:
+      - each_customer_record_contains_up_to_six_product_segments
+      - blank_product_id_means_no_product_slot
+      - product_code_maps_to_edibles_oils_capsules
+
+  Break_Control_Contract:
+    protocol: hierarchical_control_break
+    levels:
+      - state
+      - city
+      - customer
+    semantics:
+      - write_city_subtotal_before_city_break
+      - write_state_subtotal_before_state_break
+      - reset_scoped_totals_on_break
+
+  Report_Pagination_Contract:
+    protocol: fixed_line_report_paging
+    threshold: line_count_gt_50
+    semantics:
+      - force_page_advance
+      - rewrite_page_heading
+      - rewrite_customer_column_headings_when_inside_detail_section
+
+  Field_Lineage_Contract:
+    protocol: deterministic_field_transform_lineage
+    semantics:
+      - FIELD_to_TRANSFORMATION_to_TARGET_FIELD_must_be_explicit
+      - arithmetic_and_lookup_transforms_must_be_traceable
+      - generated_output_fields_must_reference_source_fields_or_constants
+
+  File_IO_Semantics_Contract:
+    protocol: sequential_file_cursor_and_buffer_state
+    semantics:
+      - READ_moves_cursor_and_populates_record_buffer
+      - AT_END_branch_must_capture_flag_transition
+      - REPORT_WRITE_has_line_count_side_effect
+
+  Break_Side_Effect_Ordering_Contract:
+    protocol: ordered_control_break_side_effects
+    semantics:
+      - state_break_sequence_must_preserve_write_then_reset_order
+      - city_break_sequence_must_preserve_write_then_break_then_reset_order
+      - grand_total_publish_is_eof_triggered_not_customer_break_triggered
+
+  Evaluate_Risk_Contract:
+    protocol: branch_default_and_invalid_code_handling
+    semantics:
+      - explicit_other_branch_required
+      - branch_outcomes_must_be_exhaustive_for_known_codes
+
+actions:
+
+  build_merged_input:
+    actor: Merge_Routine
+    objective: consolidate_source_feeds
+
+  canonicalize_record_order:
+    actor: Sort_Routine
+    objective: ensure_stable_break_key_sequence
+
+  construct_customer_detail_rows:
+    actor: Detail_Construct_Routine
+    objective: compute_per_product_and_per_customer_sales
+
+  apply_hierarchical_breaks:
+    actor: Break_Control_Routine
+    objective: maintain_city_state_and_grand_totals
+
+  paginate_report:
+    actor: Line_Count_Check
+    objective: preserve_printable_layout_bounds
+
+  publish_final_totals:
+    actor: Totals_Publish_Routine
+    objective: emit_city_state_and_grand_totals_at_eof
+
+  enforce_field_lineage_traceability:
+    actor: Field_Lineage_Map
+    objective: remove_ambiguous_generation_paths
+
+  preserve_io_state_transitions:
+    actor: File_IO_State_Semantics
+    objective: keep_cursor_buffer_and_flag_behavior_reconstructable
+
+  preserve_break_side_effect_order:
+    actor: Control_Break_Side_Effects
+    objective: prevent_reordered_total_write_and_reset_behavior
+
+runtime_constraints:
+
+  - merged_and_sorted_order_must_match_break_key_hierarchy
+  - month_lookup_requires_two_digit_month_code_01_to_12
+  - unknown_state_or_city_or_rating_codes_are_rendered_as_invalid_labels
+  - detail_rows_written_only_when_product_id_slot_is_non_blank
+  - final_totals_must_publish_once_on_eof_transition
+  - field_transform_lineage_must_be_explicit_for_lookup_and_arithmetic_outputs
+  - report_write_side_effects_must_update_line_count_before_page_guard_evaluation
+  - state_break_side_effect_order_must_not_be_reordered_during_regeneration
+  - evaluate_default_branch_behavior_must_be_preserved_for_invalid_product_codes

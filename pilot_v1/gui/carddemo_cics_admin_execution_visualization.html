@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardDemo CICS Admin Execution Path - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 1480px; }
+    .node.guard { stroke: rgba(255, 80, 80, 0.7); fill: rgba(25, 5, 5, 0.92); }
+    .guard-title { fill: #ff7070; font-size: 11px; font-weight: bold; }
+    .guard-sub { fill: #8a5555; font-size: 9px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge.good { stroke: rgba(68, 255, 136, 0.55); }
+    .edge.warn { stroke: rgba(255, 170, 0, 0.55); }
+    .edge.bad { stroke: rgba(255, 100, 100, 0.6); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 150px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CardDemo CICS Execution Path (Admin User Maintenance)</div>
+    <div class="top-meta">COSGN00C -> COADM01C(Option 1) -> COUSR00C -> COUSR02C/COUSR03C</div>
+    <div class="top-badge">admin_exec · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">EXECUTION SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">Signon and admin menu</span>
+        <span class="code-line" data-node="Step1"><span class="code-key">COSGN00C:</span> authenticate admin user via USRSEC</span>
+        <span class="code-line" data-node="Step2"><span class="code-key">COADM01C:</span> option 1 routes to COUSR00C</span>
+
+        <span class="code-line code-h" style="margin-top:10px">User list browse</span>
+        <span class="code-line" data-node="Step3"><span class="code-key">COUSR00C:</span> STARTBR/READNEXT pages USRSEC list</span>
+        <span class="code-line" data-node="Step4"><span class="code-key">COUSR00C:</span> selection U or D sets CDEMO-CU00-USR-SELECTED</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Update and delete branches</span>
+        <span class="code-line" data-node="Step5"><span class="code-key">COUSR02C:</span> READ UPDATE then REWRITE on PF5</span>
+        <span class="code-line" data-node="Step6"><span class="code-key">COUSR03C:</span> READ UPDATE then DELETE on PF5</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Return controls</span>
+        <span class="code-line" data-node="Return">COUSR02C/03C PF3 return to FROM-PROGRAM; PF12 forces COADM01C</span>
+        <span class="code-line" data-node="Lineage">SEL000nI + USRIDnnI -> target program + SEC-USR-ID mutate/delete</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Error / guard paths</span>
+        <span class="code-line" data-node="AdminAuthFail">COSGN00C: USRSEC NOTFND or not admin user &#8594; RETURN+TRANSID(CC00)</span>
+        <span class="code-line" data-node="AdminInvalidOption">COADM01C: invalid/out-of-range OPTIONI &#8594; redisplay menu</span>
+        <span class="code-line" data-node="AdminEmptyList">COUSR00C: STARTBR NOTFND on USRSEC &#8594; no-users display</span>
+        <span class="code-line" data-node="AdminInvalidKeyList">COUSR00C: EIBAID OTHER &#8594; invalid key, redisplay list</span>
+        <span class="code-line" data-node="AdminUpdateFail">COUSR02C: READ/REWRITE fail (lock/conflict) &#8594; error + redisplay</span>
+        <span class="code-line" data-node="AdminDeleteFail">COUSR03C: READ/DELETE fail (conflict) &#8594; error + redisplay</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">EXECUTION DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1400 1480" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M700 110 L700 190"></path>
+          <path class="edge" d="M700 260 L700 340"></path>
+          <path class="edge" d="M700 410 L700 490"></path>
+
+          <path class="edge warn" d="M700 560 L460 650"></path>
+          <path class="edge warn" d="M700 560 L940 650"></path>
+
+          <path class="edge" d="M460 730 L460 810"></path>
+          <path class="edge" d="M940 730 L940 810"></path>
+
+          <path class="edge.good" d="M460 880 C560 930 620 940 700 990"></path>
+          <path class="edge.good" d="M940 880 C840 930 780 940 700 990"></path>
+
+          <path class="edge trace" d="M700 1050 L700 1140"></path>
+
+          <text class="edge-label" x="708" y="160">admin auth</text>
+          <text class="edge-label" x="708" y="310">option map</text>
+          <text class="edge-label" x="708" y="460">browse list</text>
+          <text class="edge-label" x="555" y="635">selection U</text>
+          <text class="edge-label" x="815" y="635">selection D</text>
+          <text class="edge-label" x="448" y="790">PF5 rewrite</text>
+          <text class="edge-label" x="928" y="790">PF5 delete</text>
+          <text class="edge-label" x="710" y="1130">U/D lineage and return semantics</text>
+
+          <rect class="node core node-hit" data-node="Step1" x="520" y="60" width="360" height="50"></rect>
+          <text class="n-title" x="700" y="90" text-anchor="middle">1) COSGN00C Signon (Admin user)</text>
+
+          <rect class="node core node-hit" data-node="Step2" x="470" y="190" width="460" height="70"></rect>
+          <text class="n-title" x="700" y="225" text-anchor="middle">2) COADM01C Option Resolve</text>
+          <text class="n-title" x="700" y="246" text-anchor="middle">OPTION 1 -> CDEMO-ADMIN-OPT-PGMNAME -> COUSR00C</text>
+
+          <rect class="node worker node-hit" data-node="Step3" x="460" y="340" width="480" height="70"></rect>
+          <text class="n-title" x="700" y="375" text-anchor="middle">3) COUSR00C User List Browse</text>
+          <text class="n-title" x="700" y="396" text-anchor="middle">STARTBR + READNEXT with page markers and PF7/PF8</text>
+
+          <rect class="node worker node-hit" data-node="Step4" x="430" y="490" width="540" height="70"></rect>
+          <text class="n-title" x="700" y="525" text-anchor="middle">4) COUSR00C Row Selection</text>
+          <text class="n-title" x="700" y="546" text-anchor="middle">SEL000nI + USRIDnnI -> CDEMO-CU00-USR-SEL-FLG/SELECTED</text>
+
+          <rect class="node worker node-hit" data-node="Step5" x="270" y="650" width="380" height="80"></rect>
+          <text class="n-title" x="460" y="684" text-anchor="middle">5) COUSR02C (Update)</text>
+          <text class="n-title" x="460" y="705" text-anchor="middle">READ USRSEC (UPDATE) -> REWRITE on PF5</text>
+          <text class="n-title" x="460" y="726" text-anchor="middle">field validation: fname/lname/pwd/type</text>
+
+          <rect class="node worker node-hit" data-node="Step6" x="750" y="650" width="380" height="80"></rect>
+          <text class="n-title" x="940" y="684" text-anchor="middle">6) COUSR03C (Delete)</text>
+          <text class="n-title" x="940" y="705" text-anchor="middle">READ USRSEC (UPDATE) -> DELETE on PF5</text>
+          <text class="n-title" x="940" y="726" text-anchor="middle">confirm path returns success message</text>
+
+          <rect class="node aux node-hit" data-node="Return" x="460" y="810" width="480" height="70"></rect>
+          <text class="n-title" x="700" y="845" text-anchor="middle">Return Controls</text>
+          <text class="n-title" x="700" y="866" text-anchor="middle">PF3 -> FROM-PROGRAM or COADM01C | PF12 -> COADM01C</text>
+
+          <rect class="node aux node-hit" data-node="Lineage" x="500" y="990" width="400" height="60"></rect>
+          <text class="n-title" x="700" y="1024" text-anchor="middle">Field Lineage + Side-Effect Order</text>
+          <text class="n-title" x="700" y="1045" text-anchor="middle">selection flags -> target program -> SEC-USR-ID mutation</text>
+
+          <rect class="node storage node-hit" data-node="Lineage" x="530" y="1140" width="340" height="50"></rect>
+          <text class="n-title" x="700" y="1170" text-anchor="middle">USRSEC state after rewrite/delete</text>
+
+          <!-- Guard path edges -->
+          <path class="edge bad" d="M520 85 L410 85"></path>
+          <text class="edge-label" x="415" y="78">auth/type fail</text>
+          <path class="edge bad" d="M470 225 L390 220"></path>
+          <text class="edge-label" x="360" y="213">invalid option</text>
+          <path class="edge bad" d="M930 375 L1050 370"></path>
+          <text class="edge-label" x="942" y="363">empty list</text>
+          <path class="edge bad" d="M950 530 L1050 510"></path>
+          <text class="edge-label" x="942" y="498">invalid key</text>
+          <path class="edge bad" d="M310 730 L290 810"></path>
+          <text class="edge-label" x="267" y="773">update fail</text>
+          <path class="edge bad" d="M1000 730 L1050 810"></path>
+          <text class="edge-label" x="1002" y="773">delete fail</text>
+
+          <!-- Guard nodes: left side -->
+          <rect class="node guard node-hit" data-node="AdminAuthFail" x="30" y="55" width="380" height="65"></rect>
+          <text class="guard-title" x="220" y="77" text-anchor="middle">Admin Auth Fail</text>
+          <text class="guard-sub" x="220" y="93" text-anchor="middle">USRSEC NOTFND or USER-TYPE not ADMIN</text>
+          <text class="guard-sub" x="220" y="107" text-anchor="middle">CCDA-MSG set &#8594; RETURN+TRANSID(CC00)</text>
+
+          <rect class="node guard node-hit" data-node="AdminInvalidOption" x="30" y="193" width="360" height="65"></rect>
+          <text class="guard-title" x="210" y="215" text-anchor="middle">Invalid Option</text>
+          <text class="guard-sub" x="210" y="230" text-anchor="middle">out-of-range OPTIONI in COADM01C</text>
+          <text class="guard-sub" x="210" y="244" text-anchor="middle">WS-RETURN-FLAG &#8594; redisplay menu</text>
+
+          <rect class="node guard node-hit" data-node="AdminUpdateFail" x="30" y="780" width="260" height="65"></rect>
+          <text class="guard-title" x="160" y="802" text-anchor="middle">Update Fail</text>
+          <text class="guard-sub" x="160" y="817" text-anchor="middle">READ/REWRITE USRSEC conflict</text>
+          <text class="guard-sub" x="160" y="831" text-anchor="middle">WS-ERR-FLAG &#8594; redisplay form</text>
+
+          <!-- Guard nodes: right side -->
+          <rect class="node guard node-hit" data-node="AdminEmptyList" x="1052" y="340" width="330" height="65"></rect>
+          <text class="guard-title" x="1217" y="362" text-anchor="middle">Empty List Guard</text>
+          <text class="guard-sub" x="1217" y="377" text-anchor="middle">STARTBR NOTFND on USRSEC</text>
+          <text class="guard-sub" x="1217" y="391" text-anchor="middle">WS-PGMSRCH-NOTFND &#8594; no-users display</text>
+
+          <rect class="node guard node-hit" data-node="AdminInvalidKeyList" x="1052" y="478" width="330" height="65"></rect>
+          <text class="guard-title" x="1217" y="500" text-anchor="middle">Invalid Key Guard</text>
+          <text class="guard-sub" x="1217" y="515" text-anchor="middle">EIBAID OTHER on COUSR00C</text>
+          <text class="guard-sub" x="1217" y="529" text-anchor="middle">invalid key msg &#8594; redisplay list</text>
+
+          <rect class="node guard node-hit" data-node="AdminDeleteFail" x="1052" y="780" width="260" height="65"></rect>
+          <text class="guard-title" x="1182" y="802" text-anchor="middle">Delete Fail</text>
+          <text class="guard-sub" x="1182" y="817" text-anchor="middle">READ/DELETE USRSEC conflict</text>
+          <text class="guard-sub" x="1182" y="831" text-anchor="middle">WS-ERR-FLAG &#8594; redisplay form</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Scope</span><span class="v">Admin user maintenance execution path.</span></div>
+      <div class="kv"><span class="k">Path</span><span class="v">COSGN00C -> COADM01C -> COUSR00C -> COUSR02C/COUSR03C.</span></div>
+      <div class="kv"><span class="k">Semantic Goal</span><span class="v">Deterministic U/D branch routing and update/delete side effects on USRSEC.</span></div>
+      <div class="kv"><span class="k">Source Programs</span><span class="v">COSGN00C, COADM01C, COUSR00C, COUSR02C, COUSR03C.</span></div>
+    `;
+
+    const details = {
+      Step1: {
+        type: "core",
+        desc: "Admin signon succeeds and context enters admin menu branch.",
+        links: "USRSEC auth -> admin user type -> admin menu route"
+      },
+      Step2: {
+        type: "core",
+        desc: "COADM01C parses option input and maps option 1 to COUSR00C.",
+        links: "OPTIONI -> CDEMO-ADMIN-OPT-PGMNAME(1) -> XCTL"
+      },
+      Step3: {
+        type: "worker",
+        desc: "COUSR00C browses USRSEC with STARTBR/READNEXT/READPREV and maintains page markers.",
+        links: "SEC-USR-ID -> CDEMO-CU00-USRID-FIRST/LAST/PAGE"
+      },
+      Step4: {
+        type: "worker",
+        desc: "Selection flag U or D on a row determines target maintenance program and preserves selected user id.",
+        links: "SEL000nI + USRIDnnI -> CDEMO-CU00-USR-SEL-FLG/SELECTED"
+      },
+      Step5: {
+        type: "worker",
+        desc: "COUSR02C loads selected user, validates required fields, then REWRITEs USRSEC on PF5.",
+        links: "USRIDINI -> SEC-USR-ID -> READ/REWRITE USRSEC"
+      },
+      Step6: {
+        type: "worker",
+        desc: "COUSR03C loads selected user and DELETEs USRSEC record on PF5.",
+        links: "USRIDINI -> SEC-USR-ID -> READ/DELETE USRSEC"
+      },
+      Return: {
+        type: "aux",
+        desc: "PF3 in COUSR02C/03C returns to FROM-PROGRAM if set, else COADM01C; PF12 explicitly routes to COADM01C.",
+        links: "EIBAID(PF3/PF12) -> CDEMO-TO-PROGRAM -> XCTL"
+      },
+      Lineage: {
+        type: "aux",
+        desc: "Routing side effects happen before XCTL and selected user id remains the key lineage anchor across branches.",
+        links: "selection -> target -> file mutation semantics"
+      },
+      AdminAuthFail: { type: "guard", desc: "COSGN00C receives USRSEC NOTFND or user-type is not ADMIN. CCDA-MSG populated with error. Program returns with TRANSID(CC00) to signon screen loop.", links: "USRSEC NOTFND or USER-TYPE != ADMIN -> CCDA-MSG -> RETURN+TRANSID" },
+      AdminInvalidOption: { type: "guard", desc: "COADM01C receives non-numeric or out-of-range OPTIONI. WS-RETURN-FLAG set, error message populated, admin menu redisplayed without XCTL.", links: "OPTIONI not in 1..9 -> WS-RETURN-FLAG -> SEND MAP redisplay" },
+      AdminEmptyList: { type: "guard", desc: "COUSR00C STARTBR on USRSEC returns NOTFND. WS-PGMSRCH-NOTFND flag set and no-users-found message displayed. Browse controls suppressed.", links: "STARTBR NOTFND -> WS-PGMSRCH-NOTFND -> SEND MAP no-users" },
+      AdminInvalidKeyList: { type: "guard", desc: "COUSR00C receives unrecognized EIBAID. Invalid key error sent and user list page redisplays. No selection processed, no XCTL issued.", links: "EIBAID OTHER -> WS-ERR-FLAG -> SEND MAP list redisplay" },
+      AdminUpdateFail: { type: "guard", desc: "COUSR02C READ UPDATE returns NOTFND or REWRITE fails (lock contention, file conflict). Error flag set, detail map cleared, form redisplayed with error message.", links: "READ NOTFND or REWRITE conflict -> WS-ERR-FLAG -> SEND MAP redisplay" },
+      AdminDeleteFail: { type: "guard", desc: "COUSR03C READ UPDATE returns NOTFND or DELETE fails (lock contention, file conflict). Error flag set, form redisplayed with error message.", links: "READ NOTFND or DELETE conflict -> WS-ERR-FLAG -> SEND MAP redisplay" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) { panel.innerHTML = defaultHtml; return; }
+      const stepLabel = d.type === "guard" ? "Guard Point" : "Step";
+      const lineageLabel = d.type === "guard" ? "Trigger" : "Lineage";
+      panel.innerHTML = `
+        <div class="kv"><span class="k">${stepLabel}</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Behavior</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">${lineageLabel}</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

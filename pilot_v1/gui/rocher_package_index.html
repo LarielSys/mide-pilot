@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocher Complete Mapping Package</title>
+  <style>
+    :root {
+      --bg: #030a12;
+      --panel: #0b1d32;
+      --accent: #00d4ff;
+      --amber: #ffaa00;
+      --text: #c9dbe8;
+      --muted: #7e9bb5;
+      --border: rgba(0, 212, 255, 0.2);
+      --ok: #62ff99;
+      --warn: #ffd27a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Consolas", "Courier New", monospace;
+      background: radial-gradient(circle at 20% 0%, #0f2b48 0%, var(--bg) 45%, #01050b 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(2, 10, 18, 0.92);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    }
+    .head {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.01));
+    }
+    .title { color: var(--accent); font-size: 20px; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); font-size: 12px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      padding: 14px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(11, 29, 50, 0.75);
+      padding: 12px;
+    }
+    .card h3 { margin: 0 0 8px 0; color: var(--accent); font-size: 14px; }
+    .card p { margin: 0 0 10px 0; color: var(--text); font-size: 12px; line-height: 1.5; }
+    .meta { color: var(--muted); font-size: 11px; margin-bottom: 10px; }
+    .open {
+      display: inline-block;
+      text-decoration: none;
+      color: var(--accent);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+    .open:hover { background: rgba(0, 212, 255, 0.14); }
+    .foot {
+      border-top: 1px solid var(--border);
+      padding: 12px 14px;
+      display: grid;
+      gap: 5px;
+      font-size: 12px;
+    }
+    .risk { color: var(--warn); }
+    .impact { color: var(--ok); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="head">
+      <div class="title">ROCHER Complete Mapping Package</div>
+      <div class="subtitle">Customer-ready architecture diagrams and executive report for the Mexico road deterioration platform.</div>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h3>System Landscape Diagram</h3>
+        <p>Frontend, API, MariaDB, OCI Object Storage, and AI pipeline boundaries with integration surfaces.</p>
+        <div class="meta">Architecture view</div>
+        <a class="open" href="rocher_system_landscape_visualization.html" target="_blank" rel="noopener">Open Diagram</a>
+      </article>
+
+      <article class="card">
+        <h3>End-to-End Execution Diagram</h3>
+        <p>Operational flow from upload through AI processing, report generation, and download paths including guardrails.</p>
+        <div class="meta">Runtime/transaction view</div>
+        <a class="open" href="rocher_end_to_end_execution_visualization.html" target="_blank" rel="noopener">Open Diagram</a>
+      </article>
+
+      <article class="card">
+        <h3>Data and AI Pipeline Diagram</h3>
+        <p>Schema-aligned data lineage across proyectos, bitacora_carga, reportes, and YOLO model inference lifecycle.</p>
+        <div class="meta">Data lineage + ML view</div>
+        <a class="open" href="rocher_data_ai_pipeline_visualization.html" target="_blank" rel="noopener">Open Diagram</a>
+      </article>
+
+      <article class="card">
+        <h3>Complete Executive Report</h3>
+        <p>Executive So What, risk/business impact, effort saved, one-line summaries, and full technical narrative with links to diagrams.</p>
+        <div class="meta">Report + PDF export view</div>
+        <a class="open" href="rocher_complete_mapping_report.html" target="_blank" rel="noopener">Open Report</a>
+      </article>
+    </section>
+
+    <footer class="foot">
+      <div class="risk">Overall System Risk: Medium-High (monetary/operational dependency on backend and storage integrity)</div>
+      <div class="impact">Business Impact: Automated mapping accelerates delivery review and reduces manual architecture tracing effort.</div>
+    </footer>
+  </main>
+</body>
+</html>

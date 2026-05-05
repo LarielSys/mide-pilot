@@ -1,0 +1,112 @@
+@MOSS:CBSA_OTFN_BNK1TFN_Execution_v1
+@R:~/mide-pilot/pilot_v1/specs/cbsa_otfn_execution/
+
+systems:
+
+  OTFN_Transaction_Entry:
+    role: BNKMENU action 7 dispatch target entering transfer funds flow
+    runtime: cics_transaction_flow
+    transid: OTFN
+    program_id: BNK1TFN
+    depends_on: Program_BNK1TFN, Transfer_Funds_Map, Aid_Key_Router
+
+  Program_BNK1TFN:
+    role: transfer funds program with account pair validation and XFRFUN linkage
+    runtime: cics_cobol
+    program_id: BNK1TFN
+    transid: OTFN
+    mapset: BNK1TFM
+    depends_on: Transfer_Funds_Map, Process_Map_Controller, Edit_Data_Validator, Transfer_Link_XFRFUN, Return_Paths, Guard_Paths
+
+  Transfer_Funds_Map:
+    role: BMS map for from-account to-account and amount transfer request
+    runtime: cics_bms
+    mapset: BNK1TFM
+    map: BNK1TFO
+    key_fields: FACCNOI, TACCNOI, AMOUNTI, FSORTCO, TSORTCO, FACTBALO, TACTBALO
+
+  Aid_Key_Router:
+    role: EIBAID branching for BNK1TFN
+    runtime: cics_control_semantics
+    keys: DFHENTER, DFHPF3, DFHPF12, DFHCLEAR, OTHER
+    semantics:
+      - enter_process_map
+      - pf3_return_to_omen
+      - pf12_terminate_session
+      - clear_erase_and_return_otfn
+      - other_invalid_key_redisplay
+
+  Process_Map_Controller:
+    role: PM010 receives map then validates and executes transfer
+    runtime: semantic_contract
+    sequence:
+      - receive_map
+      - edit_data
+      - if_valid_transfer_funds
+      - send_map
+
+  Edit_Data_Validator:
+    role: transfer input validation gate
+    runtime: semantic_contract
+    checks:
+      - from_account_numeric
+      - to_account_numeric
+      - from_and_to_are_different
+      - no_zero_placeholder_account
+      - amount_format_is_valid
+
+  Transfer_Link_XFRFUN:
+    role: transfer operation link for validated transfer request
+    runtime: cics_link_contract
+    target_program: XFRFUN
+    call_site: GCD010
+    mode: SYNCONRETURN
+
+  Return_Paths:
+    role: return semantics across BNK1TFN cycle
+    runtime: cics_return_semantics
+    paths:
+      - pf3_to_omen
+      - cycle_return_to_otfn
+
+  Guard_Paths:
+    role: explicit non-happy-path semantics for BNK1TFN
+    runtime: semantic_contract
+    guards:
+      - invalid_key_message_and_alarm
+      - validation_failure_message
+      - xfrfun_link_failure_to_abndproc
+      - transfer_fail_codes_1_2_3_4_other
+      - return_resp_not_normal_to_abndproc
+
+  Field_Lineage_Map:
+    role: field lineage across transfer request and resulting balances
+    runtime: semantic_contract
+    lineage_rules:
+      - faccnoi_to_subpgm_faccno
+      - taccnoi_to_subpgm_taccno
+      - amount_to_subpgm_amt
+      - xfrfun_output_to_sortcodes_and_balances
+
+dependencies:
+  - OTFN_Transaction_Entry -> Program_BNK1TFN
+  - Program_BNK1TFN -> Aid_Key_Router
+  - Program_BNK1TFN -> Process_Map_Controller
+  - Process_Map_Controller -> Edit_Data_Validator
+  - Process_Map_Controller -> Transfer_Link_XFRFUN
+  - Program_BNK1TFN -> Return_Paths
+  - Program_BNK1TFN -> Guard_Paths
+  - Process_Map_Controller -> Field_Lineage_Map
+  - Guard_Paths -> Field_Lineage_Map
+
+interfaces:
+  - transfer_interface:
+      from: Program_BNK1TFN
+      to: Transfer_Link_XFRFUN
+      mode: cics_link_synconreturn
+      keys: FACCNOI, TACCNOI, AMOUNTI
+
+runtime_constraints:
+  - scope_is_otfn_bnk1tfn_only: true
+  - no_non_otfn_program_semantics_except_explicit_link_targets: true
+  - transfer_operation_is_validation_guarded: true

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COBOL SAM1 SAM2 - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .top-link {
+      border: 1px solid rgba(68, 255, 136, 0.28);
+      color: var(--green);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      text-decoration: none;
+    }
+    .top-link:hover {
+      background: rgba(68, 255, 136, 0.08);
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    .note { color: var(--green); }
+
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 980px; }
+    .node.drill { stroke: rgba(0, 212, 255, 0.9); fill: rgba(0, 30, 50, 0.92); }
+    .node-drill-label { fill: var(--cyan); font-size: 12px; font-weight: bold; }
+    .node-drill-sub { fill: #7a99b5; font-size: 10px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 110px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ COBOL_SAM1_SAM2_Workflow_v1</div>
+    <div class="top-meta">32 systems · 5 interfaces · 8 actions</div>
+    <div class="top-actions">
+      <a class="top-link" href="cobol_sam1_execution_visualization.html">SAM1 view</a>
+      <a class="top-link" href="cobol_sam2_execution_visualization.html">SAM2 view</a>
+      <div class="top-badge">overview_layer · 2026-04-23</div>
+    </div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">MOSS ARCHITECTURE SOURCE</div>
+      <div class="pane-body" id="mossSource">
+        <span class="code-line code-h">@MOSS:COBOL_SAM1_SAM2_Workflow_v1</span>
+        <span class="code-line"><span class="code-key">@R:</span> ~/mide-pilot/pilot_v1/specs/cobol_sam1_sam2/</span>
+        <br>
+        <span class="code-line code-h">systems:</span>
+        <span class="code-line" data-node="JCL_Run_Job"><span class="code-key">JCL_Run_Job:</span> compile, link, then run batch sequence</span>
+        <span class="code-line" data-node="Compile_SAM2_Step"><span class="code-key">Compile_SAM2_Step:</span> IGYCRCTL on SAM2</span>
+        <span class="code-line" data-node="Compile_SAM1_Step"><span class="code-key">Compile_SAM1_Step:</span> IGYCRCTL on SAM1</span>
+        <span class="code-line" data-node="Link_SAM2_Step"><span class="code-key">Link_SAM2_Step:</span> IEWL load member SAM2</span>
+        <span class="code-line" data-node="Link_SAM1_Step"><span class="code-key">Link_SAM1_Step:</span> IEWL load member SAM1</span>
+        <span class="code-line" data-node="Execute_SAM1_Step"><span class="code-key">Execute_SAM1_Step:</span> allocate datasets and run SAM1</span>
+        <span class="code-line" data-node="COBOL_Program_SAM1"><span class="code-key">COBOL_Program_SAM1:</span> driver for sorted transaction dispatch</span>
+        <span class="code-line" data-node="Transaction_Dispatch_Controller"><span class="code-key">Transaction_Dispatch_Controller:</span> [UPDATE] [ADD] [DELETE] or error</span>
+        <span class="code-line" data-node="Update_Transaction_Handler"><span class="code-key">Update_Transaction_Handler:</span> position file then CALL SAM2</span>
+        <span class="code-line" data-node="Add_Transaction_Handler"><span class="code-key">Add_Transaction_Handler:</span> blank record create path</span>
+        <span class="code-line" data-node="Delete_Transaction_Handler"><span class="code-key">Delete_Transaction_Handler:</span> matched record suppression path</span>
+        <span class="code-line" data-node="Customer_Positioning_Controller"><span class="code-key">Customer_Positioning_Controller:</span> copy-forward until key reached</span>
+        <span class="code-line" data-node="COBOL_Subroutine_SAM2"><span class="code-key">COBOL_Subroutine_SAM2:</span> callable update subroutine</span>
+        <span class="code-line" data-node="Transaction_Validation_Routine"><span class="code-key">Transaction_Validation_Routine:</span> code, field, action, numeric checks</span>
+        <span class="code-line" data-node="Customer_Update_Engine"><span class="code-key">Customer_Update_Engine:</span> mutate customer fields</span>
+        <span class="code-line" data-node="CPU_Crunch_Path"><span class="code-key">CPU_Crunch_Path:</span> special CRUNCH averaging loop</span>
+        <span class="code-line" data-node="Transaction_File"><span class="code-key">Transaction_File:</span> SAMPLE.TRANFILE</span>
+        <span class="code-line" data-node="Customer_Input_File"><span class="code-key">Customer_Input_File:</span> SAMPLE.CUSTFILE</span>
+        <span class="code-line" data-node="Customer_Output_File"><span class="code-key">Customer_Output_File:</span> SAMPLE.CUSTOUT</span>
+        <span class="code-line" data-node="Report_File"><span class="code-key">Report_File:</span> SAMPLE.CUSTRPT</span>
+        <br>
+        <span class="code-line code-h">runtime_constraints:</span>
+        <span class="code-line">- workflow_spans_jcl_and_cobol_layers: true</span>
+        <span class="code-line">- SAM2_is_call_subroutine_not_peer_batch_job: true</span>
+        <span class="code-line">- EOF_on_transaction_file_must_copy_remaining_customer_records: true</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Execution drilldowns</span>
+        <span class="code-line" data-node="SAM1Exec">&#9654; SAM1 Execution Path: read loop &#8594; dispatch &#8594; position &#8594; update / add / delete</span>
+        <span class="code-line" data-node="SAM2Exec">&#9654; SAM2 Execution Path: validation &#8594; update engine / CRUNCH loop</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">COMPONENT DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1200 900" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M175 70 L175 130"></path>
+          <text class="edge-label" x="184" y="102">compile SAM2</text>
+          <path class="edge" d="M175 175 L175 235"></path>
+          <text class="edge-label" x="184" y="208">compile SAM1</text>
+          <path class="edge" d="M175 280 L175 340"></path>
+          <text class="edge-label" x="184" y="312">link SAM2</text>
+          <path class="edge" d="M175 385 L175 445"></path>
+          <text class="edge-label" x="184" y="418">link SAM1</text>
+          <path class="edge" d="M175 490 L175 550"></path>
+          <text class="edge-label" x="184" y="523">run SAM1</text>
+
+          <path class="edge" d="M255 575 L380 575"></path>
+          <text class="edge-label" x="295" y="566">program entry</text>
+
+          <path class="edge" d="M500 185 L500 245"></path>
+          <text class="edge-label" x="509" y="218">main loop</text>
+          <path class="edge" d="M500 290 L500 350"></path>
+          <text class="edge-label" x="509" y="322">dispatch by code</text>
+          <path class="edge" d="M500 395 L390 470"></path>
+          <text class="edge-label" x="405" y="435">[UPDATE]</text>
+          <path class="edge" d="M500 395 L500 470"></path>
+          <text class="edge-label" x="509" y="435">[ADD]</text>
+          <path class="edge" d="M500 395 L610 470"></path>
+          <text class="edge-label" x="555" y="435">[DELETE]</text>
+          <path class="edge" d="M560 385 L720 385"></path>
+          <text class="edge-label" x="610" y="377">[OUT_OF_SEQUENCE] or [OTHER]</text>
+
+          <path class="edge" d="M390 520 L390 585"></path>
+          <text class="edge-label" x="399" y="553">position then call</text>
+          <path class="edge" d="M500 520 L500 585"></path>
+          <text class="edge-label" x="509" y="553">new blank record</text>
+          <path class="edge" d="M610 520 L610 585"></path>
+          <text class="edge-label" x="619" y="553">skip matched record</text>
+
+          <path class="edge" d="M460 610 L625 610"></path>
+          <text class="edge-label" x="520" y="602">CALL SAM2</text>
+
+          <path class="edge" d="M755 575 L755 515"></path>
+          <text class="edge-label" x="764" y="548">[CRUNCH]</text>
+          <path class="edge" d="M825 585 L825 515"></path>
+          <text class="edge-label" x="834" y="548">[NON_CRUNCH]</text>
+          <path class="edge" d="M825 470 L825 405"></path>
+          <text class="edge-label" x="834" y="438">validate</text>
+          <path class="edge" d="M825 350 L825 285"></path>
+          <text class="edge-label" x="834" y="318">[TRAN_OK]</text>
+          <path class="edge" d="M770 395 L720 395"></path>
+          <text class="edge-label" x="723" y="387">[TRAN_NOT_OK]</text>
+
+          <path class="edge" d="M560 155 L860 155"></path>
+          <text class="edge-label" x="645" y="147">reads and writes through file routines</text>
+          <path class="edge" d="M560 190 L860 235"></path>
+          <text class="edge-label" x="650" y="218">EOF copy remainder</text>
+          <path class="edge" d="M560 225 L860 315"></path>
+          <text class="edge-label" x="650" y="288">report output</text>
+          <path class="edge trace" d="M540 610 L860 395"></path>
+          <text class="edge-label" x="690" y="500">sorted merge positioning</text>
+
+          <rect class="node core node-hit" data-node="JCL_Run_Job" x="90" y="20" width="170" height="50"></rect>
+          <text class="n-title" x="175" y="48" text-anchor="middle">RUN.jcl</text>
+
+          <rect class="node aux node-hit" data-node="Compile_SAM2_Step" x="90" y="130" width="170" height="45"></rect>
+          <text class="n-title" x="175" y="158" text-anchor="middle">Compile SAM2</text>
+
+          <rect class="node aux node-hit" data-node="Compile_SAM1_Step" x="90" y="235" width="170" height="45"></rect>
+          <text class="n-title" x="175" y="263" text-anchor="middle">Compile SAM1</text>
+
+          <rect class="node aux node-hit" data-node="Link_SAM2_Step" x="90" y="340" width="170" height="45"></rect>
+          <text class="n-title" x="175" y="368" text-anchor="middle">Link SAM2</text>
+
+          <rect class="node aux node-hit" data-node="Link_SAM1_Step" x="90" y="445" width="170" height="45"></rect>
+          <text class="n-title" x="175" y="473" text-anchor="middle">Link SAM1</text>
+
+          <rect class="node core node-hit" data-node="Execute_SAM1_Step" x="90" y="550" width="170" height="50"></rect>
+          <text class="n-title" x="175" y="578" text-anchor="middle">Execute SAM1</text>
+
+          <rect class="node core node-hit" data-node="COBOL_Program_SAM1" x="380" y="130" width="240" height="55"></rect>
+          <text class="n-title" x="500" y="162" text-anchor="middle">SAM1 Main Program</text>
+
+          <rect class="node worker node-hit" data-node="Transaction_Read_Loop" x="410" y="245" width="180" height="45"></rect>
+          <text class="n-title" x="500" y="273" text-anchor="middle">Transaction Read Loop</text>
+
+          <rect class="node worker node-hit" data-node="Transaction_Dispatch_Controller" x="390" y="350" width="220" height="45"></rect>
+          <text class="n-title" x="500" y="378" text-anchor="middle">Dispatch Controller</text>
+
+          <rect class="node aux node-hit" data-node="Update_Transaction_Handler" x="320" y="470" width="140" height="50"></rect>
+          <text class="n-title" x="390" y="500" text-anchor="middle">Update Handler</text>
+
+          <rect class="node aux node-hit" data-node="Add_Transaction_Handler" x="430" y="470" width="140" height="50"></rect>
+          <text class="n-title" x="500" y="500" text-anchor="middle">Add Handler</text>
+
+          <rect class="node aux node-hit" data-node="Delete_Transaction_Handler" x="540" y="470" width="140" height="50"></rect>
+          <text class="n-title" x="610" y="500" text-anchor="middle">Delete Handler</text>
+
+          <rect class="node storage node-hit" data-node="Error_Reporting_Routine" x="720" y="360" width="160" height="50"></rect>
+          <text class="n-title" x="800" y="390" text-anchor="middle">Error Reporting</text>
+
+          <rect class="node worker node-hit" data-node="Customer_Positioning_Controller" x="365" y="585" width="175" height="50"></rect>
+          <text class="n-title" x="452" y="615" text-anchor="middle">Customer Positioning</text>
+
+          <rect class="node core node-hit" data-node="COBOL_Subroutine_SAM2" x="625" y="585" width="260" height="50"></rect>
+          <text class="n-title" x="755" y="615" text-anchor="middle">SAM2 Subroutine</text>
+
+          <rect class="node aux node-hit" data-node="CPU_Crunch_Path" x="680" y="465" width="150" height="50"></rect>
+          <text class="n-title" x="755" y="495" text-anchor="middle">CPU Crunch Path</text>
+
+          <rect class="node worker node-hit" data-node="Transaction_Validation_Routine" x="750" y="350" width="150" height="50"></rect>
+          <text class="n-title" x="825" y="380" text-anchor="middle">Validation</text>
+
+          <rect class="node worker node-hit" data-node="Customer_Update_Engine" x="750" y="235" width="150" height="50"></rect>
+          <text class="n-title" x="825" y="265" text-anchor="middle">Update Engine</text>
+
+          <rect class="node storage node-hit" data-node="File_Open_And_Close_Routines" x="860" y="130" width="190" height="50"></rect>
+          <text class="n-title" x="955" y="160" text-anchor="middle">Open / Close Routines</text>
+
+          <rect class="node storage node-hit" data-node="Remaining_Record_Copy_Routine" x="860" y="210" width="190" height="50"></rect>
+          <text class="n-title" x="955" y="240" text-anchor="middle">Remaining Record Copy</text>
+
+          <rect class="node storage node-hit" data-node="Report_Statistics" x="860" y="290" width="190" height="50"></rect>
+          <text class="n-title" x="955" y="320" text-anchor="middle">Report Statistics</text>
+
+          <rect class="node storage node-hit" data-node="Transaction_File" x="980" y="380" width="130" height="45"></rect>
+          <text class="n-title" x="1045" y="408" text-anchor="middle">TRANFILE</text>
+
+          <rect class="node storage node-hit" data-node="Customer_Input_File" x="980" y="445" width="130" height="45"></rect>
+          <text class="n-title" x="1045" y="473" text-anchor="middle">CUSTFILE</text>
+
+          <rect class="node storage node-hit" data-node="Customer_Output_File" x="980" y="510" width="130" height="45"></rect>
+          <text class="n-title" x="1045" y="538" text-anchor="middle">CUSTOUT</text>
+
+          <rect class="node storage node-hit" data-node="Report_File" x="980" y="575" width="130" height="45"></rect>
+          <text class="n-title" x="1045" y="603" text-anchor="middle">CUSTRPT</text>
+
+          <!-- Drilldown edges -->
+          <path class="edge good" d="M175 600 C175 690 250 730 300 770"></path>
+          <path class="edge warn" d="M755 635 C755 690 850 730 900 770"></path>
+          <text class="edge-label" x="178" y="698">SAM1 exec &#9654;</text>
+          <text class="edge-label" x="758" y="698">SAM2 exec &#9654;</text>
+
+          <!-- SAM1 Execution Drilldown -->
+          <rect class="node drill node-hit" data-node="SAM1Exec" data-href="cobol_sam1_execution_visualization.html" x="120" y="770" width="360" height="70" style="cursor:pointer"></rect>
+          <text class="node-drill-label" x="300" y="797" text-anchor="middle">&#9654; SAM1 Execution Path</text>
+          <text class="node-drill-sub" x="300" y="815" text-anchor="middle">read loop &#8594; dispatch &#8594; position &#8594; update / add / delete</text>
+          <text class="node-drill-sub" x="300" y="830" text-anchor="middle">[ click to open ]</text>
+
+          <!-- SAM2 Execution Drilldown -->
+          <rect class="node drill node-hit" data-node="SAM2Exec" data-href="cobol_sam2_execution_visualization.html" x="720" y="770" width="360" height="70" style="cursor:pointer"></rect>
+          <text class="node-drill-label" x="900" y="797" text-anchor="middle">&#9654; SAM2 Execution Path</text>
+          <text class="node-drill-sub" x="900" y="815" text-anchor="middle">validation &#8594; update engine / CRUNCH loop</text>
+          <text class="node-drill-sub" x="900" y="830" text-anchor="middle">[ click to open ]</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">COMPONENT DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Workflow</span><span class="v">RUN.jcl orchestrates compile, link, and SAM1 execution.</span></div>
+      <div class="kv"><span class="k">Driver</span><span class="v">SAM1 reads sorted transactions, positions through customer input, and writes report/output files.</span></div>
+      <div class="kv"><span class="k">Subroutine</span><span class="v">SAM2 is a called update engine, not a separate peer batch job.</span></div>
+      <div class="kv"><span class="k">Decision Core</span><span class="v">SAM1 dispatches [UPDATE], [ADD], [DELETE], or error; SAM2 branches [CRUNCH] vs non-crunch validation/apply.</span></div>
+      <br>
+      <div class="note">Source spec:</div>
+      <div>MIDE/pilot_v1/specs/cobol_sam1_sam2/architecture.moss</div>
+    `;
+
+    const details = {
+      JCL_Run_Job: { type: "core", desc: "Top-level JCL batch sequence that compiles SAM2, compiles SAM1, links both, then executes SAM1.", links: "Compile_SAM2_Step, Compile_SAM1_Step, Link_SAM2_Step, Link_SAM1_Step, Execute_SAM1_Step" },
+      Compile_SAM2_Step: { type: "aux", desc: "IGYCRCTL compile step for subroutine SAM2 using the sample copybook library.", links: "JCL_Run_Job, COBOL_Subroutine_SAM2" },
+      Compile_SAM1_Step: { type: "aux", desc: "IGYCRCTL compile step for SAM1 using copybooks and local library allocations.", links: "JCL_Run_Job, COBOL_Program_SAM1" },
+      Link_SAM2_Step: { type: "aux", desc: "IEWL link step producing the SAM2 load module.", links: "Compile_SAM2_Step, Link_SAM1_Step" },
+      Link_SAM1_Step: { type: "aux", desc: "IEWL link step producing the SAM1 load module with SAM2 available in the load library path.", links: "Compile_SAM1_Step, Link_SAM2_Step, Execute_SAM1_Step" },
+      Execute_SAM1_Step: { type: "core", desc: "Run step that allocates customer, transaction, output, and report datasets and invokes SAM1.", links: "COBOL_Program_SAM1, Transaction_File, Customer_Input_File, Customer_Output_File, Report_File" },
+      COBOL_Program_SAM1: { type: "core", desc: "Main sequential update driver. Opens files, initializes report, loops over transactions, dispatches by code, then writes summary totals.", links: "File_Open_And_Close_Routines, Transaction_Read_Loop, Transaction_Dispatch_Controller, Report_Statistics" },
+      Transaction_Read_Loop: { type: "worker", desc: "Reads transaction records until WS-TRAN-EOF is set, and on EOF copies remaining customer records forward to output.", links: "Transaction_File, Remaining_Record_Copy_Routine, EOF_Controllers" },
+      Transaction_Dispatch_Controller: { type: "worker", desc: "Explicit decision node: [OUT_OF_SEQUENCE] -> error, [UPDATE] -> update handler, [ADD] -> add handler, [DELETE] -> delete handler, [OTHER] -> invalid-code error.", links: "Update_Transaction_Handler, Add_Transaction_Handler, Delete_Transaction_Handler, Error_Reporting_Routine" },
+      Update_Transaction_Handler: { type: "aux", desc: "Positions customer cursor to the transaction key and, on match, CALLs SAM2. Errors out on missing key or SAM2 failure.", links: "Customer_Positioning_Controller, COBOL_Subroutine_SAM2, Error_Reporting_Routine" },
+      Add_Transaction_Handler: { type: "aux", desc: "Creates a blank customer record when the key is absent, initializes balances and month values, then writes it to output.", links: "Customer_Positioning_Controller, Customer_Output_File, Error_Reporting_Routine" },
+      Delete_Transaction_Handler: { type: "aux", desc: "Confirms a matching key exists, then deletes by advancing input without writing the matched customer record.", links: "Customer_Positioning_Controller, Customer_Input_File, Error_Reporting_Routine" },
+      Customer_Positioning_Controller: { type: "worker", desc: "Implements sorted merge behavior by copying customer records forward until CUST-KEY >= TRAN-KEY or customer EOF.", links: "Customer_Input_File, Customer_Output_File, Remaining_Record_Copy_Routine" },
+      COBOL_Subroutine_SAM2: { type: "core", desc: "Callable subroutine that initializes return values, then branches either to CRUNCH processing or to validation plus update application.", links: "Transaction_Validation_Routine, Customer_Update_Engine, CPU_Crunch_Path" },
+      CPU_Crunch_Path: { type: "aux", desc: "Special SAM2 path for TRAN-CODE = CRUNCH. Repeatedly averages 12 month values for the requested loop count.", links: "COBOL_Subroutine_SAM2, SAM2_Working_State" },
+      Transaction_Validation_Routine: { type: "worker", desc: "Checks transaction type, field name, action code, and numeric format. Also normalizes sign characters for numeric updates.", links: "COBOL_Subroutine_SAM2, Customer_Update_Engine" },
+      Customer_Update_Engine: { type: "worker", desc: "Mutates NAME, BALANCE, or ORDERS fields according to validated action combinations and increments transaction count.", links: "Transaction_Validation_Routine, COBOL_Subroutine_SAM2" },
+      File_Open_And_Close_Routines: { type: "storage", desc: "Open and close paragraphs for transaction, customer input, customer output, and report files.", links: "Transaction_File, Customer_Input_File, Customer_Output_File, Report_File" },
+      Remaining_Record_Copy_Routine: { type: "storage", desc: "On transaction EOF, copies any remaining customer records to the output file so the sorted stream is preserved.", links: "Customer_Input_File, Customer_Output_File" },
+      Report_Statistics: { type: "storage", desc: "Writes aggregate add, delete, and update totals to the final report output.", links: "Report_File, Report_Totals_And_Date_State" },
+      Error_Reporting_Routine: { type: "storage", desc: "Marks the transaction failed, writes diagnostic report lines, and echoes the raw transaction record into the report.", links: "Report_File, Report_Layout_Records" },
+      Transaction_File: { type: "storage", desc: "Sequential TRANFILE input. Expected to be sorted by transaction key, with comment records marked by an asterisk.", links: "Transaction_Read_Loop, Execute_SAM1_Step" },
+      Customer_Input_File: { type: "storage", desc: "Sequential CUSTFILE input used as the sorted master customer source.", links: "Customer_Positioning_Controller, Execute_SAM1_Step" },
+      Customer_Output_File: { type: "storage", desc: "Sequential CUSTOUT output containing copied, added, updated, and retained customer records.", links: "Customer_Positioning_Controller, Add_Transaction_Handler, Execute_SAM1_Step" },
+      Report_File: { type: "storage", desc: "CUSTRPT report output containing processed transaction echoes, error diagnostics, and summary totals.", links: "Error_Reporting_Routine, Report_Statistics, Execute_SAM1_Step" },
+      SAM1Exec: { type: "drilldown", desc: "Click to open SAM1 execution page. Covers the full read loop, dispatch controller, customer positioning merge, and CALL SAM2 handoff semantics.", links: "cobol_sam1_execution_visualization.html" },
+      SAM2Exec: { type: "drilldown", desc: "Click to open SAM2 execution page. Covers validation logic, field update engine for NAME/BALANCE/ORDERS, CRUNCH averaging loop, and return-code semantics.", links: "cobol_sam2_execution_visualization.html" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      const linkRow = d.type === 'drilldown'
+        ? `<div class="kv"><span class="k">Open</span><span class="v"><a href="${d.links}" target="_blank" style="color:var(--cyan);text-decoration:underline">${d.links}</a></span></div>`
+        : `<div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>`;
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        ${linkRow}
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+
+      node.addEventListener("click", () => {
+        const href = node.getAttribute("data-href");
+        if (href) window.open(href, "_blank");
+      });
+    });
+  </script>
+</body>
+</html>

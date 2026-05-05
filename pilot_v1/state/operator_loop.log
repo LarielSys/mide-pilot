@@ -1,0 +1,11 @@
+[2026-05-04T23:08:21] === OPERATOR LOOP STARTED | poll=60s | repo=C:\AI Assistant\MIDE ===
+[2026-05-04T23:08:22] GIT PULL ERROR: error: cannot pull with rebase: You have unstaged changes. error: Please commit or stash them.
+[2026-05-04T23:08:22] NEW RESULT: TASK-0004 | status=
+[2026-05-04T23:08:22] NEW RESULT: TASK-0004A | status=completed
+[2026-05-04T23:08:22]   -> SUCCESS: issuing next task in pipeline
+[2026-05-04T23:08:58] === OPERATOR LOOP STARTED | poll=60s | repo=C:\AI Assistant\MIDE ===
+[2026-05-04T23:08:59] poll: sleeping 60s...
+[2026-05-04T23:09:59] GIT PULL ERROR: error: Pulling is not possible because you have unmerged files. hint: Fix them up in the work tree, and then use 'git add/rm <file>' hint: as appropriate to mark resolution and make a commit. fatal: Exiting because of an unresolved conflict.
+[2026-05-04T23:09:59] poll: sleeping 60s...
+[2026-05-04T23:10:59] GIT PULL ERROR: warning: fetch updated the current branch head. fast-forwarding your working tree from commit 786e592d42443c0f8ab79387824a914ff53eba4f. fatal: Cannot rebase onto multiple branches.
+[2026-05-04T23:10:59] poll: sleeping 60s...

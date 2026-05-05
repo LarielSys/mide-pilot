@@ -1,0 +1,113 @@
+@MOSS:CBSA_OCAC_BNK1CAC_Execution_v1
+@R:~/mide-pilot/pilot_v1/specs/cbsa_ocac_execution/
+
+systems:
+
+  OCAC_Transaction_Entry:
+    role: BNKMENU action 4 dispatch target entering create-account flow
+    runtime: cics_transaction_flow
+    transid: OCAC
+    program_id: BNK1CAC
+    depends_on: Program_BNK1CAC, Create_Account_Map, Aid_Key_Router
+
+  Program_BNK1CAC:
+    role: create account program with numeric/domain validation and CREACC link path
+    runtime: cics_cobol
+    program_id: BNK1CAC
+    transid: OCAC
+    mapset: BNK1CAM
+    depends_on: Create_Account_Map, Process_Map_Controller, Edit_Data_Validator, Create_Link_CREACC, Return_Paths, Guard_Paths
+
+  Create_Account_Map:
+    role: BMS map for account create inputs and generated account output fields
+    runtime: cics_bms
+    mapset: BNK1CAM
+    map: BNK1CAO
+    key_fields: CUSTNOI, ACCTYPI, INTRTI, OVERDRI, SRTCDO, ACCNOO, AVAILO, ACTBALO
+
+  Aid_Key_Router:
+    role: EIBAID branching for BNK1CAC
+    runtime: cics_control_semantics
+    keys: DFHENTER, DFHPF3, DFHPF12, DFHCLEAR, OTHER
+    semantics:
+      - enter_process_map
+      - pf3_return_to_omen
+      - pf12_terminate_session
+      - clear_erase_and_return_ocac
+      - other_invalid_key_redisplay
+
+  Process_Map_Controller:
+    role: PM010 receives map and orchestrates validation and create-account flow
+    runtime: semantic_contract
+    sequence:
+      - receive_map
+      - edit_data
+      - if_valid_perform_create_account
+      - send_map
+
+  Edit_Data_Validator:
+    role: field validation gate for customer number account type interest and overdraft rules
+    runtime: semantic_contract
+    checks:
+      - customer_number_required_and_numeric
+      - account_type_in_domain_isa_current_loan_saving_mortgage
+      - interest_rate_numeric_and_decimal_precision
+      - interest_rate_non_negative_and_bounded
+      - overdraft_numeric_or_default_zero
+
+  Create_Link_CREACC:
+    role: account creation link for validated inputs
+    runtime: cics_link_contract
+    target_program: CREACC
+    call_site: CAD010
+    mode: SYNCONRETURN
+
+  Return_Paths:
+    role: return semantics across BNK1CAC cycle
+    runtime: cics_return_semantics
+    paths:
+      - pf3_to_omen
+      - cycle_return_to_ocac
+
+  Guard_Paths:
+    role: explicit non-happy-path semantics for BNK1CAC
+    runtime: semantic_contract
+    guards:
+      - invalid_key_message_and_alarm
+      - validation_failure_message_and_cursor
+      - creacc_link_failure_to_abndproc
+      - create_failure_codes_1_to_9_and_a
+      - return_resp_not_normal_to_abndproc
+
+  Field_Lineage_Map:
+    role: account field lineage across map input CREACC payload and map output projections
+    runtime: semantic_contract
+    lineage_rules:
+      - custnoi_to_subpgm_custno
+      - acctypi_to_subpgm_acc_type
+      - intrti_to_subpgm_int_rt
+      - overdri_to_subpgm_overdr_lim
+      - creacc_output_to_sortcode_account_dates_balances
+
+dependencies:
+  - OCAC_Transaction_Entry -> Program_BNK1CAC
+  - Program_BNK1CAC -> Aid_Key_Router
+  - Program_BNK1CAC -> Process_Map_Controller
+  - Process_Map_Controller -> Edit_Data_Validator
+  - Process_Map_Controller -> Create_Link_CREACC
+  - Program_BNK1CAC -> Return_Paths
+  - Program_BNK1CAC -> Guard_Paths
+  - Process_Map_Controller -> Field_Lineage_Map
+  - Guard_Paths -> Field_Lineage_Map
+
+interfaces:
+  - create_account_interface:
+      from: Program_BNK1CAC
+      to: Create_Link_CREACC
+      mode: cics_link_synconreturn
+      keys: CUSTNOI, ACCTYPI, INTRTI, OVERDRI
+
+runtime_constraints:
+  - scope_is_ocac_bnk1cac_only: true
+  - no_non_ocac_program_semantics_except_explicit_link_targets: true
+  - account_create_is_validation_guarded: true

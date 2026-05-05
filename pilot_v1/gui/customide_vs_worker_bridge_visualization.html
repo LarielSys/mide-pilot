@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CustomIDE VS-Style Worker Bridge - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    .note { color: var(--green); }
+
+    #svgWrap {
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: auto;
+    }
+    #svgWrap svg {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      min-height: 980px;
+    }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .n-sub { fill: #6f94af; font-size: 9px; }
+
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 110px; }
+    .v { color: var(--text); }
+    ul { margin-left: 18px; }
+    li { margin-bottom: 6px; color: var(--text-dim); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CustomIDE_VSStyle_WorkerBridge_v1</div>
+    <div class="top-meta">12 systems · 5 interfaces · 5 actions</div>
+    <div class="top-badge">architecture_draft · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">MOSS ARCHITECTURE SOURCE</div>
+      <div class="pane-body" id="mossSource">
+        <span class="code-line code-h">@MOSS:CustomIDE_VSStyle_WorkerBridge_v1</span>
+        <span class="code-line"><span class="code-key">@R:</span> ~/mide-pilot/pilot_v1/specs/customide_vs_worker_bridge/</span>
+        <br>
+        <span class="code-line code-h">systems:</span>
+        <span class="code-line" data-node="IDE_Shell"><span class="code-key">IDE_Shell:</span> files_left, editor_center, chat_right</span>
+        <span class="code-line" data-node="Chat_Panel"><span class="code-key">Chat_Panel:</span> model_switch, context_attach, history</span>
+        <span class="code-line" data-node="Clipboard_Pad"><span class="code-key">Clipboard_Pad:</span> popup for fast no-MTASK paste</span>
+        <span class="code-line" data-node="Image_Paste_Channel"><span class="code-key">Image_Paste_Channel:</span> png/jpg/webp attachments</span>
+        <span class="code-line" data-node="Chat_Broker"><span class="code-key">Chat_Broker:</span> route GPT_API or Ollama_Ubuntu</span>
+        <span class="code-line" data-node="Local_Git_Service"><span class="code-key">Local_Git_Service:</span> local-only workflow, no GitHub dependency</span>
+        <span class="code-line" data-node="Worker_Profile_Manager"><span class="code-key">Worker_Profile_Manager:</span> worker1 + worker2 switching</span>
+        <span class="code-line" data-node="Workspace_FS_Boundary"><span class="code-key">Workspace_FS_Boundary:</span> enforce local workspace safety</span>
+        <span class="code-line" data-node="File_Tree_Editor"><span class="code-key">File_Tree_Service + Editor_Canvas:</span> Monaco, tabs, terminal</span>
+        <span class="code-line" data-node="GPT_API_Gateway"><span class="code-key">GPT_API_Gateway:</span> user key based chat route</span>
+        <span class="code-line" data-node="Ollama_Ubuntu_Gateway"><span class="code-key">Ollama_Ubuntu_Gateway:</span> ubuntu worker ollama route</span>
+        <br>
+        <span class="code-line code-h">runtime_constraints:</span>
+        <span class="code-line">- layout_must_match: files_left_editor_center_chat_right</span>
+        <span class="code-line">- local_git_only: true</span>
+        <span class="code-line">- image_paste_required: true</span>
+        <span class="code-line">- support_worker2_first_class: true</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">COMPONENT DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 820 560" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M250 70 L250 140"></path>
+          <text class="edge-label" x="258" y="110">ui events</text>
+
+          <path class="edge" d="M250 205 L140 260"></path>
+          <text class="edge-label" x="145" y="245">file ops</text>
+
+          <path class="edge" d="M250 205 L355 260"></path>
+          <text class="edge-label" x="330" y="245">edit/git</text>
+
+          <path class="edge" d="M250 205 L520 205"></path>
+          <text class="edge-label" x="370" y="195">chat context</text>
+
+          <path class="edge" d="M580 235 L580 290"></path>
+          <text class="edge-label" x="588" y="270">provider route</text>
+
+          <path class="edge" d="M520 330 L430 410"></path>
+          <text class="edge-label" x="445" y="390">gpt</text>
+
+          <path class="edge" d="M640 330 L730 410"></path>
+          <text class="edge-label" x="675" y="390">ollama</text>
+
+          <path class="edge" d="M730 450 L640 510"></path>
+          <text class="edge-label" x="650" y="492">worker profile</text>
+
+          <path class="edge" d="M355 300 L355 420"></path>
+          <text class="edge-label" x="364" y="370">local git</text>
+
+          <rect class="node core node-hit" data-node="IDE_Shell" x="160" y="20" width="180" height="55"></rect>
+          <text class="n-title" x="250" y="48" text-anchor="middle">IDE Shell</text>
+          <text class="n-sub" x="250" y="64" text-anchor="middle">files left · editor center · chat right</text>
+
+          <rect class="node core node-hit" data-node="File_Tree_Editor" x="160" y="140" width="180" height="65"></rect>
+          <text class="n-title" x="250" y="172" text-anchor="middle">File Tree + Editor</text>
+          <text class="n-sub" x="250" y="190" text-anchor="middle">Monaco · tabs · terminal</text>
+
+          <rect class="node core node-hit" data-node="Workspace_FS_Boundary" x="55" y="260" width="170" height="55"></rect>
+          <text class="n-title" x="140" y="290" text-anchor="middle">Workspace FS Boundary</text>
+
+          <rect class="node storage node-hit" data-node="Local_Git_Service" x="275" y="260" width="160" height="55"></rect>
+          <text class="n-title" x="355" y="290" text-anchor="middle">Local Git Service</text>
+
+          <rect class="node core node-hit" data-node="Chat_Panel" x="520" y="170" width="120" height="65"></rect>
+          <text class="n-title" x="580" y="200" text-anchor="middle">Chat Panel</text>
+          <text class="n-sub" x="580" y="218" text-anchor="middle">right side</text>
+
+          <rect class="node aux node-hit" data-node="Chat_Broker" x="500" y="290" width="160" height="55"></rect>
+          <text class="n-title" x="580" y="320" text-anchor="middle">Chat Broker</text>
+
+          <rect class="node aux node-hit" data-node="GPT_API_Gateway" x="320" y="410" width="220" height="55"></rect>
+          <text class="n-title" x="430" y="440" text-anchor="middle">GPT API Gateway</text>
+
+          <rect class="node aux node-hit" data-node="Ollama_Ubuntu_Gateway" x="620" y="410" width="175" height="55"></rect>
+          <text class="n-title" x="707" y="440" text-anchor="middle">Ollama Ubuntu Gateway</text>
+
+          <rect class="node worker node-hit" data-node="Worker_Profile_Manager" x="540" y="510" width="200" height="45"></rect>
+          <text class="n-title" x="640" y="537" text-anchor="middle">Worker Profile Manager</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">COMPONENT DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Goal</span><span class="v">VS-style IDE with worker bridge and local-first git.</span></div>
+      <div class="kv"><span class="k">Layout</span><span class="v">Files left, editor center, chat right.</span></div>
+      <div class="kv"><span class="k">No-MTASK Path</span><span class="v">Clipboard Pad popup for fast code/log paste.</span></div>
+      <div class="kv"><span class="k">Image Input</span><span class="v">Paste screenshot directly into chat attachment flow.</span></div>
+      <div class="kv"><span class="k">Model Route</span><span class="v">Per-message switch: GPT key or Ubuntu Ollama.</span></div>
+      <div class="kv"><span class="k">Source Control</span><span class="v">Local git operations, no GitHub dependency required.</span></div>
+      <br>
+      <div class="note">Visualization source spec:</div>
+      <div>MIDE/pilot_v1/specs/customide_vs_worker_bridge/architecture.moss</div>
+      <br>
+      <div class="note">Compile status:</div>
+      <ul>
+        <li>systems: 12</li>
+        <li>interfaces: 5</li>
+        <li>actions: 5</li>
+        <li>manual: CustomIDE_VSStyle_WorkerBridge_v1</li>
+      </ul>
+    `;
+
+    const details = {
+      IDE_Shell: { type: "core", desc: "Top-level VS-style shell coordinating files, editor, and right chat pane.", links: "File_Tree_Editor, Chat_Panel" },
+      File_Tree_Editor: { type: "core", desc: "Integrated file explorer and Monaco editor workspace.", links: "Workspace_FS_Boundary, Local_Git_Service, Chat_Panel" },
+      Workspace_FS_Boundary: { type: "core", desc: "Hard boundary to keep file operations inside approved workspace roots.", links: "File_Tree_Editor" },
+      Local_Git_Service: { type: "storage", desc: "Local-only git workflow without GitHub dependency.", links: "File_Tree_Editor, Worker_Profile_Manager" },
+      Chat_Panel: { type: "core", desc: "Right-side chat UI for assistant interactions.", links: "Clipboard_Pad, Image_Paste_Channel, Chat_Broker" },
+      Chat_Broker: { type: "aux", desc: "Provider router selecting GPT key flow or Ubuntu Ollama flow.", links: "GPT_API_Gateway, Ollama_Ubuntu_Gateway" },
+      GPT_API_Gateway: { type: "aux", desc: "Uses user AI key to call GPT APIs.", links: "Chat_Broker" },
+      Ollama_Ubuntu_Gateway: { type: "aux", desc: "Routes chat/code requests to Ubuntu worker Ollama.", links: "Chat_Broker, Worker_Profile_Manager" },
+      Worker_Profile_Manager: { type: "worker", desc: "Switches worker profiles for worker1/worker2 endpoints.", links: "Ollama_Ubuntu_Gateway, Local_Git_Service" },
+      Clipboard_Pad: { type: "aux", desc: "Popup scratchpad for fast paste without MTASK overhead.", links: "Chat_Panel" },
+      Image_Paste_Channel: { type: "aux", desc: "Handles image clipboard attachments in chat.", links: "Chat_Panel" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>
+        <br>
+        <div class="note">Uniform MOSS behavior active:</div>
+        <ul>
+          <li>Diagram hover highlights left source lines</li>
+          <li>Diagram hover updates right details pane</li>
+        </ul>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CBSA OCCS Execution Path - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 1360px; }
+
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge.good { stroke: rgba(68, 255, 136, 0.55); }
+    .edge.warn { stroke: rgba(255, 170, 0, 0.55); }
+    .edge.bad { stroke: rgba(255, 100, 100, 0.6); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node.guard { stroke: rgba(255, 80, 80, 0.7); fill: rgba(25, 5, 5, 0.92); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+
+    .n-title { fill: var(--text); font-size: 12px; }
+    .guard-title { fill: #ff7070; font-size: 11px; font-weight: bold; }
+    .guard-sub { fill: #8a5555; font-size: 9px; }
+
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 140px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CBSA OCCS Execution Path (BNK1CCS)</div>
+    <div class="top-meta">OCCS -> BNK1CCS -> EDIT-DATA -> CRECUST -> OCCS/OMEN</div>
+    <div class="top-badge">cbsa_occs_exec_v1 · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">EXECUTION SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">Entry and key routing</span>
+        <span class="code-line" data-node="Step1"><span class="code-key">BNK1CCS:</span> OCCS entry, first-send map when EIBCALEN=0</span>
+        <span class="code-line" data-node="Step2"><span class="code-key">EIBAID:</span> ENTER process-map, PF3 return OMEN, CLEAR return OCCS</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Validation and create flow</span>
+        <span class="code-line" data-node="Step3"><span class="code-key">PM010/RM010:</span> RECEIVE MAP ASIS and normalize terminal UCTRAN</span>
+        <span class="code-line" data-node="Step4"><span class="code-key">ED010:</span> validate title, identity, address, and DOB domain rules</span>
+        <span class="code-line" data-node="Step5"><span class="code-key">CCD010:</span> build SUBPGM payload and LINK CRECUST SYNCONRETURN</span>
+
+        <span class="code-line code-h" style="margin-top:10px">State and return</span>
+        <span class="code-line" data-node="Step6">success projects SORTCO/CUSTNO2O/CREDSCO and review date fields</span>
+        <span class="code-line" data-node="Return">cycle RETURN TRANSID(OCCS) and PF3 path RETURN TRANSID(OMEN)</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Guard paths</span>
+        <span class="code-line" data-node="InvalidKey">EIBAID OTHER -> invalid key + alarm redisplay</span>
+        <span class="code-line" data-node="ValidationFail">EDIT-DATA rejection -> message + cursor reposition</span>
+        <span class="code-line" data-node="CreateFail">SUBPGM-SUCCESS N / O Y Z fail-code messages</span>
+        <span class="code-line" data-node="RespFail">RESP != NORMAL on RETURN/LINK/terminal ops -> ABNDPROC</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">OCCS EXECUTION DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1400 1360" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M700 110 L700 190"></path>
+          <path class="edge" d="M700 260 L700 340"></path>
+          <path class="edge" d="M700 410 L700 500"></path>
+          <path class="edge warn" d="M700 570 L700 660"></path>
+          <path class="edge good" d="M700 730 L700 820"></path>
+          <path class="edge" d="M700 890 L700 980"></path>
+          <path class="edge trace" d="M700 1050 L700 1140"></path>
+
+          <path class="edge bad" d="M520 215 L360 210"></path>
+          <path class="edge bad" d="M520 560 L320 560"></path>
+          <path class="edge bad" d="M880 730 L1060 730"></path>
+          <path class="edge bad" d="M900 1180 L1040 1180"></path>
+
+          <text class="edge-label" x="708" y="160">OCCS entry</text>
+          <text class="edge-label" x="708" y="312">AID route</text>
+          <text class="edge-label" x="708" y="460">receive-map</text>
+          <text class="edge-label" x="708" y="640">edit-data</text>
+          <text class="edge-label" x="708" y="796">create-link</text>
+          <text class="edge-label" x="708" y="966">map projection</text>
+          <text class="edge-label" x="708" y="1128">return/loop</text>
+          <text class="edge-label" x="250" y="204">invalid key</text>
+          <text class="edge-label" x="210" y="554">validation reject</text>
+          <text class="edge-label" x="1068" y="724">create fail code</text>
+          <text class="edge-label" x="1045" y="1174">resp fail</text>
+
+          <rect class="node core node-hit" data-node="Step1" x="470" y="60" width="460" height="50"></rect>
+          <text class="n-title" x="700" y="90" text-anchor="middle">1) BNK1CCS Entry (OCCS)</text>
+
+          <rect class="node aux node-hit" data-node="Step2" x="450" y="190" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="224" text-anchor="middle">2) EIBAID Router</text>
+          <text class="n-title" x="700" y="245" text-anchor="middle">ENTER process-map | PF3 OMEN | CLEAR OCCS | PF12 end</text>
+
+          <rect class="node worker node-hit" data-node="Step3" x="450" y="340" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="374" text-anchor="middle">3) PM010 / RM010 Receive-Map</text>
+          <text class="n-title" x="700" y="395" text-anchor="middle">ASIS receive with terminal UCTRAN handling</text>
+
+          <rect class="node worker node-hit" data-node="Step4" x="450" y="500" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="534" text-anchor="middle">4) ED010 Validation Gate</text>
+          <text class="n-title" x="700" y="555" text-anchor="middle">title/name/address/DOB domain checks</text>
+
+          <rect class="node worker node-hit" data-node="Step5" x="450" y="660" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="694" text-anchor="middle">5) CCD010 Create-Customer</text>
+          <text class="n-title" x="700" y="715" text-anchor="middle">LINK CRECUST with SUBPGM payload (SYNCONRETURN)</text>
+
+          <rect class="node storage node-hit" data-node="Step6" x="450" y="820" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="854" text-anchor="middle">6) Output Projection</text>
+          <text class="n-title" x="700" y="875" text-anchor="middle">SORTCO CUSTNO2O CREDSCO SCRDT fields + success message</text>
+
+          <rect class="node aux node-hit" data-node="Return" x="500" y="980" width="400" height="70"></rect>
+          <text class="n-title" x="700" y="1015" text-anchor="middle">7) Return Semantics</text>
+          <text class="n-title" x="700" y="1036" text-anchor="middle">cycle RETURN OCCS, PF3 RETURN OMEN</text>
+
+          <rect class="node storage node-hit" data-node="Lineage" x="500" y="1140" width="400" height="60"></rect>
+          <text class="n-title" x="700" y="1175" text-anchor="middle">Field Lineage + Side-Effect Order</text>
+
+          <rect class="node guard node-hit" data-node="InvalidKey" x="20" y="178" width="340" height="65"></rect>
+          <text class="guard-title" x="190" y="200" text-anchor="middle">Invalid Key Guard</text>
+          <text class="guard-sub" x="190" y="216" text-anchor="middle">EIBAID OTHER</text>
+          <text class="guard-sub" x="190" y="230" text-anchor="middle">invalid key message + alarm redisplay</text>
+
+          <rect class="node guard node-hit" data-node="ValidationFail" x="20" y="528" width="300" height="65"></rect>
+          <text class="guard-title" x="170" y="550" text-anchor="middle">Validation Guard</text>
+          <text class="guard-sub" x="170" y="566" text-anchor="middle">EDIT-DATA rejects input</text>
+          <text class="guard-sub" x="170" y="580" text-anchor="middle">message + field cursor set</text>
+
+          <rect class="node guard node-hit" data-node="CreateFail" x="1060" y="698" width="320" height="65"></rect>
+          <text class="guard-title" x="1220" y="720" text-anchor="middle">Create Failure Guard</text>
+          <text class="guard-sub" x="1220" y="736" text-anchor="middle">SUBPGM-SUCCESS N; fail code O/Y/Z</text>
+          <text class="guard-sub" x="1220" y="750" text-anchor="middle">create failed message branch</text>
+
+          <rect class="node guard node-hit" data-node="RespFail" x="1040" y="1148" width="340" height="65"></rect>
+          <text class="guard-title" x="1210" y="1170" text-anchor="middle">RESP Failure Guard</text>
+          <text class="guard-sub" x="1210" y="1186" text-anchor="middle">WS-CICS-RESP != DFHRESP(NORMAL)</text>
+          <text class="guard-sub" x="1210" y="1200" text-anchor="middle">ABNDINFO populated then LINK ABNDPROC</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Scope</span><span class="v">OCCS / BNK1CCS only.</span></div>
+      <div class="kv"><span class="k">Path</span><span class="v">OCCS -> BNK1CCS -> EDIT-DATA -> CRECUST -> OCCS/OMEN.</span></div>
+      <div class="kv"><span class="k">Key Controls</span><span class="v">ENTER create flow, PF3 return, CLEAR redisplay return.</span></div>
+      <div class="kv"><span class="k">Guards</span><span class="v">invalid key, validation reject, create fail codes, RESP fail.</span></div>
+      <div class="kv"><span class="k">Spec</span><span class="v">MIDE/pilot_v1/specs/cbsa_occs_execution/architecture.moss</span></div>
+    `;
+
+    const details = {
+      Step1: { type: "core", desc: "OCCS enters BNK1CCS, first cycle sends map and sets conversational context.", links: "OCCS transid -> BNK1CCS" },
+      Step2: { type: "aux", desc: "EIBAID routes to process path, return paths, clear branch, or invalid-key branch.", links: "DFHENTER/DFHPF3/DFHPF12/DFHCLEAR/OTHER" },
+      Step3: { type: "worker", desc: "PM010 invokes RECEIVE-MAP and RM010 terminal UCTRAN handling before field validation.", links: "RECEIVE MAP ASIS + terminal control" },
+      Step4: { type: "worker", desc: "ED010 enforces title, name, address, and DOB validity, gating create execution.", links: "validation pass/fail -> VALID-DATA-SW" },
+      Step5: { type: "worker", desc: "CCD010 assembles SUBPGM payload and links CRECUST with SYNCONRETURN.", links: "SUBPGM-PARMS -> LINK CRECUST" },
+      Step6: { type: "storage", desc: "Success path maps created customer outputs and review-date fields to the screen.", links: "SUBPGM outputs -> SORTCO/CUSTNO2O/CREDSCO/SCRDT*" },
+      Return: { type: "aux", desc: "BNK1CCS cycles by RETURN TRANSID(OCCS); PF3 branch returns to OMEN.", links: "RETURN OCCS / RETURN OMEN" },
+      Lineage: { type: "storage", desc: "Identity/address/DOB inputs feed CRECUST payload; generated values project to output map fields.", links: "input fields -> SUBPGM -> output projections" },
+      InvalidKey: { type: "guard", desc: "Unhandled key path sets invalid key message and alarm redisplay.", links: "EIBAID OTHER -> MESSAGEO + SEND DATAONLY ALARM" },
+      ValidationFail: { type: "guard", desc: "Validation failure sets message and cursor to failing field; create link is skipped.", links: "VALID-DATA-SW=N -> message + cursor" },
+      CreateFail: { type: "guard", desc: "Create failure messages branch on SUBPGM-FAIL-CODE values including O/Y/Z.", links: "SUBPGM-SUCCESS='N' + FAIL-CODE" },
+      RespFail: { type: "guard", desc: "Any non-normal CICS response in RETURN/LINK/terminal operations populates ABNDINFO and links ABNDPROC.", links: "RESP/RESP2 -> ABNDPROC" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) { panel.innerHTML = defaultHtml; return; }
+      const stepLabel = d.type === "guard" ? "Guard Point" : "Step";
+      const lineageLabel = d.type === "guard" ? "Trigger" : "Lineage";
+      panel.innerHTML = `
+        <div class="kv"><span class="k">${stepLabel}</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Behavior</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">${lineageLabel}</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

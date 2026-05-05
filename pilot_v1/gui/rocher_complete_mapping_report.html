@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocher Complete Mapping Report</title>
+  <style>
+    :root{--bg:#020810;--panel:#0a1628;--card:rgba(10,22,40,.92);--c:#00d4ff;--a:#ffaa00;--g:#44ff88;--t:#c8dce8;--d:#7a99b5;--b:rgba(0,212,255,.18)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Consolas","Courier New",monospace;background:radial-gradient(circle at top right,#123353 0%,#020810 44%,#01050b 100%);color:var(--t);padding:18px}
+    .shell{max-width:1180px;margin:0 auto;border:1px solid var(--b);border-radius:10px;overflow:hidden;background:rgba(2,8,16,.9);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+    .top{display:flex;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--b);background:linear-gradient(180deg,rgba(0,212,255,.08),rgba(0,212,255,.02))}
+    .title{color:var(--c);font-size:18px;margin-bottom:4px}.sub{color:var(--d);font-size:12px}
+    .meta{min-width:320px;border:1px solid var(--b);border-radius:6px;background:rgba(10,22,40,.7);padding:9px;font-size:11px}
+    .mr{display:grid;grid-template-columns:130px 1fr;gap:9px;margin-bottom:3px}.mk{color:var(--a)}
+    .controls{display:flex;justify-content:flex-end;gap:10px;padding:10px 16px;border-bottom:1px solid var(--b);background:rgba(0,212,255,.03)}
+    .btn{border:1px solid rgba(0,212,255,.3);background:rgba(0,212,255,.08);color:var(--c);border-radius:4px;padding:7px 11px;cursor:pointer;font-family:inherit;font-size:11px}
+    .btn:hover{background:rgba(0,212,255,.15)}
+    .content{padding:16px;display:grid;gap:14px}
+    .sec{border:1px solid var(--b);border-radius:8px;background:var(--card);padding:12px}
+    .sec h2{color:var(--c);font-size:14px;border-bottom:1px dashed rgba(0,212,255,.25);padding-bottom:6px;margin-bottom:8px}
+    .sec h3{color:var(--a);font-size:12px;margin:9px 0 6px}
+    .sec p,.sec li{font-size:12px;line-height:1.55}
+    .sec ul{padding-left:18px;display:grid;gap:4px}
+    .exec{border:1px solid rgba(255,170,0,.35);background:rgba(35,24,8,.56);border-radius:8px;padding:12px}
+    .risk{color:#ffd07a;font-weight:bold}.impact{color:#9dffc4}.eh{color:var(--a);margin-bottom:8px}
+    .sum{display:grid;gap:6px}.sumi{border:1px solid rgba(0,212,255,.2);border-radius:6px;padding:8px 10px;background:rgba(8,18,35,.7);font-size:12px}
+    .route{border:1px solid rgba(255,170,0,.25);border-radius:6px;padding:10px;background:rgba(18,30,50,.75)}
+    .rt{color:var(--g);font-size:12px;margin-bottom:8px}.rgrid{display:grid;gap:12px}
+    .link{display:inline-block;margin-top:8px;color:var(--c);text-decoration:none;border:1px solid rgba(0,212,255,.25);border-radius:4px;padding:3px 8px;font-size:11px}
+    .link:hover{background:rgba(0,212,255,.12)}
+    .high{color:#ff8a8a;font-weight:bold}.med{color:#ffd07a;font-weight:bold}.low{color:#7dffb2;font-weight:bold}
+    @media print{@page{margin:14mm}.controls{display:none}.shell{max-width:100%;border-radius:0;box-shadow:none}.sec,.route{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top">
+      <div>
+        <div class="title">ROCHER Complete Mapping Report</div>
+        <div class="sub">Executive and technical package for the road deterioration platform (Mexico deployment context).</div>
+      </div>
+      <div class="meta" id="meta"></div>
+    </header>
+    <div class="controls">
+      <button class="btn" id="printBtn" type="button">Print / Save PDF</button>
+      <a class="btn" href="rocher_package_index.html" target="_blank" rel="noopener" style="text-decoration:none">Open Package Index</a>
+    </div>
+
+    <section class="content">
+      <article class="sec">
+        <h2>0. Executive So What</h2>
+        <div class="exec">
+          <div class="eh">Overall System Risk: <span class="risk">Medium-High</span></div>
+          <ul>
+            <li>Financial/operational outputs depend on backend, object storage, and asynchronous AI processing integrity.</li>
+            <li>Multiple guarded paths (upload validation, pending-folder filters, report generation) can block throughput if misconfigured.</li>
+            <li>Cross-stack coupling (Angular + Spring + MariaDB + OCI + Python YOLO) increases operational sensitivity.</li>
+          </ul>
+          <p style="margin-top:8px"><strong>Recommendation:</strong> prioritize reliability testing on upload, AI pending-folder consumption, and report generation/download routes before broad rollout.</p>
+        </div>
+      </article>
+
+      <article class="sec">
+        <h2>0A. Analysis Equivalent / Effort Saved</h2>
+        <div class="exec">
+          <p><strong>Estimated Time to Analyze:</strong> 2-3 weeks of manual cross-stack tracing.</p>
+          <p style="margin-top:6px"><strong>Effort Saved:</strong> replaced by structured architecture mapping across API, DB, storage, and AI pipeline in a single package.</p>
+        </div>
+      </article>
+
+      <article class="sec">
+        <h2>1. One-Line Route Summary</h2>
+        <div class="sum">
+          <div class="sumi"><strong>Auth + Session:</strong> JWT-gated entry establishes user-context for client/project/report operations.</div>
+          <div class="sumi"><strong>Media Upload:</strong> ZIP upload validates client/project ownership and seeds asynchronous storage + tracking logs.</div>
+          <div class="sumi"><strong>Pending Folder Selection:</strong> Python pipeline selects non-processed project folders via DB flags and UUID links.</div>
+          <div class="sumi"><strong>YOLO Inference:</strong> Multiple .pt models classify deterioration patterns from extracted images.</div>
+          <div class="sumi"><strong>Report Synthesis:</strong> TXT/image content is merged with computed KPIs into versioned XLSX outputs.</div>
+          <div class="sumi"><strong>Delivery:</strong> Completed reports stream back to frontend through project report download endpoint.</div>
+        </div>
+      </article>
+
+      <article class="sec">
+        <h2>2. Diagram Tie-Back</h2>
+        <ul>
+          <li><a class="link" href="rocher_system_landscape_visualization.html" target="_blank" rel="noopener">System Landscape Diagram</a></li>
+          <li><a class="link" href="rocher_end_to_end_execution_visualization.html" target="_blank" rel="noopener">End-to-End Execution Diagram</a></li>
+          <li><a class="link" href="rocher_data_ai_pipeline_visualization.html" target="_blank" rel="noopener">Data and AI Pipeline Diagram</a></li>
+        </ul>
+      </article>
+
+      <article class="sec">
+        <h2>3. Route-by-Route Detailed Assessment</h2>
+        <div class="rgrid">
+          <article class="route">
+            <div class="rt">Route A - Media Upload and Validation</div>
+            <ul>
+              <li><strong>Entry condition:</strong> authenticated user uploads ZIP via /api/media/upload with clientId and projectId.</li>
+              <li><strong>Primary intent:</strong> ingest survey artifacts and initialize upload tracking.</li>
+              <li><strong>Main checks:</strong> file type/size validation + client/project existence and ownership.</li>
+              <li><strong>Success:</strong> UploadLog created and async transfer initiated.</li>
+              <li><strong>Failure:</strong> validation/entity errors stop ingest early.</li>
+              <li><strong>Risk Level:</strong> <span class="med">Medium</span></li>
+              <li><strong>Reason:</strong> strict ownership and artifact checks can block throughput when metadata is inconsistent.</li>
+              <li><strong>Business Impact:</strong> ingestion failure prevents downstream AI analysis and report timelines.</li>
+            </ul>
+          </article>
+
+          <article class="route">
+            <div class="rt">Route B - AI Pending-Folder Pull and Object Download</div>
+            <ul>
+              <li><strong>Entry condition:</strong> Python main loop fetches folders where analysis is pending and artifact not yet downloaded.</li>
+              <li><strong>Primary intent:</strong> synchronize cloud ZIP artifacts into local processing pipeline.</li>
+              <li><strong>Main checks:</strong> uuid/object existence, download progress, mark_as_downloaded update.</li>
+              <li><strong>Success:</strong> zipped tramo assets become locally available for extraction and inference.</li>
+              <li><strong>Failure:</strong> object/storage connection issues stall AI batch progress.</li>
+              <li><strong>Risk Level:</strong> <span class="high">High</span></li>
+              <li><strong>Reason:</strong> asynchronous cloud dependency with DB-state coupling.</li>
+              <li><strong>Business Impact:</strong> delayed condition assessment and backlog accumulation.</li>
+            </ul>
+          </article>
+
+          <article class="route">
+            <div class="rt">Route C - YOLO Inference and Metrics Generation</div>
+            <ul>
+              <li><strong>Entry condition:</strong> extracted image folders indexed by UUID.</li>
+              <li><strong>Primary intent:</strong> detect deterioration classes and produce measured data.</li>
+              <li><strong>Main checks:</strong> model loading, image parse consistency, per-folder processing completeness.</li>
+              <li><strong>Success:</strong> inferred damage outputs become available to report aggregation.</li>
+              <li><strong>Failure:</strong> malformed image sets or model/runtime mismatch reduce result quality/completeness.</li>
+              <li><strong>Risk Level:</strong> <span class="high">High</span></li>
+              <li><strong>Reason:</strong> model-driven route is central to value proposition and output credibility.</li>
+              <li><strong>Business Impact:</strong> inaccurate or delayed findings affect maintenance prioritization decisions.</li>
+            </ul>
+          </article>
+
+          <article class="route">
+            <div class="rt">Route D - Report Generation and Distribution</div>
+            <ul>
+              <li><strong>Entry condition:</strong> project report generation call with available txt/image evidence.</li>
+              <li><strong>Primary intent:</strong> produce versioned XLSX outputs for client consumption.</li>
+              <li><strong>Main checks:</strong> txt presence, wk_reporte upsert, template fill, storage upload completion.</li>
+              <li><strong>Success:</strong> reportes row completed with route/file metadata and streamable artifact.</li>
+              <li><strong>Failure:</strong> missing txt or stream/storage errors interrupt delivery path.</li>
+              <li><strong>Risk Level:</strong> <span class="med">Medium</span></li>
+              <li><strong>Reason:</strong> deterministic process but sensitive to artifact integrity.</li>
+              <li><strong>Business Impact:</strong> report delays defer executive road-condition review and planning.</li>
+            </ul>
+          </article>
+        </div>
+      </article>
+
+      <article class="sec">
+        <h2>4. Coverage Statement</h2>
+        <p>Included: frontend/backend/service/storage/database/AI lineage and execution mapping, plus risk and business impact framing.</p>
+        <p>Excluded: non-functional noise artifacts (duplicate ZIP archives, temp folders, stale cache/build files).</p>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const stamp = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+    document.title = `ROCHER_Complete_Mapping_Report_${stamp}`;
+    document.getElementById("meta").innerHTML = `
+      <div class="mr"><span class="mk">Generated</span><span>${now.toLocaleString()}</span></div>
+      <div class="mr"><span class="mk">Version</span><span>1.0.0</span></div>
+      <div class="mr"><span class="mk">Author/Team</span><span>Architecture Mapping Package</span></div>
+      <div class="mr"><span class="mk">PDF Name</span><span>ROCHER_Complete_Mapping_Report_${stamp}.pdf</span></div>
+    `;
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+  </script>
+</body>
+</html>

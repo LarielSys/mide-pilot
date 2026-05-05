@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocher Data and AI Pipeline</title>
+  <style>
+    :root{--bg:#020810;--p:#0a1628;--c:#00d4ff;--a:#ffaa00;--g:#44ff88;--pp:#bb88ff;--t:#c8dce8;--d:#7a99b5;--b:rgba(0,212,255,.18)}
+    *{box-sizing:border-box;margin:0;padding:0}body{font-family:"Consolas","Courier New",monospace;background:var(--bg);color:var(--t)}
+    .top{display:flex;justify-content:space-between;padding:10px 14px;background:var(--p);border-bottom:1px solid var(--b);font-size:12px}.top .l{color:var(--c)}.top .r{color:var(--d)}
+    .wrap{display:grid;grid-template-columns:1fr 2fr 1fr;min-height:calc(100vh - 42px)}.pane{border-right:1px solid var(--b)}.pane:last-child{border-right:none}
+    .h{padding:10px 12px;border-bottom:1px solid var(--b);color:var(--c);font-size:11px;letter-spacing:1px;background:rgba(0,212,255,.04)}
+    .bdy{padding:12px;font-size:12px;line-height:1.55}.r{margin-bottom:8px}.k{display:inline-block;min-width:126px;color:var(--a)}
+    .r.active{background:rgba(0,212,255,.1);border-left:2px solid var(--c);padding-left:6px}
+    svg{width:100%;height:auto;min-height:980px}.n{rx:8;ry:8;stroke-width:1.5}.tbl{fill:rgba(255,170,0,.08);stroke:rgba(255,170,0,.58)}.proc{fill:rgba(0,212,255,.07);stroke:rgba(0,212,255,.58)}.ai{fill:rgba(187,136,255,.08);stroke:rgba(187,136,255,.58)}
+    .node-hit{cursor:pointer}.node-hit.hover{stroke-width:2.6;filter:drop-shadow(0 0 8px rgba(0,212,255,.6))}
+    .tx{fill:var(--t);font-size:12px}.sx{fill:var(--d);font-size:10px}.e{stroke:rgba(0,212,255,.34);stroke-width:1.4;fill:none;marker-end:url(#arr)}.e2{stroke:rgba(255,170,0,.48)}.e3{stroke:rgba(187,136,255,.5)}.lbl{fill:#7ca5c1;font-size:9px}
+  </style>
+</head>
+<body>
+  <div class="top"><div class="l">MOSS ▸ ROCHER Data Lineage + AI Pipeline</div><div class="r">Schema flow: proyectos + bitacora_carga + wk_reporte + reportes</div></div>
+  <div class="wrap">
+    <section class="pane"><div class="h">DATA FLOW SUMMARY</div><div class="bdy">
+      <div class="r" data-node="Input"><span class="k">Input Artifacts</span>ZIP files with TXT + JPG/PNG evidence from road surveys.</div>
+      <div class="r" data-node="Keys"><span class="k">Operational Keys</span>UUID-based upload tracking and project linkage.</div>
+      <div class="r" data-node="Filter"><span class="k">AI Filters</span>Pending folders selected where ia_analisis_completado=false and isDownloaded=false.</div>
+      <div class="r" data-node="Derived"><span class="k">Derived Records</span>wk_reporte metrics and photo sections merged into report snapshot.</div>
+      <div class="r" data-node="Published"><span class="k">Published Output</span>Versioned XLSX report metadata persisted in reportes table.</div>
+    </div></section>
+
+    <section class="pane"><div class="h">LINEAGE DIAGRAM</div><div class="bdy">
+      <svg viewBox="0 0 1100 980" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,.55)"/></marker></defs>
+        <rect class="n tbl node-hit" data-node="Keys" x="70" y="90" width="250" height="90"/><text class="tx" x="195" y="123" text-anchor="middle">clientes</text><text class="sx" x="195" y="143" text-anchor="middle">id, name, ownership</text>
+        <rect class="n tbl node-hit" data-node="Filter" x="370" y="90" width="280" height="100"/><text class="tx" x="510" y="123" text-anchor="middle">proyectos</text><text class="sx" x="510" y="143" text-anchor="middle">client_id, ia_analisis_completado</text><text class="sx" x="510" y="160" text-anchor="middle">sectioning / km range metadata</text>
+        <rect class="n tbl node-hit" data-node="Input" x="700" y="90" width="300" height="110"/><text class="tx" x="850" y="123" text-anchor="middle">bitacora_carga</text><text class="sx" x="850" y="143" text-anchor="middle">uuid, project_id, isDownloaded</text><text class="sx" x="850" y="160" text-anchor="middle">total_fotos, total_lineas, status</text>
+
+        <rect class="n proc node-hit" data-node="Filter" x="370" y="270" width="280" height="100"/><text class="tx" x="510" y="304" text-anchor="middle">Python Selector</text><text class="sx" x="510" y="324" text-anchor="middle">listar_proyect_folders()</text><text class="sx" x="510" y="341" text-anchor="middle">pending rows query</text>
+        <rect class="n proc node-hit" data-node="Input" x="700" y="270" width="300" height="100"/><text class="tx" x="850" y="304" text-anchor="middle">OCI ZIP Download</text><text class="sx" x="850" y="324" text-anchor="middle">download_from_bucket(uuid.zip)</text><text class="sx" x="850" y="341" text-anchor="middle">mark_as_downloaded(uuid)</text>
+
+        <rect class="n ai node-hit" data-node="Derived" x="370" y="450" width="630" height="130"/><text class="tx" x="685" y="488" text-anchor="middle">YOLO Inference Stage</text><text class="sx" x="685" y="510" text-anchor="middle">daka_rocher_model_v3.0.pt + br_v1.0.pt + rod_v1.pt</text><text class="sx" x="685" y="528" text-anchor="middle">process_images_in_directory(uuid, downloads_dir)</text><text class="sx" x="685" y="546" text-anchor="middle">image detections + measurement utilities</text>
+
+        <rect class="n tbl node-hit" data-node="Derived" x="70" y="660" width="280" height="110"/><text class="tx" x="210" y="694" text-anchor="middle">wk_reporte</text><text class="sx" x="210" y="714" text-anchor="middle">project_id FK + computed metrics</text><text class="sx" x="210" y="731" text-anchor="middle">sectioned road-condition rows</text>
+        <rect class="n proc node-hit" data-node="Published" x="390" y="660" width="270" height="110"/><text class="tx" x="525" y="694" text-anchor="middle">ReportGeneratorService</text><text class="sx" x="525" y="714" text-anchor="middle">merge txt + photos + template</text><text class="sx" x="525" y="731" text-anchor="middle">ROCHER_PLANTILLA_FLEXIBLES.xlsx</text>
+        <rect class="n tbl node-hit" data-node="Published" x="700" y="660" width="300" height="110"/><text class="tx" x="850" y="694" text-anchor="middle">reportes</text><text class="sx" x="850" y="714" text-anchor="middle">version, route, file_name, status</text><text class="sx" x="850" y="731" text-anchor="middle">project_snapshot_json</text>
+
+        <path class="e e2" d="M320 130 L370 130"/><path class="e e2" d="M650 130 L700 130"/><path class="e" d="M510 190 L510 270"/><path class="e" d="M760 200 L760 270"/><path class="e e3" d="M510 370 L510 450"/><path class="e e3" d="M850 370 L850 450"/><path class="e" d="M560 580 L260 660"/><path class="e" d="M685 580 L525 660"/><path class="e" d="M810 580 L850 660"/><path class="e e2" d="M350 715 L390 715"/><path class="e" d="M660 715 L700 715"/>
+        <text class="lbl" x="338" y="124">client owns project</text><text class="lbl" x="660" y="124">project has uploads</text><text class="lbl" x="517" y="242">pending filter</text><text class="lbl" x="774" y="244">artifact fetch</text><text class="lbl" x="408" y="622">computed road KPIs</text><text class="lbl" x="682" y="705">publish report metadata</text>
+      </svg>
+    </div></section>
+
+    <section class="pane"><div class="h">DETAILS</div><div class="bdy" id="detailPanel"></div></section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="r"><span class="k">Risk Level</span>Medium</div>
+      <div class="r"><span class="k">Reason</span>Data coherence relies on UUID consistency across DB, object keys, and filesystem.</div>
+      <div class="r"><span class="k">Business Impact</span>Integrity drift may produce incomplete or delayed deterioration reports.</div>
+      <div class="r"><span class="k">Analysis Equivalent</span>~2-3 weeks manual tracing replaced by mapped lineage in one package.</div>
+    `;
+
+    const details = {
+      Input: { type: "input", desc: "Upload metadata and ZIP artifacts originate from project-linked survey ingestion.", links: "bitacora_carga uuid, total_fotos, total_lineas" },
+      Keys: { type: "keys", desc: "Client/project identity and UUID keys anchor lineage across systems.", links: "clientes -> proyectos -> bitacora_carga" },
+      Filter: { type: "selector", desc: "Pending analysis selection gates folders before AI processing begins.", links: "ia_analisis_completado = false AND isDownloaded = false" },
+      Derived: { type: "derived", desc: "YOLO inference and metric transformations produce structured condition data.", links: "process_images_in_directory -> wk_reporte" },
+      Published: { type: "output", desc: "Report generation writes versioned XLSX plus metadata for downstream delivery.", links: "reportes table + OCI object route" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    const sourceRows = document.querySelectorAll(".r[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+    panel.innerHTML = defaultHtml;
+
+    function clearHighlights() {
+      sourceRows.forEach((line) => line.classList.remove("active"));
+      nodes.forEach((node) => node.classList.remove("hover"));
+    }
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="r"><span class="k">Component</span>${nodeId}</div>
+        <div class="r"><span class="k">Type</span>${d.type}</div>
+        <div class="r"><span class="k">Description</span>${d.desc}</div>
+        <div class="r"><span class="k">Links</span>${d.links}</div>
+      `;
+    }
+
+    function activateNode(nodeId) {
+      clearHighlights();
+      sourceRows.forEach((line) => {
+        if (line.getAttribute("data-node") === nodeId) {
+          line.classList.add("active");
+          line.scrollIntoView({ block: "nearest" });
+        }
+      });
+      nodes.forEach((node) => {
+        if (node.getAttribute("data-node") === nodeId) {
+          node.classList.add("hover");
+        }
+      });
+      renderDetails(nodeId);
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => activateNode(node.getAttribute("data-node")));
+      node.addEventListener("mouseleave", () => {
+        clearHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+
+    sourceRows.forEach((line) => {
+      line.addEventListener("mouseenter", () => activateNode(line.getAttribute("data-node")));
+      line.addEventListener("mouseleave", () => {
+        clearHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

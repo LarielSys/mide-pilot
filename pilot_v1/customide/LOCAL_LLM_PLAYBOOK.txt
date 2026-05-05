@@ -1,0 +1,110 @@
+LOCAL LLM OPERATING PLAYBOOK (COST-FIRST)
+Version: 0.1
+Owner: Engineering
+Date: 2026-04-23
+
+OBJECTIVE
+Use local Ollama by default and escalate to cloud only when expected quality or risk requires it.
+
+ACTIVE LOCAL ENDPOINT
+- Base URL: http://localhost:11434
+- Primary coding model: qwen2.5-coder:7b
+- Secondary reasoning model: qwen2.5:14b
+- Vision models (only when image input is required): qwen2.5vl:7b, qwen2.5vl:32b
+
+ROUTING POLICY
+Tier L0 (Always Local)
+- Boilerplate generation
+- Simple refactors
+- Test scaffolding
+- Comment/doc draft generation
+- Small bug fixes with clear repro
+
+Tier L1 (Local First, Escalate If Needed)
+- Multi-file edits under 5 files
+- SQL query optimization
+- API handler changes with moderate risk
+- CI failure triage
+Escalate if local fails 2 times or confidence is below 80%.
+
+Tier L2 (Cloud Preferred)
+- Security-sensitive auth/permission logic
+- Data migration logic in production paths
+- Core architecture or irreversible design decisions
+- High-blast-radius changes
+
+DECISION GATES
+Use cloud model when any of the following are true:
+1) Same task failed locally two attempts.
+2) Change touches critical path (auth, billing, persistence, deployment).
+3) Regression risk is high and rollback cost is high.
+4) Time-to-fix is more expensive than token cost.
+
+EXECUTION WORKFLOW
+1) Classify task into L0, L1, or L2.
+2) If L0 or L1, run local model first.
+3) Request patch-style output only (diff or exact edits).
+4) Run tests/lint.
+5) If failed twice or risk trigger appears, escalate to cloud.
+6) Record final route and reason in change notes.
+
+PROMPT TEMPLATES
+Template A: Local quick patch
+"You are a senior engineer. Output only a minimal patch for the files listed. Preserve behavior except requested change. Include short rationale and edge cases to test."
+
+Template B: Local bug triage
+"Given this traceback and code snippet, identify root cause, propose smallest fix, and provide verification steps."
+
+Template C: Escalation handoff
+"Local model failed twice. Here are attempts and errors. Provide robust fix with risk analysis and test plan."
+
+QUALITY BAR
+- No merge-breaking syntax
+- No unexplained behavior changes
+- Must include validation steps
+- Critical-path changes require at least one negative test
+
+COST GUARDRAILS
+- Default local usage target: 70-85% of coding requests
+- Cloud usage target: 15-30% for high-value decisions
+- Prefer snippet-level context over whole-file dumps
+- Reuse compact context summaries instead of repeating long prompts
+
+WEEKLY REVIEW CHECKLIST
+- Local success rate
+- Escalation count and reasons
+- Time saved vs token spend
+- Incidents/regressions by route (local vs cloud)
+
+IMMEDIATE DEFAULT
+If uncertain between local and cloud: start local with qwen2.5-coder:7b, then escalate only on trigger.
+
+MTASK ROUTING MAP
+- MTASK type: UI copy, formatting, CSS tweaks, docs updates -> Route L0 local (qwen2.5-coder:7b)
+- MTASK type: small bug fix with known repro and under 5 files -> Route L1 local first
+- MTASK type: autopilot timing/display changes with clear acceptance checks -> Route L1 local first
+- MTASK type: auth/permissions, data migration, deployment automation, destructive ops -> Route L2 cloud preferred
+- MTASK type: unknown blast radius or unclear ownership -> Route L2 cloud preferred
+
+MTASK ESCALATION CHECKLIST
+Escalate from local to cloud immediately when any item is true:
+1) Two failed local attempts on same MTASK objective.
+2) Validation output is ambiguous or non-deterministic.
+3) Change affects worker orchestration, task scheduling, or persistence integrity.
+4) Incident pressure requires fastest-confidence answer.
+
+MTASK OPERATING CADENCE
+1) One MTASK at a time only.
+2) Poll and review status every 60 seconds while active.
+3) On fail: create RETRY MTASK with narrow scope and explicit checks.
+4) On pass: document route used (local or cloud) and why.
+
+TOKEN METER SOURCE (REQUIRED)
+- Canonical raw meter file: customide/TOKEN_METER_SOURCE.csv
+- Add raw meter row command:
+	powershell -ExecutionPolicy Bypass -File customide/scripts/add_token_meter_row.ps1 -TaskId MTASK-0063 -Source ollama -Stage build -Tokens 1450 -PromptTokens 920 -CompletionTokens 530 -MeterName ollama-api
+- Ingest raw meter rows into ledger/counter:
+	powershell -ExecutionPolicy Bypass -File customide/scripts/ingest_token_meter.ps1
+- Ingest one task only:
+	powershell -ExecutionPolicy Bypass -File customide/scripts/ingest_token_meter.ps1 -TaskId MTASK-0063
+- Deduping is event-id based, so re-running ingest is safe.

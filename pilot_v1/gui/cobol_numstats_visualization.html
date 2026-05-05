@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COBOL NUMSTATS - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    .note { color: var(--green); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 980px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .n-sub { fill: #6f94af; font-size: 9px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 110px; }
+    .v { color: var(--text); }
+    ul { margin-left: 18px; }
+    li { margin-bottom: 6px; color: var(--text-dim); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ COBOL_NUMSTATS_Workflow_v1</div>
+    <div class="top-meta">8 systems · 3 interfaces · 5 actions</div>
+    <div class="top-badge">static_analysis · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">MOSS ARCHITECTURE SOURCE</div>
+      <div class="pane-body" id="mossSource">
+        <span class="code-line code-h">@MOSS:COBOL_NUMSTATS_Workflow_v1</span>
+        <span class="code-line"><span class="code-key">@R:</span> ~/mide-pilot/pilot_v1/specs/cobol_numstats/</span>
+        <br>
+        <span class="code-line code-h">systems:</span>
+        <span class="code-line" data-node="COBOL_Program_NUMSTATS"><span class="code-key">COBOL_Program_NUMSTATS:</span> top-level batch program entry</span>
+        <span class="code-line" data-node="Input_File_INFILE"><span class="code-key">Input_File_INFILE:</span> numbers.txt line-sequential numeric input</span>
+        <span class="code-line" data-node="Main_Read_Loop"><span class="code-key">Main_Read_Loop:</span> READ loop until EOF</span>
+        <span class="code-line" data-node="EOF_Control"><span class="code-key">EOF_Control:</span> EOF_FLAG N/Y termination control</span>
+        <span class="code-line" data-node="Accumulator_State"><span class="code-key">Accumulator_State:</span> WS_TOTAL and WS_COUNT updates</span>
+        <span class="code-line" data-node="Average_Calculation"><span class="code-key">Average_Calculation:</span> WS_AVERAGE = WS_TOTAL / WS_COUNT</span>
+        <span class="code-line" data-node="Output_Display"><span class="code-key">Output_Display:</span> DISPLAY TOTAL, COUNT, AVERAGE</span>
+        <span class="code-line" data-node="Working_Storage_Variables"><span class="code-key">Working_Storage_Variables:</span> WS_TOTAL 0, WS_COUNT 0, WS_AVERAGE 0, EOF_FLAG "N"</span>
+        <br>
+        <span class="code-line code-h">runtime_constraints:</span>
+        <span class="code-line">- analysis_mode: static_visualization_only</span>
+        <span class="code-line">- execution_required: false</span>
+        <span class="code-line">- original_code_is_source_evidence: true</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">COMPONENT DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 860 560" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M210 75 L210 145"></path>
+          <text class="edge-label" x="218" y="112">opens</text>
+          <path class="edge" d="M210 185 L210 255"></path>
+          <text class="edge-label" x="218" y="222">reads</text>
+          <path class="edge" d="M210 295 L360 295"></path>
+          <text class="edge-label" x="270" y="285">at end / not at end</text>
+          <path class="edge" d="M430 255 L430 190"></path>
+          <text class="edge-label" x="438" y="220">loop control</text>
+          <path class="edge" d="M430 335 L430 410"></path>
+          <text class="edge-label" x="438" y="375">compute</text>
+          <path class="edge" d="M430 450 L620 450"></path>
+          <text class="edge-label" x="500" y="440">display values</text>
+          <path class="edge" d="M620 410 L620 185"></path>
+          <text class="edge-label" x="628" y="300">final output</text>
+          <path class="edge" d="M520 110 L620 145"></path>
+          <text class="edge-label" x="555" y="122">state backing</text>
+
+          <rect class="node core node-hit" data-node="COBOL_Program_NUMSTATS" x="110" y="20" width="200" height="55"></rect>
+          <text class="n-title" x="210" y="49" text-anchor="middle">COBOL Program NUMSTATS</text>
+          <text class="n-sub" x="210" y="65" text-anchor="middle">PROGRAM-ID. NUMSTATS</text>
+
+          <rect class="node storage node-hit" data-node="Input_File_INFILE" x="110" y="145" width="200" height="40"></rect>
+          <text class="n-title" x="210" y="170" text-anchor="middle">Input File INFILE</text>
+
+          <rect class="node core node-hit" data-node="Main_Read_Loop" x="110" y="255" width="200" height="40"></rect>
+          <text class="n-title" x="210" y="280" text-anchor="middle">Main Read Loop</text>
+
+          <rect class="node aux node-hit" data-node="EOF_Control" x="340" y="145" width="180" height="45"></rect>
+          <text class="n-title" x="430" y="173" text-anchor="middle">EOF Control</text>
+
+          <rect class="node worker node-hit" data-node="Accumulator_State" x="340" y="255" width="180" height="80"></rect>
+          <text class="n-title" x="430" y="287" text-anchor="middle">Accumulator State</text>
+          <text class="n-sub" x="430" y="306" text-anchor="middle">WS_TOTAL · WS_COUNT</text>
+
+          <rect class="node aux node-hit" data-node="Average_Calculation" x="340" y="410" width="180" height="40"></rect>
+          <text class="n-title" x="430" y="435" text-anchor="middle">Average Calculation</text>
+
+          <rect class="node core node-hit" data-node="Output_Display" x="560" y="410" width="160" height="40"></rect>
+          <text class="n-title" x="640" y="435" text-anchor="middle">Output Display</text>
+
+          <rect class="node storage node-hit" data-node="Working_Storage_Variables" x="560" y="145" width="180" height="40"></rect>
+          <text class="n-title" x="650" y="170" text-anchor="middle">Working Storage Variables</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">COMPONENT DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Program</span><span class="v">NUMSTATS</span></div>
+      <div class="kv"><span class="k">Mode</span><span class="v">Static COBOL workflow visualization.</span></div>
+      <div class="kv"><span class="k">Input</span><span class="v">numbers.txt with PIC 9(5) records.</span></div>
+      <div class="kv"><span class="k">Output</span><span class="v">TOTAL, COUNT, AVERAGE via DISPLAY.</span></div>
+      <div class="kv"><span class="k">Execution</span><span class="v">Not required for visualization.</span></div>
+      <div class="kv"><span class="k">Lifecycle</span><span class="v">OPEN INPUT, READ loop, COMPUTE, DISPLAY, CLOSE, STOP RUN.</span></div>
+      <br>
+      <div class="note">Source spec:</div>
+      <div>MIDE/pilot_v1/specs/cobol_numstats/architecture.moss</div>
+    `;
+
+    const details = {
+      COBOL_Program_NUMSTATS: { type: "core", desc: "Top-level program entry coordinating file input, looping, compute, and display.", links: "Input_File_INFILE, Main_Read_Loop, Average_Calculation, Output_Display" },
+      Input_File_INFILE: { type: "storage", desc: "Line-sequential input file bound to numbers.txt with IN-REC PIC 9(5).", links: "COBOL_Program_NUMSTATS, Main_Read_Loop" },
+      Main_Read_Loop: { type: "core", desc: "PERFORM UNTIL loop that READs INFILE until EOF_FLAG becomes Y.", links: "Input_File_INFILE, EOF_Control, Accumulator_State" },
+      EOF_Control: { type: "aux", desc: "EOF_FLAG working-storage switch set to Y by AT END branch.", links: "Main_Read_Loop, Working_Storage_Variables" },
+      Accumulator_State: { type: "worker", desc: "Maintains WS_TOTAL and WS_COUNT for every successfully read record.", links: "Main_Read_Loop, Average_Calculation, Output_Display" },
+      Average_Calculation: { type: "aux", desc: "Computes WS_AVERAGE only if WS_COUNT > 0.", links: "Accumulator_State, Output_Display, Working_Storage_Variables" },
+      Output_Display: { type: "core", desc: "Displays TOTAL, COUNT, and AVERAGE after the loop finishes.", links: "Accumulator_State, Average_Calculation" },
+      Working_Storage_Variables: { type: "storage", desc: "Persistent run-state including WS_TOTAL, WS_COUNT, WS_AVERAGE, EOF_FLAG with initial values 0, 0, 0, and \"N\".", links: "EOF_Control, Accumulator_State, Average_Calculation" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

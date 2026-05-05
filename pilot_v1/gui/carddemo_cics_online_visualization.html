@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardDemo CICS Online - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 1500px; }
+    .node.drill { stroke: rgba(0, 212, 255, 0.9); fill: rgba(0, 30, 50, 0.92); }
+    .node-drill-label { fill: var(--cyan); font-size: 12px; font-weight: bold; }
+    .node-drill-sub { fill: #7a99b5; font-size: 10px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge.good { stroke: rgba(68, 255, 136, 0.55); }
+    .edge.warn { stroke: rgba(255, 170, 0, 0.55); }
+    .edge.bad { stroke: rgba(255, 100, 100, 0.6); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 130px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CardDemo CICS Online (Phase 2+)</div>
+    <div class="top-meta">CC00 SIGNON -> MENUS -> COACTVWC/COTRN00C/COUSR00C</div>
+    <div class="top-badge">cics_online_v2 · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">ONLINE SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">Entry and routing</span>
+        <span class="code-line" data-node="SignOn"><span class="code-key">COSGN00C:</span> CC00 entry, auth check, user-type branch</span>
+        <span class="code-line" data-node="UsrSec"><span class="code-key">USRSEC:</span> signon lookup and admin browse source</span>
+        <span class="code-line" data-node="AdminMenu"><span class="code-key">COADM01C:</span> admin option dispatch</span>
+        <span class="code-line" data-node="UserMenu"><span class="code-key">COMEN01C:</span> user option dispatch</span>
+        <span class="code-line" data-node="AidRouter"><span class="code-key">EIBAID:</span> ENTER/PF3/PF7/PF8/OTHER branch contract</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Expanded downstream detail</span>
+        <span class="code-line" data-node="AcctView"><span class="code-key">COACTVWC:</span> validate acct filter then cardxref -> acctdat -> custdat</span>
+        <span class="code-line" data-node="TxnList"><span class="code-key">COTRN00C:</span> STARTBR/READNEXT/READPREV pagination over TRANSACT</span>
+        <span class="code-line" data-node="UserList"><span class="code-key">COUSR00C:</span> STARTBR/READNEXT/READPREV pagination over USRSEC</span>
+
+        <span class="code-line code-h" style="margin-top:10px">State and lineage</span>
+        <span class="code-line" data-node="CommArea">DFHCOMMAREA FROM/TO program and transaction context</span>
+        <span class="code-line" data-node="Lineage">field lineage for option/select/filter -> target and browse state</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Execution drilldowns</span>
+        <span class="code-line" data-node="UserExec">&#9654; User Transaction Path: COTRN00C &#8594; COTRN01C</span>
+        <span class="code-line" data-node="AdminExec">&#9654; Admin Security Path: COUSR00C &#8594; COUSR02C / COUSR03C</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">NAVIGATION DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1400 1500" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M700 110 L700 200"></path>
+          <path class="edge good" d="M700 270 C570 300 480 325 390 360"></path>
+          <path class="edge good" d="M700 270 C830 300 920 325 1010 360"></path>
+
+          <path class="edge" d="M390 440 L390 540"></path>
+          <path class="edge" d="M1010 440 L1010 540"></path>
+          <path class="edge warn" d="M470 610 C560 645 620 690 700 740"></path>
+          <path class="edge warn" d="M930 610 C840 645 780 690 700 740"></path>
+
+          <path class="edge" d="M700 800 L700 880"></path>
+          <path class="edge" d="M700 940 L350 1010"></path>
+          <path class="edge" d="M700 940 L700 1010"></path>
+          <path class="edge" d="M700 940 L1050 1010"></path>
+
+          <path class="edge trace" d="M350 1080 L350 1160"></path>
+          <path class="edge trace" d="M700 1080 L700 1160"></path>
+          <path class="edge trace" d="M1050 1080 L1050 1160"></path>
+          <path class="edge" d="M350 1210 C470 1260 560 1260 700 1260"></path>
+          <path class="edge" d="M700 1210 L700 1260"></path>
+          <path class="edge" d="M1050 1210 C930 1260 840 1260 700 1260"></path>
+
+          <text class="edge-label" x="712" y="160">credential flow</text>
+          <text class="edge-label" x="520" y="330">admin route</text>
+          <text class="edge-label" x="860" y="330">user route</text>
+          <text class="edge-label" x="650" y="710">AID branch merge</text>
+          <text class="edge-label" x="185" y="1004">user menu option 1</text>
+          <text class="edge-label" x="620" y="1004">user menu option 6</text>
+          <text class="edge-label" x="1000" y="1004">admin menu option 1</text>
+          <text class="edge-label" x="610" y="1248">lineage and runtime constraints</text>
+
+          <rect class="node core node-hit" data-node="SignOn" x="530" y="60" width="340" height="50"></rect>
+          <text class="n-title" x="700" y="90" text-anchor="middle">CC00 Entry -> COSGN00C</text>
+
+          <rect class="node storage node-hit" data-node="UsrSec" x="500" y="200" width="400" height="70"></rect>
+          <text class="n-title" x="700" y="234" text-anchor="middle">Credential Validation + USRSEC Read</text>
+          <text class="n-title" x="700" y="255" text-anchor="middle">Set CDEMO-USER-TYPE and routing context</text>
+
+          <rect class="node worker node-hit" data-node="AdminMenu" x="200" y="360" width="380" height="80"></rect>
+          <text class="n-title" x="390" y="396" text-anchor="middle">Admin Menu: COADM01C</text>
+          <text class="n-title" x="390" y="417" text-anchor="middle">option -> CDEMO-ADMIN-OPT-PGMNAME</text>
+
+          <rect class="node worker node-hit" data-node="UserMenu" x="820" y="360" width="380" height="80"></rect>
+          <text class="n-title" x="1010" y="396" text-anchor="middle">User Menu: COMEN01C</text>
+          <text class="n-title" x="1010" y="417" text-anchor="middle">option -> CDEMO-MENU-OPT-PGMNAME</text>
+
+          <rect class="node aux node-hit" data-node="AidRouter" x="480" y="540" width="440" height="70"></rect>
+          <text class="n-title" x="700" y="574" text-anchor="middle">EIBAID Router: ENTER/PF3/PF7/PF8/OTHER</text>
+          <text class="n-title" x="700" y="595" text-anchor="middle">invalid key and page guard semantics</text>
+
+          <rect class="node core node-hit" data-node="CommArea" x="510" y="740" width="380" height="60"></rect>
+          <text class="n-title" x="700" y="775" text-anchor="middle">COMMAREA FROM/TO Program Context</text>
+
+          <rect class="node worker node-hit" data-node="AcctView" x="170" y="1010" width="360" height="70"></rect>
+          <text class="n-title" x="350" y="1045" text-anchor="middle">COACTVWC: account view chain lookup</text>
+          <text class="n-title" x="350" y="1066" text-anchor="middle">CXACAIX -> ACCTDAT -> CUSTDAT</text>
+
+          <rect class="node worker node-hit" data-node="TxnList" x="520" y="1010" width="360" height="70"></rect>
+          <text class="n-title" x="700" y="1045" text-anchor="middle">COTRN00C: TRANSACT pagination</text>
+          <text class="n-title" x="700" y="1066" text-anchor="middle">STARTBR READNEXT READPREV ENDBR</text>
+
+          <rect class="node worker node-hit" data-node="UserList" x="870" y="1010" width="360" height="70"></rect>
+          <text class="n-title" x="1050" y="1045" text-anchor="middle">COUSR00C: USRSEC pagination</text>
+          <text class="n-title" x="1050" y="1066" text-anchor="middle">U/D select -> COUSR02C or COUSR03C</text>
+
+          <rect class="node aux node-hit" data-node="Lineage" x="540" y="1160" width="320" height="50"></rect>
+          <text class="n-title" x="700" y="1190" text-anchor="middle">Field Lineage + Branch Constraints</text>
+
+          <!-- Drilldown edges -->
+          <path class="edge good" d="M700 1210 C580 1252 430 1270 350 1310"></path>
+          <path class="edge warn" d="M700 1210 C820 1252 970 1270 1050 1310"></path>
+          <text class="edge-label" x="480" y="1272">user exec &#9654;</text>
+          <text class="edge-label" x="840" y="1272">admin exec &#9654;</text>
+
+          <!-- User Execution Drilldown -->
+          <rect class="node drill node-hit" data-node="UserExec" data-href="carddemo_cics_online_execution_visualization.html" x="160" y="1310" width="380" height="70" style="cursor:pointer"></rect>
+          <text class="node-drill-label" x="350" y="1337" text-anchor="middle">&#9654; User Transaction Path</text>
+          <text class="node-drill-sub" x="350" y="1355" text-anchor="middle">COTRN00C &#8594; COTRN01C execution flow</text>
+          <text class="node-drill-sub" x="350" y="1371" text-anchor="middle">[ click to open ]</text>
+
+          <!-- Admin Execution Drilldown -->
+          <rect class="node drill node-hit" data-node="AdminExec" data-href="carddemo_cics_admin_execution_visualization.html" x="860" y="1310" width="380" height="70" style="cursor:pointer"></rect>
+          <text class="node-drill-label" x="1050" y="1337" text-anchor="middle">&#9654; Admin Security Path</text>
+          <text class="node-drill-sub" x="1050" y="1355" text-anchor="middle">COUSR00C &#8594; COUSR02C / COUSR03C flow</text>
+          <text class="node-drill-sub" x="1050" y="1371" text-anchor="middle">[ click to open ]</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Scope</span><span class="v">CardDemo phase-2 online with detailed downstream contracts.</span></div>
+      <div class="kv"><span class="k">Focus</span><span class="v">COACTVWC, COTRN00C, COUSR00C semantics are now explicit.</span></div>
+      <div class="kv"><span class="k">Main Output</span><span class="v">Rebuild-safe routing, browse paging, lookup ordering, and selection semantics.</span></div>
+      <div class="kv"><span class="k">Spec</span><span class="v">MIDE/pilot_v1/specs/carddemo_cics_online/architecture.moss</span></div>
+    `;
+
+    const details = {
+      SignOn: { type: "core", desc: "COSGN00C authenticates and sets initial context for downstream routing.", links: "UsrSec, AidRouter, CommArea" },
+      UsrSec: { type: "storage", desc: "USRSEC supports signon verification and user-list browse for COUSR00C.", links: "SignOn, UserList" },
+      AdminMenu: { type: "worker", desc: "COADM01C maps admin options and routes to admin target programs.", links: "AidRouter, UserList, CommArea" },
+      UserMenu: { type: "worker", desc: "COMEN01C maps user options to business programs including COACTVWC and COTRN00C.", links: "AidRouter, AcctView, TxnList, CommArea" },
+      AidRouter: { type: "aux", desc: "EIBAID branch contract handles ENTER, PF3, PF7, PF8, and invalid keys.", links: "AdminMenu, UserMenu, CommArea" },
+      CommArea: { type: "core", desc: "Directional state fields preserve FROM/TO program and transaction context across XCTL and RETURN.", links: "SignOn, AdminMenu, UserMenu, AcctView, TxnList, UserList" },
+      AcctView: { type: "worker", desc: "COACTVWC validates account filter and enforces lookup order: CXACAIX then ACCTDAT then CUSTDAT.", links: "UserMenu, CommArea, Lineage" },
+      TxnList: { type: "worker", desc: "COTRN00C paginates TRANSACT using STARTBR/READNEXT/READPREV; S selection routes to COTRN01C.", links: "UserMenu, CommArea, Lineage" },
+      UserList: { type: "worker", desc: "COUSR00C paginates USRSEC; U routes to COUSR02C, D routes to COUSR03C.", links: "AdminMenu, CommArea, Lineage" },
+      Lineage: { type: "aux", desc: "Lineage captures option, selection, and filter propagation to target programs and browse state markers.", links: "AcctView, TxnList, UserList" },
+      UserExec: { type: "drilldown", desc: "Click to open User Transaction execution page. Covers COSGN00C -> COMEN01C -> COTRN00C -> select -> COTRN01C -> return. SEL/TRN field lineage, TRANSACT READ UPDATE, PF5 confirm, PF3 return to FROM-PROGRAM.", links: "carddemo_cics_online_execution_visualization.html" },
+      AdminExec: { type: "drilldown", desc: "Click to open Admin Security execution page. Covers COSGN00C -> COADM01C -> COUSR00C -> U/D -> COUSR02C or COUSR03C -> return. User browse pagination, REWRITE and DELETE on PF5, PF3/PF12 return to COADM01C.", links: "carddemo_cics_admin_execution_visualization.html" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      const linkRow = d.type === 'drilldown'
+        ? `<div class="kv"><span class="k">Open</span><span class="v"><a href="${d.links}" target="_blank" style="color:var(--cyan);text-decoration:underline">${d.links}</a></span></div>`
+        : `<div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>`;
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        ${linkRow}
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("click", () => {
+        const href = node.getAttribute("data-href");
+        if (href) window.open(href, "_blank");
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

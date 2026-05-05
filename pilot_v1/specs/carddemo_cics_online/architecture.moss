@@ -1,0 +1,357 @@
+@MOSS:CARDDemo_CICS_Online_Flow_v2
+@R:~/mide-pilot/pilot_v1/specs/carddemo_cics_online/
+
+systems:
+
+  CICS_Online_Orchestrator:
+    role: governs online transaction lifecycle from signon through menus and selected business programs
+    runtime: cics_transaction_flow
+    entry_transaction: CC00
+    depends_on: SignOn_Program_COSGN00C, User_Menu_COMEN01C, Admin_Menu_COADM01C, Account_View_COACTVWC, Transaction_List_COTRN00C, User_List_COUSR00C, CICS_Return_Loop
+
+  SignOn_Program_COSGN00C:
+    role: login transaction validates credentials from user security dataset and routes by user type
+    runtime: cics_cobol
+    program_id: COSGN00C
+    mapset: COSGN00
+    transid: CC00
+    depends_on: User_Security_File_USRSEC, Common_Area_DFHCOMMAREA, Aid_Key_Router, Program_Routing_Context
+
+  User_Menu_COMEN01C:
+    role: regular-user menu that resolves option number to downstream program and performs XCTL
+    runtime: cics_cobol
+    program_id: COMEN01C
+    mapset: COMEN01
+    transid: CM00
+    depends_on: User_Menu_Options_Copybook, Common_Area_DFHCOMMAREA, Aid_Key_Router, Program_Routing_Context, Downstream_User_Programs
+
+  Admin_Menu_COADM01C:
+    role: admin menu that resolves admin options and routes to security and maintenance programs
+    runtime: cics_cobol
+    program_id: COADM01C
+    mapset: COADM01
+    transid: CA00
+    depends_on: Admin_Menu_Options_Copybook, Common_Area_DFHCOMMAREA, Aid_Key_Router, Program_Routing_Context, Downstream_Admin_Programs
+
+  Account_View_COACTVWC:
+    role: account view transaction validates 11-digit account input and assembles account plus customer detail from cross-reference and master files
+    runtime: cics_cobol
+    program_id: COACTVWC
+    transid: CAVW
+    mapset: COACTVW
+    depends_on: Account_Filter_Validation, Card_Xref_CXACAIX, Account_Master_ACCTDAT, Customer_Master_CUSTDAT, Program_Routing_Context
+
+  Transaction_List_COTRN00C:
+    role: transaction list transaction pages through TRANSACT records with selection and PF7/PF8 navigation
+    runtime: cics_cobol
+    program_id: COTRN00C
+    transid: CT00
+    mapset: COTRN00
+    depends_on: Transaction_Browse_Engine, Transact_File_TRANSACT, Program_Routing_Context, Aid_Key_Router
+
+  User_List_COUSR00C:
+    role: admin user list transaction pages USRSEC records and routes selected user to update or delete flows
+    runtime: cics_cobol
+    program_id: COUSR00C
+    transid: CU00
+    mapset: COUSR00
+    depends_on: User_Security_Browse_Engine, User_Security_File_USRSEC, Program_Routing_Context, Aid_Key_Router
+
+  Aid_Key_Router:
+    role: evaluates EIBAID keys for ENTER PF3 PF7 PF8 and invalid key behavior across online screens
+    runtime: cics_control_semantics
+    keys: DFHENTER, DFHPF3, DFHPF7, DFHPF8, OTHER
+    semantics:
+      - enter_process
+      - pf3_return_to_previous_or_menu
+      - pf7_page_backward_when_supported
+      - pf8_page_forward_when_supported
+      - invalid_key_message_then_redisplay
+
+  Common_Area_DFHCOMMAREA:
+    role: shared communication area carrying user identity type context and from or to program routing state
+    runtime: commarea_contract
+    fields: CDEMO_USER_ID, CDEMO_USER_TYPE, CDEMO_FROM_PROGRAM, CDEMO_TO_PROGRAM, CDEMO_FROM_TRANID, CDEMO_TO_TRANID, CDEMO_PGM_CONTEXT, CDEMO_PGM_REENTER
+
+  Program_Routing_Context:
+    role: directional navigation contract implemented via CDEMO-FROM-PROGRAM and CDEMO-TO-PROGRAM with XCTL handoff
+    runtime: semantic_contract
+    semantics:
+      - caller_sets_from_program_before_xctl
+      - target_program_uses_to_program_or_defaults_to_signon_or_menu
+      - low_values_or_spaces_route_to_safe_default
+      - preserve_return_context_on_pf3
+
+  Account_Filter_Validation:
+    role: COACTVWC input contract for account search field
+    runtime: semantic_contract
+    semantics:
+      - accept_low_values_or_spaces_as_no_search
+      - reject_non_numeric_or_zero_account
+      - require_non_zero_11_digit_for_lookup
+      - annotate_field_red_on_invalid
+
+  Card_Xref_CXACAIX:
+    role: account to card and customer lookup through alternate index path
+    runtime: cics_dataset
+    dataset_name: CXACAIX
+    operations: read_by_account_id
+
+  Account_Master_ACCTDAT:
+    role: account master data source for account status balances limits and dates
+    runtime: cics_dataset
+    dataset_name: ACCTDAT
+    operations: read_by_account_id
+
+  Customer_Master_CUSTDAT:
+    role: customer master data source for profile and contact information
+    runtime: cics_dataset
+    dataset_name: CUSTDAT
+    operations: read_by_customer_id
+
+  Transaction_Browse_Engine:
+    role: COTRN00C browse state machine using STARTBR READNEXT READPREV ENDBR with page markers
+    runtime: cics_browse_contract
+    state_fields: CDEMO_CT00_TRNID_FIRST, CDEMO_CT00_TRNID_LAST, CDEMO_CT00_PAGE_NUM, CDEMO_CT00_NEXT_PAGE_FLG
+
+  Transact_File_TRANSACT:
+    role: transaction dataset browsed for list display and row selection to details
+    runtime: cics_dataset
+    dataset_name: TRANSACT
+    operations: startbr_readnext_readprev_endbr
+
+  User_Security_Browse_Engine:
+    role: COUSR00C browse state machine using STARTBR READNEXT READPREV ENDBR with page markers
+    runtime: cics_browse_contract
+    state_fields: CDEMO_CU00_USRID_FIRST, CDEMO_CU00_USRID_LAST, CDEMO_CU00_PAGE_NUM, CDEMO_CU00_NEXT_PAGE_FLG
+
+  User_Security_File_USRSEC:
+    role: CICS dataset read for credential verification and user list browse operations
+    runtime: cics_dataset
+    dataset_name: USRSEC
+    operations: read_by_user_id, browse_user_rows
+
+  User_Menu_Options_Copybook:
+    role: defines regular user menu options and target programs
+    runtime: copybook_contract
+    member: COMEN02Y
+    options:
+      - 1 COACTVWC
+      - 2 COACTUPC
+      - 3 COCRDLIC
+      - 4 COCRDSLC
+      - 5 COCRDUPC
+      - 6 COTRN00C
+      - 7 COTRN01C
+      - 8 COTRN02C
+      - 9 CORPT00C
+      - 10 COBIL00C
+      - 11 COPAUS0C
+
+  Admin_Menu_Options_Copybook:
+    role: defines admin menu options and target programs
+    runtime: copybook_contract
+    member: COADM02Y
+    options:
+      - 1 COUSR00C
+      - 2 COUSR01C
+      - 3 COUSR02C
+      - 4 COUSR03C
+      - 5 COTRTLIC
+      - 6 COTRTUPC
+
+  Downstream_User_Programs:
+    role: functional user-facing online program set routed from COMEN01C
+    runtime: cics_program_group
+    members: COACTVWC, COACTUPC, COCRDLIC, COCRDSLC, COCRDUPC, COTRN00C, COTRN01C, COTRN02C, CORPT00C, COBIL00C, COPAUS0C
+
+  Downstream_Admin_Programs:
+    role: functional admin-facing online program set routed from COADM01C
+    runtime: cics_program_group
+    members: COUSR00C, COUSR01C, COUSR02C, COUSR03C, COTRTLIC, COTRTUPC
+
+  CICS_Resource_Definitions:
+    role: resource definitions for programs mapsets and transactions in CSD setup JCL
+    runtime: cics_definition_contract
+    source_member: CBADMCDJ
+    includes: program_definitions, transaction_definitions, mapset_definitions
+
+  CICS_Return_Loop:
+    role: returns control with transid and commarea to maintain conversational task flow
+    runtime: cics_return_semantics
+    semantics:
+      - return_with_transid_and_commarea_after_screen_cycle
+      - xctl_handoff_for_program_navigation
+      - no_commarea_routes_to_signon
+
+  Evaluate_Branch_Semantics:
+    role: explicit branch semantics for key evaluation menu option validation and row selection paths
+    runtime: semantic_contract
+    semantics:
+      - invalid_option_number_or_non_numeric_stays_on_menu
+      - access_control_checks_user_type_for_option
+      - invalid_selection_flag_stays_on_list
+      - top_or_bottom_page_guard_messages_for_pf7_pf8
+      - optional_program_not_installed_paths_show_message
+
+  Field_Lineage_Map:
+    role: directional lineage for routing fields browse state and lookup transitions
+    runtime: semantic_contract
+    lineage_rules:
+      - EIBAID_to_route_path
+      - option_input_to_option_index_to_target_program
+      - selection_flag_and_row_id_to_detail_target_program
+      - account_id_input_to_cardxref_to_account_to_customer
+      - readnext_or_readprev_to_first_last_markers_and_page_num
+      - from_program_and_to_program_to_xctl_target
+
+dependencies:
+  - CICS_Online_Orchestrator -> SignOn_Program_COSGN00C
+  - CICS_Online_Orchestrator -> User_Menu_COMEN01C
+  - CICS_Online_Orchestrator -> Admin_Menu_COADM01C
+  - CICS_Online_Orchestrator -> Account_View_COACTVWC
+  - CICS_Online_Orchestrator -> Transaction_List_COTRN00C
+  - CICS_Online_Orchestrator -> User_List_COUSR00C
+  - CICS_Online_Orchestrator -> CICS_Return_Loop
+
+  - SignOn_Program_COSGN00C -> User_Security_File_USRSEC
+  - SignOn_Program_COSGN00C -> Common_Area_DFHCOMMAREA
+  - SignOn_Program_COSGN00C -> Aid_Key_Router
+  - SignOn_Program_COSGN00C -> Program_Routing_Context
+  - SignOn_Program_COSGN00C -> Evaluate_Branch_Semantics
+
+  - User_Menu_COMEN01C -> User_Menu_Options_Copybook
+  - User_Menu_COMEN01C -> Common_Area_DFHCOMMAREA
+  - User_Menu_COMEN01C -> Aid_Key_Router
+  - User_Menu_COMEN01C -> Program_Routing_Context
+  - User_Menu_COMEN01C -> Downstream_User_Programs
+  - User_Menu_COMEN01C -> Evaluate_Branch_Semantics
+
+  - Admin_Menu_COADM01C -> Admin_Menu_Options_Copybook
+  - Admin_Menu_COADM01C -> Common_Area_DFHCOMMAREA
+  - Admin_Menu_COADM01C -> Aid_Key_Router
+  - Admin_Menu_COADM01C -> Program_Routing_Context
+  - Admin_Menu_COADM01C -> Downstream_Admin_Programs
+  - Admin_Menu_COADM01C -> Evaluate_Branch_Semantics
+
+  - Account_View_COACTVWC -> Account_Filter_Validation
+  - Account_View_COACTVWC -> Card_Xref_CXACAIX
+  - Account_View_COACTVWC -> Account_Master_ACCTDAT
+  - Account_View_COACTVWC -> Customer_Master_CUSTDAT
+  - Account_View_COACTVWC -> Program_Routing_Context
+  - Account_View_COACTVWC -> Field_Lineage_Map
+
+  - Transaction_List_COTRN00C -> Transaction_Browse_Engine
+  - Transaction_List_COTRN00C -> Transact_File_TRANSACT
+  - Transaction_List_COTRN00C -> Program_Routing_Context
+  - Transaction_List_COTRN00C -> Aid_Key_Router
+  - Transaction_List_COTRN00C -> Field_Lineage_Map
+
+  - User_List_COUSR00C -> User_Security_Browse_Engine
+  - User_List_COUSR00C -> User_Security_File_USRSEC
+  - User_List_COUSR00C -> Program_Routing_Context
+  - User_List_COUSR00C -> Aid_Key_Router
+  - User_List_COUSR00C -> Field_Lineage_Map
+
+  - Program_Routing_Context -> Common_Area_DFHCOMMAREA
+  - Program_Routing_Context -> Field_Lineage_Map
+  - CICS_Return_Loop -> Common_Area_DFHCOMMAREA
+  - CICS_Resource_Definitions -> SignOn_Program_COSGN00C
+
+interfaces:
+
+  SignOn_Credential_Contract:
+    protocol: cics_dataset_auth_lookup
+    semantics:
+      - user_id_required
+      - password_required
+      - read_usrsec_by_user_id
+      - response_code_0_success_13_user_not_found
+
+  Menu_Navigation_Contract:
+    protocol: map_input_to_program_xctl
+    semantics:
+      - parse_option_input_trim_and_numeric_check
+      - enforce_option_range_against_copybook_count
+      - map_option_to_program_name
+      - xctl_to_target_with_commarea
+
+  Account_View_Contract:
+    protocol: map_input_validate_lookup_render
+    semantics:
+      - account_field_blank_sets_prompt_message
+      - account_field_non_numeric_or_zero_sets_error
+      - lookup_order_cardxref_then_account_then_customer
+      - not_found_or_file_error_sets_feedback_and_returns_to_map
+
+  Transaction_List_Contract:
+    protocol: browse_paginate_select_transaction
+    semantics:
+      - enter_loads_or_filters_list_by_transaction_id
+      - pf7_requests_backward_page_when_page_num_gt_1
+      - pf8_requests_forward_page_when_next_page_flag_yes
+      - selection_s_routes_to_COTRN01C
+      - invalid_selection_or_non_numeric_id_stays_on_screen
+
+  User_List_Contract:
+    protocol: browse_paginate_select_user_action
+    semantics:
+      - enter_loads_or_filters_list_by_user_id
+      - selection_u_routes_to_COUSR02C
+      - selection_d_routes_to_COUSR03C
+      - invalid_selection_stays_on_screen
+      - pf7_pf8_use_page_boundaries_and_guard_messages
+
+  Program_Context_Contract:
+    protocol: directional_routing_state
+    semantics:
+      - CDEMO_FROM_PROGRAM_set_by_caller
+      - CDEMO_TO_PROGRAM_set_by_router
+      - fallback_to_COSGN00C_or_menu_on_blank_or_low_values
+
+  CICS_Conversation_Contract:
+    protocol: receive_send_return_cycle
+    semantics:
+      - receive_map_then_process
+      - send_map_or_text_for_feedback
+      - return_with_transid_and_commarea_for_continuation
+
+actions:
+
+  authenticate_user_and_route:
+    actor: SignOn_Program_COSGN00C
+    objective: validate_credentials_and_branch_to_user_or_admin_menu
+
+  route_menu_option_to_program:
+    actor: User_Menu_COMEN01C
+    objective: map_user_selection_to_target_program_and_transfer_control
+
+  route_admin_option_to_program:
+    actor: Admin_Menu_COADM01C
+    objective: map_admin_selection_to_security_or_maintenance_program
+
+  process_account_view_lookup:
+    actor: Account_View_COACTVWC
+    objective: validate_account_filter_then_join_cardxref_account_customer_data_for_display
+
+  process_transaction_list_navigation:
+    actor: Transaction_List_COTRN00C
+    objective: browse_transact_rows_with_pf7_pf8_and_optional_selection_to_detail
+
+  process_user_list_navigation:
+    actor: User_List_COUSR00C
+    objective: browse_usrsec_rows_with_pf7_pf8_and_selection_to_update_or_delete
+
+  preserve_online_navigation_state:
+    actor: Program_Routing_Context
+    objective: keep_return_paths_and_xctl_targets_deterministic
+
+runtime_constraints:
+
+  - no_commarea_on_entry_must_route_to_signon_screen
+  - aid_key_handling_must_preserve_enter_pf3_pf7_pf8_other_semantics
+  - menu_option_validation_must_reject_non_numeric_or_out_of_range_inputs
+  - account_view_lookup_must_follow_cardxref_then_acctdat_then_custdat_order
+  - transaction_and_user_list_must_maintain_first_last_and_next_page_state_fields
+  - routing_fallback_to_COSGN00C_or_menu_must_apply_for_blank_target_program
+  - commarea_state_fields_must_be_directionally_consistent_across_xctl

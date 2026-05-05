@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocher System Landscape</title>
+  <style>
+    :root {
+      --bg: #020810;
+      --panel: #0a1628;
+      --accent: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.18);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Consolas", "Courier New", monospace; background: var(--bg); color: var(--text); }
+    .top { display: flex; justify-content: space-between; padding: 10px 14px; background: var(--panel); border-bottom: 1px solid var(--border); font-size: 12px; }
+    .top .t { color: var(--accent); }
+    .top .m { color: var(--dim); }
+    .layout { display: grid; grid-template-columns: 1fr 2fr 1fr; min-height: calc(100vh - 42px); }
+    .pane { border-right: 1px solid var(--border); }
+    .pane:last-child { border-right: none; }
+    .head { font-size: 11px; letter-spacing: 1px; color: var(--accent); padding: 10px 12px; border-bottom: 1px solid var(--border); background: rgba(0,212,255,0.04); }
+    .body { padding: 12px; font-size: 12px; line-height: 1.55; }
+    .k { color: var(--amber); display: inline-block; min-width: 130px; }
+    .row { margin-bottom: 7px; }
+    .row.active { background: rgba(0, 212, 255, 0.1); border-left: 2px solid var(--accent); padding-left: 6px; }
+    svg { width: 100%; height: auto; min-height: 900px; }
+    .node { rx: 8; ry: 8; stroke-width: 1.5; }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .web { fill: rgba(0, 212, 255, 0.07); stroke: rgba(0, 212, 255, 0.62); }
+    .api { fill: rgba(68, 255, 136, 0.07); stroke: rgba(68, 255, 136, 0.62); }
+    .db { fill: rgba(255, 170, 0, 0.08); stroke: rgba(255, 170, 0, 0.62); }
+    .ai { fill: rgba(187, 136, 255, 0.08); stroke: rgba(187, 136, 255, 0.62); }
+    .ext { fill: rgba(120, 120, 140, 0.2); stroke: rgba(160, 180, 220, 0.45); }
+    .txt { fill: var(--text); font-size: 12px; }
+    .sub { fill: var(--dim); font-size: 10px; }
+    .edge { stroke: rgba(0, 212, 255, 0.35); stroke-width: 1.4; fill: none; marker-end: url(#arr); }
+    .edge2 { stroke: rgba(255, 170, 0, 0.45); }
+    .edge3 { stroke: rgba(187, 136, 255, 0.5); }
+    .lbl { fill: #7ca5c1; font-size: 9px; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="t">MOSS ▸ ROCHER System Landscape</div>
+    <div class="m">Angular 18 ▸ Spring Boot 3.4 ▸ MariaDB ▸ OCI ▸ YOLO</div>
+  </div>
+
+  <div class="layout">
+    <section class="pane">
+      <div class="head">CAPABILITY MAP</div>
+      <div class="body">
+        <div class="row" data-node="Frontend"><span class="k">Frontend</span>Angular UI with Material + upload/report screens.</div>
+        <div class="row" data-node="Backend"><span class="k">Backend API</span>Spring Boot REST with auth, projects, media, reports.</div>
+        <div class="row" data-node="Storage"><span class="k">Storage</span>OCI Object Storage for ZIP uploads and report artifacts.</div>
+        <div class="row" data-node="Data"><span class="k">Data</span>MariaDB schema around clients/projects/uploads/reports/users.</div>
+        <div class="row" data-node="AIPipeline"><span class="k">AI Pipeline</span>Python job fetches pending ZIP, runs YOLO, updates DB flags.</div>
+        <div class="row" data-node="ReportEngine"><span class="k">Report Engine</span>Apache POI generates XLSX with photo and chart content.</div>
+        <div class="row" data-node="ModelArtifacts"><span class="k">Models</span>Three YOLO .pt artifacts serve road damage detection variants.</div>
+        <div class="row" data-node="Outputs"><span class="k">Outputs</span>Wk records and XLSX artifacts delivered to consumers.</div>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="head">LANDSCAPE DIAGRAM</div>
+      <div class="body">
+        <svg viewBox="0 0 1100 900" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)" />
+            </marker>
+          </defs>
+
+          <rect class="node web node-hit" data-node="Frontend" x="80" y="90" width="280" height="120" />
+          <text class="txt" x="220" y="130" text-anchor="middle">Angular Frontend</text>
+          <text class="sub" x="220" y="152" text-anchor="middle">ng serve / browser UX</text>
+          <text class="sub" x="220" y="170" text-anchor="middle">Uploads + Project/Report flows</text>
+
+          <rect class="node api node-hit" data-node="Backend" x="420" y="70" width="320" height="170" />
+          <text class="txt" x="580" y="112" text-anchor="middle">Spring Boot API</text>
+          <text class="sub" x="580" y="136" text-anchor="middle">/api/auth /api/users /api/clients</text>
+          <text class="sub" x="580" y="154" text-anchor="middle">/api/projects /api/reports /api/media</text>
+          <text class="sub" x="580" y="172" text-anchor="middle">JWT, validation, service orchestration</text>
+
+          <rect class="node db node-hit" data-node="Data" x="810" y="90" width="230" height="120" />
+          <text class="txt" x="925" y="130" text-anchor="middle">MariaDB</text>
+          <text class="sub" x="925" y="152" text-anchor="middle">rocher schema</text>
+          <text class="sub" x="925" y="170" text-anchor="middle">proyectos/bitacora/reportes</text>
+
+          <rect class="node ext node-hit" data-node="Storage" x="420" y="300" width="320" height="120" />
+          <text class="txt" x="580" y="340" text-anchor="middle">OCI Object Storage</text>
+          <text class="sub" x="580" y="360" text-anchor="middle">ZIP ingest + report artifact storage</text>
+          <text class="sub" x="580" y="378" text-anchor="middle">signed URL + stream download</text>
+
+          <rect class="node ai node-hit" data-node="AIPipeline" x="420" y="510" width="320" height="170" />
+          <text class="txt" x="580" y="552" text-anchor="middle">Python AI Pipeline</text>
+          <text class="sub" x="580" y="574" text-anchor="middle">src/main.py job loop</text>
+          <text class="sub" x="580" y="592" text-anchor="middle">ultralytics YOLO (.pt) inference</text>
+          <text class="sub" x="580" y="610" text-anchor="middle">mark isDownloaded + write analysis</text>
+
+          <rect class="node ext node-hit" data-node="ModelArtifacts" x="80" y="530" width="280" height="120" />
+          <text class="txt" x="220" y="570" text-anchor="middle">Model Artifacts</text>
+          <text class="sub" x="220" y="592" text-anchor="middle">daka_rocher_model_v3.0.pt</text>
+          <text class="sub" x="220" y="610" text-anchor="middle">br_v1.0.pt / rod_v1.pt</text>
+
+          <rect class="node ext node-hit" data-node="Outputs" x="810" y="530" width="230" height="120" />
+          <text class="txt" x="925" y="570" text-anchor="middle">Generated Outputs</text>
+          <text class="sub" x="925" y="592" text-anchor="middle">wk_reporte + reportes XLSX</text>
+          <text class="sub" x="925" y="610" text-anchor="middle">photo report + charts</text>
+
+          <path class="edge" d="M360 150 L420 150" />
+          <path class="edge" d="M740 150 L810 150" />
+          <path class="edge edge2" d="M580 240 L580 300" />
+          <path class="edge edge3" d="M580 420 L580 510" />
+          <path class="edge edge3" d="M360 590 L420 590" />
+          <path class="edge edge3" d="M740 590 L810 590" />
+          <path class="edge edge2" d="M860 210 L660 500" />
+          <path class="edge" d="M500 240 L250 520" />
+
+          <text class="lbl" x="384" y="142">REST/JSON</text>
+          <text class="lbl" x="758" y="142">JPA</text>
+          <text class="lbl" x="590" y="276">upload/download objects</text>
+          <text class="lbl" x="590" y="470">batch fetch + update</text>
+          <text class="lbl" x="760" y="380">zip feed</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="head">DETAILS</div>
+      <div class="body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="row"><span class="k">Scope</span>Rocher full stack landscape mapping.</div>
+      <div class="row"><span class="k">Critical Path</span>Upload ZIP -> OCI -> AI processing -> report generation.</div>
+      <div class="row"><span class="k">Risk</span>Medium-High due to backend/storage/runtime coupling.</div>
+    `;
+
+    const details = {
+      Frontend: { type: "web", desc: "Angular 18 UI serves upload, project, and report interaction surfaces.", links: "ng serve, material components, API client calls" },
+      Backend: { type: "api", desc: "Spring Boot orchestrates auth, media, projects, and reports with service layer controls.", links: "/api/auth, /api/users, /api/clients, /api/projects, /api/reports, /api/media" },
+      Data: { type: "db", desc: "MariaDB stores operational entities, upload state, and report metadata.", links: "clientes, proyectos, bitacora_carga, reportes, wk_reporte" },
+      Storage: { type: "storage", desc: "OCI Object Storage handles bulk ZIP ingress and XLSX artifact persistence.", links: "signed upload URL, stream download, bucket object paths" },
+      AIPipeline: { type: "ai", desc: "Python job processes pending project folders, downloads assets, and applies YOLO inference.", links: "src/main.py, listar_proyect_folders, process_images_in_directory" },
+      ModelArtifacts: { type: "model", desc: "Three .pt files represent trained models for different deterioration detection scopes.", links: "daka_rocher_model_v3.0.pt / br_v1.0.pt / rod_v1.pt" },
+      Outputs: { type: "output", desc: "Computed deterioration rows and versioned report files are returned to clients.", links: "wk_reporte + reportes XLSX + download routes" },
+      ReportEngine: { type: "service", desc: "Apache POI template engine creates chart-rich XLSX output packages.", links: "ReportGeneratorService + ROCHER_PLANTILLA_FLEXIBLES.xlsx" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    const sourceRows = document.querySelectorAll(".row[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+    panel.innerHTML = defaultHtml;
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="row"><span class="k">Component</span>${nodeId}</div>
+        <div class="row"><span class="k">Type</span>${d.type}</div>
+        <div class="row"><span class="k">Description</span>${d.desc}</div>
+        <div class="row"><span class="k">Links</span>${d.links}</div>
+      `;
+    }
+
+    function clearHighlights() {
+      sourceRows.forEach((line) => line.classList.remove("active"));
+      nodes.forEach((node) => node.classList.remove("hover"));
+    }
+
+    function activateNode(nodeId) {
+      clearHighlights();
+      sourceRows.forEach((line) => {
+        if (line.getAttribute("data-node") === nodeId) {
+          line.classList.add("active");
+          line.scrollIntoView({ block: "nearest" });
+        }
+      });
+      nodes.forEach((node) => {
+        if (node.getAttribute("data-node") === nodeId) {
+          node.classList.add("hover");
+        }
+      });
+      renderDetails(nodeId);
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => activateNode(node.getAttribute("data-node")));
+      node.addEventListener("mouseleave", () => {
+        clearHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+
+    sourceRows.forEach((line) => {
+      line.addEventListener("mouseenter", () => activateNode(line.getAttribute("data-node")));
+      line.addEventListener("mouseleave", () => {
+        clearHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

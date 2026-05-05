@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardDemo CICS Execution Path - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 1260px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge.good { stroke: rgba(68, 255, 136, 0.55); }
+    .edge.warn { stroke: rgba(255, 170, 0, 0.55); }
+    .edge.bad { stroke: rgba(255, 100, 100, 0.6); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .node.guard { stroke: rgba(255, 80, 80, 0.7); fill: rgba(25, 5, 5, 0.92); }
+    .guard-title { fill: #ff7070; font-size: 11px; font-weight: bold; }
+    .guard-sub { fill: #8a5555; font-size: 9px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 140px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CardDemo CICS Execution Path (User Transaction Drilldown)</div>
+    <div class="top-meta">COSGN00C -> COMEN01C(Option 6) -> COTRN00C -> COTRN01C -> RETURN</div>
+    <div class="top-badge">exec_path · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">EXECUTION SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">Signon to menu</span>
+        <span class="code-line" data-node="Step1"><span class="code-key">COSGN00C:</span> authenticate USERID/PASSWORD via USRSEC</span>
+        <span class="code-line" data-node="Step2"><span class="code-key">COMEN01C:</span> parse OPTIONI and map option 6 -> COTRN00C</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Transaction list</span>
+        <span class="code-line" data-node="Step3"><span class="code-key">COTRN00C:</span> ENTER builds page with STARTBR/READNEXT</span>
+        <span class="code-line" data-node="Step4"><span class="code-key">COTRN00C:</span> row S selection sets CDEMO-CT00-TRN-SELECTED</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Transaction detail</span>
+        <span class="code-line" data-node="Step5"><span class="code-key">COTRN01C:</span> preload selected TRNID then READ TRANSACT</span>
+        <span class="code-line" data-node="Step6"><span class="code-key">COTRN01C:</span> PF5 returns to COTRN00C, PF3 returns to previous program</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Lineage contract</span>
+        <span class="code-line" data-node="Lineage">OPTIONI -> CDEMO-MENU-OPT-PGMNAME -> XCTL target</span>
+        <span class="code-line" data-node="Lineage">SEL000nI/TRNIDnnI -> CDEMO-CT00-TRN-SELECTED -> TRAN-ID</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Error / guard paths</span>
+        <span class="code-line" data-node="AuthFail">COSGN00C: USRSEC NOTFND or bad password &#8594; RETURN+TRANSID(CC00)</span>
+        <span class="code-line" data-node="InvalidOption">COMEN01C: non-numeric/out-of-range OPTIONI &#8594; redisplay, no XCTL</span>
+        <span class="code-line" data-node="EmptyList">COTRN00C: STARTBR NOTFND &#8594; no-records-found display</span>
+        <span class="code-line" data-node="InvalidKey">COTRN00C: EIBAID OTHER &#8594; invalid key + redisplay list</span>
+        <span class="code-line" data-node="RecordNotFound">COTRN01C: READ NOTFND for TRAN-ID &#8594; error + redisplay detail</span>
+        <span class="code-line" data-node="InvalidKeyDetail">COTRN01C: EIBAID OTHER &#8594; invalid key + redisplay detail</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">EXECUTION DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1400 1260" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M700 110 L700 190"></path>
+          <path class="edge" d="M700 250 L700 330"></path>
+          <path class="edge" d="M700 390 L700 470"></path>
+          <path class="edge warn" d="M700 540 L700 620"></path>
+          <path class="edge" d="M700 700 L700 780"></path>
+          <path class="edge" d="M700 850 L700 930"></path>
+
+          <path class="edge good" d="M700 930 C900 930 980 860 980 760 C980 660 900 610 780 610"></path>
+          <path class="edge bad" d="M700 930 C500 930 420 860 420 760 C420 660 500 610 620 610"></path>
+
+          <path class="edge trace" d="M700 990 L700 1080"></path>
+
+          <text class="edge-label" x="708" y="160">auth success</text>
+          <text class="edge-label" x="708" y="300">option routing</text>
+          <text class="edge-label" x="708" y="440">initial list page</text>
+          <text class="edge-label" x="708" y="590">row select S</text>
+          <text class="edge-label" x="708" y="750">preload selected TRNID</text>
+          <text class="edge-label" x="708" y="900">READ TRANSACT by TRAN-ID</text>
+          <text class="edge-label" x="990" y="760">PF5 -> COTRN00C</text>
+          <text class="edge-label" x="300" y="760">PF3 -> FROM-PROGRAM/menu</text>
+          <text class="edge-label" x="712" y="1060">field lineage map</text>
+
+          <rect class="node core node-hit" data-node="Step1" x="500" y="60" width="400" height="50"></rect>
+          <text class="n-title" x="700" y="90" text-anchor="middle">1) COSGN00C Signon (USRSEC auth)</text>
+
+          <rect class="node core node-hit" data-node="Step2" x="480" y="190" width="440" height="60"></rect>
+          <text class="n-title" x="700" y="223" text-anchor="middle">2) COMEN01C Option Parse</text>
+          <text class="n-title" x="700" y="244" text-anchor="middle">OPTION 6 -> CDEMO-MENU-OPT-PGMNAME -> COTRN00C</text>
+
+          <rect class="node worker node-hit" data-node="Step3" x="470" y="330" width="460" height="60"></rect>
+          <text class="n-title" x="700" y="363" text-anchor="middle">3) COTRN00C ENTER</text>
+          <text class="n-title" x="700" y="384" text-anchor="middle">STARTBR + READNEXT page load (TRNID_FIRST/LAST)</text>
+
+          <rect class="node worker node-hit" data-node="Step4" x="450" y="470" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="505" text-anchor="middle">4) COTRN00C Row Selection</text>
+          <text class="n-title" x="700" y="526" text-anchor="middle">SEL000nI='S' + TRNIDnnI -> CDEMO-CT00-TRN-SELECTED</text>
+
+          <rect class="node worker node-hit" data-node="Step5" x="470" y="620" width="460" height="80"></rect>
+          <text class="n-title" x="700" y="655" text-anchor="middle">5) XCTL -> COTRN01C</text>
+          <text class="n-title" x="700" y="676" text-anchor="middle">Preload TRNIDINI from CDEMO-CT01-TRN-SELECTED</text>
+          <text class="n-title" x="700" y="697" text-anchor="middle">READ TRANSACT into detail fields</text>
+
+          <rect class="node storage node-hit" data-node="Step5" x="510" y="780" width="380" height="70"></rect>
+          <text class="n-title" x="700" y="815" text-anchor="middle">TRANSACT File Read</text>
+          <text class="n-title" x="700" y="836" text-anchor="middle">RIDFLD(TRAN-ID) -> TRAN-RECORD</text>
+
+          <rect class="node aux node-hit" data-node="Step6" x="500" y="930" width="400" height="60"></rect>
+          <text class="n-title" x="700" y="964" text-anchor="middle">6) Return Controls from COTRN01C</text>
+          <text class="n-title" x="700" y="985" text-anchor="middle">PF5 -> COTRN00C | PF3 -> FROM-PROGRAM/COMEN01C</text>
+
+          <rect class="node aux node-hit" data-node="Lineage" x="540" y="1080" width="320" height="50"></rect>
+          <text class="n-title" x="700" y="1110" text-anchor="middle">Lineage + Side-Effect Order</text>
+
+          <!-- Guard path edges -->
+          <path class="edge bad" d="M500 85 L390 85"></path>
+          <text class="edge-label" x="395" y="78">auth fail</text>
+          <path class="edge bad" d="M480 220 L390 220"></path>
+          <text class="edge-label" x="390" y="213">invalid option</text>
+          <path class="edge bad" d="M930 360 L1040 355"></path>
+          <text class="edge-label" x="942" y="348">empty list</text>
+          <path class="edge bad" d="M950 505 L1040 495"></path>
+          <text class="edge-label" x="942" y="488">invalid key</text>
+          <path class="edge bad" d="M510 815 L390 805"></path>
+          <text class="edge-label" x="390" y="798">not found</text>
+          <path class="edge bad" d="M900 960 L1040 945"></path>
+          <text class="edge-label" x="942" y="938">invalid key</text>
+
+          <!-- Guard nodes: left side -->
+          <rect class="node guard node-hit" data-node="AuthFail" x="30" y="55" width="360" height="65"></rect>
+          <text class="guard-title" x="210" y="77" text-anchor="middle">Auth Fail Guard</text>
+          <text class="guard-sub" x="210" y="93" text-anchor="middle">USRSEC NOTFND / password mismatch</text>
+          <text class="guard-sub" x="210" y="107" text-anchor="middle">CCDA-MSG set &#8594; RETURN+TRANSID(CC00)</text>
+
+          <rect class="node guard node-hit" data-node="InvalidOption" x="30" y="195" width="360" height="60"></rect>
+          <text class="guard-title" x="210" y="217" text-anchor="middle">Invalid Option Guard</text>
+          <text class="guard-sub" x="210" y="232" text-anchor="middle">non-numeric or out-of-range OPTIONI</text>
+          <text class="guard-sub" x="210" y="246" text-anchor="middle">WS-RETURN-FLAG &#8594; redisplay menu, no XCTL</text>
+
+          <rect class="node guard node-hit" data-node="RecordNotFound" x="30" y="778" width="360" height="65"></rect>
+          <text class="guard-title" x="210" y="799" text-anchor="middle">Record Not Found Guard</text>
+          <text class="guard-sub" x="210" y="815" text-anchor="middle">READ TRANSACT NOTFND for selected TRAN-ID</text>
+          <text class="guard-sub" x="210" y="829" text-anchor="middle">WS-ERR-FLAG &#8594; redisplay detail with message</text>
+
+          <!-- Guard nodes: right side -->
+          <rect class="node guard node-hit" data-node="EmptyList" x="1042" y="325" width="330" height="65"></rect>
+          <text class="guard-title" x="1207" y="347" text-anchor="middle">Empty List Guard</text>
+          <text class="guard-sub" x="1207" y="362" text-anchor="middle">STARTBR NOTFND on TRANSACT</text>
+          <text class="guard-sub" x="1207" y="376" text-anchor="middle">WS-PGMSRCH-NOTFND &#8594; no-records display</text>
+
+          <rect class="node guard node-hit" data-node="InvalidKey" x="1042" y="463" width="330" height="65"></rect>
+          <text class="guard-title" x="1207" y="485" text-anchor="middle">Invalid Key Guard</text>
+          <text class="guard-sub" x="1207" y="500" text-anchor="middle">EIBAID OTHER on COTRN00C</text>
+          <text class="guard-sub" x="1207" y="514" text-anchor="middle">invalid key msg &#8594; redisplay list, no XCTL</text>
+
+          <rect class="node guard node-hit" data-node="InvalidKeyDetail" x="1042" y="913" width="330" height="65"></rect>
+          <text class="guard-title" x="1207" y="935" text-anchor="middle">Invalid Key Guard</text>
+          <text class="guard-sub" x="1207" y="950" text-anchor="middle">EIBAID OTHER on COTRN01C</text>
+          <text class="guard-sub" x="1207" y="964" text-anchor="middle">invalid key msg &#8594; redisplay detail, no nav</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Scope</span><span class="v">Single end-to-end user transaction drilldown path.</span></div>
+      <div class="kv"><span class="k">Path</span><span class="v">COSGN00C -> COMEN01C(6) -> COTRN00C -> COTRN01C -> return.</span></div>
+      <div class="kv"><span class="k">Semantic Goal</span><span class="v">Deterministic option-to-program and row-selection-to-detail lineage.</span></div>
+      <div class="kv"><span class="k">Source Programs</span><span class="v">COSGN00C, COMEN01C, COTRN00C, COTRN01C.</span></div>
+    `;
+
+    const details = {
+      Step1: {
+        type: "core",
+        desc: "COSGN00C validates credentials against USRSEC and sets user context for COMMAREA routing.",
+        links: "USRSEC -> CDEMO_USER_TYPE -> menu route"
+      },
+      Step2: {
+        type: "core",
+        desc: "COMEN01C trims OPTIONI, validates numeric range, then maps option 6 to COTRN00C and XCTLs.",
+        links: "OPTIONI -> WS-OPTION -> CDEMO-MENU-OPT-PGMNAME(6)"
+      },
+      Step3: {
+        type: "worker",
+        desc: "COTRN00C initial ENTER path executes PROCESS-PAGE-FORWARD and populates ten-row list plus page markers.",
+        links: "STARTBR/READNEXT -> TRNID01..TRNID10 + CDEMO-CT00-TRNID-FIRST/LAST"
+      },
+      Step4: {
+        type: "worker",
+        desc: "User marks row with selection flag S; COTRN00C moves selected row id into CDEMO-CT00-TRN-SELECTED and XCTLs COTRN01C.",
+        links: "SEL000nI + TRNIDnnI -> CDEMO-CT00-TRN-SELECTED -> CDEMO-TO-PROGRAM"
+      },
+      Step5: {
+        type: "storage",
+        desc: "COTRN01C preloads TRNIDINI from commarea selected id, reads TRANSACT by TRAN-ID, and fills detail map fields.",
+        links: "CDEMO-CT01-TRN-SELECTED -> TRAN-ID -> TRAN-RECORD -> screen fields"
+      },
+      Step6: {
+        type: "aux",
+        desc: "COTRN01C PF5 forces list return (COTRN00C). PF3 returns to FROM-PROGRAM if present, else COMEN01C fallback.",
+        links: "EIBAID(PF5/PF3) -> CDEMO-TO-PROGRAM -> XCTL"
+      },
+      Lineage: {
+        type: "aux",
+        desc: "Side-effect order is explicit: set FROM/TO and context before XCTL; preserve deterministic return loop via commarea.",
+        links: "route fields + selected id + TRAN-ID continuity"
+      },
+      AuthFail: { type: "guard", desc: "COSGN00C USRSEC lookup returns NOTFND or password mismatch. Error message set in CCDA-MSG. Program issues RETURN with TRANSID(CC00) to loop back to signon screen.", links: "USRSEC NOTFND -> CCDA-MSG -> RETURN+TRANSID(CC00)" },
+      InvalidOption: { type: "guard", desc: "COMEN01C receives non-numeric or out-of-range OPTIONI. WS-RETURN-FLAG is set, error message populated, program redisplays menu without issuing XCTL.", links: "OPTIONI not in 1..9 -> WS-RETURN-FLAG -> SEND MAP redisplay" },
+      EmptyList: { type: "guard", desc: "COTRN00C STARTBR on TRANSACT returns NOTFND. WS-PGMSRCH-NOTFND flag is set and the page displays no-records-found message. Pagination keys are suppressed.", links: "STARTBR NOTFND -> WS-PGMSRCH-NOTFND -> SEND MAP no-records" },
+      InvalidKey: { type: "guard", desc: "COTRN00C receives an unrecognized EIBAID. Invalid key error message is sent and the list page redisplays. No selection is processed, no XCTL issued.", links: "EIBAID OTHER -> WS-ERR-FLAG -> SEND MAP list redisplay" },
+      RecordNotFound: { type: "guard", desc: "COTRN01C READ on TRANSACT for the selected TRAN-ID returns NOTFND. Error flag is set, detail fields cleared, detail map redisplayed with error message.", links: "READ TRANSACT NOTFND -> WS-ERR-FLAG -> SEND MAP detail redisplay" },
+      InvalidKeyDetail: { type: "guard", desc: "COTRN01C receives an unrecognized EIBAID. Invalid key message is set and the detail screen redisplays. No update or navigation is issued.", links: "EIBAID OTHER -> WS-ERR-FLAG -> SEND MAP detail redisplay" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) { panel.innerHTML = defaultHtml; return; }
+      const stepLabel = d.type === "guard" ? "Guard Point" : "Step";
+      const lineageLabel = d.type === "guard" ? "Trigger" : "Lineage";
+      panel.innerHTML = `
+        <div class="kv"><span class="k">${stepLabel}</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Behavior</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">${lineageLabel}</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

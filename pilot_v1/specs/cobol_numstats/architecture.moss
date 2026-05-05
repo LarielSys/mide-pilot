@@ -1,0 +1,138 @@
+@MOSS:COBOL_NUMSTATS_Workflow_v1
+@R:~/mide-pilot/pilot_v1/specs/cobol_numstats/
+
+systems:
+
+  COBOL_Program_NUMSTATS:
+    role: top-level batch program entry
+    runtime: cobol_batch
+    source_language: COBOL
+    divisions: identification, environment, data, procedure
+    depends_on: Input_File_INFILE, Main_Read_Loop, Average_Calculation, Output_Display
+    outputs: total_count_average_report
+
+  Input_File_INFILE:
+    role: line-sequential numeric input source
+    runtime: filesystem
+    file_name: numbers.txt
+    record_layout: IN_REC PIC 9(5)
+    operations: open_input, read, close
+
+  Main_Read_Loop:
+    role: repeated file read loop until EOF
+    runtime: procedure_division
+    paragraph: MAIN_PARA
+    control_pattern: PERFORM_UNTIL_EOF
+    depends_on: Input_File_INFILE, EOF_Control, Accumulator_State
+
+  EOF_Control:
+    role: stop condition controller for input loop
+    runtime: working_storage
+    variable: EOF_FLAG
+    values: N_or_Y
+    controls: loop_termination
+
+  Accumulator_State:
+    role: maintains total and count while records are read
+    runtime: working_storage
+    variables: WS_TOTAL, WS_COUNT
+    operations: add_input_value, increment_count
+
+  Average_Calculation:
+    role: compute average after file consumption
+    runtime: procedure_division
+    variable: WS_AVERAGE
+    guard: WS_COUNT_greater_than_zero
+    formula: WS_TOTAL_divided_by_WS_COUNT
+    depends_on: Accumulator_State
+
+  Output_Display:
+    role: emit final totals to terminal or job output
+    runtime: procedure_division
+    operations: display_total, display_count, display_average
+    depends_on: Accumulator_State, Average_Calculation
+
+  Working_Storage_Variables:
+    role: persistent program state for run duration
+    runtime: data_division
+    contains: WS_TOTAL, WS_COUNT, WS_AVERAGE, EOF_FLAG
+    initial_values: WS_TOTAL_0, WS_COUNT_0, WS_AVERAGE_0, EOF_FLAG_N
+
+dependencies:
+  - COBOL_Program_NUMSTATS -> Input_File_INFILE
+  - COBOL_Program_NUMSTATS -> Main_Read_Loop
+  - COBOL_Program_NUMSTATS -> Average_Calculation
+  - COBOL_Program_NUMSTATS -> Output_Display
+  - Main_Read_Loop -> EOF_Control
+  - Main_Read_Loop -> Accumulator_State
+  - Main_Read_Loop -> Input_File_INFILE
+  - Average_Calculation -> Accumulator_State
+  - Output_Display -> Accumulator_State
+  - Output_Display -> Average_Calculation
+  - Working_Storage_Variables -> EOF_Control
+  - Working_Storage_Variables -> Accumulator_State
+  - Working_Storage_Variables -> Average_Calculation
+
+interfaces:
+
+  File_IO_Contract:
+    protocol: sequential_file_read
+    file: numbers.txt
+    record_format: one_numeric_value_per_line
+    end_condition: AT_END_sets_EOF_FLAG_to_Y
+
+  Display_Output_Contract:
+    protocol: terminal_or_batch_display
+    outputs:
+      - TOTAL
+      - COUNT
+      - AVERAGE
+
+  Arithmetic_Contract:
+    protocol: cobol_arithmetic_semantics
+    operations:
+      - ADD_IN_REC_TO_WS_TOTAL
+      - ADD_1_TO_WS_COUNT
+      - COMPUTE_WS_AVERAGE_EQUALS_WS_TOTAL_DIV_WS_COUNT
+
+actions:
+
+  Open_Input_File:
+    trigger: program enters MAIN_PARA
+    flow:
+      - OPEN INPUT INFILE
+
+  Process_All_Records:
+    trigger: file is open and EOF_FLAG is N
+    flow:
+      - READ INFILE
+      - AT END move_Y_to_EOF_FLAG
+      - NOT AT END add_IN_REC_to_WS_TOTAL
+      - NOT AT END add_1_to_WS_COUNT
+      - repeat_until_EOF_FLAG_is_Y
+
+  Compute_Final_Average:
+    trigger: read loop completes
+    flow:
+      - IF WS_COUNT > 0
+      - COMPUTE WS_AVERAGE = WS_TOTAL / WS_COUNT
+
+  Display_Final_Report:
+    trigger: totals are ready
+    flow:
+      - DISPLAY TOTAL
+      - DISPLAY COUNT
+      - DISPLAY AVERAGE
+
+  Close_And_Stop:
+    trigger: report output completed
+    flow:
+      - CLOSE INFILE
+      - STOP RUN
+
+runtime_constraints:
+  - analysis_mode: static_visualization_only
+  - execution_required: false
+  - compiler_required_for_visualization: false
+  - original_code_is_source_evidence: true
+  - workflow_centered_on_procedure_division: true

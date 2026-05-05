@@ -1,0 +1,118 @@
+{
+  "program_id": "COTRN00C",
+  "source_file": "aws-mainframe-modernization-carddemo/app/cbl/COTRN00C.cbl",
+  "lines": 699,
+  "extracted_at": "2026-04-24T23:17:28Z",
+  "analysis": {
+    "entry": "MAIN-PARA",
+    "process": "RETURN-TO-PREV-SCREEN",
+    "output": "RETURN-TO-PREV-SCREEN",
+    "routines": [
+      "MAIN-PARA",
+      "PROCESS-ENTER-KEY",
+      "PROCESS-PF7-KEY",
+      "PROCESS-PF8-KEY",
+      "PROCESS-PAGE-FORWARD",
+      "PROCESS-PAGE-BACKWARD",
+      "POPULATE-TRAN-DATA",
+      "INITIALIZE-TRAN-DATA",
+      "RETURN-TO-PREV-SCREEN",
+      "SEND-TRNLST-SCREEN",
+      "RECEIVE-TRNLST-SCREEN",
+      "POPULATE-HEADER-INFO",
+      "STARTBR-TRANSACT-FILE",
+      "READNEXT-TRANSACT-FILE",
+      "READPREV-TRANSACT-FILE",
+      "ENDBR-TRANSACT-FILE"
+    ],
+    "dependencies": {
+      "xctl_programs": [
+        "COSGN00C",
+        "COTRN01C",
+        "COMEN01C"
+      ],
+      "files": [
+        "TRANSACT"
+      ],
+      "cics_operations": [
+        "SEND MAP",
+        "RECEIVE MAP",
+        "STARTBR",
+        "READNEXT",
+        "READPREV",
+        "ENDBR",
+        "XCTL PROGRAM",
+        "RETURN"
+      ]
+    },
+    "guards": [
+      "TRANSACT-EOF",
+      "TRANSACT-NOT-EOF",
+      "ERR-FLG-ON",
+      "ERR-FLG-OFF",
+      "SEND-ERASE-YES",
+      "SEND-ERASE-NO",
+      "NEXT-PAGE-YES",
+      "NEXT-PAGE-NO",
+      "CDEMO-PGM-REENTER"
+    ],
+    "signals": {
+      "language": "COBOL",
+      "lines": 699,
+      "routine_count": 16,
+      "has_loops": true,
+      "has_branches": true,
+      "has_cross_module": true,
+      "has_cics": true,
+      "lines_score": 18,
+      "routine_score": 16,
+      "estimated_tier": 2
+    }
+  },
+  "issues": [
+    {
+      "issue": "Process routine mismatch",
+      "current": "RETURN-TO-PREV-SCREEN",
+      "should_be": "PROCESS-PAGE-FORWARD or PROCESS-ENTER-KEY",
+      "severity": "high",
+      "reason": "Heuristic selected routing logic instead of business process"
+    },
+    {
+      "issue": "Output routine mismatch",
+      "current": "RETURN-TO-PREV-SCREEN",
+      "should_be": "SEND-TRNLST-SCREEN",
+      "severity": "high",
+      "reason": "Heuristic selected routing logic instead of screen output handler"
+    },
+    {
+      "issue": "Dependencies not extracted",
+      "current": "[]",
+      "should_include": ["COSGN00C", "COTRN01C", "COMEN01C"],
+      "severity": "high",
+      "reason": "XCTL PROGRAM extraction regex not capturing cross-module targets"
+    }
+  ],
+  "generated_artifacts": {
+    "timestamp": "2026-04-24T23:17:28Z",
+    "run_id": "20260424-231728-e50b3ea4",
+    "url": "http://localhost:8083/generated/moss/20260424-231728-e50b3ea4/index.html",
+    "files": [
+      "index.html",
+      "diagram.svg",
+      "flow.txt",
+      "dependency-map.txt",
+      "guards.txt",
+      "developer-report.txt",
+      "package-index.txt"
+    ]
+  },
+  "validation_notes": [
+    "Entry point extraction: CORRECT - all COBOL programs start with MAIN-PARA",
+    "Routine count: CORRECT - 16 procedures identified",
+    "CICS calls: CORRECT - All SEND/RECEIVE/STARTBR/READNEXT/READPREV/ENDBR detected",
+    "Guard flags: CORRECT - All 88-level condition names captured",
+    "Process selection: NEEDS WORK - Should prioritize PROCESS-* over routing",
+    "Output selection: NEEDS WORK - Should prioritize SEND-* over routing",
+    "Dependencies: NEEDS WORK - XCTL targets not being extracted (COSGN00C, COTRN01C, COMEN01C)"
+  ]
+}

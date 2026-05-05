@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/aws-mainframe-modernization-carddemo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/backupmoss" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/carddemo_rebuild_v1/moss_v2_reference" vcs="Git" />
+  </component>
+</project>

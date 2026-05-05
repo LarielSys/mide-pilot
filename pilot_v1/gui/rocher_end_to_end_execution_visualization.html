@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocher End-to-End Execution</title>
+  <style>
+    :root { --bg:#020810; --panel:#0a1628; --c:#00d4ff; --a:#ffaa00; --g:#44ff88; --t:#c8dce8; --d:#7a99b5; --b:rgba(0,212,255,.18); }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Consolas","Courier New",monospace;background:var(--bg);color:var(--t)}
+    .top{display:flex;justify-content:space-between;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--b);font-size:12px}
+    .top .l{color:var(--c)} .top .r{color:var(--d)}
+    .wrap{display:grid;grid-template-columns:1fr 2fr 1fr;min-height:calc(100vh - 42px)}
+    .pane{border-right:1px solid var(--b)} .pane:last-child{border-right:none}
+    .h{padding:10px 12px;border-bottom:1px solid var(--b);color:var(--c);font-size:11px;letter-spacing:1px;background:rgba(0,212,255,.04)}
+    .bdy{padding:12px;font-size:12px;line-height:1.55}
+    .row{margin-bottom:7px}.k{display:inline-block;min-width:120px;color:var(--a)}
+    .row.active{background:rgba(0,212,255,.1);border-left:2px solid var(--c);padding-left:6px}
+    svg{width:100%;height:auto;min-height:1280px}
+    .n{rx:8;ry:8;fill:rgba(10,22,40,.88);stroke-width:1.6}
+    .node-hit{cursor:pointer}
+    .node-hit.hover{stroke-width:2.6;filter:drop-shadow(0 0 8px rgba(0,212,255,.6))}
+    .core{stroke:rgba(0,212,255,.58)} .svc{stroke:rgba(68,255,136,.58)} .store{stroke:rgba(255,170,0,.58)} .guard{stroke:rgba(255,80,80,.72);fill:rgba(30,6,6,.92)}
+    .tx{fill:var(--t);font-size:12px}.sx{fill:var(--d);font-size:10px}.gx{fill:#ff8888;font-size:11px}
+    .e{stroke:rgba(0,212,255,.34);stroke-width:1.5;fill:none;marker-end:url(#arr)}
+    .e2{stroke:rgba(68,255,136,.5)} .e3{stroke:rgba(255,170,0,.5)} .eb{stroke:rgba(255,100,100,.6)}
+    .el{fill:#77a0bd;font-size:9px}
+  </style>
+</head>
+<body>
+  <div class="top"><div class="l">MOSS ▸ ROCHER End-to-End Runtime Flow</div><div class="r">Upload -> OCI -> AI -> DB -> Excel Report -> Download</div></div>
+  <div class="wrap">
+    <section class="pane">
+      <div class="h">EXECUTION NARRATIVE</div>
+      <div class="bdy">
+        <div class="row" data-node="Step1"><span class="k">1 Entry</span>User authenticates and opens project workspace.</div>
+        <div class="row" data-node="Step2"><span class="k">2 Upload</span>ZIP uploaded via /api/media/upload with file validation.</div>
+        <div class="row" data-node="Step3"><span class="k">3 Persist</span>UploadLog created and async storage transfer begins.</div>
+        <div class="row" data-node="Step4"><span class="k">4 AI Pull</span>Python reads pending folders and downloads ZIP from OCI.</div>
+        <div class="row" data-node="Step5"><span class="k">5 Inference</span>YOLO scans images and writes analysis artifacts.</div>
+        <div class="row" data-node="Step6"><span class="k">6 Consolidate</span>ProjectController merges TXT/image into wk_reporte records.</div>
+        <div class="row" data-node="Step7"><span class="k">7 Generate</span>ReportGeneratorService renders XLSX and uploads to OCI.</div>
+        <div class="row" data-node="Step8"><span class="k">8 Deliver</span>Frontend downloads report through /api/projects/report/download.</div>
+        <div class="row" data-node="Step9"><span class="k">9 Feedback</span>Status + retry controls maintain operational continuity.</div>
+        <div class="row" data-node="GuardA"><span class="k">Guard A</span>invalid client/project ownership.</div>
+        <div class="row" data-node="GuardB"><span class="k">Guard B</span>file type/size rejection.</div>
+        <div class="row" data-node="GuardC"><span class="k">Guard C</span>object storage download failure.</div>
+        <div class="row" data-node="GuardD"><span class="k">Guard D</span>zip missing required txt payload.</div>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="h">FLOW DIAGRAM</div>
+      <div class="bdy">
+        <svg viewBox="0 0 1100 1320" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,.55)"/></marker></defs>
+
+          <path class="e" d="M550 96 L550 166"/><path class="e" d="M550 236 L550 306"/><path class="e" d="M550 376 L550 446"/><path class="e e2" d="M550 516 L550 586"/><path class="e e2" d="M550 656 L550 726"/><path class="e e3" d="M550 796 L550 866"/><path class="e e3" d="M550 936 L550 1006"/><path class="e" d="M550 1076 L550 1146"/>
+          <path class="e eb" d="M360 212 L230 212"/><path class="e eb" d="M360 352 L210 352"/><path class="e eb" d="M740 492 L890 492"/><path class="e eb" d="M740 912 L900 912"/>
+
+          <rect class="n core node-hit" data-node="Step1" x="360" y="46" width="380" height="50"/><text class="tx" x="550" y="76" text-anchor="middle">1) Frontend Session + Auth (/api/auth/login)</text>
+          <rect class="n core node-hit" data-node="Step2" x="360" y="166" width="380" height="70"/><text class="tx" x="550" y="196" text-anchor="middle">2) Media Upload Request</text><text class="sx" x="550" y="216" text-anchor="middle">/api/media/upload + client/project validation + zip analysis</text>
+          <rect class="n svc node-hit" data-node="Step3" x="360" y="306" width="380" height="70"/><text class="tx" x="550" y="336" text-anchor="middle">3) Async Object Storage Transfer</text><text class="sx" x="550" y="356" text-anchor="middle">UploadLog status INITIATED -> IN_PROGRESS -> COMPLETED</text>
+          <rect class="n store node-hit" data-node="Step4" x="360" y="446" width="380" height="70"/><text class="tx" x="550" y="476" text-anchor="middle">4) Python Polls Pending Tramos</text><text class="sx" x="550" y="496" text-anchor="middle">listar_proyect_folders + download_from_bucket</text>
+          <rect class="n store node-hit" data-node="Step5" x="360" y="586" width="380" height="70"/><text class="tx" x="550" y="616" text-anchor="middle">5) ZIP Extract + YOLO Inference</text><text class="sx" x="550" y="636" text-anchor="middle">process_images_in_directory + .pt model scoring</text>
+          <rect class="n svc node-hit" data-node="Step6" x="360" y="726" width="380" height="70"/><text class="tx" x="550" y="756" text-anchor="middle">6) Project Report Build</text><text class="sx" x="550" y="776" text-anchor="middle">parse txt + collect images + DataLookup + wk_reporte upsert</text>
+          <rect class="n svc node-hit" data-node="Step7" x="360" y="866" width="380" height="70"/><text class="tx" x="550" y="896" text-anchor="middle">7) XLSX Generation + Upload</text><text class="sx" x="550" y="916" text-anchor="middle">ReportGeneratorService + objectPath reportes/V{n}_{uuid}.xlsx</text>
+          <rect class="n core node-hit" data-node="Step8" x="360" y="1006" width="380" height="70"/><text class="tx" x="550" y="1036" text-anchor="middle">8) Report Delivery to UI</text><text class="sx" x="550" y="1056" text-anchor="middle">/api/projects/report/download/{id} stream</text>
+          <rect class="n core node-hit" data-node="Step9" x="360" y="1146" width="380" height="70"/><text class="tx" x="550" y="1176" text-anchor="middle">9) Operational Feedback Loop</text><text class="sx" x="550" y="1196" text-anchor="middle">status tracking + retries + versioned reports</text>
+
+          <rect class="n guard node-hit" data-node="GuardA" x="60" y="182" width="170" height="60"/><text class="gx" x="145" y="206" text-anchor="middle">Guard A</text><text class="sx" x="145" y="223" text-anchor="middle">invalid client/project</text>
+          <rect class="n guard node-hit" data-node="GuardB" x="40" y="322" width="170" height="60"/><text class="gx" x="125" y="346" text-anchor="middle">Guard B</text><text class="sx" x="125" y="363" text-anchor="middle">file type/size failure</text>
+          <rect class="n guard node-hit" data-node="GuardC" x="890" y="462" width="170" height="60"/><text class="gx" x="975" y="486" text-anchor="middle">Guard C</text><text class="sx" x="975" y="503" text-anchor="middle">download/OCI failure</text>
+          <rect class="n guard node-hit" data-node="GuardD" x="900" y="882" width="170" height="60"/><text class="gx" x="985" y="906" text-anchor="middle">Guard D</text><text class="sx" x="985" y="923" text-anchor="middle">missing txt in zip</text>
+
+          <text class="el" x="560" y="134">login + role gates</text><text class="el" x="560" y="274">upload accepted</text><text class="el" x="560" y="414">artifact persisted</text><text class="el" x="560" y="554">job fetch cycle</text><text class="el" x="560" y="694">inference completed</text><text class="el" x="560" y="834">structured output</text><text class="el" x="560" y="974">report object saved</text><text class="el" x="560" y="1114">customer download</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="h">DETAILS</div>
+      <div class="bdy" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="row"><span class="k">Risk Level</span>Medium-High</div>
+      <div class="row"><span class="k">Reason</span>Multiple asynchronous boundaries (upload, object storage, AI batch, report stream).</div>
+      <div class="row"><span class="k">Business Impact</span>Pipeline breaks can delay field-analysis reports and project closeout decisions.</div>
+    `;
+
+    const details = {
+      Step1: { type: "entry", desc: "JWT authentication establishes user context for protected operations.", links: "/api/auth/login, /api/auth/verify" },
+      Step2: { type: "ingest", desc: "ZIP upload validated against ownership and content constraints.", links: "/api/media/upload + client/project checks" },
+      Step3: { type: "storage", desc: "Async transfer persists source artifacts while status transitions are tracked.", links: "UploadLog INITIATED -> IN_PROGRESS -> COMPLETED" },
+      Step4: { type: "ai-pull", desc: "Python selects pending project folders and pulls ZIP files from OCI.", links: "listar_proyect_folders, download_from_bucket" },
+      Step5: { type: "inference", desc: "YOLO model inference and extraction pipeline processes image evidence.", links: "process_images_in_directory + .pt models" },
+      Step6: { type: "consolidate", desc: "TXT/image data merged into wk_reporte computation context.", links: "DataLookup + wk_reporte upsert" },
+      Step7: { type: "report", desc: "ReportGeneratorService produces versioned XLSX and stores it as an artifact.", links: "reportes/V{n}_{uuid}.xlsx" },
+      Step8: { type: "delivery", desc: "Frontend retrieves final report via streaming endpoint.", links: "/api/projects/report/download/{id}" },
+      Step9: { type: "ops", desc: "Operational guardrails maintain continuity across retries and statuses.", links: "status enums, UUID traceability, report versioning" },
+      GuardA: { type: "guard", desc: "Ownership mismatch or entity-not-found blocks processing early.", links: "client/project validation guard" },
+      GuardB: { type: "guard", desc: "Unsupported file type/size prevents bad payload ingestion.", links: "upload validation guard" },
+      GuardC: { type: "guard", desc: "Storage retrieval issues pause AI batch progression.", links: "OCI download guard" },
+      GuardD: { type: "guard", desc: "Missing TXT payload blocks report creation and surfaces controlled failure.", links: "coordinates/txt presence guard" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    const sourceRows = document.querySelectorAll(".row[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+    panel.innerHTML = defaultHtml;
+
+    function clearHighlights() {
+      sourceRows.forEach((line) => line.classList.remove("active"));
+      nodes.forEach((node) => node.classList.remove("hover"));
+    }
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="row"><span class="k">Component</span>${nodeId}</div>
+        <div class="row"><span class="k">Type</span>${d.type}</div>
+        <div class="row"><span class="k">Description</span>${d.desc}</div>
+        <div class="row"><span class="k">Links</span>${d.links}</div>
+      `;
+    }
+
+    function activateNode(nodeId) {
+      clearHighlights();
+      sourceRows.forEach((line) => {
+        if (line.getAttribute("data-node") === nodeId) {
+          line.classList.add("active");
+          line.scrollIntoView({ block: "nearest" });
+        }
+      });
+      nodes.forEach((node) => {
+        if (node.getAttribute("data-node") === nodeId) {
+          node.classList.add("hover");
+        }
+      });
+      renderDetails(nodeId);
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => activateNode(node.getAttribute("data-node")));
+      node.addEventListener("mouseleave", () => {
+        clearHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+
+    sourceRows.forEach((line) => {
+      line.addEventListener("mouseenter", () => activateNode(line.getAttribute("data-node")));
+      line.addEventListener("mouseleave", () => {
+        clearHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

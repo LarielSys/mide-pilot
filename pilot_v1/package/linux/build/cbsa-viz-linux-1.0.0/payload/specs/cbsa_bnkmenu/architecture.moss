@@ -1,0 +1,152 @@
+@MOSS:CBSA_BNKMENU_Online_Router_v1
+@R:~/mide-pilot/pilot_v1/specs/cbsa_bnkmenu/
+
+systems:
+
+  CBSA_Menu_Orchestrator:
+    role: governs BNKMENU task lifecycle from first-entry map send through option dispatch and return loop
+    runtime: cics_transaction_flow
+    entry_transaction: OMEN
+    depends_on: Program_BNKMENU, Main_Menu_Map_BNK1MAI, Aid_Key_Router, Action_Validator, Option_Dispatcher, Return_Loop_OMEN, Guard_Paths
+
+  Program_BNKMENU:
+    role: base CBSA menu controller that receives map input validates action field and routes to selected transaction
+    runtime: cics_cobol
+    program_id: BNKMENU
+    transid: OMEN
+    mapset: BNK1MAI
+    depends_on: Main_Menu_Map_BNK1MAI, Aid_Key_Router, Action_Validator, Option_Dispatcher, Return_Loop_OMEN, Abend_Handler_ABNDPROC
+
+  Main_Menu_Map_BNK1MAI:
+    role: BMS mapset and map used for menu display and action input field
+    runtime: cics_bms
+    mapset: BNK1MA
+    map: BNK1ME
+    fields: ACTIONI, MESSAGEO
+
+  Aid_Key_Router:
+    role: evaluates EIBAID and determines branch behavior for PA keys PF3 PF12 CLEAR ENTER and invalid key
+    runtime: cics_control_semantics
+    keys: DFHPA1, DFHPA2, DFHPA3, DFHPF3, DFHPF12, DFHCLEAR, DFHENTER, OTHER
+    semantics:
+      - pa_keys_continue
+      - pf3_pf12_terminate_session
+      - clear_erases_screen_and_returns
+      - enter_invokes_map_processing
+      - invalid_key_sets_alarm_message_and_redisplay
+
+  Action_Validator:
+    role: validates ACTIONI and only accepts menu values 1 2 3 4 5 6 7 or A
+    runtime: semantic_contract
+    accepted_values: 1, 2, 3, 4, 5, 6, 7, A
+    invalid_behavior: set_message_you_must_enter_valid_value_and_clear_valid_data_flag
+
+  Option_Dispatcher:
+    role: maps valid action to downstream transaction via EXEC CICS RETURN TRANSID IMMEDIATE
+    runtime: routing_contract
+    routing:
+      - action_1_to_ODCS
+      - action_2_to_ODAC
+      - action_3_to_OCCS
+      - action_4_to_OCAC
+      - action_5_to_OUAC
+      - action_6_to_OCRA
+      - action_7_to_OTFN
+      - action_A_to_OCCA
+
+  Return_Loop_OMEN:
+    role: returns to OMEN with one-byte commarea to preserve menu conversational loop
+    runtime: cics_return_semantics
+    semantics:
+      - return_with_transid_omen
+      - commarea_length_one
+      - redisplay_after_validation_or_invalid_key
+
+  Session_Termination_Path:
+    role: explicit end-session path for PF3 and PF12 including session-ended message and return without transid
+    runtime: guard_contract
+    trigger: eibaid_pf3_or_pf12
+
+  Clear_Screen_Path:
+    role: explicit clear-key branch that issues SEND CONTROL ERASE FREEKB then returns
+    runtime: guard_contract
+    trigger: eibaid_clear
+
+  Return_Failure_Guard:
+    role: executes ABNDPROC linkage when RETURN TRANSID dispatch fails with non-normal response
+    runtime: error_contract
+    inputs: eibresp, eibresp2, applid, taskno, tranid, program
+    outputs: abndinfo_record
+
+  Abend_Handler_ABNDPROC:
+    role: centralized abend logging program linked by BNKMENU failure handling
+    runtime: cics_cobol
+    program_id: ABNDPROC
+
+  CBSA_Downstream_Transactions:
+    role: downstream task targets selected from BNKMENU
+    runtime: cics_transaction_group
+    members: ODCS, ODAC, OCCS, OCAC, OUAC, OCRA, OTFN, OCCA
+
+  Field_Lineage_Map:
+    role: lineage contract for input action and routing state
+    runtime: semantic_contract
+    lineage_rules:
+      - ACTIONI_to_ACTION_ALPHA
+      - ACTIONI_to_selected_TRANSID
+      - EIBAID_to_branch_path
+      - invalid_ACTIONI_to_MESSAGEO
+      - invalid_key_to_MESSAGEO_alarm
+
+  Guard_Paths:
+    role: explicit non-happy-path coverage for key handling validation and cics response failure
+    runtime: semantic_contract
+    guards:
+      - invalid_eibaid_redisplay
+      - invalid_action_value_message
+      - return_transid_failure_to_abendproc
+      - session_end_pf3_pf12
+      - clear_screen_return
+
+dependencies:
+  - CBSA_Menu_Orchestrator -> Program_BNKMENU
+  - Program_BNKMENU -> Main_Menu_Map_BNK1MAI
+  - Program_BNKMENU -> Aid_Key_Router
+  - Program_BNKMENU -> Action_Validator
+  - Program_BNKMENU -> Option_Dispatcher
+  - Program_BNKMENU -> Return_Loop_OMEN
+  - Program_BNKMENU -> Return_Failure_Guard
+  - Return_Failure_Guard -> Abend_Handler_ABNDPROC
+  - Option_Dispatcher -> CBSA_Downstream_Transactions
+  - Aid_Key_Router -> Session_Termination_Path
+  - Aid_Key_Router -> Clear_Screen_Path
+  - Action_Validator -> Field_Lineage_Map
+  - Option_Dispatcher -> Field_Lineage_Map
+  - Aid_Key_Router -> Field_Lineage_Map
+  - Guard_Paths -> Field_Lineage_Map
+
+interfaces:
+  - menu_dispatch_contract:
+      from: Program_BNKMENU
+      to: CBSA_Downstream_Transactions
+      mode: cics_return_transid_immediate
+      selector: ACTIONI
+
+  - map_interaction_contract:
+      from: Main_Menu_Map_BNK1MAI
+      to: Program_BNKMENU
+      mode: send_receive_bms
+      fields: ACTIONI, MESSAGEO
+
+  - error_logging_contract:
+      from: Program_BNKMENU
+      to: Abend_Handler_ABNDPROC
+      mode: cics_link
+      payload: ABNDINFO
+
+runtime_constraints:
+  - scope_is_bnkmenu_only: true
+  - no_cross_program_semantics_beyond_explicit_transid_targets: true
+  - menu_action_domain: 1_to_7_or_A
+  - return_dispatch_uses_immediate: true
+  - eibaid_other_is_invalid_key_guard: true

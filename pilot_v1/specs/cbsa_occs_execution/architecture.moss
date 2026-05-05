@@ -1,0 +1,113 @@
+@MOSS:CBSA_OCCS_BNK1CCS_Execution_v1
+@R:~/mide-pilot/pilot_v1/specs/cbsa_occs_execution/
+
+systems:
+
+  OCCS_Transaction_Entry:
+    role: BNKMENU action 3 dispatch target entering create-customer flow
+    runtime: cics_transaction_flow
+    transid: OCCS
+    program_id: BNK1CCS
+    depends_on: Program_BNK1CCS, Create_Customer_Map, Aid_Key_Router
+
+  Program_BNK1CCS:
+    role: create customer program with validation and CRECUST link path
+    runtime: cics_cobol
+    program_id: BNK1CCS
+    transid: OCCS
+    mapset: BNK1CCM
+    depends_on: Create_Customer_Map, Process_Map_Controller, Edit_Data_Validator, Create_Link_CRECUST, Return_Paths, Guard_Paths
+
+  Create_Customer_Map:
+    role: BMS map for customer create inputs and generated customer output fields
+    runtime: cics_bms
+    mapset: BNK1CCM
+    map: BNK1CCO
+    key_fields: CUSTTITI, CHRISTNI, CUSTSNI, CUSTAD1I, DOBDDI, DOBMMI, DOBYYI, SORTCO, CUSTNO2O, CREDSCO
+
+  Aid_Key_Router:
+    role: EIBAID branching for BNK1CCS
+    runtime: cics_control_semantics
+    keys: DFHENTER, DFHPF3, DFHPF12, DFHCLEAR, OTHER
+    semantics:
+      - enter_process_map
+      - pf3_return_to_omen
+      - pf12_terminate_session
+      - clear_erase_and_return_occs
+      - other_invalid_key_redisplay
+
+  Process_Map_Controller:
+    role: PM010 receives map and orchestrates validation and create flow
+    runtime: semantic_contract
+    sequence:
+      - receive_map_asis
+      - edit_data
+      - if_valid_perform_create
+      - send_map
+
+  Edit_Data_Validator:
+    role: field validation gate for title identity address and date of birth domain rules
+    runtime: semantic_contract
+    checks:
+      - title_domain_is_valid
+      - first_name_present
+      - surname_present
+      - address_line1_present
+      - dob_day_month_year_valid
+
+  Create_Link_CRECUST:
+    role: customer creation link for validated inputs
+    runtime: cics_link_contract
+    target_program: CRECUST
+    call_site: CCD010
+    mode: SYNCONRETURN
+
+  Return_Paths:
+    role: return semantics across BNK1CCS cycle
+    runtime: cics_return_semantics
+    paths:
+      - pf3_to_omen
+      - cycle_return_to_occs
+
+  Guard_Paths:
+    role: explicit non-happy-path semantics for BNK1CCS
+    runtime: semantic_contract
+    guards:
+      - invalid_key_message_and_alarm
+      - validation_failure_message_and_cursor
+      - crecust_link_failure_to_abndproc
+      - create_failure_codes_o_y_z
+      - return_resp_not_normal_to_abndproc
+
+  Field_Lineage_Map:
+    role: customer field lineage across map input, CRECUST payload, and map output projections
+    runtime: semantic_contract
+    lineage_rules:
+      - customer_identity_fields_to_subpgm_name
+      - address_fields_to_subpgm_address
+      - dob_fields_to_subpgm_birth_parts
+      - crecust_output_to_sortcode_customer_number_credit_score
+      - cs_review_date_to_scrdt_fields
+
+dependencies:
+  - OCCS_Transaction_Entry -> Program_BNK1CCS
+  - Program_BNK1CCS -> Aid_Key_Router
+  - Program_BNK1CCS -> Process_Map_Controller
+  - Process_Map_Controller -> Edit_Data_Validator
+  - Process_Map_Controller -> Create_Link_CRECUST
+  - Program_BNK1CCS -> Return_Paths
+  - Program_BNK1CCS -> Guard_Paths
+  - Process_Map_Controller -> Field_Lineage_Map
+  - Guard_Paths -> Field_Lineage_Map
+
+interfaces:
+  - create_customer_interface:
+      from: Program_BNK1CCS
+      to: Create_Link_CRECUST
+      mode: cics_link_synconreturn
+      keys: CUSTTITI, CHRISTNI, CUSTINSI, CUSTSNI, CUSTAD1I, CUSTAD2I, CUSTAD3I, DOBDDI, DOBMMI, DOBYYI
+
+runtime_constraints:
+  - scope_is_occs_bnk1ccs_only: true
+  - no_non_occs_program_semantics_except_explicit_link_targets: true
+  - customer_create_is_validation_guarded: true
