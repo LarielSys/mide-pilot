@@ -1,0 +1,34 @@
+{
+  "task_id": "MTASK-0099",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "CustomIDE backend (FastAPI port 5555) has gone offline. Kill any stale process on port 5555, locate the uvicorn/FastAPI entrypoint in the repo, start it detached, verify HTTP response. Report backend_status=UP or FAIL with log tail.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0099_restart_customide_backend.sh",
+  "moss_labels": [
+    "moss/customide",
+    "worker/backend",
+    "worker/recovery"
+  ],
+  "priority": "critical",
+  "risk_level": "low",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": [
+    "pilot_v1/results",
+    "pilot_v1/state"
+  ],
+  "blocked_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/approvals"
+  ],
+  "required_validation": [
+    "snapshot=complete"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 120,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T03:20:00Z"
+}
