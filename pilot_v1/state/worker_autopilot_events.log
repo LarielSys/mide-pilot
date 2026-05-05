@@ -8218,3 +8218,4 @@
 2026-05-04T22:34:59-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=107, eligible=0, mismatched=0.
 2026-05-04T22:36:00-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=107, eligible=0, mismatched=0.
 2026-05-04T22:37:08-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=107, eligible=0, mismatched=0.
+2026-05-04T22:38:09-04:00 | mode=running | last_task=MTASK-0094 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0094_autopilot_status_report.sh.
