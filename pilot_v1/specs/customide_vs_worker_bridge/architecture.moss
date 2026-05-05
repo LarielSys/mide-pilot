@@ -1,0 +1,176 @@
+@MOSS:CustomIDE_VSStyle_WorkerBridge_v1
+@R:~/mide-pilot/pilot_v1/specs/customide_vs_worker_bridge/
+
+systems:
+
+  IDE_Shell:
+    role: VS-like local IDE shell with 3-column layout
+    runtime: windows-main
+    layout: files_left, editor_center, chat_right
+    theme: olegreen_cockpit
+    depends_on: File_Tree_Service, Editor_Canvas, Chat_Panel
+    outputs: developer_workspace
+
+  File_Tree_Service:
+    role: browse and manage local project files
+    runtime: windows-main
+    capabilities: open, rename, move, delete, search
+    depends_on: Workspace_FS_Boundary
+
+  Editor_Canvas:
+    role: Monaco-based code editing surface
+    runtime: windows-main
+    features: tabs, syntax_highlight, diff_view, terminal_panel
+    depends_on: Workspace_FS_Boundary, Local_Git_Service
+
+  Chat_Panel:
+    role: right-side assistant chat with provider routing
+    runtime: windows-main
+    features: model_switch, context_attach, history
+    depends_on: Chat_Broker, Clipboard_Pad, Image_Paste_Channel
+
+  Clipboard_Pad:
+    role: popup message window for fast copy/paste when MTASK is not needed
+    runtime: windows-main
+    features: large_text_area, quick_copy, quick_insert, session_snippets
+    depends_on: Chat_Panel
+
+  Image_Paste_Channel:
+    role: receive clipboard image pastes and attach to chat turns
+    runtime: windows-main
+    formats: png, jpg, webp
+    storage: local_session_cache
+    depends_on: Chat_Broker
+
+  Chat_Broker:
+    role: route chat requests to selected model provider
+    runtime: windows-main
+    providers: GPT_API, Ollama_Ubuntu
+    policy: per_message_or_session_route
+    depends_on: GPT_API_Gateway, Ollama_Ubuntu_Gateway
+
+  GPT_API_Gateway:
+    role: use user ai key for GPT chat/completions
+    runtime: windows-main
+    auth: local_encrypted_key_store
+    outputs: model_response_stream
+
+  Ollama_Ubuntu_Gateway:
+    role: proxy coding/chat requests to ubuntu ollama
+    runtime: windows-main
+    transport: ssh_tunnel_or_http
+    target: ubuntu-worker-02
+    outputs: model_response_stream
+
+  Local_Git_Service:
+    role: local-only git operations without github dependency
+    runtime: windows-main
+    remotes: local_path_or_worker_ssh_remote
+    constraints: no_forced_github_remote
+    capabilities: init, add, commit, branch, diff, push_pull_local
+
+  Workspace_FS_Boundary:
+    role: enforce project root safety for file operations
+    runtime: windows-main
+    base_path: C:/AI Assistant/workspaces
+    constraints: no_path_escape
+
+  Worker_Profile_Manager:
+    role: switch between worker1 and worker2 connection profiles
+    runtime: windows-main
+    stores: host, key_path, ollama_endpoint, repo_remote
+    depends_on: Ollama_Ubuntu_Gateway, Local_Git_Service
+
+dependencies:
+  - IDE_Shell -> File_Tree_Service
+  - IDE_Shell -> Editor_Canvas
+  - IDE_Shell -> Chat_Panel
+  - Editor_Canvas -> Workspace_FS_Boundary
+  - Editor_Canvas -> Local_Git_Service
+  - Chat_Panel -> Clipboard_Pad
+  - Chat_Panel -> Image_Paste_Channel
+  - Chat_Panel -> Chat_Broker
+  - Chat_Broker -> GPT_API_Gateway
+  - Chat_Broker -> Ollama_Ubuntu_Gateway
+  - Ollama_Ubuntu_Gateway -> Worker_Profile_Manager
+  - Local_Git_Service -> Worker_Profile_Manager
+
+interfaces:
+
+  IDE_UI_Contract:
+    protocol: internal_ui_events
+    panes: files_left, editor_center, chat_right
+    popup: clipboard_pad_modal
+
+  Chat_Broker_API:
+    protocol: HTTP_JSON_stream
+    routes:
+      - POST /api/chat/send
+      - POST /api/chat/send-with-image
+      - POST /api/chat/provider/select
+
+  Local_Git_API:
+    protocol: local_process_contract
+    routes:
+      - POST /api/git/init
+      - POST /api/git/status
+      - POST /api/git/commit
+      - POST /api/git/push-local
+      - POST /api/git/pull-local
+
+  Ollama_Ubuntu_API:
+    protocol: HTTP_JSON_stream
+    routes:
+      - POST /api/ollama/chat
+      - POST /api/ollama/generate
+      - GET /api/ollama/health
+
+  Image_Paste_API:
+    protocol: multipart_http
+    routes:
+      - POST /api/chat/attachment/image
+
+actions:
+
+  Open_Project_Workspace:
+    trigger: user chooses local folder
+    flow:
+      - IDE_Shell loads project inside Workspace_FS_Boundary
+      - File_Tree_Service indexes files
+      - Editor_Canvas opens last session tabs
+
+  Fast_Paste_No_MTASK:
+    trigger: user opens Clipboard_Pad popup
+    flow:
+      - user pastes code_or_logs
+      - Chat_Panel references pasted snippet
+      - assistant responds without mtask overhead
+
+  Chat_With_Selected_Model:
+    trigger: user sends chat message
+    flow:
+      - Chat_Broker reads provider selection
+      - request routed to GPT_API_Gateway or Ollama_Ubuntu_Gateway
+      - streamed response returned to Chat_Panel
+
+  Paste_Image_To_Chat:
+    trigger: user presses Ctrl+V with image in clipboard
+    flow:
+      - Image_Paste_Channel captures image
+      - attachment stored in local session cache
+      - Chat_Broker sends image+prompt to selected provider
+
+  Local_Git_Workflow:
+    trigger: user performs source control action
+    flow:
+      - Local_Git_Service executes local git commands
+      - optional push_pull to worker ssh remote
+      - no github requirement
+
+runtime_constraints:
+  - layout_must_match: files_left_editor_center_chat_right
+  - local_git_only: true
+  - github_dependency: false
+  - image_paste_required: true
+  - support_worker2_first_class: true
+  - visual_theme: olegreen_cockpit

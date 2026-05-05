@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COBOL SBNPROGRAM2 - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    .note { color: var(--green); }
+
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 980px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .n-sub { fill: #6f94af; font-size: 9px; }
+
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 110px; }
+    .v { color: var(--text); }
+    ul { margin-left: 18px; }
+    li { margin-bottom: 6px; color: var(--text-dim); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ COBOL_SBNPROGRAM2_Workflow_v1</div>
+    <div class="top-meta">21 systems · 4 interfaces · 6 actions</div>
+    <div class="top-badge">tight_controls · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">MOSS ARCHITECTURE SOURCE</div>
+      <div class="pane-body" id="mossSource">
+        <span class="code-line code-h">@MOSS:COBOL_SBNPROGRAM2_Workflow_v1</span>
+        <span class="code-line"><span class="code-key">@R:</span> ~/mide-pilot/pilot_v1/specs/cobol_sbnprogram2/</span>
+        <br>
+        <span class="code-line code-h">systems:</span>
+        <span class="code-line" data-node="COBOL_Program_SBNPROGRAM2"><span class="code-key">COBOL_Program_SBNPROGRAM2:</span> 10_CONTROL_MODULE entry</span>
+        <span class="code-line" data-node="Employee_Record_File"><span class="code-key">Employee_Record_File:</span> PR2FA19.TXT 83-char records</span>
+        <span class="code-line" data-node="Salary_Report_File"><span class="code-key">Salary_Report_File:</span> printer SALARY-REPORT output</span>
+        <span class="code-line" data-node="Housekeeping_Routine"><span class="code-key">Housekeeping_Routine:</span> open files + first header</span>
+        <span class="code-line" data-node="Main_Read_Loop"><span class="code-key">Main_Read_Loop:</span> perform until NO_MORE_DATA</span>
+        <span class="code-line" data-node="Read_Record_Routine"><span class="code-key">Read_Record_Routine:</span> per-record processing</span>
+        <span class="code-line" data-node="First_Record_State_Gate"><span class="code-key">First_Record_State_Gate:</span> IF WS-FIRST-RECORD = 'YES' branch</span>
+        <span class="code-line" data-node="Warehouse_Control_Break"><span class="code-key">Warehouse_Control_Break:</span> subtotal + reset on warehouse change</span>
+        <span class="code-line" data-node="Control_Break_Total_Sequence"><span class="code-key">Control_Break_Total_Sequence:</span> print totals then reset</span>
+        <span class="code-line" data-node="Increase_Calculation_Engine"><span class="code-key">Increase_Calculation_Engine:</span> 5/3/5 percent increments</span>
+        <span class="code-line" data-node="Position_Mapping_Routine"><span class="code-key">Position_Mapping_Routine:</span> WM DS OW WW WS mapping</span>
+        <span class="code-line" data-node="Warehouse_Mapping_Routine"><span class="code-key">Warehouse_Mapping_Routine:</span> AL10 GA11 MS12 mapping</span>
+        <span class="code-line" data-node="Totals_Accumulators"><span class="code-key">Totals_Accumulators:</span> warehouse running totals</span>
+        <span class="code-line" data-node="Pagination_State_Controller"><span class="code-key">Pagination_State_Controller:</span> counter/page/date/proper-spacing state</span>
+        <span class="code-line" data-node="EOF_Routine"><span class="code-key">EOF_Routine:</span> final total + close + stop run</span>
+        <br>
+        <span class="code-line code-h">runtime_constraints:</span>
+        <span class="code-line">- control_break_grouping_required: warehouse_id</span>
+        <span class="code-line">- mapping_mechanism_required: EVALUATE_TRUE</span>
+        <span class="code-line">- rate_constants_must_come_from_working_storage: true</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">COMPONENT DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 980 670" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M205 70 L205 130"></path>
+          <text class="edge-label" x="212" y="102">perform housekeeping</text>
+          <path class="edge" d="M205 175 L205 235"></path>
+          <text class="edge-label" x="212" y="208">main read loop</text>
+          <path class="edge" d="M205 280 L205 340"></path>
+          <text class="edge-label" x="212" y="312">record routine</text>
+          <path class="edge" d="M205 385 L205 445"></path>
+          <text class="edge-label" x="212" y="418">finalize eof</text>
+
+          <path class="edge" d="M315 255 L430 215"></path>
+          <text class="edge-label" x="348" y="222">[CHANGED?] warehouse_id</text>
+          <path class="edge" d="M315 295 L430 295"></path>
+          <text class="edge-label" x="356" y="287">compute increases</text>
+          <path class="edge" d="M315 330 L430 375"></path>
+          <text class="edge-label" x="348" y="358">map position</text>
+
+          <path class="edge" d="M540 215 L655 170"></path>
+          <text class="edge-label" x="570" y="186">map warehouse</text>
+          <path class="edge" d="M540 215 L655 240"></path>
+          <text class="edge-label" x="565" y="228">subtotal reset</text>
+
+          <path class="edge" d="M540 295 L655 295"></path>
+          <text class="edge-label" x="575" y="287">uses rates</text>
+          <path class="edge" d="M540 295 L655 360"></path>
+          <text class="edge-label" x="565" y="350">add to totals</text>
+
+          <path class="edge" d="M540 375 L655 415"></path>
+          <text class="edge-label" x="572" y="404">detail output fields</text>
+
+          <path class="edge" d="M315 360 L430 545"></path>
+          <text class="edge-label" x="350" y="470">first-record state</text>
+          <path class="edge" d="M485 520 L485 480"></path>
+          <text class="edge-label" x="494" y="503">[YES] -> header</text>
+          <path class="edge" d="M485 430 L485 400"></path>
+          <text class="edge-label" x="494" y="418">rejoin -> position map</text>
+          <path class="edge" d="M430 535 L540 225"></path>
+          <text class="edge-label" x="455" y="360">[NO][CHANGED] -> break</text>
+          <path class="edge" d="M485 520 L485 400"></path>
+          <text class="edge-label" x="494" y="448">[NO][SAME] -> continue</text>
+
+          <path class="edge" d="M540 215 L655 500"></path>
+          <text class="edge-label" x="585" y="370">control-break sequence</text>
+          <path class="edge" d="M765 500 L540 455"></path>
+          <text class="edge-label" x="620" y="470">print totals then header</text>
+
+          <path class="edge" d="M540 455 L655 585"></path>
+          <text class="edge-label" x="565" y="540">header state updates</text>
+          <path class="edge" d="M765 585 L710 385"></path>
+          <text class="edge-label" x="735" y="500">counter/page/date state</text>
+
+          <path class="edge trace" d="M765 295 L860 215"></path>
+          <text class="edge-label" x="795" y="250">working-storage trace</text>
+          <path class="edge trace" d="M765 360 L860 285"></path>
+          <text class="edge-label" x="800" y="323">control-break trace</text>
+
+          <path class="edge" d="M765 415 L860 415"></path>
+          <text class="edge-label" x="795" y="407">write line</text>
+          <path class="edge" d="M765 455 L860 500"></path>
+          <text class="edge-label" x="792" y="490">close files</text>
+
+          <rect class="node core node-hit" data-node="COBOL_Program_SBNPROGRAM2" x="120" y="20" width="170" height="50"></rect>
+          <text class="n-title" x="205" y="48" text-anchor="middle">SBNPROGRAM2</text>
+
+          <rect class="node core node-hit" data-node="Housekeeping_Routine" x="120" y="130" width="170" height="45"></rect>
+          <text class="n-title" x="205" y="158" text-anchor="middle">Housekeeping</text>
+
+          <rect class="node core node-hit" data-node="Main_Read_Loop" x="120" y="235" width="170" height="45"></rect>
+          <text class="n-title" x="205" y="263" text-anchor="middle">Main Read Loop</text>
+
+          <rect class="node core node-hit" data-node="Read_Record_Routine" x="120" y="340" width="170" height="45"></rect>
+          <text class="n-title" x="205" y="368" text-anchor="middle">Read A Record</text>
+
+          <rect class="node core node-hit" data-node="EOF_Routine" x="120" y="445" width="170" height="45"></rect>
+          <text class="n-title" x="205" y="473" text-anchor="middle">EOF Routine</text>
+
+          <rect class="node aux node-hit" data-node="Warehouse_Control_Break" x="430" y="190" width="110" height="50"></rect>
+          <text class="n-title" x="485" y="220" text-anchor="middle">Control Break</text>
+
+          <rect class="node aux node-hit" data-node="Increase_Calculation_Engine" x="430" y="270" width="110" height="50"></rect>
+          <text class="n-title" x="485" y="300" text-anchor="middle">Calc Engine</text>
+
+          <rect class="node aux node-hit" data-node="Position_Mapping_Routine" x="430" y="350" width="110" height="50"></rect>
+          <text class="n-title" x="485" y="380" text-anchor="middle">Position Map</text>
+
+          <rect class="node aux node-hit" data-node="Header_Routine" x="430" y="430" width="110" height="50"></rect>
+          <text class="n-title" x="485" y="460" text-anchor="middle">Header Routine</text>
+
+          <rect class="node worker node-hit" data-node="First_Record_State_Gate" x="430" y="520" width="110" height="50"></rect>
+          <text class="n-title" x="485" y="550" text-anchor="middle">First-Record Gate</text>
+
+          <rect class="node storage node-hit" data-node="Warehouse_Mapping_Routine" x="655" y="145" width="110" height="50"></rect>
+          <text class="n-title" x="710" y="175" text-anchor="middle">Warehouse Map</text>
+
+          <rect class="node worker node-hit" data-node="Totals_Accumulators" x="655" y="215" width="110" height="50"></rect>
+          <text class="n-title" x="710" y="245" text-anchor="middle">Totals</text>
+
+          <rect class="node storage node-hit" data-node="Increase_Rate_Constants" x="655" y="270" width="110" height="50"></rect>
+          <text class="n-title" x="710" y="300" text-anchor="middle">Rate Constants</text>
+
+          <rect class="node worker node-hit" data-node="Date_And_Pagination_Control" x="655" y="335" width="110" height="50"></rect>
+          <text class="n-title" x="710" y="365" text-anchor="middle">Date/Page Ctrl</text>
+
+          <rect class="node storage node-hit" data-node="Report_Layout_Records" x="655" y="390" width="110" height="50"></rect>
+          <text class="n-title" x="710" y="420" text-anchor="middle">Layout Records</text>
+
+          <rect class="node aux node-hit" data-node="Control_Break_Total_Sequence" x="655" y="475" width="110" height="50"></rect>
+          <text class="n-title" x="710" y="505" text-anchor="middle">Break Sequence</text>
+
+          <rect class="node worker node-hit" data-node="Pagination_State_Controller" x="655" y="560" width="110" height="50"></rect>
+          <text class="n-title" x="710" y="590" text-anchor="middle">Pagination State</text>
+
+          <rect class="node storage node-hit" data-node="Employee_Record_File" x="860" y="190" width="110" height="50"></rect>
+          <text class="n-title" x="915" y="220" text-anchor="middle">Input File</text>
+
+          <rect class="node storage node-hit" data-node="EOF_Control" x="860" y="260" width="110" height="50"></rect>
+          <text class="n-title" x="915" y="290" text-anchor="middle">EOF Flag</text>
+
+          <rect class="node storage node-hit" data-node="Salary_Report_File" x="860" y="390" width="110" height="50"></rect>
+          <text class="n-title" x="915" y="420" text-anchor="middle">Report File</text>
+
+          <rect class="node core node-hit" data-node="Detail_Line_Writer" x="860" y="475" width="110" height="50"></rect>
+          <text class="n-title" x="915" y="505" text-anchor="middle">Write Line</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">COMPONENT DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Program</span><span class="v">SBNPROGRAM2</span></div>
+      <div class="kv"><span class="k">Mode</span><span class="v">Static COBOL workflow visualization.</span></div>
+      <div class="kv"><span class="k">Input</span><span class="v">PR2FA19.TXT employee records.</span></div>
+      <div class="kv"><span class="k">Output</span><span class="v">Warehouse-grouped salary report to SALARY-REPORT.</span></div>
+      <div class="kv"><span class="k">Lifecycle</span><span class="v">Housekeeping, first-record branch, control-break totals timing, EOF finalization.</span></div>
+      <br>
+      <div class="note">Source spec:</div>
+      <div>MIDE/pilot_v1/specs/cobol_sbnprogram2/architecture.moss</div>
+    `;
+
+    const details = {
+      COBOL_Program_SBNPROGRAM2: { type: "core", desc: "Program control module performs housekeeping, main routine, and eof routine.", links: "Housekeeping_Routine, Main_Read_Loop, EOF_Routine" },
+      Employee_Record_File: { type: "storage", desc: "Line-sequential employee source file PR2FA19.TXT.", links: "Main_Read_Loop, EOF_Routine" },
+      Salary_Report_File: { type: "storage", desc: "Printer destination receiving heading, detail, and total lines.", links: "Detail_Line_Writer, Housekeeping_Routine, EOF_Routine" },
+      Housekeeping_Routine: { type: "core", desc: "Opens input/output files and prints first header page.", links: "Employee_Record_File, Salary_Report_File, Header_Routine" },
+      Main_Read_Loop: { type: "core", desc: "Performs READ until condition NO_MORE_DATA is satisfied.", links: "Employee_Record_File, EOF_Control, Read_Record_Routine" },
+      Read_Record_Routine: { type: "core", desc: "Processes each record: control break, mapping, compute, accumulate, write detail.", links: "Warehouse_Control_Break, Position_Mapping_Routine, Increase_Calculation_Engine, Totals_Accumulators" },
+      First_Record_State_Gate: { type: "worker", desc: "Explicit WS-FIRST-RECORD decision node with value-labeled paths: [YES] to header then rejoin, [NO][CHANGED] to control break, [NO][SAME] to continue processing.", links: "Read_Record_Routine, Header_Routine, Position_Mapping_Routine, Warehouse_Control_Break, Increase_Calculation_Engine, Totals_Accumulators, Detail_Line_Writer" },
+      Warehouse_Control_Break: { type: "aux", desc: "When warehouse changes, writes subtotal line and resets totals.", links: "Warehouse_Mapping_Routine, Totals_Accumulators, Header_Routine" },
+      Control_Break_Total_Sequence: { type: "aux", desc: "Explicit sequence at control break: move totals, write total line, print header, then reset totals.", links: "Warehouse_Control_Break, Header_Routine, Totals_Accumulators" },
+      Warehouse_Mapping_Routine: { type: "aux", desc: "AL10/GA11/MS12 to ALABAMA/GEORGIA/MISSISSIPPI.", links: "Warehouse_Control_Break, EOF_Routine" },
+      Position_Mapping_Routine: { type: "aux", desc: "WM DS OW WW WS to printable position names.", links: "Read_Record_Routine" },
+      Increase_Calculation_Engine: { type: "aux", desc: "Computes increased current salary, union dues, insurance using 5/3/5 rates.", links: "Increase_Rate_Constants, Totals_Accumulators" },
+      Totals_Accumulators: { type: "worker", desc: "Maintains and resets warehouse running totals.", links: "Warehouse_Control_Break, EOF_Routine" },
+      Detail_Line_Writer: { type: "core", desc: "Writes output lines after advancing proper spacing.", links: "Salary_Report_File, Report_Layout_Records" },
+      EOF_Routine: { type: "core", desc: "Writes final totals, closes files, and stops run.", links: "Totals_Accumulators, Salary_Report_File, Employee_Record_File" },
+      EOF_Control: { type: "storage", desc: "NO_MORE_DATA condition switches loop termination.", links: "Main_Read_Loop" },
+      Increase_Rate_Constants: { type: "storage", desc: "Current salary 0.05, union dues 0.03, insurance 0.05.", links: "Increase_Calculation_Engine" },
+      Date_And_Pagination_Control: { type: "worker", desc: "Counter, page number, run date, and spacing controls.", links: "Header_Routine" },
+      Pagination_State_Controller: { type: "worker", desc: "Explicit pagination state transitions: increment COUNTER, move PAGE-NUM, accept DATE, update PROPER-SPACING.", links: "Header_Routine, Date_And_Pagination_Control" },
+      Report_Layout_Records: { type: "storage", desc: "Heading and line record definitions for report rendering.", links: "Header_Routine, Detail_Line_Writer" },
+      Header_Routine: { type: "aux", desc: "Creates heading one through four with date and pagination values, then rejoins record flow at position mapping.", links: "Date_And_Pagination_Control, Report_Layout_Records, Position_Mapping_Routine" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

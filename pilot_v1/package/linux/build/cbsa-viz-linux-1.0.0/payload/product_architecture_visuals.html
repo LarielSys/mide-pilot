@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Architecture Visuals</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Consolas, "Courier New", monospace;
+      background: #020810;
+      color: #c8dce8;
+    }
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 {
+      color: #00d4ff;
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+    p {
+      color: #7a99b5;
+      margin: 0 0 24px;
+    }
+    .card {
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      background: #0a1628;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 22px;
+      overflow: auto;
+    }
+    h2 {
+      margin: 0 0 12px;
+      color: #ffaa00;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Executable Product Visualizations</h1>
+    <p>Both requested views loaded together: full platform architecture and runtime execution path.</p>
+
+    <section class="card">
+      <h2>1) Platform Architecture</h2>
+      <div class="mermaid">
+flowchart TB
+    U[User] --> B[Browser UI]
+    B --> A[API Layer]
+    A --> O[Workflow Orchestrator]
+
+    O --> I[Intake and Scope Lock]
+    O --> S[System Scanner and Inventory Engine]
+    O --> G[Semantic Graph Builder]
+    O --> D[Decomposition Planner]
+    O --> M[Model Generator]
+    O --> V[Validation Gates]
+    O --> P[Packaging Manager]
+
+    S --> R1[(Inventory Store)]
+    G --> R2[(Architecture Graph Store)]
+    M --> R3[(Artifact Store)]
+    V --> R4[(Quality and Audit Store)]
+
+    M --> W[Isolated Worker Pool]
+    W --> C[Toolchain and Compiler Containers]
+
+    C --> SEC[Policy Controls]
+    SEC --> AL[Command Allowlists]
+    SEC --> RBAC[Role Based Access]
+    SEC --> NET[Restricted Network Egress]
+    SEC --> RO[Read Only Source Mount]
+    SEC --> KMS[Encryption and Key Management]
+
+    P --> MAN[(Release Manifest)]
+    P --> CHK[(Release Checklist)]
+    P --> SHIP[(Signed Ship Report)]
+
+    B --> TV[Total System View]
+    B --> LV[Layer by Layer View]
+
+    V --> DEC{All Gates Passed?}
+    DEC -- No --> FIX[Return to Targeted Layer Rework]
+    DEC -- Yes --> READY[Ready to Package and Ship]
+
+    FIX --> M
+    READY --> P
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2) Runtime Execution Path (Latency-Critical)</h2>
+      <div class="mermaid">
+flowchart LR
+    UI[Browser UI] --> API[API Gateway]
+    API --> ORCH[Workflow Orchestrator]
+
+    ORCH --> Q[Job Queue]
+    Q --> W1[Worker Pool]
+    W1 --> TOOL[Compiler and Toolchain Container]
+
+    TOOL --> PARSE[Parse and Structural Scan]
+    PARSE --> GRAPH[Semantic Graph Build]
+    GRAPH --> MODEL[Artifact Generation]
+    MODEL --> GATE[Validation Gates]
+
+    GATE -->|Pass| PKG[Packaging Manager]
+    GATE -->|Fail| RETRY[Targeted Rework Loop]
+    RETRY --> MODEL
+
+    PKG --> STORE[(Artifact Store)]
+    PKG --> MAN2[(Manifest and Ship Report)]
+
+    classDef hot fill:#3a1f00,stroke:#ffaa00,stroke-width:2px,color:#ffdca8;
+    classDef safe fill:#07221a,stroke:#44ff88,stroke-width:2px,color:#baf7d5;
+
+    class API,ORCH,Q,W1,TOOL,PARSE,GRAPH,MODEL,GATE hot;
+    class PKG,STORE,MAN2 safe;
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3) Compiler Lock and Code Safety Model</h2>
+      <div class="mermaid">
+flowchart TB
+    DEV[User Uploads Source] --> SC[Scope Lock and Policy Check]
+    SC --> RO[Mount Source Read-Only]
+    RO --> JOB[Create Ephemeral Job Sandbox]
+
+    JOB --> IMG[Pinned Worker Image]
+    IMG --> CMP[Compiler and Toolchain Runtime]
+
+    CMP --> ALLOW[Command Allowlist Enforcer]
+    CMP --> NET[Network Egress Policy]
+    CMP --> SECRETS[Vault-backed Secret Injection]
+    CMP --> FS[Filesystem Guard]
+
+    ALLOW --> EXEC[Approved Command Execution Only]
+    NET --> EXEC
+    SECRETS --> EXEC
+    FS --> EXEC
+
+    EXEC --> AUDIT[Signed Audit Trail]
+    EXEC --> SBOM[SBOM and Build Attestation]
+    EXEC --> ART[(Generated Artifacts)]
+
+    ART --> REVIEW[Release Gate Review]
+    AUDIT --> REVIEW
+    SBOM --> REVIEW
+
+    REVIEW --> DEC{Policy and Quality Pass?}
+    DEC -- No --> BLOCK[Block Release and Report Violations]
+    DEC -- Yes --> SHIP[Approve Package for Distribution]
+
+    classDef lock fill:#2a0a0a,stroke:#ff7070,stroke-width:2px,color:#ffd1d1;
+    classDef secure fill:#0a1f2a,stroke:#00d4ff,stroke-width:2px,color:#bfefff;
+    classDef pass fill:#07221a,stroke:#44ff88,stroke-width:2px,color:#baf7d5;
+
+    class SC,RO,JOB,ALLOW,NET,SECRETS,FS lock;
+    class IMG,CMP,EXEC,AUDIT,SBOM,ART secure;
+    class REVIEW,SHIP pass;
+      </div>
+    </section>
+  </div>
+</body>
+</html>

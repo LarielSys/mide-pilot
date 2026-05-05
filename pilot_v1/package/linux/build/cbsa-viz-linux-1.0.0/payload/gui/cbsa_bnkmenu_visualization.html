@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CBSA BNKMENU - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 2140px; }
+
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge.good { stroke: rgba(68, 255, 136, 0.55); }
+    .edge.warn { stroke: rgba(255, 170, 0, 0.55); }
+    .edge.bad { stroke: rgba(255, 100, 100, 0.6); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node.guard { stroke: rgba(255, 80, 80, 0.7); fill: rgba(25, 5, 5, 0.92); }
+    .node.drill { stroke: rgba(0, 212, 255, 0.9); fill: rgba(0, 30, 50, 0.92); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+
+    .n-title { fill: var(--text); font-size: 12px; }
+    .node-drill-label { fill: var(--cyan); font-size: 12px; font-weight: bold; }
+    .node-drill-sub { fill: #7a99b5; font-size: 10px; }
+    .guard-title { fill: #ff7070; font-size: 11px; font-weight: bold; }
+    .guard-sub { fill: #8a5555; font-size: 9px; }
+
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 130px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CBSA BNKMENU Online Router</div>
+    <div class="top-meta">OMEN -> BNKMENU -> ODCS/ODAC/OCCS/OCAC/OUAC/OCRA/OTFN/OCCA</div>
+    <div class="top-badge">cbsa_bnkmenu_v1 · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">EXECUTION SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">Entry and key routing</span>
+        <span class="code-line" data-node="Entry"><span class="code-key">BNKMENU:</span> first-run sends map erase, then returns TRANSID(OMEN)</span>
+        <span class="code-line" data-node="Aid"><span class="code-key">EIBAID:</span> PA/ENTER/PF3/PF12/CLEAR/OTHER branch contract</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Input validation and dispatch</span>
+        <span class="code-line" data-node="Validate"><span class="code-key">ACTIONI:</span> only 1-7 or A accepted</span>
+        <span class="code-line" data-node="Dispatch"><span class="code-key">IOT010:</span> valid action returns IMMEDIATE to target transid</span>
+        <span class="code-line" data-node="Targets"><span class="code-key">Targets:</span> ODCS ODAC OCCS OCAC OUAC OCRA OTFN OCCA</span>
+
+        <span class="code-line code-h" style="margin-top:10px">State and failure contracts</span>
+        <span class="code-line" data-node="ReturnLoop">RETURN TRANSID(OMEN) COMMAREA length 1 loop</span>
+        <span class="code-line" data-node="Abend">non-normal RETURN response links ABNDPROC with ABNDINFO</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Execution drilldown</span>
+        <span class="code-line" data-node="ODCSExec">▶ ODCS path: BNK1DCS display customer / delete / update flow</span>
+        <span class="code-line" data-node="ODACExec">▶ ODAC path: BNK1DAC display account / delete flow</span>
+        <span class="code-line" data-node="OCCSExec">▶ OCCS path: BNK1CCS create customer flow</span>
+        <span class="code-line" data-node="OCACExec">▶ OCAC path: BNK1CAC create account flow</span>
+        <span class="code-line" data-node="OUACExec">▶ OUAC path: BNK1UAC inquiry + update account flow</span>
+        <span class="code-line" data-node="OCRAExec">▶ OCRA path: BNK1CRA debit / credit amount flow</span>
+        <span class="code-line" data-node="OTFNExec">▶ OTFN path: BNK1TFN transfer funds flow</span>
+        <span class="code-line" data-node="OCCAExec">▶ OCCA path: BNK1CCA customer account listing flow</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Guard paths</span>
+        <span class="code-line" data-node="InvalidKey">EIBAID OTHER -> invalid key message + alarm + redisplay</span>
+        <span class="code-line" data-node="InvalidAction">ACTIONI outside domain -> validation error message</span>
+        <span class="code-line" data-node="Terminate">PF3/PF12 -> session ended + RETURN</span>
+        <span class="code-line" data-node="Clear">CLEAR -> SEND CONTROL ERASE/FREEKB + RETURN</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">BNKMENU ROUTING DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1400 2220" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M700 110 L700 190"></path>
+          <path class="edge" d="M700 260 L700 340"></path>
+          <path class="edge warn" d="M700 410 L700 490"></path>
+          <path class="edge good" d="M700 560 L700 650"></path>
+          <path class="edge" d="M700 720 L700 790"></path>
+          <path class="edge trace" d="M700 860 L700 960"></path>
+
+          <path class="edge bad" d="M520 215 L390 210"></path>
+          <path class="edge bad" d="M520 375 L360 370"></path>
+          <path class="edge bad" d="M900 215 L1030 210"></path>
+          <path class="edge bad" d="M900 375 L1040 370"></path>
+          <path class="edge bad" d="M900 820 L1050 810"></path>
+          <path class="edge good" d="M700 720 L700 1090"></path>
+          <path class="edge good" d="M700 720 L700 1180"></path>
+          <path class="edge good" d="M700 720 L700 1270"></path>
+          <path class="edge good" d="M700 720 L700 1360"></path>
+          <path class="edge good" d="M700 720 L700 1450"></path>
+          <path class="edge good" d="M700 720 L700 1540"></path>
+          <path class="edge good" d="M700 720 L700 1630"></path>
+          <path class="edge good" d="M700 720 L700 1720"></path>
+
+          <text class="edge-label" x="708" y="160">task entry</text>
+          <text class="edge-label" x="708" y="312">key branch select</text>
+          <text class="edge-label" x="708" y="460">action parse</text>
+          <text class="edge-label" x="708" y="610">IOT010 dispatch</text>
+          <text class="edge-label" x="708" y="760">selected transid</text>
+          <text class="edge-label" x="708" y="940">menu return loop</text>
+          <text class="edge-label" x="290" y="204">invalid key</text>
+          <text class="edge-label" x="260" y="364">invalid ACTIONI</text>
+          <text class="edge-label" x="1040" y="205">PF3/PF12</text>
+          <text class="edge-label" x="1045" y="364">CLEAR</text>
+          <text class="edge-label" x="1045" y="804">resp != normal</text>
+          <text class="edge-label" x="710" y="1076">ODCS execution drilldown</text>
+          <text class="edge-label" x="710" y="1168">ODAC execution drilldown</text>
+          <text class="edge-label" x="710" y="1258">OCCS execution drilldown</text>
+          <text class="edge-label" x="710" y="1348">OCAC execution drilldown</text>
+          <text class="edge-label" x="710" y="1438">OUAC execution drilldown</text>
+          <text class="edge-label" x="710" y="1528">OCRA execution drilldown</text>
+          <text class="edge-label" x="710" y="1618">OTFN execution drilldown</text>
+          <text class="edge-label" x="710" y="1708">OCCA execution drilldown</text>
+
+          <rect class="node core node-hit" data-node="Entry" x="490" y="60" width="420" height="50"></rect>
+          <text class="n-title" x="700" y="90" text-anchor="middle">1) BNKMENU Entry (OMEN task)</text>
+
+          <rect class="node aux node-hit" data-node="Aid" x="470" y="190" width="460" height="70"></rect>
+          <text class="n-title" x="700" y="224" text-anchor="middle">2) EIBAID Router</text>
+          <text class="n-title" x="700" y="245" text-anchor="middle">PA CONTINUE | ENTER PROCESS | PF3/PF12 END | CLEAR ERASE</text>
+
+          <rect class="node worker node-hit" data-node="Validate" x="470" y="340" width="460" height="70"></rect>
+          <text class="n-title" x="700" y="374" text-anchor="middle">3) ACTIONI Validation</text>
+          <text class="n-title" x="700" y="395" text-anchor="middle">accept 1-7 or A; else message + no dispatch</text>
+
+          <rect class="node worker node-hit" data-node="Dispatch" x="470" y="490" width="460" height="70"></rect>
+          <text class="n-title" x="700" y="524" text-anchor="middle">4) IOT010 Dispatch</text>
+          <text class="n-title" x="700" y="545" text-anchor="middle">EXEC CICS RETURN TRANSID(...) IMMEDIATE</text>
+
+          <rect class="node storage node-hit" data-node="Targets" x="410" y="650" width="580" height="70"></rect>
+          <text class="n-title" x="700" y="684" text-anchor="middle">5) Target Transactions</text>
+          <text class="n-title" x="700" y="705" text-anchor="middle">ODCS ODAC OCCS OCAC OUAC OCRA OTFN OCCA</text>
+
+          <rect class="node aux node-hit" data-node="ReturnLoop" x="500" y="790" width="400" height="70"></rect>
+          <text class="n-title" x="700" y="824" text-anchor="middle">6) Return Loop</text>
+          <text class="n-title" x="700" y="845" text-anchor="middle">RETURN TRANSID(OMEN) COMMAREA length 1</text>
+
+          <rect class="node storage node-hit" data-node="Abend" x="540" y="960" width="320" height="60"></rect>
+          <text class="n-title" x="700" y="995" text-anchor="middle">ABNDPROC Link on Return Failure</text>
+
+          <rect class="node drill node-hit" data-node="ODCSExec" data-href="cbsa_odcs_execution_visualization.html" x="420" y="1090" width="560" height="70"></rect>
+          <text class="node-drill-label" x="700" y="1118" text-anchor="middle">▶ ODCS Execution Path</text>
+          <text class="node-drill-sub" x="700" y="1136" text-anchor="middle">BNK1DCS: lookup, delete (PF5), update unlock/commit (PF10 + ENTER)</text>
+          <text class="node-drill-sub" x="700" y="1152" text-anchor="middle">[ click to open ]</text>
+
+          <rect class="node drill node-hit" data-node="ODACExec" data-href="cbsa_odac_execution_visualization.html" x="460" y="1180" width="480" height="70"></rect>
+          <text class="node-drill-label" x="700" y="1208" text-anchor="middle">▶ ODAC Execution Path</text>
+          <text class="node-drill-sub" x="700" y="1226" text-anchor="middle">BNK1DAC: account lookup (ENTER) and delete (PF5)</text>
+          <text class="node-drill-sub" x="700" y="1242" text-anchor="middle">[ click to open ]</text>
+
+          <rect class="node drill node-hit" data-node="OCCSExec" data-href="cbsa_occs_execution_visualization.html" x="460" y="1270" width="480" height="70"></rect>
+          <text class="node-drill-label" x="700" y="1298" text-anchor="middle">▶ OCCS Execution Path</text>
+          <text class="node-drill-sub" x="700" y="1316" text-anchor="middle">BNK1CCS: customer create validation and CRECUST link flow</text>
+          <text class="node-drill-sub" x="700" y="1332" text-anchor="middle">[ click to open ]</text>
+
+          <rect class="node drill node-hit" data-node="OCACExec" data-href="cbsa_ocac_execution_visualization.html" x="460" y="1360" width="480" height="70"></rect>
+          <text class="node-drill-label" x="700" y="1388" text-anchor="middle">▶ OCAC Execution Path</text>
+          <text class="node-drill-sub" x="700" y="1406" text-anchor="middle">BNK1CAC: account create validation and CREACC link flow</text>
+          <text class="node-drill-sub" x="700" y="1422" text-anchor="middle">[ click to open ]</text>
+
+          <rect class="node drill node-hit" data-node="OUACExec" data-href="cbsa_ouac_execution_visualization.html" x="460" y="1450" width="480" height="70"></rect>
+          <text class="node-drill-label" x="700" y="1478" text-anchor="middle">▶ OUAC Execution Path</text>
+          <text class="node-drill-sub" x="700" y="1496" text-anchor="middle">BNK1UAC: account inquiry (ENTER) and update (PF5) flow</text>
+          <text class="node-drill-sub" x="700" y="1512" text-anchor="middle">[ click to open ]</text>
+
+          <rect class="node drill node-hit" data-node="OCRAExec" data-href="cbsa_ocra_execution_visualization.html" x="460" y="1540" width="480" height="70"></rect>
+          <text class="node-drill-label" x="700" y="1568" text-anchor="middle">▶ OCRA Execution Path</text>
+          <text class="node-drill-sub" x="700" y="1586" text-anchor="middle">BNK1CRA: account debit/credit with signed amount update</text>
+          <text class="node-drill-sub" x="700" y="1602" text-anchor="middle">[ click to open ]</text>
+
+          <rect class="node drill node-hit" data-node="OTFNExec" data-href="cbsa_otfn_execution_visualization.html" x="460" y="1630" width="480" height="70"></rect>
+          <text class="node-drill-label" x="700" y="1658" text-anchor="middle">▶ OTFN Execution Path</text>
+          <text class="node-drill-sub" x="700" y="1676" text-anchor="middle">BNK1TFN: transfer funds from source account to target account</text>
+          <text class="node-drill-sub" x="700" y="1692" text-anchor="middle">[ click to open ]</text>
+
+          <rect class="node drill node-hit" data-node="OCCAExec" data-href="cbsa_occa_execution_visualization.html" x="460" y="1720" width="480" height="70"></rect>
+          <text class="node-drill-label" x="700" y="1748" text-anchor="middle">▶ OCCA Execution Path</text>
+          <text class="node-drill-sub" x="700" y="1766" text-anchor="middle">BNK1CCA: customer accounts lookup and account table projection</text>
+          <text class="node-drill-sub" x="700" y="1782" text-anchor="middle">[ click to open ]</text>
+
+          <rect class="node guard node-hit" data-node="InvalidKey" x="40" y="178" width="350" height="65"></rect>
+          <text class="guard-title" x="215" y="200" text-anchor="middle">Invalid Key Guard</text>
+          <text class="guard-sub" x="215" y="216" text-anchor="middle">EIBAID OTHER</text>
+          <text class="guard-sub" x="215" y="230" text-anchor="middle">MESSAGEO + alarm + redisplay</text>
+
+          <rect class="node guard node-hit" data-node="InvalidAction" x="20" y="338" width="340" height="65"></rect>
+          <text class="guard-title" x="190" y="360" text-anchor="middle">Invalid Action Guard</text>
+          <text class="guard-sub" x="190" y="376" text-anchor="middle">ACTIONI not in 1-7 or A</text>
+          <text class="guard-sub" x="190" y="390" text-anchor="middle">validation message, no IOT dispatch</text>
+
+          <rect class="node guard node-hit" data-node="Terminate" x="1030" y="178" width="330" height="65"></rect>
+          <text class="guard-title" x="1195" y="200" text-anchor="middle">Session End Guard</text>
+          <text class="guard-sub" x="1195" y="216" text-anchor="middle">PF3 or PF12 pressed</text>
+          <text class="guard-sub" x="1195" y="230" text-anchor="middle">send termination message + RETURN</text>
+
+          <rect class="node guard node-hit" data-node="Clear" x="1040" y="338" width="320" height="65"></rect>
+          <text class="guard-title" x="1200" y="360" text-anchor="middle">Clear Screen Guard</text>
+          <text class="guard-sub" x="1200" y="376" text-anchor="middle">DFHCLEAR branch</text>
+          <text class="guard-sub" x="1200" y="390" text-anchor="middle">SEND CONTROL ERASE FREEKB + RETURN</text>
+
+          <rect class="node guard node-hit" data-node="ReturnFail" x="1050" y="778" width="320" height="65"></rect>
+          <text class="guard-title" x="1210" y="800" text-anchor="middle">Return Failure Guard</text>
+          <text class="guard-sub" x="1210" y="816" text-anchor="middle">WS-CICS-RESP != NORMAL</text>
+          <text class="guard-sub" x="1210" y="830" text-anchor="middle">populate ABNDINFO + LINK ABNDPROC</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Scope</span><span class="v">CBSA BNKMENU only (base COBOL/BMS path).</span></div>
+      <div class="kv"><span class="k">Entry</span><span class="v">Transaction OMEN invokes BNKMENU and loops by RETURN TRANSID(OMEN).</span></div>
+      <div class="kv"><span class="k">Dispatch</span><span class="v">Valid ACTIONI routes to ODCS/ODAC/OCCS/OCAC/OUAC/OCRA/OTFN/OCCA.</span></div>
+      <div class="kv"><span class="k">Critical Guards</span><span class="v">invalid key, invalid action, PF3/PF12 termination, clear, return failure -> ABNDPROC.</span></div>
+      <div class="kv"><span class="k">Spec</span><span class="v">MIDE/pilot_v1/specs/cbsa_bnkmenu/architecture.moss</span></div>
+    `;
+
+    const details = {
+      Entry: { type: "core", desc: "BNKMENU entry branch handles first invocation (EIBCALEN=0), initializes map output and returns to OMEN conversational loop.", links: "OMEN -> BNKMENU -> RETURN TRANSID(OMEN)" },
+      Aid: { type: "aux", desc: "EIBAID contract branches PA keys, ENTER processing, PF3/PF12 termination, CLEAR erase-return, or invalid key redisplay.", links: "DFHPAx, DFHENTER, DFHPF3/PF12, DFHCLEAR, OTHER" },
+      Validate: { type: "worker", desc: "Validation accepts only ACTIONI values 1-7 or A. Any other value sets message and prevents downstream dispatch.", links: "ACTIONI -> VALID-DATA-SW + MESSAGEO" },
+      Dispatch: { type: "worker", desc: "IOT010 maps valid action to transaction and issues EXEC CICS RETURN TRANSID(... ) IMMEDIATE.", links: "ACTIONI -> selected TRANSID" },
+      Targets: { type: "storage", desc: "Downstream transactions reachable from BNKMENU option routing.", links: "ODCS, ODAC, OCCS, OCAC, OUAC, OCRA, OTFN, OCCA" },
+      ReturnLoop: { type: "aux", desc: "Conversational return loop keeps BNKMENU interactive using TRANSID(OMEN) and 1-byte COMMAREA.", links: "RETURN TRANSID(OMEN) COMMAREA LENGTH(1)" },
+      Abend: { type: "storage", desc: "On RETURN failure, BNKMENU populates ABNDINFO and LINKs ABNDPROC for standardized failure logging.", links: "EIBRESP/EIBRESP2 -> ABNDINFO -> ABNDPROC" },
+      InvalidKey: { type: "guard", desc: "EIBAID OTHER triggers invalid key message and alarm redisplay; no dispatch is performed.", links: "OTHER -> MESSAGEO -> SEND-MAP DATAONLY ALARM" },
+      InvalidAction: { type: "guard", desc: "Invalid ACTIONI value triggers validation message and keeps user on menu.", links: "ACTIONI not in domain -> VALID-DATA-SW=N -> redisplay" },
+      Terminate: { type: "guard", desc: "PF3/PF12 branch sends termination text and exits current task by RETURN.", links: "DFHPF3/DFHPF12 -> SEND-TERMINATION-MSG -> RETURN" },
+      Clear: { type: "guard", desc: "CLEAR key branch erases screen and returns.", links: "DFHCLEAR -> SEND CONTROL ERASE FREEKB -> RETURN" },
+      ReturnFail: { type: "guard", desc: "Any non-normal response from RETURN TRANSID path triggers ABNDPROC link path.", links: "WS-CICS-RESP != NORMAL -> ABNDPROC" }
+      ,ODCSExec: { type: "drilldown", desc: "Open ODCS execution model for ACTIONI=1 route. Covers BNK1DCS EIBAID branches, INQCUST/DELCUS/UPDCUST links, and customer-map state transitions.", links: "cbsa_odcs_execution_visualization.html" }
+      ,ODACExec: { type: "drilldown", desc: "Open ODAC execution model for ACTIONI=2 route. Covers BNK1DAC EIBAID branches, INQACC/DELACC links, and account-map state transitions.", links: "cbsa_odac_execution_visualization.html" }
+      ,OCCSExec: { type: "drilldown", desc: "Open OCCS execution model for ACTIONI=3 route. Covers BNK1CCS EIBAID branches, EDIT-DATA validation, CRECUST link contract, and create-failure guards.", links: "cbsa_occs_execution_visualization.html" }
+      ,OCACExec: { type: "drilldown", desc: "Open OCAC execution model for ACTIONI=4 route. Covers BNK1CAC EIBAID branches, EDIT-DATA validation, CREACC link contract, and create-failure guards.", links: "cbsa_ocac_execution_visualization.html" }
+      ,OUACExec: { type: "drilldown", desc: "Open OUAC execution model for ACTIONI=5 route. Covers BNK1UAC ENTER inquiry and PF5 update paths, INQACC/UPDACC links, validation gates, and update-failure guards.", links: "cbsa_ouac_execution_visualization.html" }
+      ,OCRAExec: { type: "drilldown", desc: "Open OCRA execution model for ACTIONI=6 route. Covers BNK1CRA EIBAID branches, signed amount validation, DBCRFUN linkage, and debit-credit failure guards.", links: "cbsa_ocra_execution_visualization.html" }
+      ,OTFNExec: { type: "drilldown", desc: "Open OTFN execution model for ACTIONI=7 route. Covers BNK1TFN transfer validation, XFRFUN linkage, and transfer failure guards.", links: "cbsa_otfn_execution_visualization.html" }
+      ,OCCAExec: { type: "drilldown", desc: "Open OCCA execution model for ACTIONI=A route. Covers BNK1CCA customer validation, INQACCCU linkage, and account-listing guard paths.", links: "cbsa_occa_execution_visualization.html" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) { panel.innerHTML = defaultHtml; return; }
+      const stepLabel = d.type === "guard" ? "Guard Point" : "Resource";
+      const lineageLabel = d.type === "guard" ? "Trigger" : "Connections";
+      panel.innerHTML = `
+        <div class="kv"><span class="k">${stepLabel}</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">${lineageLabel}</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+
+      node.addEventListener("click", () => {
+        const href = node.getAttribute("data-href");
+        if (href) window.open(href, "_blank");
+      });
+    });
+  </script>
+</body>
+</html>

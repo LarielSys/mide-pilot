@@ -1,0 +1,204 @@
+{
+  "program_id": "SBNPROGRAM2",
+  "type": "Batch Report - Employee Salary Report with Control Breaks",
+  "author": "SABIN BANJARA",
+  "lines": 137,
+  "extracted_at": "2026-04-24T23:49:01Z",
+  
+  "extracted_by_heuristic": {
+    "entry": "FILE-CONTROL",
+    "process": "UNTIL",
+    "output": "UNTIL"
+  },
+  
+  "actual_structure": {
+    "entry": "10-CONTROL-MODULE",
+    "housekeeping": "20-HOUSEKEEPING-ROUTINE",
+    "headers": "30-HEADER-ROUTINE",
+    "main_loop": "40-MAIN-ROUTINE",
+    "read_record": "50-READ-A-RECORD",
+    "section_header": "60-PRINT-CLASS-HEADER",
+    "control_break": "70-CONTROL-BREAK",
+    "warehouse_lookup": "80-WRITE-A-WAREHOUSE",
+    "position_lookup": "90-WRITE-EMPLOYEE-POSITION",
+    "write_output": "100-WRITE-LINE",
+    "eof_routine": "110-EOF-ROUTINE"
+  },
+  
+  "analysis": {
+    "entry": "10-CONTROL-MODULE",
+    "process": "40-MAIN-ROUTINE",
+    "output": "100-WRITE-LINE",
+    "flow": [
+      "10-CONTROL-MODULE (entry - orchestrator)",
+      "  → 20-HOUSEKEEPING-ROUTINE (open files, initialize)",
+      "    → 30-HEADER-ROUTINE (write page header)",
+      "  → 40-MAIN-ROUTINE (main business loop)",
+      "    → 50-READ-A-RECORD (process each record)",
+      "      → 60-PRINT-CLASS-HEADER (new warehouse header)",
+      "      → 70-CONTROL-BREAK (warehouse change - subtotal)",
+      "      → 80-WRITE-A-WAREHOUSE (warehouse lookup)",
+      "      → 90-WRITE-EMPLOYEE-POSITION (position lookup)",
+      "      → 100-WRITE-LINE (output detail line)",
+      "  → 110-EOF-ROUTINE (final totals, close files)"
+    ],
+    "routines": [
+      "10-CONTROL-MODULE",
+      "20-HOUSEKEEPING-ROUTINE",
+      "30-HEADER-ROUTINE",
+      "40-MAIN-ROUTINE",
+      "50-READ-A-RECORD",
+      "60-PRINT-CLASS-HEADER",
+      "70-CONTROL-BREAK",
+      "80-WRITE-A-WAREHOUSE",
+      "90-WRITE-EMPLOYEE-POSITION",
+      "100-WRITE-LINE",
+      "110-EOF-ROUTINE"
+    ],
+    "dependencies": {
+      "files": [
+        {
+          "name": "EMPLOYEE-RECORD-FILE",
+          "type": "INPUT",
+          "operations": ["OPEN INPUT", "READ", "CLOSE"]
+        },
+        {
+          "name": "SALARY-REPORT-FILE",
+          "type": "OUTPUT",
+          "operations": ["OPEN OUTPUT", "WRITE", "CLOSE"]
+        }
+      ],
+      "cross_module": []
+    },
+    "guards": [
+      {
+        "name": "EOF-FLAG",
+        "type": "file_end_flag",
+        "values": ["' ' (initial)", "'N' (at end)"],
+        "condition": "NO-MORE-DATA",
+        "location": "40-MAIN-ROUTINE PERFORM UNTIL"
+      },
+      {
+        "name": "WS-FIRST-RECORD",
+        "type": "control_flag",
+        "values": ["'YES' (initial)", "'NO' (after first)"],
+        "location": "50-READ-A-RECORD"
+      },
+      {
+        "name": "WS-HOLD-FIELD",
+        "type": "group_break_detector",
+        "purpose": "Captures WAREHOUSE-ID to detect changes for control break",
+        "location": "70-CONTROL-BREAK"
+      }
+    ],
+    "calculations": [
+      {
+        "name": "INCREASED-CURRENT-SALARY",
+        "formula": "CURRENT-SALARY * 1.05",
+        "location": "50-READ-A-RECORD"
+      },
+      {
+        "name": "INCREASED-UNION-DUES",
+        "formula": "UNION-DUES * 1.03",
+        "location": "50-READ-A-RECORD"
+      },
+      {
+        "name": "INCREASED-INSURANCE",
+        "formula": "INSURANCE * 1.05",
+        "location": "50-READ-A-RECORD"
+      }
+    ],
+    "special_features": [
+      {
+        "feature": "Control Break by Warehouse",
+        "description": "PERFORM 70-CONTROL-BREAK when WAREHOUSE-ID changes",
+        "logic": "Warehouse change → Print warehouse totals → Reset totals → Print new warehouse header"
+      },
+      {
+        "feature": "Lookup EVALUATE Blocks",
+        "routines": ["80-WRITE-A-WAREHOUSE", "90-WRITE-EMPLOYEE-POSITION"],
+        "description": "Translate codes to readable names"
+      },
+      {
+        "feature": "Numeric Paragraph Labels",
+        "pattern": "10-, 20-, 30-, ... sequential numbering",
+        "purpose": "Shows processing order and hierarchy"
+      }
+    ],
+    "signals": {
+      "language": "COBOL",
+      "lines": 137,
+      "routine_count": 11,
+      "has_loops": true,
+      "has_branches": true,
+      "has_file_io": true,
+      "has_control_break": true,
+      "has_cross_module": false,
+      "has_cics": false,
+      "report_type": true,
+      "calculation_type": true,
+      "lookup_type": true
+    }
+  },
+  
+  "heuristic_issues": [
+    {
+      "issue": "Entry point mismatch",
+      "extracted": "FILE-CONTROL",
+      "correct": "10-CONTROL-MODULE",
+      "cause": "Heuristic selected first paragraph name containing keywords, should prioritize CONTROL-MODULE or main entry pattern",
+      "severity": "high"
+    },
+    {
+      "issue": "Process routine mismatch",
+      "extracted": "UNTIL",
+      "correct": "40-MAIN-ROUTINE",
+      "cause": "Regex captured UNTIL keyword from PERFORM UNTIL, not routine name; heuristic needs to extract PERFORM targets, not loop keywords",
+      "severity": "high"
+    },
+    {
+      "issue": "Output routine mismatch",
+      "extracted": "UNTIL",
+      "correct": "100-WRITE-LINE",
+      "cause": "Same as process - regex captured wrong element",
+      "severity": "high"
+    }
+  ],
+  
+  "validation_notes": [
+    "✓ File dependencies correctly identified (EMPLOYEE-RECORD-FILE, SALARY-REPORT-FILE)",
+    "✓ Guard logic detected (EOF-FLAG, NO-MORE-DATA condition)",
+    "✓ Control break pattern recognized (warehouse change triggers subtotal)",
+    "✓ Read loop with AT END detected",
+    "✗ Paragraph naming pattern differs from CardDemo (numeric-based, not functional prefixes)",
+    "✗ Heuristics need to handle both naming conventions",
+    "✗ UNTIL keyword captured instead of routine name extraction"
+  ],
+  
+  "lessons_learned": [
+    "Batch report programs use different structure than CICS transaction programs",
+    "Numeric paragraph labels (10-, 20-, 30-...) indicate processing order hierarchy",
+    "Control breaks are key business logic - must be recognized as process pattern",
+    "EVALUATE blocks for lookups are utility, not main business logic",
+    "File I/O (READ, WRITE) is output mechanism for batch programs, not SEND MAP",
+    "Heuristics must distinguish between:",
+    "  - Keyword matches (UNTIL, IF, EVALUATE) vs routine names",
+    "  - Utility lookups vs core business logic",
+    "  - File output (batch) vs screen output (interactive)"
+  ],
+  
+  "generated_artifacts": {
+    "timestamp": "2026-04-24T23:49:01Z",
+    "run_id": "20260424-234901-04e1445a",
+    "url": "http://localhost:8083/generated/moss/20260424-234901-04e1445a/index.html",
+    "files": [
+      "index.html",
+      "diagram.svg",
+      "flow.txt",
+      "dependency-map.txt",
+      "guards.txt",
+      "developer-report.txt",
+      "package-index.txt"
+    ]
+  }
+}

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CBSA ODAC Execution Path - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 1320px; }
+
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge.good { stroke: rgba(68, 255, 136, 0.55); }
+    .edge.warn { stroke: rgba(255, 170, 0, 0.55); }
+    .edge.bad { stroke: rgba(255, 100, 100, 0.6); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node.guard { stroke: rgba(255, 80, 80, 0.7); fill: rgba(25, 5, 5, 0.92); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+
+    .n-title { fill: var(--text); font-size: 12px; }
+    .guard-title { fill: #ff7070; font-size: 11px; font-weight: bold; }
+    .guard-sub { fill: #8a5555; font-size: 9px; }
+
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 140px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CBSA ODAC Execution Path (BNK1DAC)</div>
+    <div class="top-meta">ODAC -> BNK1DAC -> INQACC / DELACC -> OMEN</div>
+    <div class="top-badge">cbsa_odac_exec_v1 · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">EXECUTION SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">Entry and key routing</span>
+        <span class="code-line" data-node="Step1"><span class="code-key">BNK1DAC:</span> ODAC entry, first-send map if EIBCALEN=0</span>
+        <span class="code-line" data-node="Step2"><span class="code-key">EIBAID:</span> ENTER/PF5 process map, PF3 return OMEN</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Lookup and delete flow</span>
+        <span class="code-line" data-node="Step3"><span class="code-key">PM010:</span> RECEIVE-MAP then branch by AID</span>
+        <span class="code-line" data-node="Step4"><span class="code-key">GAD010:</span> LINK INQACC lookup by account number</span>
+        <span class="code-line" data-node="Step5"><span class="code-key">DAD010:</span> PF5 LINK DELACC delete selected account</span>
+
+        <span class="code-line code-h" style="margin-top:10px">State and return</span>
+        <span class="code-line" data-node="Return">PF3 returns TRANSID(OMEN); post-cycle return keeps ODAC flow</span>
+        <span class="code-line" data-node="Lineage">ACCNOI/ACCNO2I -> INQACC/DELACC payload and map projections</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Guard paths</span>
+        <span class="code-line" data-node="InvalidKey">EIBAID OTHER -> invalid key + alarm redisplay</span>
+        <span class="code-line" data-node="NotFound">INQACC miss -> account not found message</span>
+        <span class="code-line" data-node="DeleteFail">DELACC fail code 1/2/3/other -> delete failed message</span>
+        <span class="code-line" data-node="RespFail">RESP != NORMAL on RETURN/LINK -> ABNDPROC</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">ODAC EXECUTION DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1400 1320" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M700 110 L700 190"></path>
+          <path class="edge" d="M700 260 L700 340"></path>
+          <path class="edge" d="M700 410 L700 500"></path>
+          <path class="edge warn" d="M700 570 L520 660"></path>
+          <path class="edge warn" d="M700 570 L880 660"></path>
+          <path class="edge" d="M700 740 L700 830"></path>
+          <path class="edge trace" d="M700 900 L700 990"></path>
+
+          <path class="edge bad" d="M520 510 L360 500"></path>
+          <path class="edge bad" d="M520 700 L340 700"></path>
+          <path class="edge bad" d="M880 700 L1060 700"></path>
+          <path class="edge bad" d="M900 1030 L1040 1030"></path>
+
+          <text class="edge-label" x="708" y="160">ODAC entry</text>
+          <text class="edge-label" x="708" y="312">AID route</text>
+          <text class="edge-label" x="708" y="460">PM010 receive/branch</text>
+          <text class="edge-label" x="605" y="646">ENTER</text>
+          <text class="edge-label" x="785" y="646">PF5</text>
+          <text class="edge-label" x="708" y="806">map output update</text>
+          <text class="edge-label" x="708" y="978">return/loop</text>
+          <text class="edge-label" x="248" y="494">invalid key</text>
+          <text class="edge-label" x="230" y="694">not found</text>
+          <text class="edge-label" x="1068" y="694">delete fail</text>
+          <text class="edge-label" x="1045" y="1024">resp fail</text>
+
+          <rect class="node core node-hit" data-node="Step1" x="470" y="60" width="460" height="50"></rect>
+          <text class="n-title" x="700" y="90" text-anchor="middle">1) BNK1DAC Entry (ODAC)</text>
+
+          <rect class="node aux node-hit" data-node="Step2" x="450" y="190" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="224" text-anchor="middle">2) EIBAID Router</text>
+          <text class="n-title" x="700" y="245" text-anchor="middle">ENTER/PF5 -> PROCESS-MAP | PF3 -> OMEN | PF12 end</text>
+
+          <rect class="node worker node-hit" data-node="Step3" x="450" y="340" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="374" text-anchor="middle">3) PM010 Process-Map</text>
+          <text class="n-title" x="700" y="395" text-anchor="middle">ENTER lookup branch and PF5 delete branch</text>
+
+          <rect class="node worker node-hit" data-node="Step4" x="320" y="660" width="400" height="80"></rect>
+          <text class="n-title" x="520" y="694" text-anchor="middle">4A) ENTER Lookup Path</text>
+          <text class="n-title" x="520" y="715" text-anchor="middle">GAD010 LINK INQACC</text>
+          <text class="n-title" x="520" y="736" text-anchor="middle">inquiry -> account map projection</text>
+
+          <rect class="node worker node-hit" data-node="Step5" x="680" y="660" width="400" height="80"></rect>
+          <text class="n-title" x="880" y="694" text-anchor="middle">4B) PF5 Delete Path</text>
+          <text class="n-title" x="880" y="715" text-anchor="middle">DAD010 LINK DELACC</text>
+          <text class="n-title" x="880" y="736" text-anchor="middle">delete result branch</text>
+
+          <rect class="node aux node-hit" data-node="Return" x="500" y="830" width="400" height="70"></rect>
+          <text class="n-title" x="700" y="865" text-anchor="middle">5) Return Semantics</text>
+          <text class="n-title" x="700" y="886" text-anchor="middle">PF3 returns TRANSID(OMEN), cycle return keeps ODAC state</text>
+
+          <rect class="node storage node-hit" data-node="Lineage" x="500" y="990" width="400" height="60"></rect>
+          <text class="n-title" x="700" y="1025" text-anchor="middle">Field Lineage + Side-Effect Order</text>
+
+          <rect class="node guard node-hit" data-node="InvalidKey" x="20" y="478" width="340" height="65"></rect>
+          <text class="guard-title" x="190" y="500" text-anchor="middle">Invalid Key Guard</text>
+          <text class="guard-sub" x="190" y="516" text-anchor="middle">EIBAID OTHER</text>
+          <text class="guard-sub" x="190" y="530" text-anchor="middle">invalid key message + alarm redisplay</text>
+
+          <rect class="node guard node-hit" data-node="NotFound" x="20" y="668" width="320" height="65"></rect>
+          <text class="guard-title" x="180" y="690" text-anchor="middle">Account Not Found</text>
+          <text class="guard-sub" x="180" y="706" text-anchor="middle">INQACC returns no account data</text>
+          <text class="guard-sub" x="180" y="720" text-anchor="middle">not-found message + clear map fields</text>
+
+          <rect class="node guard node-hit" data-node="DeleteFail" x="1060" y="668" width="320" height="65"></rect>
+          <text class="guard-title" x="1220" y="690" text-anchor="middle">Delete Failure Guard</text>
+          <text class="guard-sub" x="1220" y="706" text-anchor="middle">DELACC fail code 1/2/3/other</text>
+          <text class="guard-sub" x="1220" y="720" text-anchor="middle">delete failed message branch</text>
+
+          <rect class="node guard node-hit" data-node="RespFail" x="1040" y="998" width="340" height="65"></rect>
+          <text class="guard-title" x="1210" y="1020" text-anchor="middle">RESP Failure Guard</text>
+          <text class="guard-sub" x="1210" y="1036" text-anchor="middle">WS-CICS-RESP != DFHRESP(NORMAL)</text>
+          <text class="guard-sub" x="1210" y="1050" text-anchor="middle">ABNDINFO populated then LINK ABNDPROC</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Scope</span><span class="v">ODAC / BNK1DAC only.</span></div>
+      <div class="kv"><span class="k">Path</span><span class="v">ODAC -> BNK1DAC -> INQACC/DELACC -> OMEN.</span></div>
+      <div class="kv"><span class="k">Key Controls</span><span class="v">ENTER lookup, PF5 delete, PF3 return.</span></div>
+      <div class="kv"><span class="k">Guards</span><span class="v">invalid key, not found, delete fail, RESP fail.</span></div>
+      <div class="kv"><span class="k">Spec</span><span class="v">MIDE/pilot_v1/specs/cbsa_odac_execution/architecture.moss</span></div>
+    `;
+
+    const details = {
+      Step1: { type: "core", desc: "ODAC enters BNK1DAC, first cycle initializes map and state.", links: "ODAC transid -> BNK1DAC" },
+      Step2: { type: "aux", desc: "EIBAID routing controls lookup, delete, return, clear, terminate, and invalid key branches.", links: "DFHENTER/DFHPF5/DFHPF3/DFHPF12/DFHCLEAR/OTHER" },
+      Step3: { type: "worker", desc: "PM010 receives map and dispatches ENTER to account inquiry or PF5 to delete path.", links: "RECEIVE-MAP -> branch controller" },
+      Step4: { type: "worker", desc: "Lookup branch links INQACC using ACCNOI and projects returned account fields to map.", links: "ACCNOI -> INQACC-COMMAREA -> map output" },
+      Step5: { type: "worker", desc: "Delete branch links DELACC on PF5 and interprets DEL-SUCCESS/FAIL-CD for message outcome.", links: "ACCNO2I -> DELACC -> DEL-SUCCESS/FAIL-CD" },
+      Return: { type: "aux", desc: "PF3 returns to OMEN, and normal cycle return preserves ODAC conversational flow.", links: "RETURN TRANSID(OMEN/ODAC)" },
+      Lineage: { type: "storage", desc: "Field lineage anchors on account number across inquiry/delete links and map projections.", links: "ACCNOI/ACCNO2I -> INQACC/DELACC" },
+      InvalidKey: { type: "guard", desc: "Unhandled key path sets invalid key message and alarm redisplay.", links: "EIBAID OTHER -> MESSAGEO + SEND DATAONLY ALARM" },
+      NotFound: { type: "guard", desc: "INQACC returns no account data, BNK1DAC sets not-found message and clears visible fields.", links: "INQACC miss -> MESSAGEO not found" },
+      DeleteFail: { type: "guard", desc: "Delete failure codes produce explicit user-facing delete-failed messages.", links: "DEL-SUCCESS='N' + FAIL-CD" },
+      RespFail: { type: "guard", desc: "Any non-normal CICS response in RETURN/LINK flows populates ABNDINFO and links ABNDPROC.", links: "RESP/RESP2 -> ABNDPROC" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) { panel.innerHTML = defaultHtml; return; }
+      const stepLabel = d.type === "guard" ? "Guard Point" : "Step";
+      const lineageLabel = d.type === "guard" ? "Trigger" : "Lineage";
+      panel.innerHTML = `
+        <div class="kv"><span class="k">${stepLabel}</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Behavior</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">${lineageLabel}</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

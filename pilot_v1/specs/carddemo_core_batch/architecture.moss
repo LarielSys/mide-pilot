@@ -1,0 +1,312 @@
+@MOSS:CARDDemo_Core_Batch_Pipeline_v1
+@R:~/mide-pilot/pilot_v1/specs/carddemo_core_batch/
+
+systems:
+
+  Full_Batch_Orchestrator:
+    role: orchestrates daily core batch sequence for posting interest generation and transaction consolidation
+    runtime: shell_or_jcl_driver
+    source_ref: scripts/run_full_batch.sh
+    ordered_jobs: CLOSEFIL, ACCTFILE, CARDFILE, XREFFILE, CUSTFILE, TRANBKP, DISCGRP, TCATBALF, TRANTYPE, DUSRSECJ, POSTTRAN, INTCALC, TRANBKP, COMBTRAN, TRANIDX, OPENFIL
+    depends_on: PostTran_Job, IntCalc_Job, CombTran_Job, TranIdx_Job
+
+  PostTran_Job:
+    role: processes daily transactions validates card/account constraints updates balances and writes transaction master updates
+    runtime: jcl_batch
+    jcl_member: POSTTRAN
+    program: CBTRN02C
+    depends_on: CBTRN02C_Core, DalyTran_Input, XRef_VSAM_KSDS, Acct_VSAM_KSDS, TCatBal_VSAM_KSDS, TranMaster_VSAM_KSDS, DalyReject_GDG
+
+  IntCalc_Job:
+    role: computes monthly interest per account based on category balances and disclosure rates and emits system transactions
+    runtime: jcl_batch
+    jcl_member: INTCALC
+    program: CBACT04C
+    depends_on: CBACT04C_Core, TCatBal_VSAM_KSDS, XRef_VSAM_KSDS, Acct_VSAM_KSDS, DiscGrp_VSAM_KSDS, SysTran_GDG
+
+  CombTran_Job:
+    role: sorts backup and system transactions then reloads combined stream into transaction master cluster
+    runtime: jcl_batch
+    jcl_member: COMBTRAN
+    steps: SORT_COMBINE, IDCAMS_REPRO
+    depends_on: TranBackup_GDG, SysTran_GDG, CombinedTran_GDG, TranMaster_VSAM_KSDS
+
+  TranIdx_Job:
+    role: defines and builds alternate index/path for transaction master by processed timestamp
+    runtime: jcl_batch
+    jcl_member: TRANIDX
+    steps: DEFINE_AIX, DEFINE_PATH, BLDINDEX
+    depends_on: TranMaster_VSAM_KSDS, TranAIX_VSAM
+
+  CBTRN02C_Core:
+    role: daily posting engine with validation reject handling and durable updates to category/account/transaction datasets
+    runtime: cobol_batch
+    program_id: CBTRN02C
+    control_flow: open_files_then_read_loop_then_validate_then_post_or_reject_then_close
+    depends_on: CBTRN02C_Validation_Pipeline, CBTRN02C_Posting_Pipeline, File_IO_State_Semantics, Control_Break_Side_Effects
+
+  CBTRN02C_Validation_Pipeline:
+    role: validates card account credit-limit and expiration constraints before posting
+    runtime: procedure_division
+    paragraphs: 1500_VALIDATE_TRAN, 1500_A_LOOKUP_XREF, 1500_B_LOOKUP_ACCT
+    depends_on: XRef_VSAM_KSDS, Acct_VSAM_KSDS
+
+  CBTRN02C_Posting_Pipeline:
+    role: updates transaction-category balance updates account balances and writes processed transaction record
+    runtime: procedure_division
+    paragraphs: 2000_POST_TRANSACTION, 2700_UPDATE_TCATBAL, 2800_UPDATE_ACCOUNT_REC, 2900_WRITE_TRANSACTION_FILE
+    depends_on: TCatBal_VSAM_KSDS, Acct_VSAM_KSDS, TranMaster_VSAM_KSDS, Field_Lineage_Map
+
+  CBACT04C_Core:
+    role: interest engine that groups by account computes monthly interest emits system transactions and rolls account balances
+    runtime: cobol_batch
+    program_id: CBACT04C
+    control_flow: open_files_then_tcatbal_loop_then_rate_lookup_then_compute_interest_then_write_sys_transaction_then_account_rollup
+    depends_on: CBACT04C_Rate_And_Compute, File_IO_State_Semantics, Field_Lineage_Map
+
+  CBACT04C_Rate_And_Compute:
+    role: disclosure lookup with default fallback and arithmetic transform to generated system transaction rows
+    runtime: procedure_division
+    paragraphs: 1200_GET_INTEREST_RATE, 1200_A_GET_DEFAULT_INT_RATE, 1300_COMPUTE_INTEREST, 1300_B_WRITE_TX
+    depends_on: DiscGrp_VSAM_KSDS, SysTran_GDG, Evaluate_Branch_Semantics
+
+  JCL_SORT_Combine_Transactions:
+    role: merges TRANSACT.BKUP and SYSTRAN inputs sorted by TRAN-ID into combined generation file
+    runtime: jcl_sort_step
+    program: SORT
+    depends_on: TranBackup_GDG, SysTran_GDG, CombinedTran_GDG
+
+  IDCAMS_REPRO_Load_Master:
+    role: repro step loads combined transaction generation into transaction master KSDS
+    runtime: jcl_idcams_step
+    program: IDCAMS
+    command: REPRO
+    depends_on: CombinedTran_GDG, TranMaster_VSAM_KSDS
+
+  DalyTran_Input:
+    role: daily incoming transaction feed for posting job
+    runtime: filesystem
+    dataset_name: AWS.M2.CARDDEMO.DALYTRAN.PS
+    operations: open_input, read, close
+
+  TranMaster_VSAM_KSDS:
+    role: transaction master cluster updated by posting and combination jobs
+    runtime: vsam_ksds
+    dataset_name: AWS.M2.CARDDEMO.TRANSACT.VSAM.KSDS
+    operations: open_output, write, repro_load, close
+
+  XRef_VSAM_KSDS:
+    role: card-to-account cross-reference lookup store
+    runtime: vsam_ksds
+    dataset_name: AWS.M2.CARDDEMO.CARDXREF.VSAM.KSDS
+    operations: open_input, keyed_read, close
+
+  Acct_VSAM_KSDS:
+    role: account master file updated by posting and interest jobs
+    runtime: vsam_ksds
+    dataset_name: AWS.M2.CARDDEMO.ACCTDATA.VSAM.KSDS
+    operations: open_io, keyed_read, rewrite, close
+
+  TCatBal_VSAM_KSDS:
+    role: transaction category balance store read-updated by posting and read by interest calculator
+    runtime: vsam_ksds
+    dataset_name: AWS.M2.CARDDEMO.TCATBALF.VSAM.KSDS
+    operations: open_io_or_input, keyed_read, write, rewrite, close
+
+  DiscGrp_VSAM_KSDS:
+    role: disclosure group rate lookup with fallback to DEFAULT group
+    runtime: vsam_ksds
+    dataset_name: AWS.M2.CARDDEMO.DISCGRP.VSAM.KSDS
+    operations: open_input, keyed_read, close
+
+  DalyReject_GDG:
+    role: rejected transaction trail with validation reason trailer
+    runtime: gdg_output
+    dataset_name: AWS.M2.CARDDEMO.DALYREJS(+1)
+    operations: write
+
+  SysTran_GDG:
+    role: generated system transactions from interest run
+    runtime: gdg_output
+    dataset_name: AWS.M2.CARDDEMO.SYSTRAN(+1)
+    operations: write
+
+  TranBackup_GDG:
+    role: backup transaction generation consumed by combine job
+    runtime: gdg_input
+    dataset_name: AWS.M2.CARDDEMO.TRANSACT.BKUP(0)
+    operations: read
+
+  CombinedTran_GDG:
+    role: sorted combined transaction generation produced by COMBTRAN sort step
+    runtime: gdg_output
+    dataset_name: AWS.M2.CARDDEMO.TRANSACT.COMBINED(+1)
+    operations: write, read
+
+  TranAIX_VSAM:
+    role: alternate index and path pair for transaction master keyed by processed timestamp
+    runtime: vsam_aix
+    dataset_name: AWS.M2.CARDDEMO.TRANSACT.VSAM.AIX
+    operations: define, build
+
+  Field_Lineage_Map:
+    role: directional field-level transform lineage for posting and interest arithmetic operations
+    runtime: semantic_contract
+    lineage_rules:
+      - DALYTRAN_AMT_to_TRAN_AMT
+      - DALYTRAN_AMT_to_TRAN_CAT_BAL_additive_update
+      - DALYTRAN_AMT_to_ACCT_CURR_BAL_and_cycle_credit_or_debit
+      - TRAN_CAT_BAL_and_DIS_INT_RATE_to_WS_MONTHLY_INT
+      - WS_MONTHLY_INT_to_TRAN_AMT_system_transaction
+
+  File_IO_State_Semantics:
+    role: explicit cursor state eof transitions and status-code governed behavior for sequential and keyed operations
+    runtime: semantic_contract
+    semantics:
+      - READ_status_10_sets_end_of_file
+      - keyed_read_invalid_key_routes_to_validation_or_default_paths
+      - WRITE_REWRITE_failures_route_to_abend_handler
+      - open_close_status_codes_gate_progress
+
+  Control_Break_Side_Effects:
+    role: account-boundary side-effects in interest loop including prior-account rollup before switching key context
+    runtime: semantic_contract
+    ordered_sequences:
+      - ACCOUNT_CHANGED:if_not_first_time_then_PERFORM_1050_UPDATE_ACCOUNT_then_reset_WS_TOTAL_INT_then_load_new_account_context
+
+  Evaluate_Branch_Semantics:
+    role: explicit branching semantics for validation outcomes and interest-rate fallback/default behavior
+    runtime: semantic_contract
+    semantics:
+      - validation_fail_reason_0_routes_to_post_else_reject
+      - DISCGRP_status_23_routes_to_DEFAULT_group_lookup
+      - interest_rate_zero_skips_interest_fee_compute_path
+
+dependencies:
+  - Full_Batch_Orchestrator -> PostTran_Job
+  - Full_Batch_Orchestrator -> IntCalc_Job
+  - Full_Batch_Orchestrator -> CombTran_Job
+  - Full_Batch_Orchestrator -> TranIdx_Job
+
+  - PostTran_Job -> CBTRN02C_Core
+  - PostTran_Job -> DalyTran_Input
+  - PostTran_Job -> XRef_VSAM_KSDS
+  - PostTran_Job -> Acct_VSAM_KSDS
+  - PostTran_Job -> TCatBal_VSAM_KSDS
+  - PostTran_Job -> TranMaster_VSAM_KSDS
+  - PostTran_Job -> DalyReject_GDG
+
+  - IntCalc_Job -> CBACT04C_Core
+  - IntCalc_Job -> TCatBal_VSAM_KSDS
+  - IntCalc_Job -> XRef_VSAM_KSDS
+  - IntCalc_Job -> Acct_VSAM_KSDS
+  - IntCalc_Job -> DiscGrp_VSAM_KSDS
+  - IntCalc_Job -> SysTran_GDG
+
+  - CombTran_Job -> JCL_SORT_Combine_Transactions
+  - CombTran_Job -> IDCAMS_REPRO_Load_Master
+  - CombTran_Job -> TranBackup_GDG
+  - CombTran_Job -> SysTran_GDG
+  - CombTran_Job -> CombinedTran_GDG
+  - CombTran_Job -> TranMaster_VSAM_KSDS
+
+  - TranIdx_Job -> TranMaster_VSAM_KSDS
+  - TranIdx_Job -> TranAIX_VSAM
+
+  - CBTRN02C_Core -> CBTRN02C_Validation_Pipeline
+  - CBTRN02C_Core -> CBTRN02C_Posting_Pipeline
+  - CBTRN02C_Core -> File_IO_State_Semantics
+  - CBTRN02C_Core -> Control_Break_Side_Effects
+
+  - CBTRN02C_Validation_Pipeline -> XRef_VSAM_KSDS
+  - CBTRN02C_Validation_Pipeline -> Acct_VSAM_KSDS
+
+  - CBTRN02C_Posting_Pipeline -> TCatBal_VSAM_KSDS
+  - CBTRN02C_Posting_Pipeline -> Acct_VSAM_KSDS
+  - CBTRN02C_Posting_Pipeline -> TranMaster_VSAM_KSDS
+  - CBTRN02C_Posting_Pipeline -> Field_Lineage_Map
+
+  - CBACT04C_Core -> CBACT04C_Rate_And_Compute
+  - CBACT04C_Core -> File_IO_State_Semantics
+  - CBACT04C_Core -> Field_Lineage_Map
+
+  - CBACT04C_Rate_And_Compute -> DiscGrp_VSAM_KSDS
+  - CBACT04C_Rate_And_Compute -> SysTran_GDG
+  - CBACT04C_Rate_And_Compute -> Evaluate_Branch_Semantics
+
+  - JCL_SORT_Combine_Transactions -> TranBackup_GDG
+  - JCL_SORT_Combine_Transactions -> SysTran_GDG
+  - JCL_SORT_Combine_Transactions -> CombinedTran_GDG
+
+  - IDCAMS_REPRO_Load_Master -> CombinedTran_GDG
+  - IDCAMS_REPRO_Load_Master -> TranMaster_VSAM_KSDS
+
+interfaces:
+
+  Batch_Core_Order_Contract:
+    protocol: ordered_jcl_pipeline
+    sequence:
+      - POSTTRAN
+      - INTCALC
+      - TRANBKP
+      - COMBTRAN
+      - TRANIDX
+
+  Posting_Validation_Contract:
+    protocol: keyed_validation_gate
+    semantics:
+      - XREF_must_resolve_card_to_account
+      - account_must_exist
+      - transaction_must_not_exceed_credit_limit
+      - transaction_timestamp_must_precede_account_expiration
+      - failed_validation_must_emit_reject_record
+
+  Interest_Generation_Contract:
+    protocol: category_balance_to_system_transaction
+    semantics:
+      - WS_MONTHLY_INT_equals_TRAN_CAT_BAL_times_DIS_INT_RATE_div_1200
+      - non_zero_interest_generates_system_transaction_record
+      - per_account_rollup_updates_account_balance_and_resets_cycle_fields
+
+  Transaction_Consolidation_Contract:
+    protocol: sort_then_repro
+    semantics:
+      - backup_and_system_transactions_sorted_by_TRAN_ID
+      - combined_generation_repro_loaded_to_transaction_master
+
+  Field_Lineage_Contract:
+    protocol: deterministic_field_transform_lineage
+    semantics:
+      - source_operands_and_target_fields_must_be_directionally_explicit
+      - arithmetic_updates_must_include_intermediate_targets
+
+actions:
+
+  post_daily_transactions:
+    actor: CBTRN02C_Core
+    objective: validate_and_apply_daily_transaction_feed
+
+  compute_interest_and_generate_system_entries:
+    actor: CBACT04C_Core
+    objective: transform_category_balances_into_interest_transactions
+
+  consolidate_transaction_streams:
+    actor: CombTran_Job
+    objective: merge_backup_and_system_streams_into_master
+
+  build_transaction_timestamp_aix:
+    actor: TranIdx_Job
+    objective: maintain_secondary_access_path_for_timestamp_queries
+
+  preserve_regeneration_semantics:
+    actor: Field_Lineage_Map
+    objective: keep_cross_language_rebuild_behavior_stable
+
+runtime_constraints:
+
+  - status_codes_not_equal_00_or_expected_alternatives_must_route_to_abend
+  - DALYTRAN_status_10_is_the_only_normal_eof_for_posting_loop
+  - DISCGRP_status_23_must_route_to_default_disclosure_group_lookup
+  - account_rollup_must_occur_before_switching_to_next_account_context_in_interest_loop
+  - COMBTRAN_sort_key_must_match_master_transaction_identity
+  - directional_lineage_edges_must_be_present_for_core_arithmetic_transforms

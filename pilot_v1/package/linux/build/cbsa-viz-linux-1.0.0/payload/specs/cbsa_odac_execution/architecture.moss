@@ -1,0 +1,109 @@
+@MOSS:CBSA_ODAC_BNK1DAC_Execution_v1
+@R:~/mide-pilot/pilot_v1/specs/cbsa_odac_execution/
+
+systems:
+
+  ODAC_Transaction_Entry:
+    role: BNKMENU action 2 dispatch target entering display-account flow
+    runtime: cics_transaction_flow
+    transid: ODAC
+    program_id: BNK1DAC
+    depends_on: Program_BNK1DAC, Display_Account_Map, Aid_Key_Router
+
+  Program_BNK1DAC:
+    role: display account program with lookup and delete paths for account records
+    runtime: cics_cobol
+    program_id: BNK1DAC
+    transid: ODAC
+    mapset: BNK1DAM
+    depends_on: Display_Account_Map, Process_Map_Controller, Inquiry_Link_INQACC, Delete_Link_DELACC, Return_Path_OMEN, Guard_Paths
+
+  Display_Account_Map:
+    role: BMS map for account lookup display and delete actions
+    runtime: cics_bms
+    mapset: BNK1DAM
+    map: BNK1DAO
+    key_fields: ACCNOI, ACCNO2I, SORTCO, CUSTNOO, ACTYPEO, INTRTO, AVBALO, ACTBALO
+
+  Aid_Key_Router:
+    role: EIBAID branching for BNK1DAC
+    runtime: cics_control_semantics
+    keys: DFHENTER, DFHPF5, DFHPF3, DFHPF12, DFHCLEAR, OTHER
+    semantics:
+      - enter_lookup
+      - pf5_delete_account
+      - pf3_return_to_omen
+      - pf12_terminate_session
+      - clear_erase_and_return
+      - other_invalid_key_redisplay
+
+  Process_Map_Controller:
+    role: PM010 controls receive map validation and operation branch for enter lookup and PF5 delete
+    runtime: semantic_contract
+    branches:
+      - enter_to_inquiry
+      - pf5_to_delete
+
+  Inquiry_Link_INQACC:
+    role: account inquiry link used by ENTER branch
+    runtime: cics_link_contract
+    target_program: INQACC
+    call_site: GAD010
+
+  Delete_Link_DELACC:
+    role: account delete link used by PF5 branch
+    runtime: cics_link_contract
+    target_program: DELACC
+    call_site: DAD010
+
+  Return_Path_OMEN:
+    role: return path to BNKMENU transaction from PF3 branch and regular post-cycle return
+    runtime: cics_return_semantics
+    transid: OMEN
+
+  Guard_Paths:
+    role: explicit non-happy-path semantics for BNK1DAC
+    runtime: semantic_contract
+    guards:
+      - invalid_key_message_and_alarm
+      - account_not_found_after_inqacc
+      - delacc_failure_codes_1_2_3_other
+      - cics_resp_not_normal_to_abndproc
+
+  Field_Lineage_Map:
+    role: account field lineage across lookup and delete links
+    runtime: semantic_contract
+    lineage_rules:
+      - ACCNOI_to_INQACC_ACCNO
+      - ACCNO2I_to_DELACC_ACCNO
+      - INQACC_result_to_account_map_fields
+      - DELACC_result_flags_to_MESSAGEO
+
+dependencies:
+  - ODAC_Transaction_Entry -> Program_BNK1DAC
+  - Program_BNK1DAC -> Aid_Key_Router
+  - Program_BNK1DAC -> Process_Map_Controller
+  - Process_Map_Controller -> Inquiry_Link_INQACC
+  - Process_Map_Controller -> Delete_Link_DELACC
+  - Program_BNK1DAC -> Return_Path_OMEN
+  - Program_BNK1DAC -> Guard_Paths
+  - Process_Map_Controller -> Field_Lineage_Map
+  - Guard_Paths -> Field_Lineage_Map
+
+interfaces:
+  - lookup_interface:
+      from: Program_BNK1DAC
+      to: Inquiry_Link_INQACC
+      mode: cics_link_synconreturn
+      key: ACCNOI
+
+  - delete_interface:
+      from: Program_BNK1DAC
+      to: Delete_Link_DELACC
+      mode: cics_link_synconreturn
+      key: ACCNO2I
+
+runtime_constraints:
+  - scope_is_odac_bnk1dac_only: true
+  - no_non_odac_program_semantics_except_explicit_link_targets: true
+  - delete_operation_mapped_to_pf5_only: true

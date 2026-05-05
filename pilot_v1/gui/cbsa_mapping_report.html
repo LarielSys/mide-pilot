@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CBSA Mapping Report</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --bg-card: rgba(10, 22, 40, 0.92);
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.18);
+    }
+    html, body {
+      background: radial-gradient(circle at top right, #123353 0%, var(--bg-deep) 45%, #01050b 100%);
+      color: var(--text);
+      font-family: "Consolas", "Courier New", monospace;
+      min-height: 100%;
+    }
+    body {
+      padding: 18px;
+      line-height: 1.5;
+    }
+    .report-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(2, 8, 16, 0.88);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+      padding: 14px 16px;
+    }
+    .title {
+      color: var(--cyan);
+      font-size: 18px;
+      letter-spacing: 0.7px;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+    .meta {
+      min-width: 290px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(10, 22, 40, 0.7);
+      padding: 10px;
+      font-size: 11px;
+    }
+    .meta-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .meta-row:last-child { margin-bottom: 0; }
+    .meta-k { color: var(--amber); }
+    .meta-v { color: var(--text); }
+
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      background: rgba(0, 212, 255, 0.03);
+    }
+    .btn {
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--cyan);
+      border-radius: 4px;
+      padding: 7px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 0.4px;
+    }
+    .btn:hover { background: rgba(0, 212, 255, 0.15); }
+
+    .content {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+    .section {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      padding: 12px;
+    }
+    .section h2 {
+      color: var(--cyan);
+      font-size: 14px;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed rgba(0, 212, 255, 0.25);
+      padding-bottom: 6px;
+    }
+    .section h3 {
+      color: var(--amber);
+      font-size: 12px;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+    .section p,
+    .section li {
+      color: var(--text);
+      font-size: 12px;
+    }
+    .section ul {
+      padding-left: 18px;
+      display: grid;
+      gap: 4px;
+    }
+    .route-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .route {
+      border: 1px solid rgba(255, 170, 0, 0.25);
+      border-radius: 6px;
+      padding: 10px;
+      background: rgba(18, 30, 50, 0.75);
+    }
+    .route-title {
+      color: var(--green);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .route ul { gap: 5px; }
+    .risk-high { color: #ff8a8a; font-weight: bold; }
+    .risk-medium { color: #ffd07a; font-weight: bold; }
+    .risk-low { color: #7dffb2; font-weight: bold; }
+    .exec-box {
+      border: 1px solid rgba(255, 170, 0, 0.35);
+      background: rgba(35, 24, 8, 0.55);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .exec-head {
+      color: var(--amber);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .summary-list {
+      display: grid;
+      gap: 6px;
+    }
+    .summary-item {
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: rgba(8, 18, 35, 0.7);
+      font-size: 12px;
+    }
+    .route-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--cyan);
+      text-decoration: none;
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 11px;
+    }
+    .route-link:hover { background: rgba(0, 212, 255, 0.12); }
+
+    @media print {
+      @page { margin: 14mm; }
+      html, body {
+        background: #020810;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      body { padding: 0; }
+      .controls { display: none; }
+      .report-shell {
+        max-width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .section,
+      .route {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="report-shell">
+    <header class="top">
+      <div>
+        <div class="title">CBSA Banking Flow Mapping Report</div>
+        <div class="subtitle">Narrative mapping output derived from BNKMENU and all mapped downstream transaction routes.</div>
+      </div>
+      <div class="meta" id="metaBox"></div>
+    </header>
+
+    <div class="controls">
+      <button class="btn" id="printBtn" type="button">Print / Save PDF</button>
+      <button class="btn" id="closeBtn" type="button">Close Window</button>
+    </div>
+
+    <section class="content" id="reportContent"></section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const selectedSections = (params.get("sections") || "executive,effort,routeSummary,summary,scope,routes,validation,data,ops,coverage,recommendations,appendix")
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+    const stamp = params.get("stamp") || "generated";
+    const autoprint = params.get("autoprint") === "1";
+
+    const routeNarratives = [
+      {
+        code: "ODCS",
+        name: "Customer Inquiry / Delete / Update",
+        entry: "Routed from BNKMENU ACTIONI=1; user lands on customer detail map.",
+        intent: "Support customer read, delete, and profile update operations in one transaction flow.",
+        checks: "Customer number format and non-empty checks; EIBAID branches restrict destructive actions to explicit key paths.",
+        backend: "INQCUST for lookup, DELCUS for delete, UPDCUST for update.",
+        success: "Lookup populates customer fields; update/delete confirms message and returns user to controlled state.",
+        failure: "Missing customer, invalid input, or backend fail codes return message text and retain session context.",
+        riskLevel: "Medium",
+        riskReason: "Contains guarded delete and update paths dependent on backend response integrity.",
+        businessImpact: "Validation or backend failures can delay customer maintenance transactions while preserving controlled data state.",
+        oneLine: "Customer read/update/delete flow with guarded destructive paths.",
+        diagramHref: "cbsa_odcs_execution_visualization.html"
+      },
+      {
+        code: "ODAC",
+        name: "Account Inquiry / Delete",
+        entry: "Routed from BNKMENU ACTIONI=2; account map prompts for account key.",
+        intent: "Retrieve account state and optionally remove account under guarded key path.",
+        checks: "Account number presence/format checks; delete path only allowed from explicit function key route.",
+        backend: "INQACC for inquiry; DELACC for delete.",
+        success: "Account fields displayed on inquiry; delete path commits and returns completion signal.",
+        failure: "Invalid account, missing input, or service response errors show guarded message and avoid silent state mutation.",
+        riskLevel: "Medium",
+        riskReason: "Includes destructive delete operation with dependency on account-service correctness.",
+        businessImpact: "Blocking or failed account actions may interrupt account servicing and require operator rework.",
+        oneLine: "Account inquiry/delete route with controlled key-driven deletion.",
+        diagramHref: "cbsa_odac_execution_visualization.html"
+      },
+      {
+        code: "OCCS",
+        name: "Customer Create",
+        entry: "Routed from BNKMENU ACTIONI=3; create form captures customer profile values.",
+        intent: "Create a new customer with required identity and contact data.",
+        checks: "Required-field validation, content checks, and create guard conditions prior to backend invocation.",
+        backend: "CRECUST service link with structured create payload.",
+        success: "Customer creation confirmation with created identity carried forward for downstream usage.",
+        failure: "Validation errors and create fail codes return explicit messages and preserve entered values for correction.",
+        riskLevel: "Medium",
+        riskReason: "Customer onboarding depends on strict validation and create-service response codes.",
+        businessImpact: "Failed customer creation can slow onboarding throughput and defer downstream account activities.",
+        oneLine: "New-customer onboarding route with strict create validation gates.",
+        diagramHref: "cbsa_occs_execution_visualization.html"
+      },
+      {
+        code: "OCAC",
+        name: "Account Create",
+        entry: "Routed from BNKMENU ACTIONI=4; user enters customer and account setup attributes.",
+        intent: "Open a new account for an eligible customer context.",
+        checks: "Customer/account prerequisite checks, account-type validity, and create-specific guard evaluation.",
+        backend: "CREACC service link returning account-create status/fail code.",
+        success: "New account established and confirmation rendered to user.",
+        failure: "Fail-code mapped messages (including business-rule and validation failures) shown without ambiguous outcomes.",
+        riskLevel: "High",
+        riskReason: "Account origination is business-critical and sensitive to fail-code governance and eligibility checks.",
+        businessImpact: "Create-path failures directly affect new account activation and revenue-related onboarding timelines.",
+        oneLine: "Account creation route with high business criticality and fail-code sensitivity.",
+        diagramHref: "cbsa_ocac_execution_visualization.html"
+      },
+      {
+        code: "OUAC",
+        name: "Account Update",
+        entry: "Routed from BNKMENU ACTIONI=5; ENTER performs account inquiry before update branch.",
+        intent: "Allow controlled modification of account attributes after inquiry context is loaded.",
+        checks: "Account lookup precondition, update field checks, and key-driven branch gating to avoid accidental updates.",
+        backend: "INQACC for context retrieval; UPDACC for commit path.",
+        success: "Updated account values acknowledged with state consistency maintained.",
+        failure: "Lookup failures or update reject codes produce explicit feedback and keep operator in corrective loop.",
+        riskLevel: "Medium",
+        riskReason: "Data-change path is guarded but relies on successful inquiry context and update-service responses.",
+        businessImpact: "Update disruption can delay account corrections and affect frontline service turnaround.",
+        oneLine: "Inquiry-first account update route with guarded commit behavior.",
+        diagramHref: "cbsa_ouac_execution_visualization.html"
+      },
+      {
+        code: "OCRA",
+        name: "Credit / Debit Amount",
+        entry: "Routed from BNKMENU ACTIONI=6; user supplies account and signed transaction amount.",
+        intent: "Apply debit or credit movement against a single account with sign-based transaction intent.",
+        checks: "Signed amount validation, sign semantics enforcement, and account existence checks.",
+        backend: "DBCRFUN service handles debit/credit posting and returns status.",
+        success: "Posting succeeds and resulting account state is reflected to user.",
+        failure: "Amount/sign errors, account issues, or posting fail codes return deterministic error messages.",
+        riskLevel: "High",
+        riskReason: "Direct monetary posting path with strict dependency on signed-amount and posting-service correctness.",
+        businessImpact: "Posting failures can block financial movements and require manual intervention for time-sensitive transactions.",
+        oneLine: "Debit/credit posting route with direct monetary impact and high sensitivity.",
+        diagramHref: "cbsa_ocra_execution_visualization.html"
+      },
+      {
+        code: "OTFN",
+        name: "Transfer Funds",
+        entry: "Routed from BNKMENU ACTIONI=7; source and target accounts plus transfer amount captured.",
+        intent: "Move funds between two accounts with explicit source/target semantics.",
+        checks: "Source and target presence/validity checks, anti-self-transfer logic, amount validation, and transfer guards.",
+        backend: "XFRFUN transfer service executes movement and returns outcome code.",
+        success: "Transfer completion reflected with confirmation response.",
+        failure: "Validation issues or transfer fail codes (including source/target problems) surfaced as explicit user messages.",
+        riskLevel: "High",
+        riskReason: "Cross-account monetary transfer has elevated operational and customer-impact sensitivity.",
+        businessImpact: "Transfer interruptions can impact customer trust, operational SLAs, and high-priority payment commitments.",
+        oneLine: "Cross-account transfer route with the highest operational sensitivity.",
+        diagramHref: "cbsa_otfn_execution_visualization.html"
+      },
+      {
+        code: "OCCA",
+        name: "Customer Account Listing",
+        entry: "Routed from BNKMENU ACTIONI=A; user provides customer identifier.",
+        intent: "Return account list associated with selected customer for operational review.",
+        checks: "Customer id validity and list-bound guard behavior for display capacity.",
+        backend: "INQACCCU service to retrieve customer-linked account rows.",
+        success: "Up to configured account rows projected onto list map for user review.",
+        failure: "Invalid customer or backend list errors return visible guard messages and no stale list projection.",
+        riskLevel: "Low",
+        riskReason: "Read-oriented route with no direct monetary mutation or destructive operation.",
+        businessImpact: "Listing failures reduce operator visibility and may slow service resolution, but do not directly mutate balances.",
+        oneLine: "Read-only customer account listing route with low direct financial risk.",
+        diagramHref: "cbsa_occa_execution_visualization.html"
+      }
+    ];
+
+    const allSections = {
+      executive: `
+        <article class="section">
+          <h2>0. Executive So What</h2>
+          <div class="exec-box">
+            <div class="exec-head">Overall System Risk: Medium-High</div>
+            <ul>
+              <li>Financial operation routes depend on backend response integrity.</li>
+              <li>Multiple guarded destructive and monetary paths increase operational sensitivity.</li>
+              <li>Most critical focus remains on OCRA and OTFN transaction reliability.</li>
+            </ul>
+            <p style="margin-top:8px;"><strong>Recommendation:</strong> Prioritize regression depth and operational monitoring on monetary routes before broad rollout.</p>
+          </div>
+        </article>
+      `,
+      effort: `
+        <article class="section">
+          <h2>0A. Analysis Equivalent</h2>
+          <div class="exec-box">
+            <p><strong>Estimated Time to Analyze:</strong> Approximately 2-3 weeks using manual system tracing.</p>
+            <p style="margin-top:6px;"><strong>Effort Saved:</strong> Automated mapping replaced that baseline effort across all 8 routed transaction flows.</p>
+          </div>
+        </article>
+      `,
+      routeSummary: `
+        <article class="section">
+          <h2>1. One-Line Route Summary</h2>
+          <div class="summary-list" id="summaryList"></div>
+        </article>
+      `,
+      summary: `
+        <article class="section">
+          <h2>2. Executive Summary</h2>
+          <p>This report captures the mapped CBSA banking flow behavior as business-readable narratives for BNKMENU routing and all eight downstream transaction paths. The mapping is intended to support stakeholder review, test planning, and deployment readiness decisions without requiring source code inspection.</p>
+          <p>The mapped set confirms deterministic key routing, explicit validation and guardrail behavior, and backend-linked success/failure outcomes across customer, account, debit/credit, transfer, and account-listing operations.</p>
+        </article>
+      `,
+      scope: `
+        <article class="section">
+          <h2>3. Scope Covered</h2>
+          <ul>
+            <li>BNKMENU online router behavior and key-path branching.</li>
+            <li>All BNKMENU-dispatched routes: ODCS, ODAC, OCCS, OCAC, OUAC, OCRA, OTFN, OCCA.</li>
+            <li>Validation checkpoints, guard paths, and backend interaction intent.</li>
+            <li>User-visible success and failure outcome semantics for each route.</li>
+          </ul>
+        </article>
+      `,
+      routes: `
+        <article class="section">
+          <h2>4. Route-by-Route Narrative Mapping</h2>
+          <div class="route-grid" id="routeGrid"></div>
+        </article>
+      `,
+      validation: `
+        <article class="section">
+          <h2>5. Validation and Guardrail Summary</h2>
+          <ul>
+            <li>EIBAID branch controls separate continue, process, terminate, clear, and invalid-key behavior.</li>
+            <li>ACTIONI domain checks at menu level enforce route eligibility before dispatch.</li>
+            <li>Route-level input checks gate destructive and state-changing operations.</li>
+            <li>Backend response/fail codes are surfaced through explicit user-facing messages rather than silent failures.</li>
+            <li>Non-normal return paths invoke controlled failure handling rather than untracked termination.</li>
+          </ul>
+        </article>
+      `,
+      data: `
+        <article class="section">
+          <h2>6. Data Movement Summary</h2>
+          <ul>
+            <li>Entry captures user-entered business keys and operation intent fields.</li>
+            <li>Validated values are mapped into backend request structures per route-specific service contracts.</li>
+            <li>Backend responses are projected back to map fields and status message areas.</li>
+            <li>State mutation occurs only on guarded update/delete/create/post/transfer paths.</li>
+            <li>Failure outcomes preserve context for correction and re-entry within the same operational loop.</li>
+          </ul>
+        </article>
+      `,
+      ops: `
+        <article class="section">
+          <h2>7. Operational Observations</h2>
+          <ul>
+            <li>Highest control sensitivity exists on delete, update, debit/credit, and transfer routes.</li>
+            <li>Most failure-prone points are invalid identifiers, amount/sign issues, and backend reject codes.</li>
+            <li>Backend availability and response integrity are critical dependencies for operator continuity.</li>
+            <li>Consistent message semantics significantly reduce ambiguous operator decision points.</li>
+          </ul>
+        </article>
+      `,
+      coverage: `
+        <article class="section">
+          <h2>8. Coverage Statement</h2>
+          <p>Included: full narrative mapping for BNKMENU dispatch behavior and all eight routed CBSA transaction paths.</p>
+          <p>Excluded: implementation source code, low-level runtime packaging mechanics, and non-mapped external utilities.</p>
+        </article>
+      `,
+      recommendations: `
+        <article class="section">
+          <h2>9. Recommendations</h2>
+          <ul>
+            <li>Use this report as baseline traceability for business and UAT sign-off.</li>
+            <li>Prioritize regression test packs for OCRA and OTFN due to direct financial movement impact.</li>
+            <li>Retain route-level fail-code narrative alignment with user-visible messaging standards.</li>
+            <li>Version this report with each mapping revision for audit continuity.</li>
+          </ul>
+        </article>
+      `,
+      appendix: `
+        <article class="section">
+          <h2>10. Appendix</h2>
+          <h3>Route Glossary</h3>
+          <ul>
+            <li>ODCS: Customer inquiry, delete, and update operations.</li>
+            <li>ODAC: Account inquiry and delete operations.</li>
+            <li>OCCS: Customer create operation.</li>
+            <li>OCAC: Account create operation.</li>
+            <li>OUAC: Account inquiry and update operation.</li>
+            <li>OCRA: Account debit/credit operation.</li>
+            <li>OTFN: Inter-account transfer operation.</li>
+            <li>OCCA: Customer-linked account listing operation.</li>
+          </ul>
+        </article>
+      `
+    };
+
+    const sectionOrder = ["executive", "effort", "routeSummary", "summary", "scope", "routes", "validation", "data", "ops", "coverage", "recommendations", "appendix"];
+    const reportContent = document.getElementById("reportContent");
+    const metaBox = document.getElementById("metaBox");
+    const generated = new Date().toLocaleString();
+
+    const safeStamp = stamp.replace(/[^0-9_\-]/g, "");
+    document.title = `CBSA_Mapping_Report_${safeStamp || "generated"}`;
+
+    metaBox.innerHTML = `
+      <div class="meta-row"><span class="meta-k">Generated</span><span class="meta-v">${generated}</span></div>
+      <div class="meta-row"><span class="meta-k">Version</span><span class="meta-v">1.0.0</span></div>
+      <div class="meta-row"><span class="meta-k">Author/Team</span><span class="meta-v">CBSA Mapping Team</span></div>
+      <div class="meta-row"><span class="meta-k">PDF Name</span><span class="meta-v">CBSA_Mapping_Report_${safeStamp || "generated"}.pdf</span></div>
+    `;
+
+    const selectedSet = new Set(selectedSections);
+    const html = sectionOrder
+      .filter((key) => selectedSet.has(key))
+      .map((key) => allSections[key])
+      .join("");
+
+    reportContent.innerHTML = html || allSections.summary;
+
+    const routeGrid = document.getElementById("routeGrid");
+    if (routeGrid) {
+      routeGrid.innerHTML = routeNarratives.map((route) => `
+        <article class="route">
+          <div class="route-title">${route.code} - ${route.name}</div>
+          <ul>
+            <li><strong>Entry condition:</strong> ${route.entry}</li>
+            <li><strong>Primary business intent:</strong> ${route.intent}</li>
+            <li><strong>Main validation checks:</strong> ${route.checks}</li>
+            <li><strong>Backend interactions:</strong> ${route.backend}</li>
+            <li><strong>Success outcome:</strong> ${route.success}</li>
+            <li><strong>Failure outcomes:</strong> ${route.failure}</li>
+            <li><strong>Risk Level:</strong> <span class="risk-${route.riskLevel.toLowerCase()}">${route.riskLevel}</span></li>
+            <li><strong>Reason:</strong> ${route.riskReason}</li>
+            <li><strong>Business Impact:</strong> ${route.businessImpact}</li>
+          </ul>
+          <a class="route-link" href="${route.diagramHref}" target="_blank" rel="noopener">View Diagram</a>
+        </article>
+      `).join("");
+    }
+
+    const summaryList = document.getElementById("summaryList");
+    if (summaryList) {
+      summaryList.innerHTML = routeNarratives.map((route) => `
+        <div class="summary-item"><strong>${route.code}:</strong> ${route.oneLine}</div>
+      `).join("");
+    }
+
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+    document.getElementById("closeBtn").addEventListener("click", () => window.close());
+
+    if (autoprint) {
+      window.addEventListener("load", () => {
+        setTimeout(() => window.print(), 350);
+      });
+    }
+  </script>
+</body>
+</html>

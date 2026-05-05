@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CBSA ODCS Execution Path - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 1420px; }
+
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge.good { stroke: rgba(68, 255, 136, 0.55); }
+    .edge.warn { stroke: rgba(255, 170, 0, 0.55); }
+    .edge.bad { stroke: rgba(255, 100, 100, 0.6); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node.guard { stroke: rgba(255, 80, 80, 0.7); fill: rgba(25, 5, 5, 0.92); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+
+    .n-title { fill: var(--text); font-size: 12px; }
+    .guard-title { fill: #ff7070; font-size: 11px; font-weight: bold; }
+    .guard-sub { fill: #8a5555; font-size: 9px; }
+
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 140px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CBSA ODCS Execution Path (BNK1DCS)</div>
+    <div class="top-meta">ODCS -> BNK1DCS -> INQCUST / DELCUS / UPDCUST -> OMEN</div>
+    <div class="top-badge">cbsa_odcs_exec_v1 · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">EXECUTION SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">Entry and key routing</span>
+        <span class="code-line" data-node="Step1"><span class="code-key">BNK1DCS:</span> ODCS entry, HANDLE ABEND, first-send map if EIBCALEN=0</span>
+        <span class="code-line" data-node="Step2"><span class="code-key">EIBAID:</span> ENTER/PF5/PF10 process map, PF3 return OMEN</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Lookup and maintenance flow</span>
+        <span class="code-line" data-node="Step3"><span class="code-key">PM010:</span> RECEIVE-MAP then branch by AID and COMM-UPD flag</span>
+        <span class="code-line" data-node="Step4"><span class="code-key">GCD010:</span> LINK INQCUST lookup by customer number</span>
+        <span class="code-line" data-node="Step5"><span class="code-key">DCD010:</span> PF5 LINK DELCUS delete selected customer</span>
+        <span class="code-line" data-node="Step6"><span class="code-key">UPDCD010:</span> ENTER with COMM-UPD='Y' LINK UPDCUST</span>
+
+        <span class="code-line code-h" style="margin-top:10px">State and return</span>
+        <span class="code-line" data-node="Return">PF3 restores terminal and returns TRANSID(OMEN)</span>
+        <span class="code-line" data-node="Lineage">CUSTNOI/CUSTNO2I + map fields -> INQCUST/DELCUS/UPDCUST commareas</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Guard paths</span>
+        <span class="code-line" data-node="InvalidKey">EIBAID OTHER -> invalid key + alarm redisplay</span>
+        <span class="code-line" data-node="NotFound">INQCUST empty name+addr -> customer not found message</span>
+        <span class="code-line" data-node="DeleteFail">DELCUS fail code 1/2/3/other -> delete failed message</span>
+        <span class="code-line" data-node="UpdateFail">UPDCUST fail code 1/2/3/other -> update failed message</span>
+        <span class="code-line" data-node="RespFail">RESP != NORMAL on RETURN/LINK -> ABNDPROC</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">ODCS EXECUTION DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1400 1420" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M700 110 L700 190"></path>
+          <path class="edge" d="M700 260 L700 340"></path>
+          <path class="edge" d="M700 410 L700 490"></path>
+          <path class="edge warn" d="M700 560 L320 640"></path>
+          <path class="edge warn" d="M700 560 L700 640"></path>
+          <path class="edge warn" d="M700 560 L1080 640"></path>
+          <path class="edge" d="M700 730 L700 820"></path>
+          <path class="edge trace" d="M700 890 L700 980"></path>
+
+          <path class="edge bad" d="M480 505 L350 500"></path>
+          <path class="edge bad" d="M320 680 L210 700"></path>
+          <path class="edge bad" d="M1080 680 L1210 700"></path>
+          <path class="edge bad" d="M940 850 L1070 840"></path>
+          <path class="edge bad" d="M900 1020 L1040 1020"></path>
+
+          <text class="edge-label" x="708" y="160">ODCS entry</text>
+          <text class="edge-label" x="708" y="312">AID route</text>
+          <text class="edge-label" x="708" y="460">PM010 receive/branch</text>
+          <text class="edge-label" x="470" y="626">PF5</text>
+          <text class="edge-label" x="690" y="626">ENTER</text>
+          <text class="edge-label" x="900" y="626">PF10+ENTER</text>
+          <text class="edge-label" x="708" y="795">map output update</text>
+          <text class="edge-label" x="708" y="968">return/loop</text>
+          <text class="edge-label" x="245" y="494">invalid key</text>
+          <text class="edge-label" x="210" y="694">not found</text>
+          <text class="edge-label" x="1065" y="694">delete fail</text>
+          <text class="edge-label" x="1075" y="834">update fail</text>
+          <text class="edge-label" x="1045" y="1014">resp fail</text>
+
+          <rect class="node core node-hit" data-node="Step1" x="470" y="60" width="460" height="50"></rect>
+          <text class="n-title" x="700" y="90" text-anchor="middle">1) BNK1DCS Entry (ODCS)</text>
+
+          <rect class="node aux node-hit" data-node="Step2" x="450" y="190" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="224" text-anchor="middle">2) EIBAID Router</text>
+          <text class="n-title" x="700" y="245" text-anchor="middle">ENTER/PF5/PF10 -> PROCESS-MAP | PF3 -> OMEN | PF12 end</text>
+
+          <rect class="node worker node-hit" data-node="Step3" x="450" y="340" width="500" height="70"></rect>
+          <text class="n-title" x="700" y="374" text-anchor="middle">3) PM010 Process-Map</text>
+          <text class="n-title" x="700" y="395" text-anchor="middle">COMM-UPD flag controls lookup vs update commit</text>
+
+          <rect class="node worker node-hit" data-node="Step5" x="120" y="640" width="400" height="80"></rect>
+          <text class="n-title" x="320" y="674" text-anchor="middle">4A) PF5 Delete Path</text>
+          <text class="n-title" x="320" y="695" text-anchor="middle">DCD010 LINK DELCUS</text>
+          <text class="n-title" x="320" y="716" text-anchor="middle">delete result branch</text>
+
+          <rect class="node worker node-hit" data-node="Step4" x="500" y="640" width="400" height="80"></rect>
+          <text class="n-title" x="700" y="674" text-anchor="middle">4B) ENTER Lookup Path</text>
+          <text class="n-title" x="700" y="695" text-anchor="middle">GCD010 LINK INQCUST</text>
+          <text class="n-title" x="700" y="716" text-anchor="middle">inquiry -> map projection</text>
+
+          <rect class="node worker node-hit" data-node="Step6" x="880" y="640" width="400" height="80"></rect>
+          <text class="n-title" x="1080" y="674" text-anchor="middle">4C) PF10 + ENTER Update Path</text>
+          <text class="n-title" x="1080" y="695" text-anchor="middle">UPDCD010 LINK UPDCUST</text>
+          <text class="n-title" x="1080" y="716" text-anchor="middle">update result branch</text>
+
+          <rect class="node aux node-hit" data-node="Return" x="480" y="820" width="440" height="70"></rect>
+          <text class="n-title" x="700" y="855" text-anchor="middle">5) Return Semantics</text>
+          <text class="n-title" x="700" y="876" text-anchor="middle">PF3 restores terminal and RETURNS TRANSID(OMEN)</text>
+
+          <rect class="node storage node-hit" data-node="Lineage" x="500" y="980" width="400" height="60"></rect>
+          <text class="n-title" x="700" y="1015" text-anchor="middle">Field Lineage + Side-Effect Order</text>
+
+          <rect class="node guard node-hit" data-node="InvalidKey" x="20" y="468" width="330" height="65"></rect>
+          <text class="guard-title" x="185" y="490" text-anchor="middle">Invalid Key Guard</text>
+          <text class="guard-sub" x="185" y="505" text-anchor="middle">EIBAID OTHER</text>
+          <text class="guard-sub" x="185" y="519" text-anchor="middle">message + alarm + redisplay</text>
+
+          <rect class="node guard node-hit" data-node="NotFound" x="20" y="668" width="310" height="65"></rect>
+          <text class="guard-title" x="175" y="690" text-anchor="middle">Customer Not Found</text>
+          <text class="guard-sub" x="175" y="705" text-anchor="middle">INQCUST returns blank name/address</text>
+          <text class="guard-sub" x="175" y="719" text-anchor="middle">not-found message + clear map fields</text>
+
+          <rect class="node guard node-hit" data-node="DeleteFail" x="1060" y="668" width="320" height="65"></rect>
+          <text class="guard-title" x="1220" y="690" text-anchor="middle">Delete Failure Guard</text>
+          <text class="guard-sub" x="1220" y="705" text-anchor="middle">DELCUS fail code 1/2/3/other</text>
+          <text class="guard-sub" x="1220" y="719" text-anchor="middle">delete failed message branch</text>
+
+          <rect class="node guard node-hit" data-node="UpdateFail" x="1070" y="808" width="310" height="65"></rect>
+          <text class="guard-title" x="1225" y="830" text-anchor="middle">Update Failure Guard</text>
+          <text class="guard-sub" x="1225" y="845" text-anchor="middle">UPDCUST fail code 1/2/3/other</text>
+          <text class="guard-sub" x="1225" y="859" text-anchor="middle">update failed message branch</text>
+
+          <rect class="node guard node-hit" data-node="RespFail" x="1040" y="988" width="340" height="65"></rect>
+          <text class="guard-title" x="1210" y="1010" text-anchor="middle">RESP Failure Guard</text>
+          <text class="guard-sub" x="1210" y="1025" text-anchor="middle">WS-CICS-RESP != DFHRESP(NORMAL)</text>
+          <text class="guard-sub" x="1210" y="1039" text-anchor="middle">ABNDINFO populated then LINK ABNDPROC</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Scope</span><span class="v">ODCS / BNK1DCS only.</span></div>
+      <div class="kv"><span class="k">Path</span><span class="v">ODCS -> BNK1DCS -> INQCUST/DELCUS/UPDCUST -> OMEN return.</span></div>
+      <div class="kv"><span class="k">Key Controls</span><span class="v">ENTER lookup, PF5 delete, PF10 unlock then ENTER update commit.</span></div>
+      <div class="kv"><span class="k">Guards</span><span class="v">invalid key, not found, delete fail, update fail, RESP fail.</span></div>
+      <div class="kv"><span class="k">Spec</span><span class="v">MIDE/pilot_v1/specs/cbsa_odcs_execution/architecture.moss</span></div>
+    `;
+
+    const details = {
+      Step1: { type: "core", desc: "ODCS enters BNK1DCS, sets HANDLE ABEND, first cycle initializes map and terminal state.", links: "ODCS transid -> BNK1DCS" },
+      Step2: { type: "aux", desc: "EIBAID routing controls action semantics: process map, return to OMEN, terminate, clear, or invalid key.", links: "DFHENTER/DFHPF5/DFHPF10/DFHPF3/DFHPF12/DFHCLEAR/OTHER" },
+      Step3: { type: "worker", desc: "PM010 receives map and branches logic by key and COMM-UPD flag to lookup delete update branches.", links: "RECEIVE-MAP -> branch controller" },
+      Step4: { type: "worker", desc: "Lookup branch links INQCUST using CUSTNOI and maps returned customer fields to screen fields.", links: "CUSTNOI -> INQCUST-COMMAREA -> map output" },
+      Step5: { type: "worker", desc: "Delete branch links DELCUS on PF5 and interprets DEL-SUCCESS/FAIL-CD to determine message outcome.", links: "CUSTNO2I -> DELCUS -> COMM-DEL-SUCCESS/FAIL-CD" },
+      Step6: { type: "worker", desc: "Update branch unlocks fields on PF10, then ENTER with COMM-UPD=Y links UPDCUST and handles fail codes.", links: "map fields -> UPDCUST-COMMAREA -> COMM-UPD-SUCCESS/FAIL-CD" },
+      Return: { type: "aux", desc: "PF3 restores terminal translation state and returns immediately to OMEN transaction.", links: "RESTORE-TERM-DEF -> RETURN TRANSID(OMEN)" },
+      Lineage: { type: "storage", desc: "Field lineage anchors on customer number and update payload fields across inquiry, delete, and update links.", links: "CUSTNOI/CUSTNO2I + map fields -> INQCUST/DELCUS/UPDCUST" },
+      InvalidKey: { type: "guard", desc: "Unhandled key path sets invalid key message, alarm flag, and redisplays map without operation branch.", links: "EIBAID OTHER -> MESSAGEO + SEND DATAONLY ALARM" },
+      NotFound: { type: "guard", desc: "INQCUST returns no customer data, BNK1DCS sets not found message and clears visible customer fields.", links: "INQCUST NAME/ADDR blank -> MESSAGEO not found" },
+      DeleteFail: { type: "guard", desc: "Delete link failure codes produce explicit user-facing failure messages and prevent success cleanup state.", links: "COMM-DEL-SUCCESS='N' + FAIL-CD" },
+      UpdateFail: { type: "guard", desc: "Update link failure codes produce explicit user-facing failure messages and preserve correction flow.", links: "COMM-UPD-SUCCESS='N' + FAIL-CD" },
+      RespFail: { type: "guard", desc: "Any non-normal CICS response in RETURN/LINK flows populates ABNDINFO and links ABNDPROC.", links: "RESP/RESP2 -> ABNDPROC" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) { panel.innerHTML = defaultHtml; return; }
+      const stepLabel = d.type === "guard" ? "Guard Point" : "Step";
+      const lineageLabel = d.type === "guard" ? "Trigger" : "Lineage";
+      panel.innerHTML = `
+        <div class="kv"><span class="k">${stepLabel}</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Behavior</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">${lineageLabel}</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

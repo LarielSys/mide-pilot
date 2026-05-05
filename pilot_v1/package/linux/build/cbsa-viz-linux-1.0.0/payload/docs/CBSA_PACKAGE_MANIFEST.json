@@ -1,0 +1,40 @@
+{
+  "packageName": "cbsa-moss-visualization-pack",
+  "version": "1.0.0",
+  "releaseDate": "2026-04-23",
+  "scope": {
+    "program": "CBSA",
+    "router": "BNKMENU",
+    "routes": ["ODCS", "ODAC", "OCCS", "OCAC", "OUAC", "OCRA", "OTFN", "OCCA"]
+  },
+  "artifacts": {
+    "specs": [
+      "MIDE/pilot_v1/specs/cbsa_bnkmenu/architecture.moss",
+      "MIDE/pilot_v1/specs/cbsa_odcs_execution/architecture.moss",
+      "MIDE/pilot_v1/specs/cbsa_odac_execution/architecture.moss",
+      "MIDE/pilot_v1/specs/cbsa_occs_execution/architecture.moss",
+      "MIDE/pilot_v1/specs/cbsa_ocac_execution/architecture.moss",
+      "MIDE/pilot_v1/specs/cbsa_ouac_execution/architecture.moss",
+      "MIDE/pilot_v1/specs/cbsa_ocra_execution/architecture.moss",
+      "MIDE/pilot_v1/specs/cbsa_otfn_execution/architecture.moss",
+      "MIDE/pilot_v1/specs/cbsa_occa_execution/architecture.moss"
+    ],
+    "visualizations": [
+      "MIDE/pilot_v1/gui/cbsa_bnkmenu_visualization.html",
+      "MIDE/pilot_v1/gui/cbsa_odcs_execution_visualization.html",
+      "MIDE/pilot_v1/gui/cbsa_odac_execution_visualization.html",
+      "MIDE/pilot_v1/gui/cbsa_occs_execution_visualization.html",
+      "MIDE/pilot_v1/gui/cbsa_ocac_execution_visualization.html",
+      "MIDE/pilot_v1/gui/cbsa_ouac_execution_visualization.html",
+      "MIDE/pilot_v1/gui/cbsa_ocra_execution_visualization.html",
+      "MIDE/pilot_v1/gui/cbsa_otfn_execution_visualization.html",
+      "MIDE/pilot_v1/gui/cbsa_occa_execution_visualization.html"
+    ]
+  },
+  "qualityGates": {
+    "lintOrParseErrors": "none",
+    "drilldownCoverage": "8 of 8 BNKMENU targets linked",
+    "scopeIsolation": "CBSA only"
+  },
+  "entryPoint": "MIDE/pilot_v1/gui/cbsa_bnkmenu_visualization.html"
+}

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COBOL PROJECT4 - Break Control View</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .top-link, .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      text-decoration: none;
+    }
+    .top-link:hover { background: rgba(0, 212, 255, 0.08); }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 1.85fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 950px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 130px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ PROJECT4 Break-Control Layer</div>
+    <div class="top-meta">first-record init · state/city/customer transitions · subtotal writes</div>
+    <div class="top-actions">
+      <a class="top-link" href="cobol_project4_overview_visualization.html">overview</a>
+      <a class="top-link" href="cobol_project4_execution_visualization.html">execution view</a>
+      <span class="top-badge">project4_break_control · 2026-04-23</span>
+    </div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">BREAK RULES</div>
+      <div class="pane-body">
+        <span class="code-line code-h">180-BREAK-CONTROL-ROUTINE</span>
+        <span class="code-line" data-node="Break_Entry"><span class="code-key">EVALUATE TRUE:</span> ordered break precedence</span>
+        <span class="code-line" data-node="First_Record_Gate"><span class="code-key">[FIRST-RECORD=YES]</span> initialize headings</span>
+        <span class="code-line" data-node="State_Change_Gate"><span class="code-key">[STATE changed]</span> write city + state subtotal, reset, state break</span>
+        <span class="code-line" data-node="City_Change_Gate"><span class="code-key">[CITY changed]</span> write city subtotal, city break, reset city total</span>
+        <span class="code-line" data-node="Customer_Change_Gate"><span class="code-key">[CUSTOMER changed]</span> write customer header block</span>
+        <span class="code-line" data-node="State_Side_Effects"><span class="code-key">state side-effects:</span> WRITE CITY -> RESET CITY -> WRITE STATE -> RESET STATE</span>
+        <span class="code-line" data-node="EOF_Publish"><span class="code-key">AT END path:</span> 225 publishes city/state/grand totals outside customer break path</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Break paragraphs</span>
+        <span class="code-line" data-node="State_Break">185-STATE-BREAK (state lookup + heading)</span>
+        <span class="code-line" data-node="City_Break">190-CITY-BREAK (city lookup + heading)</span>
+        <span class="code-line" data-node="ID_Break">195-ID-BREAK (id/name/rating/headings)</span>
+        <span class="code-line" data-node="Line_Count">200-LINE-COUNT-CHECK (paging control)</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Subtotal artifacts</span>
+        <span class="code-line" data-node="City_Subtotal">TOTAL-CITY-SOLD-LINE</span>
+        <span class="code-line" data-node="State_Subtotal">TOTAL-STATE-SOLD-LINE</span>
+        <span class="code-line" data-node="Grand_Total">GRAND-TOTAL-SOLD-LINE</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">BREAK-CONTROL DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1220 950" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M210 100 L210 180"></path>
+          <path class="edge" d="M290 205 L420 205"></path>
+          <path class="edge" d="M210 230 L210 320"></path>
+          <path class="edge" d="M210 370 L210 460"></path>
+          <path class="edge" d="M210 510 L210 600"></path>
+          <path class="edge" d="M290 485 L420 485"></path>
+          <path class="edge" d="M290 625 L420 485"></path>
+          <path class="edge" d="M300 345 L420 625"></path>
+          <path class="edge" d="M300 705 L420 705"></path>
+
+          <path class="edge" d="M560 205 L760 205"></path>
+          <path class="edge" d="M560 345 L760 345"></path>
+          <path class="edge" d="M560 485 L760 485"></path>
+          <path class="edge" d="M560 625 L760 625"></path>
+          <path class="edge" d="M900 205 L1080 205"></path>
+          <path class="edge" d="M900 345 L1080 345"></path>
+          <path class="edge" d="M900 485 L1080 485"></path>
+          <path class="edge" d="M900 625 L1080 625"></path>
+          <path class="edge" d="M900 705 L1080 705"></path>
+
+          <path class="edge" d="M1080 205 L1080 770"></path>
+          <path class="edge" d="M1080 770 L210 770"></path>
+          <path class="edge" d="M210 770 L210 820"></path>
+
+          <text class="edge-label" x="218" y="143">enter break routine</text>
+          <text class="edge-label" x="302" y="197">[YES] first record</text>
+          <text class="edge-label" x="218" y="276">[NO] state changed?</text>
+          <text class="edge-label" x="218" y="416">[NO] city changed?</text>
+          <text class="edge-label" x="218" y="556">[NO] customer changed?</text>
+          <text class="edge-label" x="302" y="477">[YES]</text>
+          <text class="edge-label" x="302" y="617">[YES] -> 195-ID</text>
+          <text class="edge-label" x="310" y="570">ordered writes/resets</text>
+          <text class="edge-label" x="308" y="698">AT END from 150</text>
+          <text class="edge-label" x="915" y="760">rejoin to detail construction</text>
+
+          <rect class="node core node-hit" data-node="Break_Entry" x="120" y="50" width="180" height="50"></rect>
+          <text class="n-title" x="210" y="80" text-anchor="middle">Break Entry</text>
+
+          <rect class="node worker node-hit" data-node="First_Record_Gate" x="120" y="180" width="170" height="50"></rect>
+          <text class="n-title" x="205" y="210" text-anchor="middle">First-Record?</text>
+
+          <rect class="node worker node-hit" data-node="State_Change_Gate" x="120" y="320" width="180" height="50"></rect>
+          <text class="n-title" x="210" y="350" text-anchor="middle">State Changed?</text>
+
+          <rect class="node worker node-hit" data-node="City_Change_Gate" x="120" y="460" width="180" height="50"></rect>
+          <text class="n-title" x="210" y="490" text-anchor="middle">City Changed?</text>
+
+          <rect class="node worker node-hit" data-node="Customer_Change_Gate" x="120" y="600" width="180" height="50"></rect>
+          <text class="n-title" x="210" y="630" text-anchor="middle">Customer Changed?</text>
+
+          <rect class="node aux node-hit" data-node="State_Break" x="420" y="180" width="140" height="50"></rect>
+          <text class="n-title" x="490" y="210" text-anchor="middle">185-STATE</text>
+
+          <rect class="node aux node-hit" data-node="State_Subtotal" x="760" y="180" width="140" height="50"></rect>
+          <text class="n-title" x="830" y="210" text-anchor="middle">State Total</text>
+
+          <rect class="node aux node-hit" data-node="City_Subtotal" x="420" y="320" width="140" height="50"></rect>
+          <text class="n-title" x="490" y="350" text-anchor="middle">City Total</text>
+
+          <rect class="node aux node-hit" data-node="City_Break" x="760" y="320" width="140" height="50"></rect>
+          <text class="n-title" x="830" y="350" text-anchor="middle">190-CITY</text>
+
+          <rect class="node aux node-hit" data-node="ID_Break" x="420" y="460" width="140" height="50"></rect>
+          <text class="n-title" x="490" y="490" text-anchor="middle">195-ID</text>
+
+          <rect class="node worker node-hit" data-node="Line_Count" x="760" y="460" width="140" height="50"></rect>
+          <text class="n-title" x="830" y="490" text-anchor="middle">Line Check</text>
+
+          <rect class="node aux node-hit" data-node="State_Side_Effects" x="420" y="600" width="190" height="50"></rect>
+          <text class="n-title" x="515" y="630" text-anchor="middle">State Side-Effects</text>
+
+          <rect class="node aux node-hit" data-node="EOF_Publish" x="120" y="680" width="180" height="50"></rect>
+          <text class="n-title" x="210" y="710" text-anchor="middle">225-EOF-Publish</text>
+
+          <rect class="node aux node-hit" data-node="Grand_Total" x="760" y="680" width="140" height="50"></rect>
+          <text class="n-title" x="830" y="710" text-anchor="middle">Grand Total</text>
+
+          <rect class="node storage node-hit" data-node="Report_File" x="1080" y="170" width="120" height="490"></rect>
+          <text class="n-title" x="1140" y="425" text-anchor="middle" transform="rotate(90 1140 425)">REPORT FILE WRITES</text>
+
+          <rect class="node core node-hit" data-node="Return_To_Construct" x="120" y="820" width="230" height="50"></rect>
+          <text class="n-title" x="235" y="850" text-anchor="middle">Return to 175-CONSTRUCT</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Layer</span><span class="v">Control-break decision engine (180/185/190/195/200).</span></div>
+      <div class="kv"><span class="k">Priority</span><span class="v">FIRST record, then STATE change, then CITY change, then CUSTOMER change.</span></div>
+      <div class="kv"><span class="k">Outcome</span><span class="v">Correct subtotal sequencing and heading resets before detail rendering.</span></div>
+    `;
+
+    const details = {
+      Break_Entry: { type: "core", desc: "Entry point for EVALUATE TRUE break hierarchy.", links: "First_Record_Gate, State_Change_Gate" },
+      First_Record_Gate: { type: "worker", desc: "On first record, sets FIRST-RECORD to NO and performs initial state break path.", links: "State_Break" },
+      State_Change_Gate: { type: "worker", desc: "If state key changes, side-effect order is strict: write city subtotal, reset city total, write state subtotal, reset state total, then perform 185.", links: "City_Subtotal, State_Subtotal, State_Side_Effects, State_Break" },
+      City_Change_Gate: { type: "worker", desc: "If city key changes within same state, writes city subtotal then executes city break.", links: "City_Subtotal, City_Break" },
+      Customer_Change_Gate: { type: "worker", desc: "If customer id changes, emits id/name/rating and customer column headings.", links: "ID_Break" },
+      State_Break: { type: "aux", desc: "Resolves state code via table, writes STATE heading, and chains into city break.", links: "State_Subtotal, City_Break" },
+      City_Break: { type: "aux", desc: "Resolves city code via table, writes CITY heading, then runs ID break.", links: "ID_Break" },
+      ID_Break: { type: "aux", desc: "Writes customer id/name/rating and header lines for detail rows.", links: "Line_Count" },
+      Line_Count: { type: "worker", desc: "Page management guard; page-advances and rewrites headings when line threshold is exceeded.", links: "Report_File, Return_To_Construct" },
+      City_Subtotal: { type: "aux", desc: "TOTAL-CITY-SOLD-LINE rendered before city or state transition.", links: "Report_File, State_Side_Effects" },
+      State_Subtotal: { type: "aux", desc: "TOTAL-STATE-SOLD-LINE rendered before state transition.", links: "Report_File" },
+      State_Side_Effects: { type: "aux", desc: "Explicit sequence contract for regeneration: WRITE CITY TOTAL -> RESET CITY -> WRITE STATE TOTAL -> RESET STATE.", links: "City_Subtotal, State_Subtotal, State_Break" },
+      EOF_Publish: { type: "aux", desc: "AT END path from 150-READ-SOURCE-FILE invokes 225-PUBLISH-FINAL-TOTALS.", links: "Grand_Total, Report_File" },
+      Grand_Total: { type: "aux", desc: "Grand-total line is EOF-triggered through 225, not produced by CUSTOMER-CHANGED branch logic.", links: "EOF_Publish, Report_File" },
+      Report_File: { type: "storage", desc: "Single destination for headings, detail rows, subtotals, and grand totals.", links: "Return_To_Construct" },
+      Return_To_Construct: { type: "core", desc: "Control returns to 175-CONSTRUCT-DATA for per-product detail generation.", links: "Break_Entry" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

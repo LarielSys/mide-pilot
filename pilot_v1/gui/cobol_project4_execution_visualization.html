@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COBOL PROJECT4 - Execution View</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .top-link, .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      text-decoration: none;
+    }
+    .top-link:hover { background: rgba(0, 212, 255, 0.08); }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 1.85fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 1120px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 115px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ PROJECT4 Execution Layer</div>
+    <div class="top-meta">read loop · product expansion · line-count pagination</div>
+    <div class="top-actions">
+      <a class="top-link" href="cobol_project4_overview_visualization.html">overview</a>
+      <a class="top-link" href="cobol_project4_break_control_visualization.html">break-control view</a>
+      <span class="top-badge">project4_execution · 2026-04-23</span>
+    </div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">175-CONSTRUCT-DATA execution</span>
+        <span class="code-line" data-node="Read_Record"><span class="code-key">150-READ-SOURCE-FILE:</span> READ sorted file in PERFORM UNTIL loop</span>
+        <span class="code-line" data-node="EOF_Gate"><span class="code-key">AT END gate:</span> publish final totals and stop read flow</span>
+        <span class="code-line" data-node="Break_Control"><span class="code-key">180-BREAK-CONTROL:</span> resolve state/city/customer boundaries</span>
+        <span class="code-line" data-node="Sub_Loop"><span class="code-key">PERFORM VARYING SUB 1..6:</span> iterate product slots</span>
+        <span class="code-line" data-node="Product_Code_Gate"><span class="code-key">EVALUATE PRODUCT-CODE:</span> EDIBLES / OILS / CAPSULES / BAD</span>
+        <span class="code-line" data-node="Month_Search"><span class="code-key">SEARCH MONTH-ITEM:</span> map 01..12 to month name</span>
+        <span class="code-line" data-node="Number_Boxes"><span class="code-key">input:</span> NUMBER-BOXES(SUB)</span>
+        <span class="code-line" data-node="Box_Price"><span class="code-key">input:</span> BOX-PRICE(SUB)</span>
+        <span class="code-line" data-node="Compute_Total"><span class="code-key">MULTIPLY:</span> NUMBER-BOXES * BOX-PRICE</span>
+        <span class="code-line" data-node="Sales_Month_Total"><span class="code-key">target:</span> SALES-MONTH-TOTAL</span>
+        <span class="code-line" data-node="Field_Lineage"><span class="code-key">lineage:</span> BOXES * BOX-PRICE -> SALES-MONTH-TOTAL -> WS totals</span>
+        <span class="code-line" data-node="File_IO_State"><span class="code-key">I/O semantics:</span> READ cursor advance + AT END flag transition</span>
+        <span class="code-line" data-node="Evaluate_Risk"><span class="code-key">EVALUATE risk:</span> explicit OTHER branch maps to BAD CODE</span>
+        <span class="code-line" data-node="Write_Detail"><span class="code-key">WRITE DETAIL-LINE:</span> append product detail row</span>
+        <span class="code-line" data-node="Line_Count"><span class="code-key">200-LINE-COUNT-CHECK:</span> page break when line-count > 50</span>
+        <span class="code-line" data-node="Customer_Total"><span class="code-key">TOTAL-CUSTOMER-BREAK:</span> write customer subtotal</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">EXECUTION DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1320 1120" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M170 90 L170 170"></path>
+          <path class="edge" d="M170 220 L170 300"></path>
+          <path class="edge" d="M250 195 L390 195"></path>
+          <path class="edge" d="M500 220 L500 300"></path>
+          <path class="edge" d="M500 350 L500 430"></path>
+          <path class="edge" d="M500 480 L500 560"></path>
+          <path class="edge" d="M500 610 L500 690"></path>
+          <path class="edge" d="M500 740 L500 820"></path>
+          <path class="edge" d="M500 870 L500 950"></path>
+          <path class="edge" d="M560 975 L760 975"></path>
+          <path class="edge" d="M170 220 L170 960"></path>
+          <path class="edge" d="M170 960 L420 960"></path>
+          <path class="edge" d="M250 730 L390 845"></path>
+          <path class="edge" d="M250 860 L390 845"></path>
+          <path class="edge" d="M610 845 L860 845"></path>
+          <path class="edge" d="M950 870 L950 910"></path>
+          <path class="edge" d="M950 910 L950 930"></path>
+          <path class="edge" d="M950 930 L950 560"></path>
+
+          <path class="edge trace" d="M580 455 L860 455"></path>
+          <path class="edge trace" d="M580 585 L860 585"></path>
+          <path class="edge trace" d="M580 715 L860 715"></path>
+          <path class="edge trace" d="M250 65 L860 145"></path>
+          <path class="edge trace" d="M610 585 L860 275"></path>
+          <path class="edge trace" d="M610 845 L860 845"></path>
+
+          <text class="edge-label" x="178" y="130">READ sorted file</text>
+          <text class="edge-label" x="178" y="263">[NOT END] construct data</text>
+          <text class="edge-label" x="300" y="187">[AT END] publish totals</text>
+          <text class="edge-label" x="509" y="264">run break logic</text>
+          <text class="edge-label" x="509" y="394">loop SUB 1..6</text>
+          <text class="edge-label" x="509" y="524">product type map</text>
+          <text class="edge-label" x="509" y="654">MOUNTH-BOUGHT -> MO-NAME</text>
+          <text class="edge-label" x="509" y="784">BOXES * BOX-PRICE -> SALES-MONTH-TOTAL</text>
+          <text class="edge-label" x="509" y="914">write detail row</text>
+          <text class="edge-label" x="613" y="967">line-count > 50?</text>
+          <text class="edge-label" x="246" y="952">[EOF] close run</text>
+          <text class="edge-label" x="276" y="780">NUMBER-BOXES</text>
+          <text class="edge-label" x="276" y="836">BOX-PRICE</text>
+          <text class="edge-label" x="670" y="837">-> SALES-MONTH-TOTAL</text>
+          <text class="edge-label" x="957" y="905">-> WS TOTALS</text>
+          <text class="edge-label" x="560" y="95">READ/AT END semantics</text>
+          <text class="edge-label" x="660" y="420">branch-default risk surface</text>
+          <text class="edge-label" x="660" y="837">field transform trace</text>
+
+          <rect class="node core node-hit" data-node="Read_Record" x="90" y="40" width="160" height="50"></rect>
+          <text class="n-title" x="170" y="70" text-anchor="middle">Read Record</text>
+
+          <rect class="node worker node-hit" data-node="EOF_Gate" x="90" y="170" width="160" height="50"></rect>
+          <text class="n-title" x="170" y="200" text-anchor="middle">EOF Gate</text>
+
+          <rect class="node aux node-hit" data-node="Totals" x="390" y="170" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="200" text-anchor="middle">225-Publish Final Totals</text>
+
+          <rect class="node worker node-hit" data-node="Break_Control" x="390" y="300" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="330" text-anchor="middle">Break Control</text>
+
+          <rect class="node worker node-hit" data-node="Sub_Loop" x="390" y="430" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="460" text-anchor="middle">SUB Loop 1..6</text>
+
+          <rect class="node aux node-hit" data-node="Product_Code_Gate" x="390" y="560" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="590" text-anchor="middle">Product Code Gate</text>
+
+          <rect class="node aux node-hit" data-node="Month_Search" x="390" y="690" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="720" text-anchor="middle">Month Search</text>
+
+          <rect class="node storage node-hit" data-node="Number_Boxes" x="90" y="700" width="160" height="50"></rect>
+          <text class="n-title" x="170" y="730" text-anchor="middle">NUMBER-BOXES</text>
+
+          <rect class="node storage node-hit" data-node="Box_Price" x="90" y="830" width="160" height="50"></rect>
+          <text class="n-title" x="170" y="860" text-anchor="middle">BOX-PRICE</text>
+
+          <rect class="node core node-hit" data-node="Compute_Total" x="390" y="820" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="850" text-anchor="middle">Compute Sales Total</text>
+
+          <rect class="node storage node-hit" data-node="Sales_Month_Total" x="860" y="820" width="180" height="50"></rect>
+          <text class="n-title" x="950" y="850" text-anchor="middle">SALES-MONTH-TOTAL</text>
+
+          <rect class="node core node-hit" data-node="Write_Detail" x="390" y="950" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="980" text-anchor="middle">Write Detail Line</text>
+
+          <rect class="node worker node-hit" data-node="Line_Count" x="760" y="950" width="180" height="50"></rect>
+          <text class="n-title" x="850" y="980" text-anchor="middle">Line Count Check</text>
+
+          <rect class="node storage node-hit" data-node="Product_Map" x="860" y="430" width="180" height="50"></rect>
+          <text class="n-title" x="950" y="460" text-anchor="middle">Product Labels</text>
+
+          <rect class="node storage node-hit" data-node="File_IO_State" x="860" y="120" width="180" height="50"></rect>
+          <text class="n-title" x="950" y="150" text-anchor="middle">File I/O State</text>
+
+          <rect class="node storage node-hit" data-node="Evaluate_Risk" x="860" y="250" width="180" height="50"></rect>
+          <text class="n-title" x="950" y="280" text-anchor="middle">Evaluate Risk</text>
+
+          <rect class="node storage node-hit" data-node="Month_Map" x="860" y="560" width="180" height="50"></rect>
+          <text class="n-title" x="950" y="590" text-anchor="middle">Month Table</text>
+
+          <rect class="node storage node-hit" data-node="Accumulator" x="860" y="690" width="180" height="50"></rect>
+          <text class="n-title" x="950" y="720" text-anchor="middle">WS Totals</text>
+
+          <rect class="node storage node-hit" data-node="Field_Lineage" x="860" y="820" width="180" height="50"></rect>
+          <text class="n-title" x="950" y="850" text-anchor="middle">Field Lineage Map</text>
+
+          <rect class="node storage node-hit" data-node="Customer_Total" x="980" y="940" width="190" height="70"></rect>
+          <text class="n-title" x="1075" y="980" text-anchor="middle">Customer Total Line</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Layer</span><span class="v">Execution of read-loop and detail construction.</span></div>
+      <div class="kv"><span class="k">Primary Path</span><span class="v">READ -> EOF gate -> BREAK -> SUB loop -> mapping -> arithmetic -> write detail -> line-count check.</span></div>
+      <div class="kv"><span class="k">EOF Behavior</span><span class="v">AT END transitions to final totals publishing.</span></div>
+    `;
+
+    const details = {
+      Read_Record: { type: "core", desc: "Reads next sorted record inside PERFORM UNTIL EOF-FLAG = N.", links: "EOF_Gate, Totals" },
+      EOF_Gate: { type: "worker", desc: "AT END sets EOF and performs final totals; NOT AT END continues into construct-data.", links: "Totals, Break_Control" },
+      Totals: { type: "aux", desc: "Writes final city/state/grand totals at end-of-file transition.", links: "Customer_Total" },
+      Break_Control: { type: "worker", desc: "Runs hierarchical break logic before processing current detail slots.", links: "Sub_Loop" },
+      Sub_Loop: { type: "worker", desc: "PERFORM VARYING SUB FROM 1 BY 1 UNTIL SUB > 6 across PRODUCT-DATA slots.", links: "Product_Code_Gate, Write_Detail" },
+      Product_Code_Gate: { type: "aux", desc: "EVALUATE maps code E/O/C to EDIBLES/OILS/CAPSULES and OTHER to BAD CODE.", links: "Product_Map, Evaluate_Risk, Month_Search" },
+      Month_Search: { type: "aux", desc: "SEARCH MONTH-ITEM implements explicit lookup lineage MOUNTH-BOUGHT(SUB) -> DL-MOUNTH-BOUGHT.", links: "Month_Map, Compute_Total, Field_Lineage" },
+      Number_Boxes: { type: "storage", desc: "Source operand NUMBER-BOXES(SUB) for arithmetic transformation.", links: "Compute_Total" },
+      Box_Price: { type: "storage", desc: "Source operand BOX-PRICE(SUB) for arithmetic transformation.", links: "Compute_Total" },
+      Compute_Total: { type: "core", desc: "Arithmetic lineage is explicit: NUMBER-BOXES * BOX-PRICE -> SALES-MONTH-TOTAL -> SALES-CUST-TOTAL + WS_CITY/STATE/GRAND totals.", links: "Number_Boxes, Box_Price, Sales_Month_Total, Accumulator, Field_Lineage, Write_Detail" },
+      Sales_Month_Total: { type: "storage", desc: "Immediate arithmetic target populated by MULTIPLY before accumulation into broader working totals.", links: "Accumulator, Field_Lineage" },
+      Write_Detail: { type: "core", desc: "Writes DETAIL-LINE and increments line count.", links: "Line_Count, Customer_Total" },
+      Line_Count: { type: "worker", desc: "If LINE-COUNT > 50, page-advance and rewrite page/customer headings.", links: "Read_Record" },
+      File_IO_State: { type: "storage", desc: "Models sequential semantics: READ advances cursor, AT END flips EOF-FLAG and triggers final totals path.", links: "Read_Record, EOF_Gate" },
+      Evaluate_Risk: { type: "storage", desc: "Captures default-branch semantics so invalid product codes deterministically flow to BAD CODE output.", links: "Product_Code_Gate" },
+      Product_Map: { type: "storage", desc: "Derived product-type text values used in detail line output.", links: "Product_Code_Gate" },
+      Month_Map: { type: "storage", desc: "Month code/name lookup table from data division.", links: "Month_Search" },
+      Accumulator: { type: "storage", desc: "Receives SALES-MONTH-TOTAL and rolls into SALES-CUST-TOTAL and WS-CITY/STATE/GRAND totals.", links: "Sales_Month_Total, Compute_Total, Customer_Total" },
+      Field_Lineage: { type: "storage", desc: "Field-level transform contract used for regeneration-safe mapping from source fields to report and accumulator targets.", links: "Month_Search, Compute_Total, Accumulator" },
+      Customer_Total: { type: "storage", desc: "Customer subtotal line emitted after slot loop completes.", links: "Read_Record, Totals" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

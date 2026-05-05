@@ -1,0 +1,279 @@
+@MOSS:COBOL_SBNPROGRAM2_Workflow_v1
+@R:~/mide-pilot/pilot_v1/specs/cobol_sbnprogram2/
+
+systems:
+
+  COBOL_Program_SBNPROGRAM2:
+    role: top-level batch reporting program entry
+    runtime: cobol_batch
+    source_language: COBOL
+    divisions: identification, environment, data, procedure
+    depends_on: Housekeeping_Routine, Main_Read_Loop, EOF_Routine
+    outputs: warehouse_grouped_salary_report
+
+  Employee_Record_File:
+    role: line-sequential employee input source
+    runtime: filesystem
+    file_name: PR2FA19.TXT
+    record_length: 83
+    record_fields: warehouse_id, employee_id, employee_position, last_name, first_name, hire_date, starting_salary, pay_increase_date, current_salary, union_dues, insurance
+    operations: open_input, read, close
+
+  Salary_Report_File:
+    role: printer report output destination
+    runtime: report_output
+    file_name: SALARY-REPORT
+    record_length: 80
+    operations: open_output, write, close
+
+  Housekeeping_Routine:
+    role: initializes files and first page header
+    runtime: procedure_division
+    paragraph: 20_HOUSEKEEPING_ROUTINE
+    depends_on: Employee_Record_File, Salary_Report_File, Header_Routine
+
+  Header_Routine:
+    role: prints page headings and date metadata
+    runtime: procedure_division
+    paragraph: 30_HEADER_ROUTINE
+    depends_on: Date_And_Pagination_Control, Report_Layout_Records
+
+  Main_Read_Loop:
+    role: reads employee records until NO_MORE_DATA
+    runtime: procedure_division
+    paragraph: 40_MAIN_ROUTINE
+    control_pattern: PERFORM_UNTIL_NO_MORE_DATA
+    depends_on: Employee_Record_File, EOF_Control, Read_Record_Routine
+
+  Read_Record_Routine:
+    role: per-record processing, mapping, calculations, and detail write
+    runtime: procedure_division
+    paragraph: 50_READ_A_RECORD
+    depends_on: First_Record_State_Gate, Warehouse_Control_Break, Position_Mapping_Routine, Increase_Calculation_Engine, Totals_Accumulators, Detail_Line_Writer
+
+  First_Record_State_Gate:
+    role: explicit state-driven first-record branch controller
+    runtime: working_storage
+    fields: WS_FIRST_RECORD, WS_HOLD_FIELD
+    branch_paths:
+      - [YES]_WS_FIRST_RECORD -> Header_Routine_then_rejoin_at_Position_Mapping_Routine
+      - [NO_and_CHANGED]_warehouse_id -> Warehouse_Control_Break
+      - [NO_and_SAME]_warehouse_id -> Position_Mapping_Routine_then_Calculation_then_Totals_then_Detail_Write
+    controls: first_record_branching
+
+  Warehouse_Control_Break:
+    role: detects warehouse boundary and emits subtotal then next header
+    runtime: procedure_division
+    paragraph: 70_CONTROL_BREAK
+    depends_on: Warehouse_Mapping_Routine, Totals_Accumulators, Control_Break_Total_Sequence, Header_Routine
+
+  Control_Break_Total_Sequence:
+    role: explicit control-break subtotal timing sequence
+    runtime: procedure_division
+    sequence:
+      - move_running_totals_to_output_fields
+      - write_total_line
+      - print_next_warehouse_header
+      - reset_running_totals
+    ordering: print_before_reset
+
+  Warehouse_Mapping_Routine:
+    role: maps warehouse ids to names
+    runtime: procedure_division
+    paragraph: 80_WRITE_A_WAREHOUSE
+    mapping: AL10_to_ALABAMA, GA11_to_GEORGIA, MS12_to_MISSISSIPPI
+
+  Position_Mapping_Routine:
+    role: maps employee position codes to printable names
+    runtime: procedure_division
+    paragraph: 90_WRITE_EMPLOYEE_POSITION
+    mapping: WM_MANAGER, DS_SUPERVISOR, OW_OFFICE, WW_WAREHOUSE, WS_SECURITY
+
+  Increase_Calculation_Engine:
+    role: computes increased salary, union dues, and insurance
+    runtime: procedure_division
+    formulae:
+      - increased_current = current_salary + current_salary * 0.05
+      - increased_union_dues = union_dues + union_dues * 0.03
+      - increased_insurance = insurance + insurance * 0.05
+    depends_on: Increase_Rate_Constants
+
+  Totals_Accumulators:
+    role: accumulates warehouse totals and resets on control break
+    runtime: working_storage
+    fields: WS_INCREASED_CURRENT_SLRY_TL, WS_INCREASED_UNION_DUES_TL, WS_INCREASED_INSURANCE_TL
+    operations: add_detail_values, move_to_total_line, reset_to_zero
+
+  Detail_Line_Writer:
+    role: writes detail and total lines with controlled spacing
+    runtime: procedure_division
+    paragraph: 100_WRITE_LINE
+    depends_on: Report_Layout_Records
+
+  EOF_Routine:
+    role: prints final warehouse total and closes files
+    runtime: procedure_division
+    paragraph: 110_EOF_ROUTINE
+    depends_on: Warehouse_Mapping_Routine, Totals_Accumulators, Detail_Line_Writer, Employee_Record_File, Salary_Report_File
+
+  EOF_Control:
+    role: governs end-of-file stop condition
+    runtime: working_storage
+    variable: EOF_FLAG
+    condition_name: NO_MORE_DATA_value_N
+
+  Increase_Rate_Constants:
+    role: configured increase percentages in working-storage
+    runtime: working_storage
+    fields: CURRENT_SALARY_INCREASE_0_05, UNION_DUES_INCREASE_0_03, INSURANCE_INCREASE_0_05
+
+  Date_And_Pagination_Control:
+    role: maintains report page and run date fields
+    runtime: working_storage
+    fields: COUNTER, PAGE_NUM, WS_YEAR, WS_MONTH, WS_DAY, PROPER_SPACING
+
+  Pagination_State_Controller:
+    role: explicit pagination and header-state controller
+    runtime: procedure_division
+    paragraph: 30_HEADER_ROUTINE
+    operations:
+      - add_1_to_COUNTER
+      - move_COUNTER_to_PAGE_NUM
+      - accept_date_YYYYMMDD
+      - set_PROPER_SPACING_for_heading_and_detail_timing
+    depends_on: Date_And_Pagination_Control
+
+  Report_Layout_Records:
+    role: heading, detail, and total output record structures
+    runtime: data_division
+    records: HEADING_ONE, HEADING_TWO, HEADING_WAREHOUSE, HEADING_THREE, HEADING_FOUR, DETAIL_LINE, TOTAL_LINE
+
+dependencies:
+  - COBOL_Program_SBNPROGRAM2 -> Housekeeping_Routine
+  - COBOL_Program_SBNPROGRAM2 -> Main_Read_Loop
+  - COBOL_Program_SBNPROGRAM2 -> EOF_Routine
+  - Housekeeping_Routine -> Employee_Record_File
+  - Housekeeping_Routine -> Salary_Report_File
+  - Housekeeping_Routine -> Header_Routine
+  - Header_Routine -> Date_And_Pagination_Control
+  - Header_Routine -> Report_Layout_Records
+  - Main_Read_Loop -> Employee_Record_File
+  - Main_Read_Loop -> EOF_Control
+  - Main_Read_Loop -> Read_Record_Routine
+  - Read_Record_Routine -> First_Record_State_Gate
+  - Read_Record_Routine -> Warehouse_Control_Break
+  - Read_Record_Routine -> Position_Mapping_Routine
+  - Read_Record_Routine -> Increase_Calculation_Engine
+  - Read_Record_Routine -> Totals_Accumulators
+  - Read_Record_Routine -> Detail_Line_Writer
+  - First_Record_State_Gate -> Header_Routine
+  - First_Record_State_Gate -> Warehouse_Control_Break
+  - First_Record_State_Gate -> Position_Mapping_Routine
+  - Header_Routine -> Position_Mapping_Routine
+  - Warehouse_Control_Break -> Warehouse_Mapping_Routine
+  - Warehouse_Control_Break -> Totals_Accumulators
+  - Warehouse_Control_Break -> Control_Break_Total_Sequence
+  - Warehouse_Control_Break -> Header_Routine
+  - Control_Break_Total_Sequence -> Header_Routine
+  - Control_Break_Total_Sequence -> Totals_Accumulators
+  - Increase_Calculation_Engine -> Increase_Rate_Constants
+  - Header_Routine -> Pagination_State_Controller
+  - Pagination_State_Controller -> Date_And_Pagination_Control
+  - Detail_Line_Writer -> Salary_Report_File
+  - Detail_Line_Writer -> Report_Layout_Records
+  - EOF_Routine -> Warehouse_Mapping_Routine
+  - EOF_Routine -> Totals_Accumulators
+  - EOF_Routine -> Detail_Line_Writer
+  - EOF_Routine -> Employee_Record_File
+  - EOF_Routine -> Salary_Report_File
+
+interfaces:
+
+  Employee_Input_Contract:
+    protocol: sequential_file_read
+    file: PR2FA19.TXT
+    record_length: 83
+    eof_behavior: AT_END_moves_N_to_EOF_FLAG
+
+  Report_Output_Contract:
+    protocol: printer_style_report_write
+    output_file: SALARY_REPORT
+    line_controls: AFTER_ADVANCING_PROPER_SPACING, AFTER_ADVANCING_PAGE
+
+  Mapping_Contract:
+    protocol: EVALUATE_TRUE_mapping
+    domains:
+      - warehouse_id_to_warehouse_name
+      - employee_position_to_position_name
+
+  Calculation_Contract:
+    protocol: cobol_arithmetic_semantics
+    operations:
+      - MULTIPLY_rate_then_ADD_base_for_each_measure
+      - ADD_to_running_warehouse_totals
+      - MOVE_zero_to_detail_work_fields_after_accumulate
+
+actions:
+
+  Initialize_Report_Run:
+    trigger: entry_into_10_CONTROL_MODULE
+    flow:
+      - OPEN INPUT EMPLOYEE_RECORD_FILE
+      - OPEN OUTPUT SALARY_REPORT_FILE
+      - write_first_page_header_with_current_date
+
+  Process_Employee_Stream:
+    trigger: main_loop_until_NO_MORE_DATA
+    flow:
+      - READ EMPLOYEE_RECORD_FILE
+      - AT_END set_EOF_FLAG_to_N
+      - NOT_AT_END perform_record_processing
+
+  Process_Record_And_Write_Detail:
+    trigger: each_non_eof_record
+    flow:
+      - [YES]_WS_FIRST_RECORD_then_seed_hold_field_print_header_and_rejoin_at_position_map
+      - [NO]_WS_FIRST_RECORD_then_evaluate_warehouse_change
+      - [SAME]_warehouse_id_then_continue_to_position_map_calc_totals_and_write
+      - evaluate_and_handle_warehouse_control_break
+      - map_employee_position
+      - compute_3_increased_values_using_configured_rates
+      - add_values_to_running_totals
+      - write_DETAIL_LINE
+
+  Emit_Control_Break_Subtotal:
+    trigger: warehouse_id_changes
+    flow:
+      - move_running_totals_to_TOTAL_LINE
+      - write_TOTAL_LINE
+      - print_next_warehouse_header
+      - reset_running_totals_to_zero
+
+  Update_Header_And_Pagination_State:
+    trigger: each_header_routine_invocation
+    flow:
+      - increment_page_counter
+      - move_counter_to_page_num
+      - accept_current_date
+      - set_proper_spacing_transitions
+
+  Finalize_Report_Run:
+    trigger: after_main_loop_terminates
+    flow:
+      - emit_final_total_line_for_last_warehouse
+      - CLOSE_EMPLOYEE_RECORD_FILE
+      - CLOSE_SALARY_REPORT_FILE
+      - STOP_RUN
+
+runtime_constraints:
+  - analysis_mode: static_visualization_only
+  - execution_required: false
+  - compiler_required_for_visualization: false
+  - original_code_is_source_evidence: true
+  - workflow_centered_on_procedure_division: true
+  - control_break_grouping_required: warehouse_id
+  - mapping_mechanism_required: EVALUATE_TRUE
+  - rate_constants_must_come_from_working_storage: true
+  - report_requires_heading_and_pagination: true
+  - control_break_total_timing: print_totals_before_reset
+  - first_record_state_gate_required: true

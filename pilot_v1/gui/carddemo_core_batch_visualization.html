@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardDemo Core Batch - MOSS Visualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 1.9fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 980px; }
+    .edge { stroke: rgba(0, 212, 255, 0.28); stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 130px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ CardDemo Core Batch (Phase 1)</div>
+    <div class="top-meta">POSTTRAN -> INTCALC -> COMBTRAN -> TRANIDX</div>
+    <div class="top-badge">core_batch · 2026-04-23</div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">BATCH SOURCE FLOW</div>
+      <div class="pane-body">
+        <span class="code-line code-h">Core jobs</span>
+        <span class="code-line" data-node="Orchestrator"><span class="code-key">run_full_batch.sh:</span> ordered sequence driver</span>
+        <span class="code-line" data-node="PostTran_Job"><span class="code-key">POSTTRAN:</span> PGM=CBTRN02C posting + rejects + balance updates</span>
+        <span class="code-line" data-node="IntCalc_Job"><span class="code-key">INTCALC:</span> PGM=CBACT04C interest generation to SYSTRAN</span>
+        <span class="code-line" data-node="CombTran_Job"><span class="code-key">COMBTRAN:</span> SORT BKUP+SYSTRAN then IDCAMS REPRO</span>
+        <span class="code-line" data-node="TranIdx_Job"><span class="code-key">TRANIDX:</span> define/build AIX on processed timestamp</span>
+
+        <span class="code-line code-h" style="margin-top:10px">Primary datasets</span>
+        <span class="code-line" data-node="DalyTran_Input">DALYTRAN.PS</span>
+        <span class="code-line" data-node="TranMaster">TRANSACT.VSAM.KSDS</span>
+        <span class="code-line" data-node="TCatBal">TCATBALF.VSAM.KSDS</span>
+        <span class="code-line" data-node="AcctFile">ACCTDATA.VSAM.KSDS</span>
+        <span class="code-line" data-node="XRefFile">CARDXREF.VSAM.KSDS</span>
+        <span class="code-line" data-node="DiscGrp">DISCGRP.VSAM.KSDS</span>
+        <span class="code-line" data-node="SysTran">SYSTRAN(+1)</span>
+        <span class="code-line" data-node="TranBkup">TRANSACT.BKUP(0)</span>
+        <span class="code-line" data-node="CombinedTran">TRANSACT.COMBINED(+1)</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">PIPELINE DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1320 980" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.55)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge" d="M160 120 L360 120"></path>
+          <path class="edge" d="M520 120 L720 120"></path>
+          <path class="edge" d="M880 120 L1080 120"></path>
+          <path class="edge" d="M1240 120 L1240 245"></path>
+          <path class="edge" d="M1240 295 L1240 420"></path>
+
+          <path class="edge" d="M120 260 L300 260"></path>
+          <path class="edge" d="M300 260 L300 360"></path>
+          <path class="edge" d="M300 360 L560 360"></path>
+          <path class="edge" d="M560 360 L560 460"></path>
+          <path class="edge" d="M560 460 L830 460"></path>
+
+          <path class="edge" d="M120 520 L300 520"></path>
+          <path class="edge" d="M300 520 L300 620"></path>
+          <path class="edge" d="M300 620 L560 620"></path>
+          <path class="edge" d="M560 620 L560 720"></path>
+          <path class="edge" d="M560 720 L830 720"></path>
+
+          <path class="edge trace" d="M910 465 L1140 465"></path>
+          <path class="edge trace" d="M910 725 L1140 725"></path>
+          <path class="edge trace" d="M1140 465 L1140 725"></path>
+          <path class="edge" d="M1140 725 L1240 725"></path>
+          <path class="edge" d="M1240 725 L1240 785"></path>
+
+          <text class="edge-label" x="230" y="112">phase order</text>
+          <text class="edge-label" x="590" y="112">phase order</text>
+          <text class="edge-label" x="950" y="112">phase order</text>
+          <text class="edge-label" x="1248" y="190">AIX define</text>
+          <text class="edge-label" x="1248" y="360">BLDINDEX</text>
+
+          <text class="edge-label" x="180" y="252">daily tx feed</text>
+          <text class="edge-label" x="315" y="420">validation/posting</text>
+          <text class="edge-label" x="620" y="452">updated trans master</text>
+
+          <text class="edge-label" x="180" y="512">cat-balance input</text>
+          <text class="edge-label" x="315" y="680">interest/system tx</text>
+          <text class="edge-label" x="630" y="712">system tx output</text>
+
+          <text class="edge-label" x="960" y="457">BKUP + SYSTRAN</text>
+          <text class="edge-label" x="960" y="717">SORT -> COMBINED</text>
+          <text class="edge-label" x="1148" y="600">REPRO load</text>
+
+          <rect class="node core node-hit" data-node="Orchestrator" x="20" y="90" width="140" height="60"></rect>
+          <text class="n-title" x="90" y="125" text-anchor="middle">Orchestrator</text>
+
+          <rect class="node core node-hit" data-node="PostTran_Job" x="360" y="90" width="160" height="60"></rect>
+          <text class="n-title" x="440" y="125" text-anchor="middle">POSTTRAN</text>
+
+          <rect class="node core node-hit" data-node="IntCalc_Job" x="720" y="90" width="160" height="60"></rect>
+          <text class="n-title" x="800" y="125" text-anchor="middle">INTCALC</text>
+
+          <rect class="node core node-hit" data-node="CombTran_Job" x="1080" y="90" width="160" height="60"></rect>
+          <text class="n-title" x="1160" y="125" text-anchor="middle">COMBTRAN</text>
+
+          <rect class="node core node-hit" data-node="TranIdx_Job" x="1140" y="245" width="200" height="50"></rect>
+          <text class="n-title" x="1240" y="275" text-anchor="middle">TRANIDX (AIX)</text>
+
+          <rect class="node storage node-hit" data-node="DalyTran_Input" x="20" y="235" width="100" height="50"></rect>
+          <text class="n-title" x="70" y="265" text-anchor="middle">DALYTRAN</text>
+
+          <rect class="node worker node-hit" data-node="CBTRN02C_Core" x="300" y="330" width="260" height="60"></rect>
+          <text class="n-title" x="430" y="365" text-anchor="middle">CBTRN02C Core</text>
+
+          <rect class="node storage node-hit" data-node="TranMaster" x="830" y="435" width="220" height="50"></rect>
+          <text class="n-title" x="940" y="465" text-anchor="middle">TRANSACT.VSAM.KSDS</text>
+
+          <rect class="node storage node-hit" data-node="TCatBal" x="20" y="495" width="100" height="50"></rect>
+          <text class="n-title" x="70" y="525" text-anchor="middle">TCATBALF</text>
+
+          <rect class="node worker node-hit" data-node="CBACT04C_Core" x="300" y="590" width="260" height="60"></rect>
+          <text class="n-title" x="430" y="625" text-anchor="middle">CBACT04C Core</text>
+
+          <rect class="node storage node-hit" data-node="SysTran" x="830" y="695" width="220" height="50"></rect>
+          <text class="n-title" x="940" y="725" text-anchor="middle">SYSTRAN(+1)</text>
+
+          <rect class="node storage node-hit" data-node="TranBkup" x="1140" y="440" width="200" height="50"></rect>
+          <text class="n-title" x="1240" y="470" text-anchor="middle">TRANSACT.BKUP(0)</text>
+
+          <rect class="node storage node-hit" data-node="CombinedTran" x="1140" y="700" width="200" height="50"></rect>
+          <text class="n-title" x="1240" y="730" text-anchor="middle">TRANSACT.COMBINED</text>
+
+          <rect class="node aux node-hit" data-node="Field_Lineage" x="430" y="830" width="220" height="60"></rect>
+          <text class="n-title" x="540" y="865" text-anchor="middle">Field Lineage Map</text>
+
+          <path class="edge trace" d="M430 650 L430 830"></path>
+          <path class="edge trace" d="M300 390 L510 830"></path>
+          <text class="edge-label" x="445" y="760">lineage and semantics</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Scope</span><span class="v">CardDemo phase-1 core batch only.</span></div>
+      <div class="kv"><span class="k">Pipeline</span><span class="v">POSTTRAN -> INTCALC -> COMBTRAN -> TRANIDX.</span></div>
+      <div class="kv"><span class="k">Main Output</span><span class="v">Updated transaction master + generated system transactions + rebuilt AIX.</span></div>
+      <div class="kv"><span class="k">Spec</span><span class="v">MIDE/pilot_v1/specs/carddemo_core_batch/architecture.moss</span></div>
+    `;
+
+    const details = {
+      Orchestrator: { type: "core", desc: "Shell/JES submission sequence from run_full_batch.sh driving ordered JCL execution.", links: "PostTran_Job, IntCalc_Job, CombTran_Job, TranIdx_Job" },
+      PostTran_Job: { type: "core", desc: "POSTTRAN executes CBTRN02C to validate and post daily transactions.", links: "CBTRN02C_Core, DalyTran_Input, TranMaster" },
+      CBTRN02C_Core: { type: "worker", desc: "Open/read loop, validation via XREF+ACCT checks, then post or reject with status-driven abend on failure.", links: "DalyTran_Input, TranMaster, Field_Lineage" },
+      IntCalc_Job: { type: "core", desc: "INTCALC runs CBACT04C interest logic over TCATBAL and disclosure rates.", links: "CBACT04C_Core, TCatBal, SysTran" },
+      CBACT04C_Core: { type: "worker", desc: "Per-account loop computes monthly interest and emits system transaction rows; performs account rollup on boundary change.", links: "TCatBal, SysTran, Field_Lineage" },
+      CombTran_Job: { type: "core", desc: "COMBTRAN sorts BKUP and SYSTRAN by TRAN-ID then REPRO loads combined stream to TRAN master KSDS.", links: "TranBkup, SysTran, CombinedTran, TranMaster" },
+      TranIdx_Job: { type: "core", desc: "TRANIDX defines and builds alternate index/path for processed timestamp access pattern.", links: "TranMaster" },
+      DalyTran_Input: { type: "storage", desc: "Daily input transaction file consumed by POSTTRAN.", links: "CBTRN02C_Core" },
+      TranMaster: { type: "storage", desc: "Primary transaction master updated by posting and consolidation phases.", links: "PostTran_Job, CombTran_Job, TranIdx_Job" },
+      TCatBal: { type: "storage", desc: "Transaction category balances for interest calculation and posting updates.", links: "PostTran_Job, IntCalc_Job" },
+      SysTran: { type: "storage", desc: "Generated system transactions from CBACT04C used in COMBTRAN merge.", links: "IntCalc_Job, CombTran_Job" },
+      TranBkup: { type: "storage", desc: "Backup transaction generation merged with system transactions.", links: "CombTran_Job" },
+      CombinedTran: { type: "storage", desc: "SORT output loaded into transaction master by IDCAMS REPRO.", links: "CombTran_Job, TranMaster" },
+      Field_Lineage: { type: "aux", desc: "Directional lineage contract for amount updates and interest arithmetic transforms.", links: "CBTRN02C_Core, CBACT04C_Core" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>

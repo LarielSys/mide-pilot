@@ -1,0 +1,129 @@
+@MOSS:CBSA_ODCS_BNK1DCS_Execution_v1
+@R:~/mide-pilot/pilot_v1/specs/cbsa_odcs_execution/
+
+systems:
+
+  ODCS_Transaction_Entry:
+    role: BNKMENU action 1 dispatch target entering display-customer flow
+    runtime: cics_transaction_flow
+    transid: ODCS
+    program_id: BNK1DCS
+    depends_on: Program_BNK1DCS, Display_Customer_Map, Aid_Key_Router
+
+  Program_BNK1DCS:
+    role: display customer program with lookup update and delete paths for customer records
+    runtime: cics_cobol
+    program_id: BNK1DCS
+    transid: ODCS
+    mapset: BNK1DCM
+    depends_on: Display_Customer_Map, Process_Map_Controller, Inquiry_Link_INQCUST, Delete_Link_DELCUS, Update_Link_UPDCUST, Return_Path_OMEN, Guard_Paths
+
+  Display_Customer_Map:
+    role: BMS map for customer lookup display and maintenance actions
+    runtime: cics_bms
+    mapset: BNK1DCM
+    map: BNK1DCO
+    key_fields: CUSTNOI, CUSTNO2I, SORTCI, CUSTNAMI, CUSTAD1I, CUSTAD2I, CUSTAD3I, DOBDDI, DOBMMI, DOBYYI, CREDSCI
+
+  Aid_Key_Router:
+    role: EIBAID branching for BNK1DCS
+    runtime: cics_control_semantics
+    keys: DFHENTER, DFHPF5, DFHPF10, DFHPF3, DFHPF12, DFHCLEAR, OTHER
+    semantics:
+      - enter_lookup_or_update_commit
+      - pf5_delete_customer
+      - pf10_unlock_for_update
+      - pf3_return_to_omen
+      - pf12_terminate_session
+      - clear_erase_and_return
+      - other_invalid_key_redisplay
+
+  Process_Map_Controller:
+    role: PM010 controls receive map validation and operation branch for enter delete and update paths
+    runtime: semantic_contract
+    branches:
+      - enter_without_update_flag_to_lookup
+      - enter_with_update_flag_to_update
+      - pf5_to_delete
+      - pf10_to_unprotect_and_prompt
+
+  Inquiry_Link_INQCUST:
+    role: customer inquiry link used by lookup branch
+    runtime: cics_link_contract
+    target_program: INQCUST
+    call_site: GCD010
+
+  Delete_Link_DELCUS:
+    role: customer delete link used by PF5 branch
+    runtime: cics_link_contract
+    target_program: DELCUS
+    call_site: DCD010
+
+  Update_Link_UPDCUST:
+    role: customer update link used by enter-after-pf10 branch
+    runtime: cics_link_contract
+    target_program: UPDCUST
+    call_site: UPDCD010
+
+  Return_Path_OMEN:
+    role: return path to BNKMENU transaction from PF3 branch and regular post-cycle return
+    runtime: cics_return_semantics
+    transid: OMEN
+
+  Guard_Paths:
+    role: explicit non-happy-path semantics for BNK1DCS
+    runtime: semantic_contract
+    guards:
+      - invalid_key_message_and_alarm
+      - customer_not_found_after_inqcust
+      - delcus_failure_codes_1_2_3_other
+      - updcust_failure_codes_1_2_3_other
+      - cics_resp_not_normal_to_abndproc
+
+  Field_Lineage_Map:
+    role: customer field lineage across lookup delete and update links
+    runtime: semantic_contract
+    lineage_rules:
+      - CUSTNOI_to_INQCUST_CUSTNO
+      - map_fields_to_UPDCUST_commarea
+      - DELCUS_result_flags_to_MESSAGEO
+      - UPDCUST_result_flags_to_MESSAGEO
+      - COMM_UPD_flag_controls_enter_semantics
+
+dependencies:
+  - ODCS_Transaction_Entry -> Program_BNK1DCS
+  - Program_BNK1DCS -> Aid_Key_Router
+  - Program_BNK1DCS -> Process_Map_Controller
+  - Process_Map_Controller -> Inquiry_Link_INQCUST
+  - Process_Map_Controller -> Delete_Link_DELCUS
+  - Process_Map_Controller -> Update_Link_UPDCUST
+  - Program_BNK1DCS -> Return_Path_OMEN
+  - Program_BNK1DCS -> Guard_Paths
+  - Process_Map_Controller -> Field_Lineage_Map
+  - Guard_Paths -> Field_Lineage_Map
+
+interfaces:
+  - lookup_interface:
+      from: Program_BNK1DCS
+      to: Inquiry_Link_INQCUST
+      mode: cics_link_synconreturn
+      key: CUSTNOI
+
+  - delete_interface:
+      from: Program_BNK1DCS
+      to: Delete_Link_DELCUS
+      mode: cics_link_synconreturn
+      key: CUSTNO2I
+
+  - update_interface:
+      from: Program_BNK1DCS
+      to: Update_Link_UPDCUST
+      mode: cics_link_synconreturn
+      payload: customer_map_fields
+
+runtime_constraints:
+  - scope_is_odcs_bnk1dcs_only: true
+  - no_non_odcs_program_semantics_except_explicit_link_targets: true
+  - pf10_only_unlocks_update_data_entry: true
+  - update_commit_requires_enter_with_comm_upd_flag_y: true
+  - delete_operation_mapped_to_pf5_only: true

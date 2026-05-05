@@ -1,0 +1,411 @@
+@MOSS:COBOL_SAM1_SAM2_Workflow_v1
+@R:~/mide-pilot/pilot_v1/specs/cobol_sam1_sam2/
+
+systems:
+
+  JCL_Run_Job:
+    role: top-level batch orchestration that compiles links and executes sample programs
+    runtime: jcl_batch
+    source_language: JCL
+    depends_on: Compile_SAM2_Step, Compile_SAM1_Step, Link_SAM2_Step, Link_SAM1_Step, Execute_SAM1_Step
+    outputs: compiled_load_modules_and_updated_customer_outputs
+
+  Compile_SAM2_Step:
+    role: compiles SAM2 using COBOL compiler and copy library
+    runtime: jcl_exec_step
+    program: IGYCRCTL
+    source_member: SAM2
+    libraries: SAMPLE.COPY
+
+  Compile_SAM1_Step:
+    role: compiles SAM1 using COBOL compiler and copy libraries
+    runtime: jcl_exec_step
+    program: IGYCRCTL
+    source_member: SAM1
+    libraries: SAMPLE.COPY, SAMPLE.COPYLIB
+
+  Link_SAM2_Step:
+    role: links SAM2 object into load library
+    runtime: jcl_exec_step
+    program: IEWL
+    target_member: SAM2
+
+  Link_SAM1_Step:
+    role: links SAM1 object with runtime and SAM2 dependency
+    runtime: jcl_exec_step
+    program: IEWL
+    target_member: SAM1
+    depends_on: Link_SAM2_Step
+
+  Execute_SAM1_Step:
+    role: runs SAM1 against transaction and customer files
+    runtime: jcl_exec_step
+    program: SAM1
+    depends_on: COBOL_Program_SAM1, Transaction_File, Customer_Input_File, Customer_Output_File, Report_File
+
+  COBOL_Program_SAM1:
+    role: sequential customer update driver that dispatches transaction types and writes report output
+    runtime: cobol_batch
+    source_language: COBOL
+    divisions: identification, environment, data, procedure
+    depends_on: File_Open_And_Close_Routines, Transaction_Read_Loop, Transaction_Dispatch_Controller, Report_Initialization, Report_Processed_Transaction, Report_Statistics, Error_Reporting_Routine
+    outputs: updated_customer_file_and_report
+
+  COBOL_Subroutine_SAM2:
+    role: callable subroutine that validates and applies update transactions to an in-memory customer record
+    runtime: cobol_subroutine
+    source_language: COBOL
+    linkage_uses: CUST_REC, TRANSACTION_RECORD, TRAN_OK, TRAN_MSG
+    depends_on: Transaction_Validation_Routine, Customer_Update_Engine, CPU_Crunch_Path
+
+  Transaction_File:
+    role: sequential transaction input source
+    runtime: filesystem
+    dataset_name: SAMPLE.TRANFILE
+    operations: open_input, read, close
+
+  Customer_Input_File:
+    role: sorted sequential customer input source
+    runtime: filesystem
+    dataset_name: SAMPLE.CUSTFILE
+    operations: open_input, read, close
+
+  Customer_Output_File:
+    role: sequential updated customer output destination
+    runtime: filesystem
+    dataset_name: SAMPLE.CUSTOUT
+    operations: open_output, write, close
+
+  Report_File:
+    role: report output destination for errors transaction echoes and totals
+    runtime: report_output
+    dataset_name: SAMPLE.CUSTRPT
+    operations: open_output, write, close
+
+  Shared_Copybook_Contracts:
+    role: shared record layouts imported into both programs
+    runtime: copybook_library
+    members: CUSTCOPY, TRANREC, DATETIME, REPTTOTL
+
+  File_Open_And_Close_Routines:
+    role: opens transactional files and closes them after reporting completes
+    runtime: procedure_division
+    paragraphs: 700_OPEN_FILES, 790_CLOSE_FILES
+    depends_on: Transaction_File, Customer_Input_File, Customer_Output_File, Report_File
+
+  Report_Initialization:
+    role: seeds report header with accepted current date and time values
+    runtime: procedure_division
+    paragraph: 800_INIT_REPORT
+    depends_on: Report_Totals_And_Date_State, Report_File
+
+  Transaction_Read_Loop:
+    role: reads transaction stream until EOF and copies remaining customer records at end
+    runtime: procedure_division
+    paragraphs: 100_PROCESS_TRANSACTIONS, 710_READ_TRAN_FILE
+    control_pattern: perform_until_ws_tran_eof_yes
+    depends_on: Transaction_File, EOF_Controllers, Remaining_Record_Copy_Routine
+
+  Transaction_Dispatch_Controller:
+    role: validates transaction ordering and dispatches by transaction code
+    runtime: procedure_division
+    paragraph: 100_PROCESS_TRANSACTIONS
+    fields: TRAN_CODE, TRAN_KEY, WS_PREV_TRAN_KEY, WS_TRAN_OK
+    branch_paths:
+      - [OUT_OF_SEQUENCE] -> Error_Reporting_Routine
+      - [UPDATE] -> Update_Transaction_Handler
+      - [ADD] -> Add_Transaction_Handler
+      - [DELETE] -> Delete_Transaction_Handler
+      - [OTHER_non_comment] -> Error_Reporting_Routine
+
+  Update_Transaction_Handler:
+    role: positions customer cursor then calls SAM2 to validate and apply update logic
+    runtime: procedure_division
+    paragraph: 200_PROCESS_UPDATE_TRAN
+    depends_on: Customer_Positioning_Controller, COBOL_Subroutine_SAM2, Error_Reporting_Routine, Report_Totals_And_Date_State
+
+  Add_Transaction_Handler:
+    role: creates a blank customer record when key is absent and writes it to output
+    runtime: procedure_division
+    paragraph: 210_PROCESS_ADD_TRAN
+    depends_on: Customer_Positioning_Controller, Customer_Output_File, Error_Reporting_Routine, Report_Totals_And_Date_State
+
+  Delete_Transaction_Handler:
+    role: validates matching key then suppresses output by advancing customer input without writing deleted record
+    runtime: procedure_division
+    paragraph: 220_PROCESS_DELETE_TRAN
+    depends_on: Customer_Positioning_Controller, Customer_Input_File, Error_Reporting_Routine, Report_Totals_And_Date_State
+
+  Customer_Positioning_Controller:
+    role: advances through sorted customer input until transaction key position is reached
+    runtime: procedure_division
+    paragraphs: 720_POSITION_CUST_FILE, 721_COPY_RECORDS, 730_READ_CUSTOMER_FILE, 740_WRITE_CUSTOUT_FILE
+    depends_on: Customer_Input_File, Customer_Output_File, EOF_Controllers
+
+  Remaining_Record_Copy_Routine:
+    role: copies all remaining customer records to output when transaction input reaches EOF
+    runtime: procedure_division
+    paragraph: 721_COPY_RECORDS
+    depends_on: Customer_Input_File, Customer_Output_File
+
+  Error_Reporting_Routine:
+    role: records failed transactions writes explanatory report lines and marks transaction as failed
+    runtime: procedure_division
+    paragraph: 299_REPORT_BAD_TRAN
+    depends_on: Report_File, Report_Layout_Records, Report_Totals_And_Date_State
+
+  Report_Processed_Transaction:
+    role: writes echo line for each successfully handled transaction or comment record
+    runtime: procedure_division
+    paragraph: 830_REPORT_TRAN_PROCESSED
+    depends_on: Report_File, Report_Layout_Records
+
+  Report_Statistics:
+    role: writes aggregate totals for add delete and update transaction classes
+    runtime: procedure_division
+    paragraph: 850_REPORT_TRAN_STATS
+    depends_on: Report_File, Report_Totals_And_Date_State, Report_Layout_Records
+
+  Transaction_Validation_Routine:
+    role: validates update transaction code field name action and numeric content before applying changes
+    runtime: procedure_division
+    paragraph: 100_VALIDATE_TRAN
+    depends_on: Shared_Copybook_Contracts, SAM2_Working_State
+
+  Customer_Update_Engine:
+    role: mutates customer fields based on validated field name and action combinations
+    runtime: procedure_division
+    paragraph: 200_PROCESS_TRAN
+    depends_on: Shared_Copybook_Contracts, SAM2_Working_State
+
+  CPU_Crunch_Path:
+    role: special SAM2 branch that repeatedly averages monthly values for configured loop count
+    runtime: procedure_division
+    paragraphs: 300_PROCESS_CPU_CRUNCH, 310_CRUNCH_LOOP
+    depends_on: Shared_Copybook_Contracts, SAM2_Working_State
+
+  Report_Totals_And_Date_State:
+    role: working-storage counters statuses and accepted date time values for report and transaction accounting
+    runtime: working_storage
+    fields: CURRENT_DATE, CURRENT_TIME, NUM_TRAN_RECS, NUM_TRAN_ERRORS, NUM_ADD_REQUESTS, NUM_ADD_PROCESSED, NUM_UPDATE_REQUESTS, NUM_UPDATE_PROCESSED, NUM_DELETE_REQUESTS, NUM_DELETE_PROCESSED, WS_TRAN_EOF, WS_TRAN_OK, WS_CUST_FILE_EOF, WS_PREV_TRAN_KEY
+
+  SAM2_Working_State:
+    role: subroutine-local normalization counters and crunch loop working values
+    runtime: working_storage
+    fields: WS_UPDATE_NUM, WS_UPDATE_NUM_NEG, TRAN_COUNT, LOOP_COUNT, WORK_SUM, MONTH_AVERAGE, MONTH_SUB
+
+  EOF_Controllers:
+    role: end-of-file and file-status flags governing loop termination and read error handling
+    runtime: working_storage
+    fields: WS_TRAN_EOF, WS_CUST_FILE_EOF, WS_TRANFILE_STATUS, WS_CUSTFILE_STATUS, WS_CUSTOUT_STATUS, WS_REPORT_STATUS
+
+  Report_Layout_Records:
+    role: report header transaction detail error and totals output records
+    runtime: data_division
+    records: REPORT_RECORD, ERR_MSG_BAD_TRAN, ERR_MSG_BAD_TRAN_2, MSG_TRAN_SCALE_1, MSG_TRAN_SCALE_2, RPT_HEADER1, RPT_TRAN_DETAIL1, RPT_STATS_HDR1, RPT_STATS_HDR2, RPT_STATS_HDR3, RPT_STATS_HDR4, RPT_STATS_DETAIL
+
+dependencies:
+  - JCL_Run_Job -> Compile_SAM2_Step
+  - JCL_Run_Job -> Compile_SAM1_Step
+  - JCL_Run_Job -> Link_SAM2_Step
+  - JCL_Run_Job -> Link_SAM1_Step
+  - JCL_Run_Job -> Execute_SAM1_Step
+  - Compile_SAM2_Step -> COBOL_Subroutine_SAM2
+  - Compile_SAM2_Step -> Shared_Copybook_Contracts
+  - Compile_SAM1_Step -> COBOL_Program_SAM1
+  - Compile_SAM1_Step -> Shared_Copybook_Contracts
+  - Link_SAM2_Step -> Compile_SAM2_Step
+  - Link_SAM1_Step -> Compile_SAM1_Step
+  - Link_SAM1_Step -> Link_SAM2_Step
+  - Execute_SAM1_Step -> COBOL_Program_SAM1
+  - Execute_SAM1_Step -> Transaction_File
+  - Execute_SAM1_Step -> Customer_Input_File
+  - Execute_SAM1_Step -> Customer_Output_File
+  - Execute_SAM1_Step -> Report_File
+  - COBOL_Program_SAM1 -> File_Open_And_Close_Routines
+  - COBOL_Program_SAM1 -> Report_Initialization
+  - COBOL_Program_SAM1 -> Transaction_Read_Loop
+  - COBOL_Program_SAM1 -> Transaction_Dispatch_Controller
+  - COBOL_Program_SAM1 -> Report_Processed_Transaction
+  - COBOL_Program_SAM1 -> Report_Statistics
+  - COBOL_Program_SAM1 -> Error_Reporting_Routine
+  - COBOL_Subroutine_SAM2 -> Transaction_Validation_Routine
+  - COBOL_Subroutine_SAM2 -> Customer_Update_Engine
+  - COBOL_Subroutine_SAM2 -> CPU_Crunch_Path
+  - File_Open_And_Close_Routines -> Transaction_File
+  - File_Open_And_Close_Routines -> Customer_Input_File
+  - File_Open_And_Close_Routines -> Customer_Output_File
+  - File_Open_And_Close_Routines -> Report_File
+  - Report_Initialization -> Report_Totals_And_Date_State
+  - Report_Initialization -> Report_File
+  - Transaction_Read_Loop -> Transaction_File
+  - Transaction_Read_Loop -> EOF_Controllers
+  - Transaction_Read_Loop -> Remaining_Record_Copy_Routine
+  - Transaction_Dispatch_Controller -> Update_Transaction_Handler
+  - Transaction_Dispatch_Controller -> Add_Transaction_Handler
+  - Transaction_Dispatch_Controller -> Delete_Transaction_Handler
+  - Transaction_Dispatch_Controller -> Error_Reporting_Routine
+  - Update_Transaction_Handler -> Customer_Positioning_Controller
+  - Update_Transaction_Handler -> COBOL_Subroutine_SAM2
+  - Update_Transaction_Handler -> Error_Reporting_Routine
+  - Update_Transaction_Handler -> Report_Totals_And_Date_State
+  - Add_Transaction_Handler -> Customer_Positioning_Controller
+  - Add_Transaction_Handler -> Customer_Output_File
+  - Add_Transaction_Handler -> Error_Reporting_Routine
+  - Add_Transaction_Handler -> Report_Totals_And_Date_State
+  - Delete_Transaction_Handler -> Customer_Positioning_Controller
+  - Delete_Transaction_Handler -> Customer_Input_File
+  - Delete_Transaction_Handler -> Error_Reporting_Routine
+  - Delete_Transaction_Handler -> Report_Totals_And_Date_State
+  - Customer_Positioning_Controller -> Customer_Input_File
+  - Customer_Positioning_Controller -> Customer_Output_File
+  - Customer_Positioning_Controller -> EOF_Controllers
+  - Remaining_Record_Copy_Routine -> Customer_Input_File
+  - Remaining_Record_Copy_Routine -> Customer_Output_File
+  - Error_Reporting_Routine -> Report_File
+  - Error_Reporting_Routine -> Report_Layout_Records
+  - Error_Reporting_Routine -> Report_Totals_And_Date_State
+  - Report_Processed_Transaction -> Report_File
+  - Report_Processed_Transaction -> Report_Layout_Records
+  - Report_Statistics -> Report_File
+  - Report_Statistics -> Report_Totals_And_Date_State
+  - Report_Statistics -> Report_Layout_Records
+  - Transaction_Validation_Routine -> Shared_Copybook_Contracts
+  - Transaction_Validation_Routine -> SAM2_Working_State
+  - Customer_Update_Engine -> Shared_Copybook_Contracts
+  - Customer_Update_Engine -> SAM2_Working_State
+  - CPU_Crunch_Path -> Shared_Copybook_Contracts
+  - CPU_Crunch_Path -> SAM2_Working_State
+
+interfaces:
+
+  JCL_Orchestration_Contract:
+    protocol: jcl_step_sequence
+    sequence:
+      - compile_SAM2
+      - compile_SAM1
+      - link_SAM2
+      - link_SAM1_with_SAM2_available
+      - run_SAM1
+
+  Transaction_Stream_Contract:
+    protocol: sequential_file_read
+    file: SAMPLE.TRANFILE
+    semantics:
+      - sorted_by_transaction_key_expected
+      - comment_records_marked_by_asterisk
+      - EOF_triggers_remaining_customer_copy
+
+  Customer_File_Merge_Contract:
+    protocol: sorted_sequential_merge_positioning
+    files:
+      - SAMPLE.CUSTFILE
+      - SAMPLE.CUSTOUT
+    semantics:
+      - copy_forward_until_customer_key_ge_transaction_key
+      - add_writes_new_blank_record
+      - delete_skips_current_matched_record
+      - update_mutates_in_memory_record_then_writes_through_normal_copy_path
+
+  SAM1_to_SAM2_Call_Contract:
+    protocol: cobol_call_using_linkage
+    parameters:
+      - customer_record_passed_by_reference
+      - transaction_record_passed_by_reference
+      - tran_ok_return_flag
+      - tran_msg_return_text
+
+  Report_Output_Contract:
+    protocol: printer_style_report_write
+    outputs:
+      - transaction_processed_lines
+      - bad_transaction_diagnostics
+      - aggregate_statistics
+
+actions:
+
+  Orchestrate_Build_And_Run:
+    trigger: JCL_job_submission
+    flow:
+      - compile_SAM2_with_copybooks
+      - compile_SAM1_with_copybooks
+      - link_SAM2_load_module
+      - link_SAM1_load_module
+      - execute_SAM1_with_allocated_datasets
+
+  Initialize_SAM1_Run:
+    trigger: entry_into_000_MAIN
+    flow:
+      - accept_current_date_and_time
+      - display_start_timestamp
+      - open_all_files
+      - write_report_header
+      - read_first_customer_record
+
+  Dispatch_Transaction_Stream:
+    trigger: each_iteration_of_100_PROCESS_TRANSACTIONS
+    flow:
+      - read_next_transaction_record
+      - [EOF] copy_remaining_customer_records
+      - [NOT_EOF] increment_transaction_counter
+      - [OUT_OF_SEQUENCE] report_bad_transaction
+      - [UPDATE] invoke_update_handler
+      - [ADD] invoke_add_handler
+      - [DELETE] invoke_delete_handler
+      - [OTHER_non_comment] report_invalid_transaction_code
+      - update_previous_transaction_key
+      - [TRAN_OK] write_processed_transaction_echo
+
+  Apply_Update_Via_SAM2:
+    trigger: update_transaction_with_matching_customer_key
+    flow:
+      - position_customer_file_to_matching_key
+      - [NO_MATCH_or_CUST_EOF] report_no_matching_key
+      - [MATCH] call_SAM2
+      - [SAM2_RETURNS_Y] increment_update_processed
+      - [SAM2_RETURNS_N] report_subroutine_error_message
+
+  Process_Add_And_Delete:
+    trigger: add_or_delete_transaction_dispatch
+    flow:
+      - position_customer_file_to_transaction_key
+      - [ADD_and_DUPLICATE] report_duplicate_key
+      - [ADD_and_NEW] initialize_blank_customer_record_and_write_output
+      - [DELETE_and_NO_MATCH] report_no_matching_key
+      - [DELETE_and_MATCH] advance_customer_input_without_writing_deleted_record
+
+  Validate_And_Apply_SAM2_Transaction:
+    trigger: entry_into_SAM2_000_MAIN_for_non_crunch_transaction
+    flow:
+      - initialize_return_flag_and_message
+      - validate_transaction_code_field_action_and_numeric_content
+      - [TRAN_OK] mutate_requested_customer_field
+      - [TRAN_NOT_OK] return_error_message_without_mutation
+
+  Execute_CPU_Crunch_Path:
+    trigger: entry_into_SAM2_with_TRAN_CODE_CRUNCH
+    flow:
+      - initialize_loop_counter
+      - repeat_average_calculation_until_loop_count_exceeds_requested_loops
+      - coerce_non_numeric_month_values_to_zero_before_sum
+
+  Finalize_SAM1_Run:
+    trigger: transaction_loop_terminates
+    flow:
+      - write_transaction_statistics
+      - close_files
+      - accept_stop_date_and_time
+      - display_stop_timestamp
+      - goback
+
+runtime_constraints:
+  - analysis_mode: static_visualization_only
+  - execution_required: false
+  - original_code_is_source_evidence: true
+  - workflow_spans_jcl_and_cobol_layers: true
+  - sorted_customer_and_transaction_key_semantics_required: true
+  - customer_file_positioning_controls_update_add_delete: true
+  - SAM2_is_call_subroutine_not_peer_batch_job: true
+  - EOF_on_transaction_file_must_copy_remaining_customer_records: true
+  - report_output_must_capture_errors_processed_transactions_and_totals: true
+  - CRUNCH_path_exists_only_inside_SAM2: true

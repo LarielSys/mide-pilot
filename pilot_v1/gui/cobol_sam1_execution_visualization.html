@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COBOL SAM1 - Execution View</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-deep: #020810;
+      --bg-dark: #0a1628;
+      --cyan: #00d4ff;
+      --amber: #ffaa00;
+      --green: #44ff88;
+      --purple: #bb88ff;
+      --text: #c8dce8;
+      --text-dim: #7a99b5;
+      --border: rgba(0, 212, 255, 0.15);
+    }
+    body {
+      font-family: "Consolas", "Courier New", monospace;
+      color: var(--text);
+      background: var(--bg-deep);
+      min-height: 100vh;
+      overflow: auto;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+    .top-title { color: var(--cyan); letter-spacing: 1px; }
+    .top-meta { color: var(--text-dim); }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .top-link, .top-badge {
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      text-decoration: none;
+    }
+    .top-link:hover { background: rgba(0, 212, 255, 0.08); }
+    .panes {
+      display: grid;
+      grid-template-columns: 1fr 1.8fr 1fr;
+      min-height: calc(100vh - 44px);
+    }
+    .pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-head {
+      background: rgba(0, 212, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+    .pane-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .code-line { color: var(--text-dim); display: block; padding: 1px 6px; border-left: 2px solid transparent; }
+    .code-line.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0, 212, 255, 0.08); }
+    .code-key { color: var(--amber); }
+    .code-h { color: var(--cyan); }
+    .note { color: var(--green); }
+    #svgWrap { min-width: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; }
+    #svgWrap svg { width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto; min-height: 1020px; }
+    .edge { stroke-width: 1.5; fill: none; }
+    .edge-core { stroke: rgba(0, 212, 255, 0.38); marker-end: url(#arr-core); }
+    .edge-worker { stroke: rgba(68, 255, 136, 0.36); marker-end: url(#arr-worker); }
+    .edge-aux { stroke: rgba(255, 170, 0, 0.40); marker-end: url(#arr-aux); }
+    .edge-storage { stroke: rgba(187, 136, 255, 0.42); marker-end: url(#arr-storage); }
+    .edge.trace { stroke-dasharray: 4 3; }
+    .edge-label { fill: #4a7a99; font-size: 9px; }
+    .node { fill: rgba(10, 22, 40, 0.88); stroke-width: 1.6; rx: 8; ry: 8; }
+    .node.core { stroke: rgba(0, 212, 255, 0.55); }
+    .node.aux { stroke: rgba(255, 170, 0, 0.55); }
+    .node.worker { stroke: rgba(68, 255, 136, 0.55); }
+    .node.storage { stroke: rgba(187, 136, 255, 0.55); }
+    .node-hit { cursor: pointer; }
+    .node-hit.hover { stroke-width: 2.6; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6)); }
+    .n-title { fill: var(--text); font-size: 12px; }
+    .kv { margin-bottom: 8px; }
+    .k { color: var(--amber); display: inline-block; min-width: 115px; vertical-align: top; }
+    .v { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-title">MOSS ▸ SAM1 Execution Layer</div>
+    <div class="top-meta">sorted merge positioning · dispatch · EOF remainder copy</div>
+    <div class="top-actions">
+      <a class="top-link" href="/cobol_sam1_sam2_visualization.html">overview</a>
+      <a class="top-link" href="/cobol_sam2_execution_visualization.html">SAM2 view</a>
+      <div class="top-badge">sam1_execution · 2026-04-23</div>
+    </div>
+  </div>
+
+  <div class="panes">
+    <section class="pane">
+      <div class="pane-head">SOURCE FLOW</div>
+      <div class="pane-body" id="mossSource">
+        <span class="code-line code-h">SAM1 paragraphs</span>
+        <span class="code-line" data-node="Main_Entry"><span class="code-key">000-MAIN:</span> accept time, open files, init report, read first customer</span>
+        <span class="code-line" data-node="Read_Transaction"><span class="code-key">710-READ-TRAN-FILE:</span> read next transaction and set EOF</span>
+        <span class="code-line" data-node="Sequence_Gate"><span class="code-key">TRAN-KEY gate:</span> [OUT_OF_SEQUENCE] or continue</span>
+        <span class="code-line" data-node="Dispatch_Gate"><span class="code-key">EVALUATE TRAN-CODE:</span> [UPDATE] [ADD] [DELETE] [OTHER]</span>
+        <span class="code-line" data-node="Update_Handler"><span class="code-key">200-PROCESS-UPDATE-TRAN:</span> position then CALL SAM2</span>
+        <span class="code-line" data-node="Add_Handler"><span class="code-key">210-PROCESS-ADD-TRAN:</span> blank record initialize and write</span>
+        <span class="code-line" data-node="Delete_Handler"><span class="code-key">220-PROCESS-DELETE-TRAN:</span> matched delete by read-ahead</span>
+        <span class="code-line" data-node="Position_Customer"><span class="code-key">720-POSITION-CUST-FILE:</span> copy until CUST-KEY >= TRAN-KEY</span>
+        <span class="code-line" data-node="Copy_Record"><span class="code-key">721-COPY-RECORDS:</span> move, write output, read next customer</span>
+        <span class="code-line" data-node="Read_Customer"><span class="code-key">730-READ-CUSTOMER-FILE:</span> set customer EOF and status</span>
+        <span class="code-line" data-node="Write_Custout"><span class="code-key">740-WRITE-CUSTOUT-FILE:</span> write A/contact layout</span>
+        <span class="code-line" data-node="Bad_Transaction"><span class="code-key">299-REPORT-BAD-TRAN:</span> report error and mark WS-TRAN-OK = N</span>
+        <span class="code-line" data-node="Processed_Report"><span class="code-key">830-REPORT-TRAN-PROCESSED:</span> echo successful or comment transaction</span>
+        <span class="code-line" data-node="Stats_Report"><span class="code-key">850-REPORT-TRAN-STATS:</span> write add/delete/update totals</span>
+        <span class="code-line" data-node="File_State"><span class="code-key">WS flags:</span> WS-TRAN-EOF, WS-CUST-FILE-EOF, status codes</span>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">EXECUTION DIAGRAM</div>
+      <div class="pane-body" id="svgWrap">
+        <svg viewBox="0 0 1120 1020" preserveAspectRatio="xMidYMin meet" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr-core" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,212,255,0.70)"></path>
+            </marker>
+            <marker id="arr-worker" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(68,255,136,0.72)"></path>
+            </marker>
+            <marker id="arr-aux" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(255,170,0,0.74)"></path>
+            </marker>
+            <marker id="arr-storage" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(187,136,255,0.76)"></path>
+            </marker>
+          </defs>
+
+          <path class="edge edge-core" d="M180 70 L180 145"></path>
+          <text class="edge-label" x="188" y="110">perform 100 loop</text>
+          <path class="edge edge-worker" d="M180 195 L180 270"></path>
+          <text class="edge-label" x="188" y="235">read transaction</text>
+          <path class="edge edge-worker" d="M180 320 L180 395"></path>
+          <text class="edge-label" x="188" y="360">sequence check</text>
+          <path class="edge edge-worker" d="M180 445 L180 520"></path>
+          <text class="edge-label" x="188" y="485">dispatch</text>
+
+          <path class="edge edge-worker" d="M260 295 L390 295"></path>
+          <text class="edge-label" x="298" y="287">[NOT_EOF]</text>
+          <path class="edge edge-worker" d="M180 320 L180 620"></path>
+          <path class="edge edge-worker" d="M180 620 L520 620"></path>
+          <text class="edge-label" x="240" y="612">[EOF] copy remaining customers</text>
+
+          <path class="edge edge-worker" d="M500 320 L500 395"></path>
+          <text class="edge-label" x="509" y="360">[IN_SEQUENCE]</text>
+          <path class="edge edge-worker" d="M610 295 L720 295"></path>
+          <text class="edge-label" x="640" y="287">[OUT_OF_SEQUENCE]</text>
+
+          <path class="edge edge-worker" d="M500 445 L335 545"></path>
+          <text class="edge-label" x="392" y="500">[UPDATE]</text>
+          <path class="edge edge-worker" d="M500 445 L525 545"></path>
+          <text class="edge-label" x="518" y="502">[ADD]</text>
+          <path class="edge edge-worker" d="M500 445 L715 545"></path>
+          <text class="edge-label" x="620" y="500">[DELETE]</text>
+          <path class="edge edge-worker" d="M610 420 L720 420"></path>
+          <text class="edge-label" x="638" y="412">[OTHER_non_comment]</text>
+
+          <path class="edge edge-aux" d="M335 595 L335 660 L375 690"></path>
+          <text class="edge-label" x="336" y="644">position file</text>
+          <path class="edge edge-aux" d="M525 595 L525 690"></path>
+          <text class="edge-label" x="534" y="647">position file</text>
+          <path class="edge edge-aux" d="M715 595 L715 660 L675 690"></path>
+          <text class="edge-label" x="680" y="644">position file</text>
+
+          <path class="edge edge-worker" d="M385 740 L345 810"></path>
+          <text class="edge-label" x="334" y="785">[MATCH] call SAM2</text>
+          <path class="edge edge-worker" d="M525 740 L525 810"></path>
+          <text class="edge-label" x="534" y="785">[NEW] write blank</text>
+          <path class="edge edge-worker" d="M665 740 L705 810"></path>
+          <text class="edge-label" x="686" y="785">[MATCH] read ahead</text>
+
+          <path class="edge edge-worker" d="M790 715 L860 715"></path>
+          <text class="edge-label" x="802" y="707">[NO_MATCH] error</text>
+          <path class="edge edge-aux" d="M790 570 L790 635 L814 635 L814 595 L820 595"></path>
+          <text class="edge-label" x="724" y="629">[DELETE_no_match]</text>
+          <path class="edge edge-aux" d="M600 570 L600 625 L812 625 L812 585 L820 585"></path>
+          <text class="edge-label" x="626" y="619">[ADD_duplicate]</text>
+          <path class="edge edge-aux" d="M410 570 L410 615 L810 615 L810 575 L820 575"></path>
+          <text class="edge-label" x="436" y="609">[UPDATE_no_match]</text>
+
+          <path class="edge edge-worker trace" d="M520 620 L930 220"></path>
+          <text class="edge-label" x="700" y="420">copy -> write -> read loop</text>
+          <path class="edge edge-storage trace" d="M930 220 L930 295"></path>
+          <text class="edge-label" x="938" y="258">write output</text>
+          <path class="edge edge-storage trace" d="M930 345 L930 420"></path>
+          <text class="edge-label" x="938" y="382">read next customer</text>
+          <path class="edge edge-storage trace" d="M930 470 L980 470 L980 760 L745 760 L745 690"></path>
+          <text class="edge-label" x="820" y="748">position until key reached</text>
+
+          <path class="edge edge-storage" d="M990 585 L1015 585"></path>
+          <text class="edge-label" x="998" y="572">write diagnostics</text>
+          <path class="edge edge-core" d="M610 835 L880 835 L880 730 L1000 730"></path>
+          <text class="edge-label" x="700" y="826">[WS-TRAN-OK = Y] echo processed</text>
+          <path class="edge edge-core" d="M180 145 L1000 145"></path>
+          <text class="edge-label" x="630" y="137">startup -> files and report</text>
+
+          <rect class="node core node-hit" data-node="Main_Entry" x="100" y="20" width="160" height="50"></rect>
+          <text class="n-title" x="180" y="48" text-anchor="middle">000-MAIN</text>
+
+          <rect class="node worker node-hit" data-node="Read_Transaction" x="100" y="145" width="160" height="50"></rect>
+          <text class="n-title" x="180" y="173" text-anchor="middle">Read Transaction</text>
+
+          <rect class="node worker node-hit" data-node="EOF_Gate" x="100" y="270" width="160" height="50"></rect>
+          <text class="n-title" x="180" y="298" text-anchor="middle">EOF Gate</text>
+
+          <rect class="node worker node-hit" data-node="Sequence_Gate" x="390" y="270" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="298" text-anchor="middle">Sequence Gate</text>
+
+          <rect class="node worker node-hit" data-node="Dispatch_Gate" x="390" y="395" width="220" height="50"></rect>
+          <text class="n-title" x="500" y="423" text-anchor="middle">Dispatch Gate</text>
+
+          <rect class="node aux node-hit" data-node="Update_Handler" x="260" y="545" width="150" height="50"></rect>
+          <text class="n-title" x="335" y="575" text-anchor="middle">Update</text>
+
+          <rect class="node aux node-hit" data-node="Add_Handler" x="450" y="545" width="150" height="50"></rect>
+          <text class="n-title" x="525" y="575" text-anchor="middle">Add</text>
+
+          <rect class="node aux node-hit" data-node="Delete_Handler" x="640" y="545" width="150" height="50"></rect>
+          <text class="n-title" x="715" y="575" text-anchor="middle">Delete</text>
+
+          <rect class="node worker node-hit" data-node="Position_Customer" x="260" y="690" width="530" height="50"></rect>
+          <text class="n-title" x="525" y="720" text-anchor="middle">720-POSITION-CUST-FILE</text>
+
+          <rect class="node core node-hit" data-node="Call_SAM2" x="260" y="810" width="170" height="50"></rect>
+          <text class="n-title" x="345" y="840" text-anchor="middle">CALL SAM2</text>
+
+          <rect class="node core node-hit" data-node="Write_New_Record" x="440" y="810" width="170" height="50"></rect>
+          <text class="n-title" x="525" y="840" text-anchor="middle">Write New Record</text>
+
+          <rect class="node core node-hit" data-node="Delete_By_ReadAhead" x="620" y="810" width="170" height="50"></rect>
+          <text class="n-title" x="705" y="840" text-anchor="middle">Delete By Read-Ahead</text>
+
+          <rect class="node storage node-hit" data-node="Bad_Transaction" x="820" y="560" width="170" height="50"></rect>
+          <text class="n-title" x="905" y="590" text-anchor="middle">Bad Transaction</text>
+
+          <rect class="node storage node-hit" data-node="Open_Init" x="1000" y="120" width="100" height="50"></rect>
+          <text class="n-title" x="1050" y="150" text-anchor="middle">Open/Init</text>
+
+          <rect class="node storage node-hit" data-node="Copy_Record" x="860" y="195" width="140" height="50"></rect>
+          <text class="n-title" x="930" y="225" text-anchor="middle">Copy Record</text>
+
+          <rect class="node storage node-hit" data-node="Write_Custout" x="860" y="295" width="140" height="50"></rect>
+          <text class="n-title" x="930" y="325" text-anchor="middle">Write CUSTOUT</text>
+
+          <rect class="node storage node-hit" data-node="Read_Customer" x="860" y="420" width="140" height="50"></rect>
+          <text class="n-title" x="930" y="450" text-anchor="middle">Read Customer</text>
+
+          <rect class="node storage node-hit" data-node="Report_File" x="1015" y="570" width="100" height="50"></rect>
+          <text class="n-title" x="1065" y="600" text-anchor="middle">CUSTRPT</text>
+
+          <rect class="node storage node-hit" data-node="Processed_Report" x="1000" y="705" width="100" height="50"></rect>
+          <text class="n-title" x="1050" y="735" text-anchor="middle">Echo OK</text>
+
+          <rect class="node storage node-hit" data-node="Stats_Report" x="1000" y="95" width="100" height="50"></rect>
+          <text class="n-title" x="1050" y="125" text-anchor="middle">Stats</text>
+
+          <rect class="node storage node-hit" data-node="File_State" x="720" y="190" width="110" height="50"></rect>
+          <text class="n-title" x="775" y="220" text-anchor="middle">WS Flags</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="pane-head">DETAILS</div>
+      <div class="pane-body" id="detailPanel"></div>
+    </section>
+  </div>
+
+  <script>
+    const defaultHtml = `
+      <div class="kv"><span class="k">Program</span><span class="v">SAM1 sorted transaction driver.</span></div>
+      <div class="kv"><span class="k">Focus</span><span class="v">Dispatch by transaction code, sorted customer positioning, and EOF remainder-copy semantics.</span></div>
+      <div class="kv"><span class="k">Key Rule</span><span class="v">Transaction EOF does not end output immediately; it drains remaining customer records through 721-COPY-RECORDS.</span></div>
+      <div class="kv"><span class="k">Callout</span><span class="v">Only the update path calls SAM2. Add and delete stay inside SAM1 after customer positioning.</span></div>
+    `;
+
+    const details = {
+      Main_Entry: { type: "core", desc: "000-MAIN accepts timestamps, opens files, initializes the report, primes the customer file, loops on transactions, then writes stats and closes.", links: "Read_Transaction, Open_Init, Stats_Report" },
+      Read_Transaction: { type: "worker", desc: "710-READ-TRAN-FILE reads TRANFILE, sets WS-TRAN-EOF, and on EOF triggers remaining record copy from customer input.", links: "EOF_Gate, File_State, Copy_Record" },
+      EOF_Gate: { type: "worker", desc: "Decision after each transaction read: [EOF] drain the customer file to output, [NOT_EOF] continue transaction processing.", links: "Read_Transaction, Copy_Record, Sequence_Gate" },
+      Sequence_Gate: { type: "worker", desc: "Rejects out-of-sequence transactions when TRAN-KEY < WS-PREV-TRAN-KEY and the record is not a comment.", links: "Dispatch_Gate, Bad_Transaction" },
+      Dispatch_Gate: { type: "worker", desc: "EVALUATE TRAN-CODE into [UPDATE], [ADD], [DELETE], or invalid OTHER path.", links: "Update_Handler, Add_Handler, Delete_Handler, Bad_Transaction" },
+      Update_Handler: { type: "aux", desc: "Increments update request count, positions the customer file, and on match CALLs SAM2. Missing key or SAM2 failure goes to bad transaction reporting.", links: "Position_Customer, Call_SAM2, Bad_Transaction" },
+      Add_Handler: { type: "aux", desc: "Increments add request count, positions the customer file, rejects duplicate keys, or initializes a blank customer record and writes it.", links: "Position_Customer, Write_New_Record, Bad_Transaction" },
+      Delete_Handler: { type: "aux", desc: "Increments delete request count, positions the customer file, rejects no-match deletes, or removes the record by reading customer input forward without writing it.", links: "Position_Customer, Delete_By_ReadAhead, Bad_Transaction" },
+      Position_Customer: { type: "worker", desc: "720-POSITION-CUST-FILE advances through sorted customer input by repeatedly copying records until CUST-KEY >= TRAN-KEY or customer EOF.", links: "Copy_Record, Read_Customer, Write_Custout" },
+      Copy_Record: { type: "storage", desc: "721-COPY-RECORDS moves CUST-REC to WS-CUST-REC, writes it to output, then reads the next customer record.", links: "Write_Custout, Read_Customer" },
+      Write_Custout: { type: "storage", desc: "740-WRITE-CUSTOUT-FILE chooses A or contact layout and writes CUSTOMER-FILE-OUT.", links: "Position_Customer, Copy_Record" },
+      Read_Customer: { type: "storage", desc: "730-READ-CUSTOMER-FILE updates WS-CUST-FILE-EOF and customer input status handling.", links: "Position_Customer, File_State" },
+      Call_SAM2: { type: "core", desc: "Only the update path leaves SAM1: CALL SAM2 USING customer record, transaction record, return flag, and message.", links: "Update_Handler, Processed_Report, Bad_Transaction" },
+      Write_New_Record: { type: "core", desc: "Add path initializes WS-CUST fields and twelve month slots to zero, then writes the new output record.", links: "Add_Handler, Write_Custout, Processed_Report" },
+      Delete_By_ReadAhead: { type: "core", desc: "Delete success path advances the customer input by one record without writing the matched record, effectively suppressing it from output.", links: "Delete_Handler, Read_Customer, Processed_Report" },
+      Bad_Transaction: { type: "storage", desc: "299-REPORT-BAD-TRAN sets WS-TRAN-OK to N, increments NUM-TRAN-ERRORS, and writes diagnostic report lines plus the raw transaction record.", links: "Report_File" },
+      Open_Init: { type: "storage", desc: "700-OPEN-FILES and 800-INIT-REPORT open input/output files and write the initial report header with accepted date/time.", links: "Main_Entry, Report_File" },
+      Processed_Report: { type: "storage", desc: "830-REPORT-TRAN-PROCESSED writes a processed-transaction echo whenever WS-TRAN-OK remains Y.", links: "Report_File" },
+      Stats_Report: { type: "storage", desc: "850-REPORT-TRAN-STATS writes final add/delete/update summary counts after the main loop terminates.", links: "Report_File, Main_Entry" },
+      File_State: { type: "storage", desc: "Working-storage flags and file statuses: WS-TRAN-EOF, WS-CUST-FILE-EOF, and the file status fields control termination and error reporting.", links: "Read_Transaction, Read_Customer, EOF_Gate" },
+      Report_File: { type: "storage", desc: "CUSTRPT receives bad transaction diagnostics, processed transaction echoes, and final statistics.", links: "Bad_Transaction, Processed_Report, Stats_Report" }
+    };
+
+    const panel = document.getElementById("detailPanel");
+    panel.innerHTML = defaultHtml;
+    const sourceLines = document.querySelectorAll(".code-line[data-node]");
+    const nodes = document.querySelectorAll(".node-hit");
+
+    function renderDetails(nodeId) {
+      const d = details[nodeId];
+      if (!d) {
+        panel.innerHTML = defaultHtml;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="kv"><span class="k">Resource</span><span class="v">${nodeId}</span></div>
+        <div class="kv"><span class="k">Type</span><span class="v">${d.type}</span></div>
+        <div class="kv"><span class="k">Description</span><span class="v">${d.desc}</span></div>
+        <div class="kv"><span class="k">Connections</span><span class="v">${d.links}</span></div>
+      `;
+    }
+
+    function clearSourceHighlights() {
+      sourceLines.forEach((line) => line.classList.remove("active"));
+    }
+
+    nodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const id = node.getAttribute("data-node");
+        node.classList.add("hover");
+        clearSourceHighlights();
+        sourceLines.forEach((line) => {
+          if (line.getAttribute("data-node") === id) {
+            line.classList.add("active");
+            line.scrollIntoView({ block: "nearest" });
+          }
+        });
+        renderDetails(id);
+      });
+
+      node.addEventListener("mouseleave", () => {
+        node.classList.remove("hover");
+        clearSourceHighlights();
+        panel.innerHTML = defaultHtml;
+      });
+    });
+  </script>
+</body>
+</html>
