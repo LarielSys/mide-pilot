@@ -8263,3 +8263,4 @@
 2026-05-04T23:16:20-04:00 | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
 2026-05-04T23:17:20-04:00 | mode=running | last_task=MTASK-0099 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0099_restart_customide_backend.sh.
 2026-05-04T23:17:21-04:00 | mode=running | last_task=MTASK-0099 | note=Task completed successfully (MTASK-0099).
+2026-05-04T23:18:23-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=113, eligible=0, mismatched=0.
