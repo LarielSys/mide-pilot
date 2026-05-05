@@ -1,13 +1,13 @@
 {
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
-  "mode": "running",
-  "last_run_utc": "2026-05-05T02:31:56Z",
-  "last_run_local": "2026-05-04T22:31:56-04:00",
+  "mode": "idle",
+  "last_run_utc": "2026-05-05T02:32:57Z",
+  "last_run_local": "2026-05-04T22:32:57-04:00",
   "log_timezone": "America/New_York",
-  "last_task_processed": "MTASK-0093-RETRY1",
+  "last_task_processed": "",
   "poll_seconds": 60,
-  "note": "Task completed successfully (MTASK-0093-RETRY1).",
+  "note": "No assigned mtasks found; sleeping until next poll. approved=107, eligible=0, mismatched=0.",
   "customide_backend_state": "up",
   "customide_frontend_state": "up",
   "customide_stack_state": "healthy"
