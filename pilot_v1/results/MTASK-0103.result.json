@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0103",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0103\nobjective=write_services_manifest_and_final_verify\ntimestamp_utc=2026-05-05T03:30:53Z\ncode_server_port8092=302\ncode_server_status=UP\nollama_port11434=200\nollama_status=UP\ncustomide_backend_port5555=200\ncustomide_backend_status=UP\nitheia_llm_port8082=200\nitheia_llm_status=UP\ncustomide_frontend_port5570=200\ncustomide_frontend_status=UP\nollama_models_confirmed=qwen2.5-coder:14b\nmanifest_written=/home/larieladmin/mide-pilot/pilot_v1/state/worker1_services.json\nservices_up=5/5\n 1 file changed, 43 insertions(+)\n create mode 100644 pilot_v1/state/worker1_services.json\nTo https://github.com/LarielSys/mide-pilot.git\n   998175b3..908dfd5d  main -> main\nfinal_disk=85%\nfinal_status=ALL_SERVICES_UP\nsnapshot=complete",
+  "stderr_excerpt": "<stdin>:20: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).",
+  "timestamp_utc": "2026-05-05T03:30:54Z"
+}
