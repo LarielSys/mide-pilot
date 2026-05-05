@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>CustomIDE Cockpit</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>MIDE Trace Console</title>
+  <link rel="stylesheet" href="css/style.css?v=20260425k">
   <script>
     (function cockpitResetBootstrap() {
       const resetUrl = "../../state/cockpit_hard_reset_request.json";
       const resetNonceKey = "cockpit_hard_reset_last_nonce";
+      const enableHardReset = new URLSearchParams(window.location.search).get("hard_reset") === "1";
+
+      if (!enableHardReset) {
+        return;
+      }
 
       function forceReload(nonce, reason) {
         try {
@@ -45,50 +50,188 @@
   </script>
 </head>
 <body>
-  <div class="bg-orbit"></div>
+  <div class="scan-grid"></div>
 
-  <header class="topbar">
-    <div class="brand">CustomIDE Cockpit</div>
-    <div class="status" id="backendStatus">Backend: checking...</div>
-    <div class="status" id="llmHealthBadge">LLM: checking...</div>
-    <div class="status" id="syncHealthBadge">Sync: checking...</div>
-    <div class="status" id="lastRefresh">Last refresh: --</div>
+  <header class="app-shell-topbar">
+    <div class="topbar-left">
+      <span class="pill pill-live">LIVE</span>
+      <div class="brand-block">
+        <div class="brand-title">MIDE TRACE CONSOLE</div>
+        <div class="brand-meta">local ide · ollama code lane · remote git enabled</div>
+      </div>
+    </div>
+    <div class="topbar-center">
+      <span class="pill pill-trace">TRACE</span>
+      <span class="topbar-mode">THREE-PANE IDE</span>
+      <span class="topbar-divider">·</span>
+      <span class="topbar-mode">LOCALHOST PREVIEW</span>
+    </div>
+    <div class="topbar-right">
+      <div class="status-chip" id="backendStatus">Backend: checking...</div>
+      <div class="status-chip" id="llmHealthBadge">LLM: checking...</div>
+      <div class="status-chip" id="syncHealthBadge">Sync: checking...</div>
+      <div class="status-chip" id="lastRefresh">Last refresh: --</div>
+    </div>
   </header>
 
-  <main class="cockpit-grid">
-    <section class="panel panel-live">
-      <h3>Autopilot Live</h3>
-      <pre id="autopilotSummary">waiting...</pre>
+  <main class="app-layout">
+    <aside class="pane pane-left">
+      <section class="panel panel-scroll">
+        <div class="panel-header">
+          <span class="panel-tag panel-tag-live">LIVE</span>
+          <h3>EXPLORER</h3>
+        </div>
+        <div class="panel-body">
+          <div class="info-stack" id="programMeta">
+            <div class="info-line">program: waiting...</div>
+            <div class="info-line">language: waiting...</div>
+            <div class="info-line">entry: waiting...</div>
+            <div class="info-line">process: waiting...</div>
+            <div class="info-line">output: waiting...</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-scroll">
+        <div class="panel-header">
+          <h3>WORKSPACE TREE</h3>
+        </div>
+        <div class="panel-body">
+          <div class="tree-column" id="routeList">
+            <div class="tree-item muted">Waiting for workspace data...</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-scroll">
+        <div class="panel-header">
+          <h3>SOURCE CONTROL</h3>
+        </div>
+        <div class="panel-body compact-body">
+          <div class="git-controls">
+            <input id="gitRemoteUrl" type="text" placeholder="https://github.com/owner/repo.git">
+            <div class="git-actions">
+              <button id="gitConnectBtn" type="button">Connect</button>
+              <button id="gitFetchBtn" type="button">Fetch</button>
+              <button id="gitPullBtn" type="button">Pull</button>
+              <button id="gitPushBtn" type="button">Push</button>
+            </div>
+            <div id="gitOpResult" class="git-op-result">Git remote operations ready.</div>
+          </div>
+          <pre id="gitPanel">waiting...</pre>
+        </div>
+      </section>
+
+      <section class="panel panel-scroll">
+        <div class="panel-header">
+          <h3>PROBLEMS / SIGNALS</h3>
+        </div>
+        <div class="panel-body two-previews">
+          <pre id="syncCadencePanel">waiting...</pre>
+          <pre id="tokenPanel">waiting...</pre>
+        </div>
+      </section>
+    </aside>
+
+    <section class="pane pane-center">
+      <section class="panel panel-editor-shell">
+        <div class="editor-tabs" id="editorTabs">
+          <div class="editor-tab active">main.py</div>
+          <div class="editor-tab">copilot.chat.ts</div>
+          <div class="editor-tab">runtime.log</div>
+        </div>
+        <div class="panel-header panel-header-inline">
+          <span class="panel-tag panel-tag-trace">EDITOR</span>
+          <h3>CODE COLUMN</h3>
+        </div>
+        <div class="panel-body editor-body">
+          <div class="editor-toolbar">
+            <div class="editor-breadcrumb" id="editorBreadcrumb">workspace / app / main.py</div>
+            <div class="editor-actions">
+              <span class="summary-chip" id="flowSummaryStats">loading summary...</span>
+              <span class="summary-chip" id="flowSummaryPath">loading path...</span>
+            </div>
+          </div>
+
+          <div class="editor-stage">
+            <div class="editor-gutter" id="editorGutter">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16</div>
+            <pre class="code-editor" id="codeEditor">loading editor...</pre>
+          </div>
+
+          <div class="editor-lower-grid">
+            <div class="mini-panel mini-panel-symbols">
+              <div class="mini-panel-title">OPEN SYMBOLS</div>
+              <div class="list-column" id="symbolList">
+                <div class="list-item muted">Waiting for symbols...</div>
+              </div>
+            </div>
+            <div class="mini-panel mini-panel-flow">
+              <div class="mini-panel-title">FLOW MAP</div>
+              <div class="section-lane" id="flowSections">
+                <div class="section-block">
+                  <div class="section-caption">INITIALIZATION</div>
+                  <div class="node-grid single-column">
+                    <div class="node-card">
+                      <div class="node-code">S01-01</div>
+                      <div class="node-name">Waiting...</div>
+                      <div class="node-desc">Flow sections will appear here.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mini-panel mini-panel-model">
+              <div class="mini-panel-title">MODEL / PROBLEMS</div>
+              <div class="two-previews">
+                <pre id="ollamaPanel">waiting...</pre>
+                <pre id="runtimePanel">waiting...</pre>
+              </div>
+            </div>
+            <div class="mini-panel mini-panel-terminal">
+              <div class="mini-panel-title">INTEGRATED TERMINAL</div>
+              <div id="workerLogPanel" class="scroll-log"></div>
+            </div>
+          </div>
+        </div>
+      </section>
     </section>
 
-    <section class="panel panel-events">
-      <h3>Autopilot Events</h3>
-      <div id="workerLogPanel" class="scroll-log"></div>
-    </section>
-
-    <section class="panel panel-git">
-      <h3>Git Sync</h3>
-      <pre id="gitPanel">waiting...</pre>
-    </section>
-
-    <section class="panel panel-cadence">
-      <h3>Sync Cadence</h3>
-      <pre id="syncCadencePanel">waiting...</pre>
-    </section>
-
-    <section class="panel panel-token">
-      <h3>Token Counters</h3>
-      <pre id="tokenPanel">waiting...</pre>
-    </section>
-
-    <section class="panel panel-ollama">
-      <h3>Ollama / Cost Mode</h3>
-      <pre id="ollamaPanel">waiting...</pre>
-    </section>
-
+    <aside class="pane pane-right">
+      <section class="panel panel-chat">
+        <div class="panel-header">
+          <span class="panel-tag panel-tag-ai">AI</span>
+          <h3>COPILOT CHAT</h3>
+        </div>
+        <div class="panel-body">
+          <div class="response-stream" id="autopilotSummary">waiting...</div>
+          <div class="chat-composer">
+            <textarea id="chatPromptInput" placeholder="Ask Ollama about the active file, symbol, or current code."></textarea>
+            <div class="chat-composer-actions">
+              <div id="chatPromptStatus" class="chat-prompt-status">Ollama chat ready.</div>
+              <button id="chatPromptSend" type="button">Send</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </aside>
   </main>
 
-  <script src="js/config.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/config.js?v=20260425k"></script>
+  <script src="js/app.js?v=20260425k"></script>
 </body>
 </html>

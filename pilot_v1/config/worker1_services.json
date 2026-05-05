@@ -9,8 +9,9 @@
     },
     "ollama": {
       "local_port": 11434,
-      "model_primary": "qwen2.5",
+      "model_primary": "qwen2.5-coder:14b",
       "version": "ollama version is 0.21.0",
+      "ollama_generate_url": "http://127.0.0.1:11434/api/generate",
       "proxy_endpoint": "https://jawed-lapel-dispersed.ngrok-free.dev/api/ollama",
       "status": "ok"
     },

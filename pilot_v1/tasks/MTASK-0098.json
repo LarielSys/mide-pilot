@@ -1,0 +1,34 @@
+{
+  "task_id": "MTASK-0098",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "code-server is UP (MTASK-0097 success). Now diagnose and restart site_kb_server on port 8091. Find the Python entrypoint, kill stale process, start detached, verify HTTP response. Report entrypoint path found or NOT_FOUND so operator can debug.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0098_restart_site_kb_server.sh",
+  "moss_labels": [
+    "moss/customide",
+    "worker/site-kb",
+    "worker/recovery"
+  ],
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": [
+    "pilot_v1/results",
+    "pilot_v1/state"
+  ],
+  "blocked_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/approvals"
+  ],
+  "required_validation": [
+    "snapshot=complete"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 120,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T03:15:00Z"
+}

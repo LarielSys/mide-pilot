@@ -142,7 +142,7 @@ def get_runtime_status() -> dict:
         },
         "cost_mode": {
             "inference_policy": "ollama_local_first",
-            "notes": "Use local Ollama for chat/summaries; reserve paid endpoints for exceptions.",
+            "notes": "Use Ollama for both chat and coding in the local IDE.",
         },
     }
 

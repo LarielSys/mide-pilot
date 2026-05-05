@@ -6,9 +6,14 @@ class Settings(BaseSettings):
     app_env: str = "development"
     app_host: str = "127.0.0.1"
     app_port: int = 5555
+    # Leave empty by default so endpoint resolution can use worker1_services.json.
+    ollama_url: str = ""
 
-    # This file is produced by MTASK-0034 on Worker 1 and consumed by the backend.
-    worker_services_config_path: str = "pilot_v1/config/worker1_services.json"
+    # Relative to customide repo root: ../config/worker1_services.json
+    worker_services_config_path: str = "../config/worker1_services.json"
+
+    # Relative to customide repo root: shared history used by both local/remote IDE chats.
+    llm_chat_history_path: str = "../state/shared_llm_chat_history.json"
 
     request_timeout_seconds: int = 30
 

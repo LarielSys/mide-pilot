@@ -12,6 +12,15 @@ Instruction unit naming: mtask (Moss task).
 
 In v1 repository paths, mtask artifacts are stored in existing task/result/approval JSON structures for backward compatibility.
 
+### Moss Visualization Uniformity Rules
+All MOSS visualizations must follow one interaction contract.
+
+1. Use a 3-pane layout: source on left, component diagram in center, details on right.
+2. Hovering a diagram component must highlight corresponding source lines in the left pane.
+3. Hovering a diagram component must update component details in the right pane.
+4. Color semantics must stay stable across diagrams (core, support, worker, storage).
+5. New MOSS visualization artifacts must match this contract before review/approval.
+
 ## Main IDE Responsibilities
 The Main IDE is responsible for:
 
