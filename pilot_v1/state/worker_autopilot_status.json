@@ -1,13 +1,13 @@
 {
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
-  "mode": "running",
-  "last_run_utc": "2026-05-05T02:23:44Z",
-  "last_run_local": "2026-05-04T22:23:44-04:00",
+  "mode": "idle",
+  "last_run_utc": "2026-05-05T02:24:48Z",
+  "last_run_local": "2026-05-04T22:24:48-04:00",
   "log_timezone": "America/New_York",
-  "last_task_processed": "MTASK-0093",
+  "last_task_processed": "",
   "poll_seconds": 60,
-  "note": "Task failed: executor script not found (MTASK-0093).",
+  "note": "No assigned mtasks found; sleeping until next poll. approved=106, eligible=0, mismatched=0.",
   "customide_backend_state": "up",
   "customide_frontend_state": "up",
   "customide_stack_state": "healthy"
