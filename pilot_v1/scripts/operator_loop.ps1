@@ -165,11 +165,11 @@ Write-Log "=== OPERATOR LOOP STARTED | poll=${PollSeconds}s | repo=${RepoRoot} =
 $state = Get-Processed
 
 while ($true) {
-    # 1. Pull latest from GitHub (stash local changes first to avoid pull conflicts)
-    git -C $RepoRoot stash --quiet 2>&1 | Out-Null
-    $pullOut = git -C $RepoRoot pull origin main --rebase --quiet 2>&1
-    git -C $RepoRoot stash pop --quiet 2>&1 | Out-Null
-    if ($pullOut -match "error|fatal") {
+    # 1. Pull latest from GitHub (discard any local unstaged changes to avoid conflicts)
+    git -C $RepoRoot checkout -- . 2>&1 | Out-Null
+    git -C $RepoRoot clean -fd --exclude="pilot_v1/state/" --exclude="pilot_v1/tasks/" --exclude="pilot_v1/scripts/" --exclude="pilot_v1/results/" 2>&1 | Out-Null
+    $pullOut = git -C $RepoRoot pull origin main --no-rebase 2>&1
+    if ($pullOut -match "error|fatal|CONFLICT") {
         Write-Log "GIT PULL ERROR: $pullOut"
     }
 
