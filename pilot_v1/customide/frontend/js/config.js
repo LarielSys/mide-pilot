@@ -11,5 +11,11 @@ window.CUSTOMIDE_CONFIG = {
     tokens: "../TOKEN_COUNTER_TASKS.txt",
     hardReset: "../../state/cockpit_hard_reset_request.json"
   },
-  workerServicesPath: "../../config/worker1_services.json"
+  workerServicesPath: "../../config/worker1_services.json",
+  messenger: {
+    mode: "custom-json",
+      url: "http://127.0.0.1:5555/api/messenger",
+    authHeader: "",
+    model: "messenger-adapter"
+  }
 };

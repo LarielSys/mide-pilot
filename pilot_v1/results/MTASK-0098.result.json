@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0098",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0098\nobjective=restart_site_kb_server\ntimestamp_utc=2026-05-05T03:13:09Z\ncurrent_port8091=000000\nkb_pid_before=none\nkb_candidates=\nfound_at_known_path=/home/larieladmin/Documents/itheia-llm/server.py\nkb_entrypoint=/home/larieladmin/Documents/itheia-llm/server.py\nkb_server_started_pid=272388\nport8091_after_start=000000\nsite_kb_status=FAIL_HTTP_000000\nlog_tail=\niTHEIA LLM Server\nOllama: http://localhost:11434 (qwen2.5-coder:14b)\nRAG: 166 documents\nStarting on http://localhost:8082\n\n * Serving Flask app 'server'\n * Debug mode: off\nAddress already in use\nPort 8082 is in use by another program. Either identify and stop that program, or start the server with a different port.\nsnapshot=complete",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-05T03:13:17Z"
+}

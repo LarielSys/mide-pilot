@@ -2,10 +2,11 @@
   const cfg = window.CUSTOMIDE_CONFIG || { backendBaseUrl: "http://127.0.0.1:5555" };
   const enableHardReset = new URLSearchParams(window.location.search).get("hard_reset") === "1";
   const refreshIntervalMs = Number(cfg.refreshIntervalMs || 2500);
-  const llmRefreshEvery = 5;
+  const llmRefreshEvery = 1;
   let tick = 0;
   let activeBackendBaseUrl = "";
   let lastErrorText = "";
+  let lastKnownLlm = { status: "pending", source_key: "n/a" };
 
   // --- Event buffer state ---
   let eventBuffer = [];   // { line, color, ts_iso }
@@ -1315,12 +1316,14 @@
     if (forceLlm) {
       try {
         const llm = await fetchJson("/api/llm/health");
+        lastKnownLlm = llm;
         renderOllama(runtime, llm);
       } catch (_err) {
-        renderOllama(runtime, { status: "offline", source_key: "n/a" });
+        lastKnownLlm = { status: "offline", source_key: "n/a" };
+        renderOllama(runtime, lastKnownLlm);
       }
     } else {
-      renderOllama(runtime, null);
+      renderOllama(runtime, lastKnownLlm);
     }
 
     lastRefreshEl.textContent = "Last refresh: " + new Date().toLocaleTimeString();
@@ -1388,6 +1391,365 @@
       }
     }, refreshIntervalMs);
   }
+
+  // ── Cockpit AI Chat ────────────────────────────────────────────────────
+  (function initCockpitChat() {
+    const threadStorageKey = "cockpit_chat_threads_v1";
+    const chatMessages = document.getElementById("chatMessages");
+    const chatInput    = document.getElementById("chatInput");
+    const chatSend     = document.getElementById("chatSend");
+    const chatClear    = document.getElementById("chatClear");
+    const chatTabCockpit = document.getElementById("chatTabCockpit");
+    const chatTabMessenger = document.getElementById("chatTabMessenger");
+    const chatChannelTitle = document.getElementById("chatChannelTitle");
+    const chatChannelTag = document.getElementById("chatChannelTag");
+
+    let chatBusy = false;
+    let activeChannel = "cockpit";
+
+    const defaultThreads = {
+      cockpit: {
+        title: "Cockpit AI",
+        tag: "qwen2.5-coder:14b",
+        placeholder: "ask the cockpit AI...",
+        messages: [
+          { role: "ai", text: "Ready. I have access to live cockpit state." }
+        ]
+      },
+      messenger: {
+        title: "Messenger",
+        tag: "ole green",
+        placeholder: "message ole green...",
+        messages: [
+          { role: "ai", text: "Messenger ready. Set CUSTOMIDE_CONFIG.messenger.url to connect." }
+        ]
+      }
+    };
+
+    function safeCloneThreads() {
+      return {
+        cockpit: {
+          title: defaultThreads.cockpit.title,
+          tag: defaultThreads.cockpit.tag,
+          placeholder: defaultThreads.cockpit.placeholder,
+          messages: defaultThreads.cockpit.messages.slice()
+        },
+        messenger: {
+          title: defaultThreads.messenger.title,
+          tag: defaultThreads.messenger.tag,
+          placeholder: defaultThreads.messenger.placeholder,
+          messages: defaultThreads.messenger.messages.slice()
+        }
+      };
+    }
+
+    let threads = safeCloneThreads();
+
+    function loadThreads() {
+      try {
+        const raw = localStorage.getItem(threadStorageKey);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        for (const name of ["cockpit", "messenger"]) {
+          const saved = parsed && parsed[name];
+          if (!saved || !Array.isArray(saved.messages)) continue;
+          threads[name].messages = saved.messages
+            .filter(m => m && typeof m.text === "string" && typeof m.role === "string")
+            .slice(-120);
+          if (threads[name].messages.length === 0) {
+            threads[name].messages = defaultThreads[name].messages.slice();
+          }
+        }
+      } catch (_err) {
+        threads = safeCloneThreads();
+      }
+    }
+
+    function saveThreads() {
+      try {
+        const slim = {
+          cockpit: { messages: threads.cockpit.messages.slice(-120) },
+          messenger: { messages: threads.messenger.messages.slice(-120) }
+        };
+        localStorage.setItem(threadStorageKey, JSON.stringify(slim));
+      } catch (_err) {
+        // Ignore storage failures.
+      }
+    }
+
+    // Clear history
+    chatClear.addEventListener("click", () => {
+      const defaultMsg = activeChannel === "cockpit"
+        ? "Cleared. I still have access to current cockpit state."
+        : "Cleared. Messenger is ready.";
+      threads[activeChannel].messages = [{ role: "ai", text: defaultMsg }];
+      saveThreads();
+      renderActiveThread();
+    });
+
+    chatTabCockpit.addEventListener("click", () => setActiveChannel("cockpit"));
+    chatTabMessenger.addEventListener("click", () => setActiveChannel("messenger"));
+
+    // Send on Enter (Shift+Enter = newline)
+    chatInput.addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendChat();
+      }
+    });
+    chatSend.addEventListener("click", sendChat);
+
+    function renderActiveThread() {
+      chatMessages.innerHTML = "";
+      const items = threads[activeChannel].messages || [];
+      for (const msg of items) {
+        const div = document.createElement("div");
+        div.className = "chat-msg chat-msg-" + msg.role;
+        div.textContent = msg.text;
+        chatMessages.appendChild(div);
+      }
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function setActiveChannel(channel) {
+      activeChannel = channel;
+      const meta = threads[channel];
+      chatChannelTitle.textContent = meta.title;
+      chatChannelTag.textContent = meta.tag;
+      chatInput.placeholder = meta.placeholder;
+      chatTabCockpit.classList.toggle("chat-tab-active", channel === "cockpit");
+      chatTabMessenger.classList.toggle("chat-tab-active", channel === "messenger");
+      renderActiveThread();
+      chatInput.focus();
+    }
+
+    function appendChatMsg(text, role, channel) {
+      const targetChannel = channel || activeChannel;
+      const list = threads[targetChannel].messages;
+      list.push({ role, text: String(text) });
+      if (list.length > 120) list.splice(0, list.length - 120);
+      saveThreads();
+
+      if (targetChannel !== activeChannel) return null;
+      const div = document.createElement("div");
+      div.className = "chat-msg chat-msg-" + role;
+      div.textContent = text;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return div;
+    }
+
+    function buildCockpitContext() {
+      // Gather live cockpit state from the DOM panels and variables
+      const lines = [
+        "=== COCKPIT STATE SNAPSHOT ===",
+        "backend_status: " + (statusEl ? statusEl.textContent : "n/a"),
+        "llm_status: "     + (llmBadgeEl ? llmBadgeEl.textContent : "n/a"),
+        "sync_status: "    + (syncBadgeEl ? syncBadgeEl.textContent : "n/a"),
+        "last_refresh: "   + (lastRefreshEl ? lastRefreshEl.textContent : "n/a"),
+        "",
+        "autopilot_summary:\n" + (autopilotSummaryEl ? autopilotSummaryEl.textContent : "n/a"),
+        "",
+        "git_panel:\n"     + (gitPanelEl ? gitPanelEl.textContent : "n/a"),
+        "",
+        "token_panel:\n"   + (tokenPanelEl ? tokenPanelEl.textContent : "n/a"),
+        "",
+        "ollama_panel:\n"  + (ollamaPanelEl ? ollamaPanelEl.textContent : "n/a"),
+        "=== END STATE ===",
+        "",
+        "You are the CustomIDE Cockpit AI. You have access to the above live cockpit state.",
+        "You help the developer understand what the autopilot is doing, debug issues,",
+        "review task and token data, and answer questions about the system.",
+        "Be concise. Use the cockpit state above when answering.",
+        ""
+      ];
+      return lines.join("\n");
+    }
+
+    async function sendMessenger(raw) {
+      const messengerCfg = cfg.messenger || {};
+      const endpoint = String(messengerCfg.url || "").trim();
+      if (!endpoint) {
+        throw new Error("Messenger endpoint is not configured.");
+      }
+
+      const headers = { "Content-Type": "application/json" };
+      if (messengerCfg.authHeader) {
+        headers.Authorization = messengerCfg.authHeader;
+      }
+
+      const payload = {
+        message: raw,
+        text: raw,
+        channel: "main",
+        from: "cockpit",
+        model: messengerCfg.model || "messenger-adapter",
+        timestamp: new Date().toISOString()
+      };
+
+      const resp = await fetch(endpoint, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(90000)
+      });
+
+      if (!resp.ok) {
+        return "[HTTP " + resp.status + "] " + await resp.text();
+      }
+
+      const data = await resp.json();
+      // Return null so the send side doesn't echo the ack — reply comes via WS
+      return null;
+    }
+
+    // ── WebSocket listener: receive messages from Ole Green ────────────
+    (function connectRelayWs() {
+      const messengerCfg = cfg.messenger || {};
+      const httpUrl = String(messengerCfg.url || "").trim();
+      if (!httpUrl) return;
+
+      // Derive ws:// URL from the http URL (same host, port+1)
+      let wsUrl;
+      try {
+        const u = new URL(httpUrl);
+        wsUrl = "ws://" + u.hostname + ":" + (parseInt(u.port || "8787") + 1);
+      } catch (_) {
+        wsUrl = "ws://127.0.0.1:8788";
+      }
+
+      let ws = null;
+      let retryDelay = 2000;
+
+      function connect() {
+        try {
+          ws = new WebSocket(wsUrl);
+        } catch (err) {
+          setTimeout(connect, retryDelay);
+          return;
+        }
+
+        ws.addEventListener("open", () => {
+          ws.send(JSON.stringify({ join: "main" }));
+          retryDelay = 2000;
+          // Update tag to show connected
+          if (activeChannel === "messenger" && chatChannelTag) {
+            chatChannelTag.textContent = "ole green \u25CF";
+          }
+        });
+
+        ws.addEventListener("message", evt => {
+          let data;
+          try { data = JSON.parse(evt.data); } catch (_) { return; }
+
+          // Ignore our own join-ack and ignore messages we sent
+          if (data.event === "joined") return;
+          const sender = String(data.from || data.username || "");
+          if (sender === "cockpit") return;
+
+          const text = String(
+            data.text || data.body || data.message || data.content || JSON.stringify(data)
+          ).trim();
+          if (!text) return;
+
+          const label = sender ? sender + ": " + text : text;
+          appendChatMsg(label, "ai", "messenger");
+        });
+
+        ws.addEventListener("close", () => {
+          ws = null;
+          if (chatChannelTag && activeChannel === "messenger") {
+            chatChannelTag.textContent = "ole green \u25CB";
+          }
+          retryDelay = Math.min(retryDelay * 2, 30000);
+          setTimeout(connect, retryDelay);
+        });
+
+        ws.addEventListener("error", () => ws && ws.close());
+      }
+
+      connect();
+    })();
+
+    async function sendChat() {
+      if (chatBusy) return;
+      const raw = chatInput.value.trim();
+      if (!raw) return;
+
+      chatInput.value = "";
+      chatSend.disabled = true;
+      chatBusy = true;
+
+      const sendingChannel = activeChannel;
+      appendChatMsg(raw, "user", sendingChannel);
+      const thinkingEl = appendChatMsg("thinking...", "ai chat-thinking", sendingChannel);
+
+      try {
+        if (sendingChannel === "cockpit") {
+          const fullPrompt = buildCockpitContext() + "User: " + raw;
+          const backendUrl = activeBackendBaseUrl || "http://127.0.0.1:5555";
+          const resp = await fetch(backendUrl + "/api/llm/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: fullPrompt, source: "remote", model: "qwen2.5-coder:14b" }),
+            signal: AbortSignal.timeout(90000)
+          });
+
+          if (thinkingEl && thinkingEl.remove) thinkingEl.remove();
+          if (threads[sendingChannel].messages.length > 0) {
+            const last = threads[sendingChannel].messages[threads[sendingChannel].messages.length - 1];
+            if (last && last.role === "ai chat-thinking") {
+              threads[sendingChannel].messages.pop();
+              saveThreads();
+            }
+          }
+
+          if (!resp.ok) {
+            appendChatMsg("[HTTP " + resp.status + "] " + await resp.text(), "error", sendingChannel);
+          } else {
+            const data = await resp.json();
+            if (data.degraded || data.error) {
+              appendChatMsg("[degraded] " + (data.error || data.text || "no response"), "error", sendingChannel);
+            } else {
+              appendChatMsg(data.text || "(empty response)", "ai", sendingChannel);
+            }
+          }
+        } else {
+          const text = await sendMessenger(raw);
+          if (thinkingEl && thinkingEl.remove) thinkingEl.remove();
+          if (threads[sendingChannel].messages.length > 0) {
+            const last = threads[sendingChannel].messages[threads[sendingChannel].messages.length - 1];
+            if (last && last.role === "ai chat-thinking") {
+              threads[sendingChannel].messages.pop();
+              saveThreads();
+            }
+          }
+          // null means sent OK, reply will arrive via WebSocket
+          if (text !== null) {
+            appendChatMsg(text, "error", sendingChannel);
+          }
+        }
+      } catch (err) {
+        if (thinkingEl && thinkingEl.remove) thinkingEl.remove();
+        if (threads[sendingChannel].messages.length > 0) {
+          const last = threads[sendingChannel].messages[threads[sendingChannel].messages.length - 1];
+          if (last && last.role === "ai chat-thinking") {
+            threads[sendingChannel].messages.pop();
+            saveThreads();
+          }
+        }
+        appendChatMsg("[error] " + String(err), "error", sendingChannel);
+      } finally {
+        chatBusy = false;
+        chatSend.disabled = false;
+        chatInput.focus();
+      }
+    }
+
+    loadThreads();
+    setActiveChannel("cockpit");
+  })();
+  // ── End Cockpit AI Chat ────────────────────────────────────────────────
 
   boot();
 })();

@@ -17,6 +17,16 @@ class Settings(BaseSettings):
 
     request_timeout_seconds: int = 30
 
+    # Ollama connector knobs.
+    # - CUSTOMIDE_OLLAMA_BASE_URL: base host, e.g. http://127.0.0.1:11434
+    # - CUSTOMIDE_OLLAMA_GENERATE_URL: fully-qualified generate endpoint override
+    # - CUSTOMIDE_OLLAMA_CHAT_URL: fully-qualified chat endpoint override
+    # - CUSTOMIDE_OLLAMA_URL: legacy alias for generate endpoint/base URL
+    ollama_base_url: str = "http://127.0.0.1:11434"
+    ollama_generate_url: str = ""
+    ollama_chat_url: str = ""
+    ollama_url: str = ""
+
     model_config = SettingsConfigDict(env_prefix="CUSTOMIDE_", extra="ignore")
 
 

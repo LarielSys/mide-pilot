@@ -6,7 +6,22 @@ from .settings import settings
 
 
 def load_worker_services(repo_root: Path) -> Dict[str, Any]:
-    cfg = repo_root / settings.worker_services_config_path
+    configured = Path(settings.worker_services_config_path)
+
+    if configured.is_absolute():
+        cfg = configured
+    else:
+        cfg = repo_root / configured
+        if not cfg.exists():
+            cfg = None
+            for base in (repo_root, *repo_root.parents):
+                candidate = base / configured
+                if candidate.exists():
+                    cfg = candidate
+                    break
+            if cfg is None:
+                cfg = repo_root / configured
+
     if not cfg.exists():
         return {
             "status": "missing",

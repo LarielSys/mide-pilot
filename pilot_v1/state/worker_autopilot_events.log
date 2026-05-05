@@ -8255,3 +8255,6 @@
 2026-05-04T23:09:05-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=111, eligible=0, mismatched=0.
 2026-05-04T23:10:07-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=111, eligible=0, mismatched=0.
 2026-05-04T23:11:07-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=111, eligible=0, mismatched=0.
+2026-05-04T23:12:08-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=111, eligible=0, mismatched=0.
+2026-05-04T23:13:09-04:00 | mode=running | last_task=MTASK-0098 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0098_restart_site_kb_server.sh.
+2026-05-04T23:13:17-04:00 | mode=running | last_task=MTASK-0098 | note=Task completed successfully (MTASK-0098).

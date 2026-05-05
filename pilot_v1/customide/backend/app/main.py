@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routes import config, execute, git, health, ollama_proxy, runtime, shared_llm
+from .routes import config, execute, health, messenger, ollama_proxy, runtime, shared_llm
 from .settings import settings
 
 app = FastAPI(title=settings.app_name)
@@ -18,11 +18,11 @@ app.add_middleware(
 
 app.include_router(health.router)
 app.include_router(config.router)
-app.include_router(git.router)
 app.include_router(ollama_proxy.router)
 app.include_router(execute.router)
 app.include_router(runtime.router)
 app.include_router(shared_llm.router)
+app.include_router(messenger.router)
 
 
 @app.get("/")
