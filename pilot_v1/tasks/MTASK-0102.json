@@ -1,0 +1,22 @@
+{
+  "task_id": "MTASK-0102",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "Disk is at 88% (was 87% last session). Run safe cleanup: apt cache, pip cache, journal logs (keep 3 days), old /tmp files, snap cache, dangling docker images. Report disk before/after and cleanup_status.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0102_disk_cleanup.sh",
+  "moss_labels": ["moss/customide", "worker/maintenance"],
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": ["pilot_v1/results", "pilot_v1/state"],
+  "blocked_paths": ["pilot_v1/tasks", "pilot_v1/approvals"],
+  "required_validation": ["snapshot=complete"],
+  "dependencies": [],
+  "timeout_seconds": 180,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T03:35:00Z"
+}
