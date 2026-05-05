@@ -1,0 +1,43 @@
+{
+  "last_verified": "2026-05-05T03:30:53Z",
+  "verified_by": "MTASK-0103",
+  "worker": "ubuntu-worker-01",
+  "hostname": "lariel-cloud",
+  "services": {
+    "customide_backend": {
+      "port": 5555,
+      "http_code": "200",
+      "status": "UP",
+      "path": "pilot_v1/customide/backend",
+      "start_cmd": "uvicorn app.main:app --host 0.0.0.0 --port 5555"
+    },
+    "customide_frontend": {
+      "port": 5570,
+      "http_code": "200",
+      "status": "UP",
+      "path": "pilot_v1/customide/frontend",
+      "start_cmd": "npm start or serve"
+    },
+    "itheia_llm": {
+      "port": 8082,
+      "http_code": "200",
+      "status": "UP",
+      "path": "/home/larieladmin/Documents/itheia-llm/server.py",
+      "start_cmd": "python3 server.py"
+    },
+    "code_server": {
+      "port": 8092,
+      "http_code": "200",
+      "status": "UP",
+      "path": "~/.local/lib/code-server-4.117.0",
+      "start_cmd": "code-server --bind-addr 0.0.0.0:8092"
+    },
+    "ollama": {
+      "port": 11434,
+      "http_code": "200",
+      "status": "UP",
+      "path": "/usr/local/bin/ollama",
+      "start_cmd": "ollama serve"
+    }
+  }
+}
