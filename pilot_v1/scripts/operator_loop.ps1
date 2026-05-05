@@ -92,70 +92,27 @@ function Issue-RetryTask($result) {
 }
 
 function Issue-NextTask($completedId) {
+    # Script bodies stored as variables (heredocs not valid inside hashtables in PS)
+    $script_0098 = "#!/usr/bin/env bash`nset -euo pipefail`necho task=MTASK-0098`necho objective=restart_site_kb_server`necho timestamp_utc=`$(date -u +`"%Y-%m-%dT%H:%M:%SZ`")`nKB_PORT=8091`nREPO_ROOT=/home/larieladmin/mide-pilot`nCURRENT=`$(curl -s -o /dev/null -w `"%{http_code}`" http://127.0.0.1:`${KB_PORT} 2>/dev/null || echo 000)`necho current_port`${KB_PORT}=`${CURRENT}`nKB_PID=`$(pgrep -f site_kb 2>/dev/null | head -1 || echo none)`necho kb_pid=`${KB_PID}`nKB_APP=`$(find `"`$REPO_ROOT`" -name app.py -o -name server.py 2>/dev/null | xargs grep -l 8091 2>/dev/null | head -1 || echo ``)`nif [[ -n `"`$KB_APP`" ]]; then`n  pkill -f site_kb 2>/dev/null || true`n  sleep 2`n  cd `"`$(dirname `"`$KB_APP`")`"`n  nohup python3 `"`$(basename `"`$KB_APP`")`" > /tmp/site_kb_server.log 2>&1 &`n  sleep 5`n  NEW_STATUS=`$(curl -s -o /dev/null -w `"%{http_code}`" http://127.0.0.1:`${KB_PORT} 2>/dev/null || echo 000)`n  echo port`${KB_PORT}_after_start=`${NEW_STATUS}`n  if [[ `"`$NEW_STATUS`" == 200 || `"`$NEW_STATUS`" == 302 || `"`$NEW_STATUS`" == 404 ]]; then echo site_kb_status=UP; else echo site_kb_status=FAIL_HTTP_`${NEW_STATUS}; fi`nelse`n  echo site_kb_status=NO_APP_FOUND`nfi`necho snapshot=complete"
+
     # Pipeline definition: after X completes, issue Y
-    # Add entries here as the project grows
     $pipeline = @{
         "MTASK-0097" = @{
-            id        = "MTASK-0098"
-            objective = "code-server is UP (MTASK-0097). Now restart site_kb_server on port 8091 and verify. Check if site_kb_server process exists, find its start script, restart detached, confirm HTTP 200 on port 8091."
-            script    = "exec_mtask_0098_restart_site_kb_server.sh"
-            script_body = @'
-#!/usr/bin/env bash
-set -euo pipefail
-echo "task=MTASK-0098"
-echo "objective=restart_site_kb_server"
-echo "timestamp_utc=$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-
-KB_PORT=8091
-REPO_ROOT="/home/larieladmin/mide-pilot"
-
-# Check what is on port 8091
-CURRENT=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:${KB_PORT} 2>/dev/null || echo "000")
-echo "current_port${KB_PORT}=${CURRENT}"
-
-# Find site_kb_server start script
-KB_SCRIPT=$(find "$REPO_ROOT" -name "*.sh" -o -name "*.py" 2>/dev/null | xargs grep -l "site_kb\|8091\|knowledge" 2>/dev/null | head -5 || echo "")
-echo "kb_scripts_found=${KB_SCRIPT}"
-
-# Look for a running process
-KB_PID=$(pgrep -f "site_kb\|8091" 2>/dev/null | head -1 || echo "none")
-echo "kb_pid=${KB_PID}"
-
-# Try to find and start the server
-KB_APP=$(find "$REPO_ROOT" -name "app.py" -o -name "server.py" -o -name "main.py" 2>/dev/null | xargs grep -l "8091\|site_kb" 2>/dev/null | head -1 || echo "")
-if [[ -n "$KB_APP" ]]; then
-  pkill -f "site_kb\|8091" 2>/dev/null || true
-  sleep 2
-  cd "$(dirname "$KB_APP")"
-  nohup python3 "$(basename "$KB_APP")" > /tmp/site_kb_server.log 2>&1 &
-  KB_NEW_PID=$!
-  echo "kb_server_started_pid=${KB_NEW_PID}"
-  sleep 5
-  NEW_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:${KB_PORT} 2>/dev/null || echo "000")
-  echo "port${KB_PORT}_after_start=${NEW_STATUS}"
-  if [[ "$NEW_STATUS" == "200" || "$NEW_STATUS" == "302" || "$NEW_STATUS" == "404" ]]; then
-    echo "site_kb_status=UP"
-  else
-    echo "site_kb_status=FAIL_HTTP_${NEW_STATUS}"
-    echo "log_tail=$(tail -10 /tmp/site_kb_server.log 2>/dev/null || echo none)"
-  fi
-else
-  echo "site_kb_status=NO_APP_FOUND"
-  echo "diagnosis=need_to_locate_or_identify_kb_server_entrypoint"
-fi
-echo "snapshot=complete"
-'@
+            id          = "MTASK-0098"
+            objective   = "code-server is UP (MTASK-0097). Restart site_kb_server on port 8091: find its entrypoint, kill stale, start detached, verify HTTP response."
+            script      = "exec_mtask_0098_restart_site_kb_server.sh"
+            script_body = $script_0098
         }
         "MTASK-0098" = @{
-            id        = "MTASK-0099"
-            objective = "Both code-server and site_kb_server recovery attempted. Run full stack verification: check all 5 services (customide backend 5555, frontend 5570, ollama 11434, code-server 8092, site_kb 8091), confirm ngrok tunnel covers correct ports, update worker1_services.json with current status."
-            script    = "exec_mtask_0099_full_stack_verify.sh"
-            script_body = $null  # will build when needed
+            id          = "MTASK-0099"
+            objective   = "Recovery complete. Run full stack verification: check all services (5555, 5570, 11434, 8092, 8091), confirm ngrok tunnel, update worker1_services.json with current status."
+            script      = "exec_mtask_0099_full_stack_verify.sh"
+            script_body = $null
         }
     }
 
     if (-not $pipeline.ContainsKey($completedId)) {
-        Write-Log "NO PIPELINE ENTRY for $completedId — operator input needed for next step"
+        Write-Log "NO PIPELINE ENTRY for ${completedId} -- operator input needed for next step"
         return
     }
 
@@ -204,12 +161,14 @@ echo "snapshot=complete"
 
 # ── MAIN LOOP ──────────────────────────────────────────────────────────────────
 
-Write-Log "=== OPERATOR LOOP STARTED | poll=${PollSeconds}s | repo=$RepoRoot ==="
+Write-Log "=== OPERATOR LOOP STARTED | poll=${PollSeconds}s | repo=${RepoRoot} ==="
 $state = Get-Processed
 
 while ($true) {
-    # 1. Pull latest from GitHub
+    # 1. Pull latest from GitHub (stash local changes first to avoid pull conflicts)
+    git -C $RepoRoot stash --quiet 2>&1 | Out-Null
     $pullOut = git -C $RepoRoot pull origin main --rebase --quiet 2>&1
+    git -C $RepoRoot stash pop --quiet 2>&1 | Out-Null
     if ($pullOut -match "error|fatal") {
         Write-Log "GIT PULL ERROR: $pullOut"
     }
@@ -234,10 +193,10 @@ while ($true) {
         elseif ($status -eq "failed") {
             $retryCount = ($state.processed | Where-Object { $_ -match "^${id}-RETRY" }).Count
             if ($retryCount -lt 2) {
-                Write-Log "  -> FAILED: issuing retry ($retryCount previous retries)"
+                Write-Log "  -> FAILED: issuing retry (${retryCount} previous retries)"
                 Issue-RetryTask $result
             } else {
-                Write-Log "  -> FAILED: max retries reached for $id — operator input needed"
+                Write-Log "  -> FAILED: max retries reached for ${id} -- operator input needed"
             }
         }
 
