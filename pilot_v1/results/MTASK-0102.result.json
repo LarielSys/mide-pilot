@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0102",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0102\nobjective=disk_cleanup_safe\ntimestamp_utc=2026-05-05T03:29:50Z\ndisk_before=88%\n=== apt cache ===\nsudo: a terminal is required to read the password; either use the -S option to read from standard input or configure an askpass helper\nsudo: a password is required\napt_clean=skipped\nsudo: a terminal is required to read the password; either use the -S option to read from standard input or configure an askpass helper\nsudo: a password is required\nautoremove=skipped\n=== pip cache ===\nFiles removed: 752\n=== journal logs (keep last 3 days) ===\nsudo: a terminal is required to read the password; either use the -S option to read from standard input or configure an askpass helper\nsudo: a password is required\njournal=skipped\n=== /tmp cleanup (files older than 2 days) ===\ntmp_old_files=cleaned\n=== snap cache ===\nsnap_cache=none\n=== old log files in /tmp (mide task logs >7 days) ===\nold_logs=none\n=== docker (if any dangling images) ===\nTotal reclaimed space: 0B\ndisk_after=85%\ndisk_detail=/dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /\ncleanup_status=IMPROVED\nsnapshot=complete",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-05T03:29:50Z"
+}
