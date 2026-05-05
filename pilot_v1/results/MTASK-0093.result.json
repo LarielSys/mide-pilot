@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0093",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script not found.",
+  "stdout_excerpt": "",
+  "stderr_excerpt": "Executor script not found: pilot_v1/scripts/exec_mtask_0093_operator_ping.sh",
+  "timestamp_utc": "2026-05-05T02:23:44Z"
+}
