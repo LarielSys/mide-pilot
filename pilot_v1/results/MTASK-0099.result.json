@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0099",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0099\nobjective=restart_customide_backend\ntimestamp_utc=2026-05-05T03:17:21Z\ncurrent_port5555=200\nbackend_status=ALREADY_UP\nsnapshot=complete",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-05T03:17:21Z"
+}
