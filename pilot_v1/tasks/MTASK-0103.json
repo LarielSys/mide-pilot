@@ -1,0 +1,22 @@
+{
+  "task_id": "MTASK-0103",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "Final step: re-verify all 5 services (5555, 5570, 8082, 8092, 11434), write confirmed worker1_services.json to pilot_v1/state, commit and push it. Report final_status=ALL_SERVICES_UP or list what is down.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0103_services_manifest.sh",
+  "moss_labels": ["moss/customide", "worker/state", "worker/diagnostics"],
+  "priority": "high",
+  "risk_level": "none",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": ["pilot_v1/results", "pilot_v1/state"],
+  "blocked_paths": ["pilot_v1/tasks", "pilot_v1/approvals"],
+  "required_validation": ["snapshot=complete"],
+  "dependencies": [],
+  "timeout_seconds": 60,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T03:40:00Z"
+}
