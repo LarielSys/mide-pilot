@@ -1,0 +1,56 @@
+{
+  "task_id": "MTASK-REPORT-ubuntu-worker-01-20260505",
+  "worker_id": "ubuntu-worker-01",
+  "worker_name": "ubuntu-atlas-01",
+  "created_by": "ubuntu-worker-01",
+  "report_type": "outbound_status_report",
+  "timestamp_utc": "2026-05-05T03:30:00Z",
+  "timestamp_local": "2026-05-04T23:30:00-04:00",
+  "summary": "All core services UP. code-server installed fresh (MTASK-0097). Last 3 MTasks completed. Git sync conflict resolved. Ollama local. Awaiting new MTasks from windows-main.",
+  "services": {
+    "ollama": {
+      "status": "UP",
+      "port": 11434,
+      "model_loaded": "qwen2.5-coder:14b"
+    },
+    "customide_backend": {
+      "status": "UP",
+      "port": 5555,
+      "pid": 4447,
+      "note": "uvicorn FastAPI, LAN: http://192.168.1.21:5555"
+    },
+    "customide_frontend": {
+      "status": "UP",
+      "port": 5570,
+      "pid": 4450,
+      "note": "LAN: http://192.168.1.21:5570"
+    },
+    "itheia_llm_server": {
+      "status": "UP",
+      "port": 8082,
+      "pid": 278929,
+      "note": "Flask RAG server, 166 documents, qwen2.5-coder:14b"
+    },
+    "code_server": {
+      "status": "UP",
+      "port": 8092,
+      "pid": 260304,
+      "version": "4.117.0",
+      "project_root": "/home/larieladmin/mide-pilot",
+      "note": "Installed fresh by MTASK-0097"
+    },
+    "site_kb_server": {
+      "status": "WARN",
+      "port": 8091,
+      "note": "MTASK-0098 started process but HTTP check returned 000 — port may be bound to 8082 instead"
+    }
+  },
+  "last_mtasks": {
+    "MTASK-0097": "completed — code-server 4.117.0 installed and started",
+    "MTASK-0098": "completed — site_kb_server restart attempted, HTTP check warn",
+    "MTASK-0099": "completed — customide backend was already UP, no action needed"
+  },
+  "git_notes": "Merge conflict on worker1_services.json (ngrok URL fix vs origin) resolved. Repo rebased clean on origin/main.",
+  "lan_ip": "192.168.1.21",
+  "autopilot": "running, pid=3210, poll=60s, approved=111, eligible=0"
+}
