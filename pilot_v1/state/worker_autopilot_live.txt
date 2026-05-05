@@ -1,6 +1,6 @@
 Autopilot Live Status
-updated_utc: 2026-05-05T02:39:13Z
-updated_local: 2026-05-04T22:39:13-04:00
+updated_utc: 2026-05-05T02:41:15Z
+updated_local: 2026-05-04T22:41:15-04:00
 log_timezone: America/New_York
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
@@ -10,8 +10,8 @@ poll_seconds: 60
 note: No assigned mtasks found; sleeping until next poll. approved=108, eligible=0, mismatched=0.
 sync_gate_3x60: drift
 git_branch: main
-git_local_head: ed787897
-git_origin_head: ed787897
+git_local_head: 290ad4c3
+git_origin_head: 290ad4c3
 git_heads_match: yes
 customide_backend_state: up
 customide_frontend_state: up
@@ -21,6 +21,8 @@ customide_frontend_url: http://127.0.0.1:5570
 git_sync_last_error: none
 
 Recent Events (latest 20, newest first):
+2026-05-04T22:41:15-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=108, eligible=0, mismatched=0.
+2026-05-04T22:40:14-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=108, eligible=0, mismatched=0.
 2026-05-04T22:39:13-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=108, eligible=0, mismatched=0.
 2026-05-04T22:38:10-04:00 | mode=running | last_task=MTASK-0094 | note=Task completed successfully (MTASK-0094).
 2026-05-04T22:38:09-04:00 | mode=running | last_task=MTASK-0094 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0094_autopilot_status_report.sh.
@@ -39,5 +41,3 @@ Recent Events (latest 20, newest first):
 2026-05-04T22:25:50-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=106, eligible=0, mismatched=0.
 2026-05-04T22:24:48-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=106, eligible=0, mismatched=0.
 2026-05-04T22:23:44-04:00 | mode=running | last_task=MTASK-0093 | note=Task failed: executor script not found (MTASK-0093).
-2026-05-04T22:23:43-04:00 | mode=running | last_task=MTASK-0093 | note=Task picked up; starting executor pilot_v1/scripts/exec_mtask_0093_operator_ping.sh.
-2026-05-04T22:22:43-04:00 | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=105, eligible=0, mismatched=0.
