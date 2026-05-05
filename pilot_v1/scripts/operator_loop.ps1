@@ -58,7 +58,7 @@ function Push-ToGit($message) {
     $diff = git -C $RepoRoot diff --cached --stat 2>&1
     if ($diff -match "\d+ file") {
         git -C $RepoRoot commit -m $message 2>&1 | Out-Null
-        git -C $RepoRoot pull origin main --rebase --quiet 2>&1 | Out-Null
+        git -C $RepoRoot pull origin main --no-rebase --quiet 2>&1 | Out-Null
         git -C $RepoRoot push origin main 2>&1 | Out-Null
         Write-Log "GIT PUSH: $message"
         return $true
@@ -165,12 +165,11 @@ Write-Log "=== OPERATOR LOOP STARTED | poll=${PollSeconds}s | repo=${RepoRoot} =
 $state = Get-Processed
 
 while ($true) {
-    # 1. Pull latest from GitHub (discard any local unstaged changes to avoid conflicts)
-    git -C $RepoRoot checkout -- . 2>&1 | Out-Null
-    git -C $RepoRoot clean -fd --exclude="pilot_v1/state/" --exclude="pilot_v1/tasks/" --exclude="pilot_v1/scripts/" --exclude="pilot_v1/results/" 2>&1 | Out-Null
-    $pullOut = git -C $RepoRoot pull origin main --no-rebase 2>&1
-    if ($pullOut -match "error|fatal|CONFLICT") {
-        Write-Log "GIT PULL ERROR: $pullOut"
+    # 1. Pull latest from GitHub - fetch then merge, auto-resolve conflicts by taking remote
+    git -C $RepoRoot fetch origin 2>&1 | Out-Null
+    $mergeOut = git -C $RepoRoot merge origin/main -X theirs --no-edit 2>&1
+    if ($mergeOut -match "fatal") {
+        Write-Log "GIT MERGE ERROR: $mergeOut"
     }
 
     # 2. Scan results for unprocessed files
