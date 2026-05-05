@@ -11410,3 +11410,7 @@ To https://github.com/LarielSys/mide-pilot.git
 To https://github.com/LarielSys/mide-pilot.git
    e4fb9615..6615fd9a  main -> main
 [autopilot] Candidate task: MTASK-0097 (/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/tasks/MTASK-0097.json)
+To https://github.com/LarielSys/mide-pilot.git
+   69adc35b..148d5163  main -> main
+[autopilot] Executing pilot_v1/scripts/exec_mtask_0097_install_code_server.sh for MTASK-0097
+<stdin>:24: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).

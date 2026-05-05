@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0097",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0097\nobjective=install_and_start_code_server\ntimestamp_utc=2026-05-05T02:59:34Z\ncode_server_status=installing\n+ ln -fs ~/.local/lib/code-server-4.117.0/bin/code-server ~/.local/bin/code-server\n\nStandalone release has been installed into ~/.local/lib/code-server-4.117.0\n\nExtend your path to use code-server:\n  PATH=\"$HOME/.local/bin:$PATH\"\nThen run with:\n  code-server\n\nDeploy code-server for your team with Coder: https://github.com/coder/coder\ncode_server_installed_version=4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f with Code 1.117.0\nconfig_written=/home/larieladmin/.config/code-server/config.yaml\nkilled_existing=none\ncode_server_pid=260304\nhealth_check_1=302\ncode_server_ready=true\ncode_server_status=UP\ninstall_and_start=complete",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-05T02:59:45Z"
+}
