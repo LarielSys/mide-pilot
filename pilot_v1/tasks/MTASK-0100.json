@@ -1,0 +1,34 @@
+{
+  "task_id": "MTASK-0100",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "iTHEIA LLM server (itheia-llm/server.py) failed to start because port 8082 is in use by another process. Find what is on port 8082, kill it, then restart the iTHEIA server. Report itheia_llm_status=UP or FAIL with log tail.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0100_fix_itheia_port_conflict.sh",
+  "moss_labels": [
+    "moss/customide",
+    "worker/itheia-llm",
+    "worker/recovery"
+  ],
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": [
+    "pilot_v1/results",
+    "pilot_v1/state"
+  ],
+  "blocked_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/approvals"
+  ],
+  "required_validation": [
+    "snapshot=complete"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 120,
+  "status": "approved_to_execute",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-05T03:25:00Z"
+}
