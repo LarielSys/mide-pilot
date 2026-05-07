@@ -1,0 +1,36 @@
+{
+    "timeout_seconds":  180,
+    "required_worker_id":  "ubuntu-worker-01",
+    "required_validation":  [
+                                "snapshot=complete"
+                            ],
+    "worker_name":  "ubuntu-atlas-01",
+    "task_id":  "MTASK-0110-RETRY3",
+    "automation_mode":  "auto",
+    "objective":  "RETRY3: Update larielsystems/chat.html: set CHAT_BACKEND constant to the tunnel base URL read from pilot_v1/state/worker1_services.json (tunnel_verification.website_chat_url minus the /api/chat path suffix). Verify the constant is correct in the file and report the new value.",
+    "risk_level":  "low",
+    "dependencies":  [
+
+                     ],
+    "allowed_paths":  [
+                          "pilot_v1/results",
+                          "pilot_v1/state",
+                          "pilot_v1/config"
+                      ],
+    "admin_override_allowed":  false,
+    "blocked_paths":  [
+                          "pilot_v1/tasks",
+                          "pilot_v1/approvals"
+                      ],
+    "issued_by":  "operator-loop-windows",
+    "timestamp_utc":  "2026-05-07T01:48:07Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "moss_labels":  [
+                        "moss/customide",
+                        "worker/operations"
+                    ],
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0110_update_chat_backend_url.sh",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute"
+}
