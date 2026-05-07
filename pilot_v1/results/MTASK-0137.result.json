@@ -1,0 +1,10 @@
+{
+  "task_id": "MTASK-0137",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Patched OLLAMA_BASE_URL to Ubuntu LAN IP (192.168.1.21:11434) and validated AI room replies.",
+  "mide_chat_health": {"status":"ok","model":"qwen2.5-coder:7b","ai":"LARIEL"},
+  "ask_ai_status": {"ok":true,"status":"ai_triggered"},
+  "ai_reply_check": "error",
+  "timestamp_utc": "2026-05-07T23:44:04Z"
+}
