@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0104",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0104\nobjective=diagnose_ngrok_and_ollama_tunnel_status\ntimestamp_utc=2026-05-07T01:51:58Z\n--- native_ollama ---\nnative_ollama_port11434=200\n  model: qwen2.5:14b\n  model: qwen2.5:7b\n  model: kimi-k2.6:cloud\n--- docker_ollama ---\ndocker_ollama_containers=name=mide-ollama status=Up About an hour ports= name=ollama status=Up 2 hours ports=\ndocker_11434_bindings=none\n--- ngrok_tunnels ---\nngrok_api_raw={\"tunnels\":[{\"name\":\"command_line\",\"ID\":\"a9894611ba3392011f399962a91b7928\",\"uri\":\"/api/tunnels/command_line\",\"public_url\":\"https://jawed-lapel-dispersed.ngrok-free.dev\",\"proto\":\"https\",\"config\":{\"addr\":\"http://localhost:8091\",\"inspect\":true},\"metrics\":{\"conns\":{\"count\":0,\"gauge\":0,\"rate1\":0,\"rate5\":0,\"rate15\":0,\"p50\":0,\"p90\":0,\"p95\":0,\"p99\":0},\"http\":{\"count\":0,\"rate1\":0,\"rate5\":0,\"rate15\":0,\"p50\":0,\"p90\":0,\"p95\":0,\"p99\":0}}}],\"uri\":\"/api/tunnels\"}\n  active_tunnel: command_line public=https://jawed-lapel-dispersed.ngrok-free.dev local=http://localhost:8091\n--- ngrok_process ---\nngrok_process=3246 /snap/ngrok/375/ngrok http 8091\n--- ngrok_config ---\n--- itheia_llm ---\nitheia_llm_port8082=000000\n--- ngrok_systemd ---\nngrok_systemd_status=inactive inactive no_ngrok_service\nstate_updated=ok\n[main 6baff672] worker: MTASK-0104 tunnel diagnosis\n 1 file changed, 9 insertions(+), 1 deletion(-)\nsnapshot=complete",
+  "stderr_excerpt": "<stdin>:7: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\nTo https://github.com/LarielSys/mide-pilot.git\n   918cac69..6baff672  main -> main",
+  "timestamp_utc": "2026-05-07T01:51:59Z"
+}
