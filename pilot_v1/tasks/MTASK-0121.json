@@ -1,0 +1,39 @@
+{
+  "task_id": "MTASK-0121",
+  "created_by": "ubuntu-worker-01",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "objective": "Status handoff from ubuntu worker: autopilot service was moved off the dirty dev checkout and now runs from /home/larieladmin/mide-worker-service. The worker script was hardened to reset generated state files, use pull --rebase, and retry pushes. MTASK-0120 was diagnosed and fixed: stale ngrok agents and alternate local admin ports were blocking tunnel discovery. The executor was updated to clear stale local ngrok tunnels across ports 4040-4045 and discover the 5555 cockpit tunnel across those ports. Cockpit public URL is now https://jawed-lapel-dispersed.ngrok-free.dev and /api/status/runtime returns HTTP 200 through the tunnel.",
+  "title": "Ubuntu worker handoff: autopilot stabilized and MTASK-0120 completed",
+  "description": "Completed on Ubuntu: systemd worker service now runs from the dedicated clean clone instead of /Documents/itheia-llm/MIDE, out-of-repo logging is enabled, automatic polling resumed, and MTASK-0120 now passes with cockpit.public_url written to pilot_v1/config/worker1_services.json. Relevant result: MTASK-0120 final_status=ALL_CHECKS_PASSED. Relevant follow-up for main operator: consume the new cockpit public URL, and note that the MTASK-0120 executor fix was committed upstream so future retries use the hardened ngrok detection path.",
+  "executor_script": "",
+  "moss_labels": [
+    "moss/customide",
+    "worker/autopilot",
+    "worker/ngrok",
+    "handoff"
+  ],
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": true,
+  "allowed_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/config",
+    "pilot_v1/state",
+    "pilot_v1/results"
+  ],
+  "blocked_paths": [],
+  "required_validation": [
+    "handoff_read=true",
+    "cockpit_public_url_recorded=true"
+  ],
+  "dependencies": [
+    "MTASK-0120"
+  ],
+  "timeout_seconds": 600,
+  "status": "approved_to_execute",
+  "issued_by": "ubuntu-worker-01",
+  "timestamp_utc": "2026-05-07T20:10:22Z"
+}
