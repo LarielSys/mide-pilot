@@ -1,3 +1,4 @@
+2026-05-07T21:11:35Z | mode=running | last_task=MTASK-0127 | note=Task failed: missing executor_script.
 2026-05-07T21:00:44Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
 2026-05-07T20:59:20Z | mode=running | last_task=MTASK-0127 | note=Task failed: missing executor_script.
 2026-05-07T20:57:59Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=157, eligible=0, mismatched=2.
