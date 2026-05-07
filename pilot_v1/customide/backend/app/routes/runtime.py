@@ -45,14 +45,19 @@ def _maybe_fetch_origin(repo_root: Path) -> None:
 
 
 def _read_state_text(repo_root: Path, rel_path: str) -> tuple[str, str]:
+    # Prefer local state files (seeded into container by the worker) over
+    # origin/main, which can be stale when the container cannot fetch.
+    for candidate in (Path("/") / rel_path, repo_root / rel_path):
+        if candidate.exists():
+            try:
+                return candidate.read_text(encoding="utf-8", errors="replace"), "local"
+            except OSError:
+                pass
+
     _maybe_fetch_origin(repo_root)
     rc, out = _run_git(repo_root, ["show", f"origin/main:{rel_path}"])
     if rc == 0:
         return out, "origin/main"
-
-    local_path = repo_root / rel_path
-    if local_path.exists():
-        return local_path.read_text(encoding="utf-8", errors="replace"), "local"
 
     return "", "missing"
 
