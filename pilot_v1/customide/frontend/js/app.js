@@ -1209,6 +1209,41 @@
     appendEventLines(events);
   }
 
+  function renderOperatorLoop(opLoop) {
+    const panelEl = document.getElementById("opLoopPanel");
+    const statusEl = document.getElementById("opLoopStatus");
+    if (!panelEl) return;
+
+    const alive = opLoop && opLoop.alive;
+    const stale = opLoop && opLoop.stale_seconds != null ? opLoop.stale_seconds : null;
+    const lines = (opLoop && opLoop.recent_log) ? opLoop.recent_log : [];
+
+    if (statusEl) {
+      if (alive) {
+        statusEl.textContent = "● ALIVE (" + stale + "s ago)";
+        statusEl.style.color = "#4ade80";
+      } else if (stale != null) {
+        statusEl.textContent = "⚠ STALE (" + stale + "s ago)";
+        statusEl.style.color = "#f59e0b";
+      } else {
+        statusEl.textContent = "○ NOT STARTED";
+        statusEl.style.color = "#6b7280";
+      }
+    }
+
+    panelEl.innerHTML = "";
+    lines.forEach(line => {
+      const div = document.createElement("div");
+      div.className = "log-line" +
+        (line.includes("RETRY") ? " log-warn" : "") +
+        (line.includes("ERROR") || line.includes("FAILED") ? " log-err" : "") +
+        (line.includes("SUCCESS") || line.includes("completed") ? " log-ok" : "");
+      div.textContent = line;
+      panelEl.appendChild(div);
+    });
+    panelEl.scrollTop = panelEl.scrollHeight;
+  }
+
   function renderTokens(tokens) {
     const summary = (tokens && tokens.summary) || {};
     const rows = (tokens && tokens.rows) ? tokens.rows.slice(0, 12) : [];
@@ -1290,6 +1325,8 @@
     const cadence = bundle.sync_cadence || {};
     const worker = bundle.worker_log || {};
     const tokens = bundle.token_counters || {};
+    const opLoop = bundle.operator_loop || {};
+    renderOperatorLoop(opLoop);
 
     updateIdeState(worker, gitStatus, tokens, runtime, sync, cadence);
 
