@@ -1,0 +1,9 @@
+{
+    "stdout_excerpt":  "handoff_read=true\ncockpit_public_url=https://jawed-lapel-dispersed.ngrok-free.dev\nruntime_http=200\nbundle_http=200\nconfig_js_updated=yes\nfinal_status=ALL_CHECKS_PASSED",
+    "task_id":  "MTASK-0121",
+    "timestamp_utc":  "2026-05-07T20:14:12Z",
+    "worker_id":  "windows-main",
+    "execution_status":  "completed",
+    "summary":  "Handoff read. Cockpit URL confirmed: https://jawed-lapel-dispersed.ngrok-free.dev. config.js updated with new backendBaseUrl. All checks passed.",
+    "stderr_excerpt":  ""
+}
