@@ -1,0 +1,10 @@
+{
+    "task_id":  "MTASK-0135-RETRY1",
+    "issued_by":  "operator",
+    "issued_at":  "2026-05-07T23:24:36Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Fix cockpit room AI replies: redeploy mide-chat with /api/chat -\u003e /api/generate fallback and validate successful AI response in OPS-CENTRAL room.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0135_fix_room_ai_reply.sh"
+}
