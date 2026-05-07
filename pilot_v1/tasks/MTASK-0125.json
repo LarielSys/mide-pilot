@@ -1,0 +1,13 @@
+{
+  "task_id": "MTASK-0125",
+  "title": "Debug: count MTASK result files visible on origin/main",
+  "description": "Run git ls-tree and git archive on origin/main:pilot_v1/results/ to see how many MTASK result files are visible. Also check remote URL and HEAD vs origin state.",
+  "objective": "debug",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "created_by": "windows-main",
+  "status": "approved_to_execute",
+  "priority": "high",
+  "created_utc": "2026-05-07T20:28:19Z",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0125_debug_results_tree.sh"
+}
