@@ -1,0 +1,89 @@
+{
+  "collected_utc": "2026-05-07T01:56:07Z",
+  "collected_by": "MTASK-2000",
+  "system": {
+    "hostname": "lariel-cloud",
+    "fqdn": "lariel-cloud"
+  },
+  "network": {
+    "local_ips": [
+      "192.168.1.21",
+      "172.17.0.1",
+      "172.18.0.1",
+      "172.19.0.1",
+      "2600:4041:5cdc:9300:92fd:a062:633e:f828",
+      "2600:4041:5cdc:9300:b36d:38a6:4268:7c37",
+      "2600:4041:5cdc:9300:ea61:dc0a:5dc8:3a77",
+      "2600:4041:5cdc:9300:befc:e7ff:fed8:41c8"
+    ],
+    "public_ip": "68.132.73.8"
+  },
+  "resources": {
+    "memory_total": "46Gi",
+    "memory_used": "6.2Gi",
+    "disk_total": "98G",
+    "disk_used": "80G"
+  },
+  "ports": {
+    "34427": {
+      "proto": "LISTEN",
+      "local": "127.0.0.1:34427"
+    },
+    "631": {
+      "proto": "LISTEN",
+      "local": "[::1]:631"
+    },
+    "8765": {
+      "proto": "LISTEN",
+      "local": "0.0.0.0:8765"
+    },
+    "53": {
+      "proto": "LISTEN",
+      "local": "127.0.0.54:53"
+    },
+    "9000": {
+      "proto": "LISTEN",
+      "local": "[::]:9000"
+    },
+    "4040": {
+      "proto": "LISTEN",
+      "local": "127.0.0.1:4040"
+    },
+    "2222": {
+      "proto": "LISTEN",
+      "local": "[::]:2222"
+    },
+    "3000": {
+      "proto": "LISTEN",
+      "local": "[::]:3000"
+    },
+    "5555": {
+      "proto": "LISTEN",
+      "local": "[::]:5555"
+    },
+    "5570": {
+      "proto": "LISTEN",
+      "local": "[::]:5570"
+    },
+    "20241": {
+      "proto": "LISTEN",
+      "local": "127.0.0.1:20241"
+    },
+    "11434": {
+      "proto": "LISTEN",
+      "local": "*:11434"
+    },
+    "1716": {
+      "proto": "LISTEN",
+      "local": "*:1716"
+    },
+    "80": {
+      "proto": "LISTEN",
+      "local": "*:80"
+    },
+    "8080": {
+      "proto": "LISTEN",
+      "local": "*:8080"
+    }
+  }
+}
