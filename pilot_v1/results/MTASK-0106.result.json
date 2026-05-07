@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0106",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0106\nobjective=verify_ollama_tunnel_end_to_end_for_website\ntimestamp_utc=2026-05-07T03:04:26Z\ntunnel_url=https://jawed-lapel-dispersed.ngrok-free.dev\n--- ngrok_process ---\nngrok_process=117391 /snap/ngrok/375/ngrok http 11434 --log=stdout --log-format=json\n--- endpoint_checks ---\ntunnel_root_http=200\ntunnel_api_tags_http=200\n  model: qwen2.5:14b\n  model: qwen2.5:7b\n  model: kimi-k2.6:cloud\n--- live_generate_test ---\nresponse_excerpt=\ndone=False\nverification_status=PASS\nverification_state_written=ok\nwebsite_chat_url=https://jawed-lapel-dispersed.ngrok-free.dev/api/chat\nwebsite_generate_url=https://jawed-lapel-dispersed.ngrok-free.dev/api/generate\n[main 556b64ac] worker: MTASK-0106 tunnel verified final_status=ALL_CHECKS_PASSED\n 1 file changed, 11 insertions(+), 1 deletion(-)\nfinal_status=ALL_CHECKS_PASSED\nsnapshot=complete",
+  "stderr_excerpt": "<stdin>:7: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\nTo https://github.com/LarielSys/mide-pilot.git\n   85dcdba4..556b64ac  main -> main",
+  "timestamp_utc": "2026-05-07T03:04:28Z"
+}
