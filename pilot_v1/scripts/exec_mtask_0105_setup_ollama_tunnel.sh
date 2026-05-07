@@ -141,8 +141,9 @@ echo "--- systemd_service ---"
 NGROK_BIN=$(which ngrok 2>/dev/null || echo "/usr/local/bin/ngrok")
 SERVICE_FILE="/etc/systemd/system/ngrok-ollama.service"
 
-if [[ ! -f "$SERVICE_FILE" ]]; then
-  sudo tee "$SERVICE_FILE" > /dev/null <<EOF
+if sudo -n true 2>/dev/null; then
+  if [[ ! -f "$SERVICE_FILE" ]]; then
+    sudo tee "$SERVICE_FILE" > /dev/null <<EOF
 [Unit]
 Description=ngrok tunnel for Ollama API (website chat)
 After=network-online.target
@@ -160,14 +161,16 @@ StandardError=journal
 [Install]
 WantedBy=multi-user.target
 EOF
-  sudo systemctl daemon-reload
-  sudo systemctl enable ngrok-ollama
-  echo systemd_service=installed_and_enabled
+    sudo systemctl daemon-reload
+    sudo systemctl enable ngrok-ollama
+    echo systemd_service=installed_and_enabled
+  else
+    sudo systemctl daemon-reload
+    sudo systemctl enable ngrok-ollama 2>/dev/null || true
+    echo systemd_service=already_exists_enabled
+  fi
 else
-  # Ensure it's enabled and restart with new config
-  sudo systemctl daemon-reload
-  sudo systemctl enable ngrok-ollama 2>/dev/null || true
-  echo systemd_service=already_exists_enabled
+  echo systemd_service=skipped_no_sudo
 fi
 
 # ── 8. Commit and push ────────────────────────────────────────────────────────
