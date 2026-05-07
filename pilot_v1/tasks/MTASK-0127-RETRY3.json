@@ -1,0 +1,10 @@
+{
+    "task_id":  "MTASK-0127-RETRY3",
+    "issued_by":  "operator",
+    "issued_at":  "2026-05-07T21:30:00Z",
+    "priority":  "normal",
+    "assigned_to":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Patch messenger.py on cockpit backend with in-memory store version, then restart uvicorn",
+    "script":  "pilot_v1/scripts/exec_mtask_0127_patch_messenger.sh"
+}
