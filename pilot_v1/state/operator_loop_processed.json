@@ -111,6 +111,25 @@
                       "TASK-0024",
                       "TASK-0025",
                       "TASK-0035",
-                      "TASK-9015-SYNTH"
+                      "TASK-9015-SYNTH",
+                      "MTASK-0098",
+                      "MTASK-0099",
+                      "MTASK-0100",
+                      "MTASK-0101",
+                      "MTASK-0102",
+                      "MTASK-0103",
+                      "MTASK-REPORT-ubuntu-worker-01-20260505",
+                      "MTASK-2000",
+                      "MTASK-0104",
+                      "MTASK-2000-RETRY1",
+                      "MTASK-2000-RETRY1-RETRY2",
+                      "MTASK-2000-RETRY1-RETRY2-RETRY2",
+                      "MTASK-2000-RETRY1-RETRY2-RETRY2-RETRY2",
+                      "MTASK-0107",
+                      "MTASK-0105",
+                      "MTASK-0105-RETRY1",
+                      "MTASK-0105-RETRY2",
+                      "MTASK-0108",
+                      "MTASK-0106"
                   ]
 }
