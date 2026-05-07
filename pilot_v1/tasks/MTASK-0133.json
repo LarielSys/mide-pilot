@@ -1,0 +1,10 @@
+{
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0133_redeploy_backend.sh",
+    "assigned_to":  "ubuntu-worker-01",
+    "issued_at":  "2026-05-07T22:31:58Z",
+    "task_id":  "MTASK-0133",
+    "description":  "Rebuild and restart mide-backend container. messenger.py now forwards incoming messages to mide-chat OPS-CENTRAL room via httpx. Verify health and messenger POST endpoint.",
+    "status":  "approved_to_execute",
+    "issued_by":  "operator",
+    "priority":  "high"
+}
