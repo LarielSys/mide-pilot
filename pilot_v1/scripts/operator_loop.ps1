@@ -96,6 +96,7 @@ function Issue-NextTask($completedId) {
     $script_0098 = "#!/usr/bin/env bash`nset -euo pipefail`necho task=MTASK-0098`necho objective=restart_site_kb_server`necho timestamp_utc=`$(date -u +`"%Y-%m-%dT%H:%M:%SZ`")`nKB_PORT=8091`nREPO_ROOT=/home/larieladmin/mide-pilot`nCURRENT=`$(curl -s -o /dev/null -w `"%{http_code}`" http://127.0.0.1:`${KB_PORT} 2>/dev/null || echo 000)`necho current_port`${KB_PORT}=`${CURRENT}`nKB_PID=`$(pgrep -f site_kb 2>/dev/null | head -1 || echo none)`necho kb_pid=`${KB_PID}`nKB_APP=`$(find `"`$REPO_ROOT`" -name app.py -o -name server.py 2>/dev/null | xargs grep -l 8091 2>/dev/null | head -1 || echo ``)`nif [[ -n `"`$KB_APP`" ]]; then`n  pkill -f site_kb 2>/dev/null || true`n  sleep 2`n  cd `"`$(dirname `"`$KB_APP`")`"`n  nohup python3 `"`$(basename `"`$KB_APP`")`" > /tmp/site_kb_server.log 2>&1 &`n  sleep 5`n  NEW_STATUS=`$(curl -s -o /dev/null -w `"%{http_code}`" http://127.0.0.1:`${KB_PORT} 2>/dev/null || echo 000)`n  echo port`${KB_PORT}_after_start=`${NEW_STATUS}`n  if [[ `"`$NEW_STATUS`" == 200 || `"`$NEW_STATUS`" == 302 || `"`$NEW_STATUS`" == 404 ]]; then echo site_kb_status=UP; else echo site_kb_status=FAIL_HTTP_`${NEW_STATUS}; fi`nelse`n  echo site_kb_status=NO_APP_FOUND`nfi`necho snapshot=complete"
 
     # Pipeline definition: after X completes, issue Y
+    # script_body = $null means the executor script already exists on disk
     $pipeline = @{
         "MTASK-0097" = @{
             id          = "MTASK-0098"
@@ -108,6 +109,28 @@ function Issue-NextTask($completedId) {
             objective   = "Recovery complete. Run full stack verification: check all services (5555, 5570, 11434, 8092, 8091), confirm ngrok tunnel, update worker1_services.json with current status."
             script      = "exec_mtask_0099_full_stack_verify.sh"
             script_body = $null
+        }
+        # ── Tunnel setup chain ────────────────────────────────────────────────
+        "MTASK-0103" = @{
+            id          = "MTASK-0104"
+            objective   = "Diagnose current ngrok tunnel status and Ollama availability (native + Docker). Report all active ngrok tunnels, Docker Ollama containers, native Ollama port 11434 status, and itheia-llm proxy status. Write diagnosis to worker1_services.json."
+            script      = "exec_mtask_0104_diagnose_ollama_tunnel.sh"
+            script_body = $null
+            promote_status = "approved_to_execute"
+        }
+        "MTASK-0104" = @{
+            id          = "MTASK-0105"
+            objective   = "Set up a persistent ngrok tunnel for Ollama API so the website chat page can connect. Auto-detect Docker vs native Ollama port, start ngrok on it, retrieve public URL, install systemd service ngrok-ollama for persistence, and write public URL to pilot_v1/state/worker1_services.json."
+            script      = "exec_mtask_0105_setup_ollama_tunnel.sh"
+            script_body = $null
+            promote_status = "approved_to_execute"
+        }
+        "MTASK-0105" = @{
+            id          = "MTASK-0106"
+            objective   = "Final end-to-end verification of the Ollama ngrok tunnel. Read the public URL from worker1_services.json, verify /api/tags returns 200, run a live /api/generate test, and write the verified website chat URL into worker1_services.json tunnel_verification block."
+            script      = "exec_mtask_0106_verify_ollama_tunnel.sh"
+            script_body = $null
+            promote_status = "approved_to_execute"
         }
     }
 

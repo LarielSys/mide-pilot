@@ -37,35 +37,35 @@ A VS Code–like IDE running on Windows with:
 
 ## Worker 1 Service Endpoints
 
-> Auto-populated by MTASK-0034 → `pilot_v1/config/worker1_services.json`
+> Auto-populated by MTASK-0034 + MTASK-0105/0106 → `pilot_v1/state/worker1_services.json`
 
-| Service | URL | Notes |
-|---------|-----|-------|
-| site_kb_server | `https://jawed-lapel-dispersed.ngrok-free.dev` | Base server |
-| Ollama health | `…/api/ollama/health` | qwen2.5 status |
-| Ollama generate | `…/api/ollama/generate` | POST, streaming |
-| Ollama chat | `…/api/ollama/chat` | POST, streaming |
-| Weather compare | `…/api/weather/compare` | Existing demo |
-| code-server | _populated by MTASK-0034_ | VS Code in browser |
-| SSH (ngrok TCP) | _populated by MTASK-0032_ | IDE bridge |
+| Service | URL | Notes | Status |
+|---------|-----|-------|--------|
+| Ollama (Docker) | `http://127.0.0.1:11434` | Local qwen2.5-coder:14b | Being tunneled |
+| Ollama ngrok tunnel | _MTASK-0105 will populate_ | Public Ollama endpoint for website chat | ⏳ Pending |
+| Ollama /api/chat | `{tunnel}/api/chat` | Chat streaming endpoint | ⏳ Pending |
+| Ollama /api/generate | `{tunnel}/api/generate` | Generation streaming endpoint | ⏳ Pending |
+| itheia-llm | `http://127.0.0.1:8082` | Backup proxy option | UP |
+| code-server | `http://127.0.0.1:8092` | VS Code in browser | UP |
+| SSH (ngrok TCP) | _via ngrok_ | IDE bridge | UP |
 
 ---
 
 ## MTASK Execution Log
 
-<!-- AUTO-UPDATED: 2026-04-22T18:59:16Z -->
+<!-- AUTO-UPDATED: 2026-05-06T00:00:00Z -->
 
 ## MTASK Status
 
 | Task | Status | Summary | Timestamp |
 |------|--------|---------|-----------|
-| MTASK-0031 | [OK] completed | Executor script completed successfully. | 2026-04-22T22:29:28Z |
-| MTASK-0032 | [OK] completed | Executor script completed successfully. | 2026-04-22T22:29:34Z |
-| MTASK-0033 | [OK] completed | Recovered via retry: MTASK-0033-RETRY3 | 2026-04-22T22:55:07Z |
-| MTASK-0034 | [OK] completed | Executor script completed successfully. | 2026-04-22T22:29:47Z |
+| MTASK-0103 | [OK] completed | All 5 services verified UP. | 2026-05-05T03:30:54Z |
+| MTASK-0104 | ⏳ pending | Diagnose ngrok + Ollama (native + Docker). | 2026-05-06T00:00:00Z |
+| MTASK-0105 | ⏳ pending | Set up persistent ngrok tunnel for Ollama. | 2026-05-06T00:00:00Z |
+| MTASK-0106 | ⏳ pending | Verify tunnel end-to-end, write website URLs. | 2026-05-06T00:00:00Z |
 
 ---
-_Last watcher check: 2026-04-22T18:59:16Z_
+_Last update: 2026-05-06 (Tunnel setup chain queued, awaiting Docker Ollama completion)_
 
 ---
 
@@ -74,14 +74,15 @@ _Last watcher check: 2026-04-22T18:59:16Z_
 | Phase | Description | Status |
 |-------|-------------|--------|
 | 1 | MOSS Architecture + Diagram | ✅ Complete |
-| 2 | Worker 1 Setup (MTASK-0031–0034) | 🟡 In Progress |
-| 3 | IDE_Backend_Windows (FastAPI) | ⏳ Pending |
-| 4 | IDE_Frontend_Windows (editor UI) | ⏳ Pending |
-| 5 | Ollama integration (proxy to Ubuntu) | ⏳ Pending |
-| 6 | Script execution UI | ⏳ Pending |
-| 7 | Remote IDE view (right pane) | ⏳ Pending |
-| 8 | SSH bridge + file browser | ⏳ Pending |
-| 9 | Polish + keyboard shortcuts | ⏳ Pending |
+| 2 | Worker 1 Setup (MTASK-0031–0034) | ✅ Complete |
+| 3 | Stack Health Verification (MTASK-0035–0103) | ✅ Complete |
+| 4 | **Ollama Tunnel for Website (MTASK-0104–0106)** | 🟡 **In Progress** |
+| 5 | Website Chat Integration (MTASK-0107 planned) | ⏳ Pending |
+| 6 | IDE_Backend_Windows (FastAPI) | ⏳ Pending |
+| 7 | IDE_Frontend_Windows (editor UI) | ⏳ Pending |
+| 8 | Script execution UI | ⏳ Pending |
+| 9 | Remote IDE view (right pane) | ⏳ Pending |
+| 10 | SSH bridge + file browser | ⏳ Pending |
 
 ---
 
@@ -94,6 +95,9 @@ _Last watcher check: 2026-04-22T18:59:16Z_
 | 2026-04-22 | SSH via ngrok TCP tunnel | No direct network access between machines |
 | 2026-04-22 | qwen2.5 as primary model | Already running on Worker 1, user confirmed |
 | 2026-04-22 | Continue extension for code-server | Best Ollama integration for VS Code |
+| 2026-05-06 | Ollama tunnel for Bluehost website chat | Website (Bluehost) needs external ngrok URL for CORS |
+| 2026-05-06 | Docker Ollama on Ubuntu | Isolated container, persistent, clean separation |
+| 2026-05-06 | operator_loop.ps1 restarts (60s poll) | Autonomous 0104→0105→0106 execution chain |
 
 ---
 
@@ -105,29 +109,44 @@ _No issues yet._
 
 ---
 
+## Next Steps
+
+1. **Ubuntu Docker Ollama**: Finish containerizing qwen2.5-coder:14b
+2. **Start operator_loop.ps1** on Windows (run once, stays alive):
+   ```powershell
+   cd "C:\AI Assistant\MIDE"
+   .\pilot_v1\scripts\operator_loop.ps1
+   ```
+3. **Autonomous execution**: MTASK-0104 → 0105 → 0106 (no further input needed)
+4. **Website integration**: Update chat.html with final ngrok URL (MTASK-0107)
+
+---
+
 ## Key Files
 
 ```
 MIDE/
 ├── pilot_v1/
 │   ├── tasks/
-│   │   ├── MTASK-0031.json   ← Ollama proxy routes
-│   │   ├── MTASK-0032.json   ← SSH bootstrap
-│   │   ├── MTASK-0033.json   ← code-server install
-│   │   └── MTASK-0034.json   ← ngrok + verification
+│   │   ├── MTASK-0104.json   ← [NEW] Diagnose Ollama tunnel status
+│   │   ├── MTASK-0105.json   ← [NEW] Set up ngrok tunnel for Ollama
+│   │   ├── MTASK-0106.json   ← [NEW] Verify tunnel + write website URLs
+│   │   └── (earlier: 0031-0103)
 │   ├── scripts/
-│   │   ├── exec_mtask_0031_ollama_proxy.sh
-│   │   ├── exec_mtask_0032_ssh_bootstrap.sh
-│   │   ├── exec_mtask_0033_codeserver_install.sh
-│   │   ├── exec_mtask_0034_codeserver_ngrok_verify.sh
-│   │   └── watch_customide.ps1     ← Windows 2-min auto-watcher
+│   │   ├── exec_mtask_0104_diagnose_ollama_tunnel.sh        ← [NEW]
+│   │   ├── exec_mtask_0105_setup_ollama_tunnel.sh           ← [NEW]
+│   │   ├── exec_mtask_0106_verify_ollama_tunnel.sh          ← [NEW]
+│   │   ├── operator_loop.ps1              ← [UPDATED] Extended pipeline 0104→0106
+│   │   └── worker_mtask_autopilot.sh      ← Ubuntu autonomy loop
+│   ├── state/
+│   │   └── worker1_services.json          ← Updated by MTASK-0105/0106
 │   ├── specs/customide_ollama/
-│   │   └── architecture.moss       ← MOSS spec v2.0
+│   │   └── architecture.moss              ← MOSS spec v2.0
 │   ├── gui/
-│   │   └── customide_visualization.html  ← Interactive diagram
+│   │   └── customide_visualization.html   ← Interactive diagram
 │   └── config/
-│       └── worker1_services.json   ← Populated by MTASK-0034
-└── CUSTOMIDE_PROJECT.md            ← This file
+│       └── worker1_services.json          ← Endpoint registry
+└── CUSTOMIDE_PROJECT.md                   ← This file
 ```
 
 

@@ -1,0 +1,22 @@
+{
+  "task_id": "MTASK-0105",
+  "created_by": "windows-main",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "Set up a persistent ngrok tunnel for Ollama API so the website chat page can connect. Auto-detect Docker vs native Ollama port, start ngrok on it, retrieve public URL, install systemd service ngrok-ollama for persistence, and write public URL to pilot_v1/state/worker1_services.json.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0105_setup_ollama_tunnel.sh",
+  "moss_labels": ["moss/customide", "tunnel/ollama", "worker/networking"],
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "auto",
+  "admin_override_allowed": false,
+  "allowed_paths": ["pilot_v1/results", "pilot_v1/state"],
+  "blocked_paths": ["pilot_v1/tasks", "pilot_v1/approvals"],
+  "required_validation": ["snapshot=complete", "tunnel_public_url=*"],
+  "dependencies": ["MTASK-0104"],
+  "timeout_seconds": 120,
+  "status": "pending",
+  "issued_by": "vs-copilot-main-operator",
+  "timestamp_utc": "2026-05-06T00:00:00Z"
+}
