@@ -213,6 +213,9 @@ for pattern in ("TASK-*.json", "MTASK-*.json"):
       continue
     if task.get("status") != "approved_to_execute":
       continue
+    # Workers must not execute tasks they created themselves
+    if task.get("created_by") == worker_id:
+      continue
 
     result_path = os.path.join(result_dir, f"{task_id}.result.json")
     if os.path.exists(result_path):
