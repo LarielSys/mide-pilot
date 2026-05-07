@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0123",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0123\ntimestamp_utc=2026-05-07T20:24:18Z\nstep=git_pull\ngit_pull_status=128\nstep=kill_old_backend\nstep=start_backend\nbackend_pid=1732801\nstep=verify\ntask_history_count=1\nfinal_status=ALL_CHECKS_PASSED",
+  "stderr_excerpt": "From https://github.com/LarielSys/mide-pilot\n * branch              main       -> FETCH_HEAD\n   ce979b70..3740ee07  main       -> origin/main\nhint: Diverging branches can't be fast-forwarded, you need to either:\nhint: \nhint: \tgit merge --no-ff\nhint: \nhint: or:\nhint: \nhint: \tgit rebase\nhint: \nhint: Disable this message with \"git config advice.diverging false\"\nfatal: Not possible to fast-forward, aborting.",
+  "timestamp_utc": "2026-05-07T20:24:25Z"
+}
