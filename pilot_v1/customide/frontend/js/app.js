@@ -315,9 +315,9 @@
         ].join("\n")
       },
       {
-        path: "frontend/css/style.css",
-        title: "style.css",
-        breadcrumb: "mide-workspace / frontend / css / style.css",
+        path: "frontend/css/style.lock-20260507.css",
+        title: "style.lock-20260507.css",
+        breadcrumb: "mide-workspace / frontend / css / style.lock-20260507.css",
         symbols: [":root", ".app-layout", ".editor-stage", ".response-stream"],
         content: [
           ":root {",

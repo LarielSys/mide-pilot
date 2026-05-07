@@ -1,9 +1,9 @@
 {
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
-  "mode": "idle",
-  "last_run_utc": "2026-05-07T04:34:10Z",
-  "last_task_processed": "",
+  "mode": "running",
+  "last_run_utc": "2026-05-07T05:02:20Z",
+  "last_task_processed": "MTASK-0109-RETRY1",
   "poll_seconds": 60,
-  "note": "No assigned mtasks found; sleeping until next poll. approved=131, eligible=0, mismatched=1."
+  "note": "Task completed successfully."
 }

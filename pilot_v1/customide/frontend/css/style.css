@@ -1,256 +1,286 @@
 :root {
-  --bg: #020602;
-  --bg-deep: #000000;
-  --panel: #030903;
-  --line: #1d7a1d;
-  --line-soft: #0f3d0f;
-  --ink: #78ff62;
-  --ink-dim: #49be3e;
-  --ink-alt: #ffd700;
-  --alert: #ff5d5d;
+  --bg-0: #0e1321;
+  --bg-1: #1f1428;
+  --bg-2: #0d2630;
+  --panel: rgba(8, 12, 20, 0.74);
+  --panel-strong: rgba(8, 12, 20, 0.9);
+  --line: rgba(94, 242, 255, 0.46);
+  --line-soft: rgba(255, 161, 95, 0.32);
+  --ink: #ecf7ff;
+  --ink-dim: #a7bed0;
+  --ink-hot: #ffd59f;
+  --accent-a: #5ef2ff;
+  --accent-b: #ff8b5f;
+  --accent-c: #b39bff;
+  --danger: #ff7070;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at 30% 10%, #052005 0%, var(--bg) 40%, var(--bg-deep) 100%);
+  background:
+    radial-gradient(1000px 520px at 18% 10%, rgba(179, 155, 255, 0.2), transparent 58%),
+    radial-gradient(900px 520px at 82% 0%, rgba(94, 242, 255, 0.16), transparent 58%),
+    linear-gradient(130deg, var(--bg-0) 0%, var(--bg-1) 43%, var(--bg-2) 100%);
   color: var(--ink);
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Space Mono", "Ubuntu Mono", "DejaVu Sans Mono", monospace;
   letter-spacing: 0.01em;
-  text-shadow: 0 0 8px rgba(71, 255, 89, 0.3);
+  overflow: hidden;
 }
 
 .bg-orbit {
   position: fixed;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
-  background-image: linear-gradient(rgba(120, 255, 98, 0.03) 1px, transparent 1px);
-  background-size: 100% 4px;
-  opacity: 0.45;
+  background:
+    radial-gradient(circle at 10% 80%, rgba(255, 139, 95, 0.12) 0, transparent 26%),
+    radial-gradient(circle at 88% 16%, rgba(94, 242, 255, 0.12) 0, transparent 24%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.03) 0,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+  mix-blend-mode: normal;
+  opacity: 0.28;
 }
 
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 30;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
-  background: rgba(0, 0, 0, 0.86);
+  height: 44px;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--line);
+  background: linear-gradient(90deg, rgba(7, 11, 22, 0.95), rgba(18, 16, 31, 0.88));
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.cockpit-grid {
+  position: relative;
+  z-index: 1;
 }
 
 .brand {
   margin-right: auto;
-  font-size: 1.05rem;
   font-weight: 700;
+  letter-spacing: 0.12em;
+  font-size: 0.92rem;
   text-transform: uppercase;
-  color: var(--ink);
-  letter-spacing: 0.14em;
+  color: #ffffff;
+  text-shadow: 0 0 18px rgba(179, 155, 255, 0.45);
 }
 
 .status {
   color: var(--ink-dim);
-  font-size: 0.82rem;
-  max-width: 24rem;
-  white-space: nowrap;
+  font-size: 0.72rem;
+  max-width: 18rem;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .cockpit-grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: 1.4fr 1.15fr 1fr 1.35fr;
+  grid-template-rows: 44% 26% 30%;
   grid-template-areas:
-    "live    live    live    live    events  events  events  events  events  events  events  events"
-    "git     git     git     git     cadence cadence cadence ollama  ollama  ollama  chat    chat"
-    "token   token   token   token   token   token   token   token   token   token   chat    chat";
+    "events events live oploop"
+    "events events git chat"
+    "token cadence ollama chat";
   gap: 10px;
   padding: 10px;
+  height: calc(100vh - 44px);
 }
 
 .panel {
-  min-height: 180px;
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(3, 9, 3, 0.98), rgba(0, 0, 0, 0.98));
-  box-shadow: inset 0 0 0 1px rgba(120, 255, 98, 0.06), 0 0 12px rgba(73, 190, 62, 0.1);
-  border-radius: 4px;
+  min-height: 0;
+  border: 1px solid rgba(94, 242, 255, 0.8);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(10, 15, 30, 0.97), rgba(7, 11, 23, 0.97));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(255, 139, 95, 0.25),
+    0 14px 28px rgba(3, 6, 12, 0.62);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .panel h3 {
   margin: 0;
-  padding: 9px 10px;
-  border-bottom: 1px solid var(--line-soft);
-  font-size: 0.88rem;
-  color: var(--ink);
-  letter-spacing: 0.08em;
+  padding: 8px 10px;
+  font-size: 0.74rem;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  background: rgba(0, 0, 0, 0.55);
-}
-
-.panel-live { grid-area: live; min-height: 260px; }
-.panel-events { grid-area: events; min-height: 260px; }
-.panel-git { grid-area: git; min-height: 190px; }
-.panel-cadence { grid-area: cadence; min-height: 190px; }
-.panel-ollama { grid-area: ollama; min-height: 190px; }
-.panel-token { grid-area: token; min-height: 210px; }
-.panel-chat {
-  grid-area: chat;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-pre {
-  margin: 0;
-  padding: 10px;
-  background: transparent;
   color: var(--ink);
-  font-family: "Courier New", Courier, monospace;
-  font-size: 12px;
-  line-height: 1.36;
-  white-space: pre-wrap;
-  max-height: 340px;
+  background: linear-gradient(90deg, rgba(94, 242, 255, 0.2), rgba(255, 139, 95, 0.22));
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.panel-sub {
+  color: var(--ink-dim);
+}
+
+.panel-live { grid-area: live; }
+.panel-events { grid-area: events; }
+.panel-oploop { grid-area: oploop; }
+.panel-git { grid-area: git; }
+.panel-cadence { grid-area: cadence; }
+.panel-token { grid-area: token; }
+.panel-ollama { grid-area: ollama; }
+.panel-chat { grid-area: chat; }
+
+pre,
+.scroll-log {
+  margin: 0;
+  padding: 9px 10px;
+  flex: 1;
+  min-height: 0;
   overflow: auto;
-}
-
-pre::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-pre::-webkit-scrollbar-thumb {
-  background: #1a581a;
-  border-radius: 8px;
+  color: var(--ink);
+  font-family: "Space Mono", "Ubuntu Mono", "DejaVu Sans Mono", monospace;
+  font-size: 11px;
+  line-height: 1.27;
+  background: rgba(9, 13, 24, 0.9);
 }
 
 .scroll-log {
-  margin: 0;
-  padding: 10px;
-  background: transparent;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 12px;
-  line-height: 1.36;
-  max-height: 340px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
+pre::-webkit-scrollbar,
 .scroll-log::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
+pre::-webkit-scrollbar-thumb,
 .scroll-log::-webkit-scrollbar-thumb {
-  background: #1a581a;
-  border-radius: 8px;
+  background: linear-gradient(180deg, var(--accent-a), var(--accent-b));
+  border-radius: 999px;
 }
 
 .log-line {
   display: block;
   white-space: pre-wrap;
-  word-break: break-all;
+  word-break: break-word;
 }
 
-.log-line-a { color: var(--ink); }
-.log-line-b { color: var(--ink-alt); }
+.log-line-a { color: #dcf2ff; }
+.log-line-b { color: var(--ink-hot); }
 
 .status-offline {
-  color: var(--alert);
+  color: var(--danger);
 }
 
-/* ── Cockpit AI Chat (inline panel) ─────────────────────────────────── */
+.panel-chat {
+  display: flex;
+  flex-direction: column;
+}
+
 .panel-chat h3 {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .chat-model-tag {
-  font-size: 0.7rem;
-  color: var(--ink-dim);
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-transform: none;
   margin-right: auto;
-}
-
-.chat-tab-btn {
-  background: none;
-  border: 1px solid var(--line-soft);
-  border-radius: 2px;
   color: var(--ink-dim);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.64rem;
-  padding: 1px 5px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 0.67rem;
+  text-transform: none;
+  letter-spacing: 0.03em;
 }
 
-.chat-tab-btn:hover {
+.chat-tab-btn,
+.chat-clear,
+.chat-send-btn {
+  border: 1px solid rgba(94, 242, 255, 0.4);
+  background: rgba(5, 11, 20, 0.65);
   color: var(--ink);
-  border-color: var(--line);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.63rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.chat-send-btn {
+  border-radius: 8px;
+  font-size: 0.82rem;
+  padding: 0 10px;
+}
+
+.chat-tab-btn:hover,
+.chat-clear:hover,
+.chat-send-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(255, 139, 95, 0.8);
+  background: rgba(20, 10, 14, 0.72);
 }
 
 .chat-tab-active {
-  color: var(--ink);
-  border-color: var(--line);
-  box-shadow: inset 0 0 6px rgba(120, 255, 98, 0.12);
-}
-
-.chat-clear {
-  background: none;
-  border: 1px solid var(--line-soft);
-  border-radius: 2px;
-  color: var(--ink-dim);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.68rem;
-  padding: 1px 5px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  border-color: rgba(255, 139, 95, 0.85);
+  color: #fff2de;
 }
 
 .chat-clear:hover {
-  color: var(--alert);
-  border-color: var(--alert);
+  color: #ffd0d0;
 }
 
 .chat-messages {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
-  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  min-height: 0;
+  gap: 6px;
+  padding: 8px 10px;
+  background:
+    linear-gradient(180deg, rgba(9, 13, 25, 0.45), rgba(6, 10, 17, 0.2));
 }
 
 .chat-msg {
-  font-size: 0.77rem;
-  line-height: 1.38;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  padding: 5px 8px;
+  border-radius: 8px;
+  border-left: 2px solid rgba(94, 242, 255, 0.5);
+  background: rgba(10, 15, 28, 0.6);
   white-space: pre-wrap;
   word-break: break-word;
-  padding: 4px 7px;
-  border-left: 2px solid var(--line-soft);
 }
 
 .chat-msg-user {
-  color: var(--ink-alt);
-  border-left-color: var(--ink-alt);
+  color: #ffe8cc;
+  border-left-color: rgba(255, 139, 95, 0.9);
 }
 
 .chat-msg-ai {
-  color: var(--ink);
-  border-left-color: var(--line);
+  color: #e8f7ff;
+  border-left-color: rgba(94, 242, 255, 0.9);
 }
 
 .chat-msg-ai.chat-thinking {
@@ -259,75 +289,93 @@ pre::-webkit-scrollbar-thumb {
 }
 
 .chat-msg-error {
-  color: var(--alert);
-  border-left-color: var(--alert);
+  color: #ffd3d3;
+  border-left-color: var(--danger);
 }
 
 .chat-input-row {
   display: flex;
-  gap: 5px;
-  padding: 6px 8px;
+  align-items: stretch;
+  gap: 6px;
+  padding: 7px 10px;
   border-top: 1px solid var(--line-soft);
-  background: rgba(0, 0, 0, 0.35);
-  flex-shrink: 0;
+  background: var(--panel-strong);
 }
 
 .chat-input {
   flex: 1;
   resize: none;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--line-soft);
+  border: 1px solid rgba(94, 242, 255, 0.35);
+  border-radius: 8px;
+  background: rgba(4, 9, 15, 0.75);
   color: var(--ink);
-  font-family: "Courier New", Courier, monospace;
-  font-size: 0.77rem;
-  padding: 3px 0;
+  font-family: inherit;
+  font-size: 0.72rem;
   line-height: 1.35;
+  padding: 6px 8px;
   outline: none;
 }
 
 .chat-input:focus {
-  border-bottom-color: var(--line);
+  border-color: rgba(255, 139, 95, 0.8);
+  box-shadow: 0 0 0 1px rgba(255, 139, 95, 0.2);
 }
 
 .chat-input::placeholder {
   color: var(--ink-dim);
-  opacity: 0.45;
-}
-
-.chat-send-btn {
-  background: none;
-  border: 1px solid var(--line-soft);
-  border-radius: 2px;
-  color: var(--ink);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.9rem;
-  padding: 0 9px;
-  letter-spacing: 0.05em;
-}
-
-.chat-send-btn:hover:not(:disabled) {
-  border-color: var(--line);
-  color: var(--ink);
-  text-shadow: 0 0 6px rgba(120, 255, 98, 0.5);
+  opacity: 0.75;
 }
 
 .chat-send-btn:disabled {
-  opacity: 0.3;
+  opacity: 0.4;
   cursor: not-allowed;
 }
-/* ── End Cockpit AI Chat ─────────────────────────────────────────────── */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  body {
+    overflow: auto;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 44px;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
   .cockpit-grid {
+    height: auto;
+    min-height: calc(100vh - 44px);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(5, minmax(190px, auto));
     grid-template-areas:
-      "live    live    live    live    live    live    live    live    live    live    live    live"
-      "events  events  events  events  events  events  events  events  events  events  events  events"
-      "git     git     git     git     git     git     git     git     git     git     git     git"
-      "cadence cadence cadence cadence cadence cadence cadence cadence cadence cadence cadence cadence"
-      "ollama  ollama  ollama  ollama  ollama  ollama  ollama  ollama  ollama  ollama  ollama  ollama"
-      "token   token   token   token   token   token   token   token   token   token   token   token"
-      "chat    chat    chat    chat    chat    chat    chat    chat    chat    chat    chat    chat";
+      "live events"
+      "git oploop"
+      "token cadence"
+      "ollama chat"
+      "events chat";
+  }
+}
+
+@media (max-width: 760px) {
+  .cockpit-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "live"
+      "events"
+      "oploop"
+      "git"
+      "cadence"
+      "ollama"
+      "token"
+      "chat";
+    grid-template-rows: repeat(8, minmax(210px, auto));
+  }
+
+  .status {
+    max-width: 100%;
   }
 }
