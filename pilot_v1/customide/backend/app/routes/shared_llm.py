@@ -58,8 +58,7 @@ def _resolve_generate_url() -> tuple[str | None, str, str | None]:
     if env_base_url:
         return env_base_url, "env.CUSTOMIDE_OLLAMA_BASE_URL", None
 
-    _p = Path(__file__).resolve()
-    repo_root = next((q for q in _p.parents if (q / ".git").exists()), _p.parents[5])
+    repo_root = Path(__file__).resolve().parents[3]
     svc = load_worker_services(repo_root)
     if svc.get("status") != "ok":
         return None, "none", "worker1_services.json missing"
@@ -118,7 +117,7 @@ def llm_health() -> dict[str, Any]:
 @router.post("/chat")
 def llm_chat(payload: ChatRequest) -> dict[str, Any]:
     target, source_key, reason = _resolve_generate_url()
-    model = payload.model or os.environ.get("CUSTOMIDE_OLLAMA_MODEL", "qwen2.5:14b")
+    model = payload.model or "qwen2.5-coder:14b"
     mapped_source = _map_source(payload.source)
 
     if not target:
