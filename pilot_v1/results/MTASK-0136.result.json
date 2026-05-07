@@ -1,0 +1,10 @@
+{
+  "task_id": "MTASK-0136",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Set mide-chat Ollama base URL to Ubuntu LAN endpoint and validate AI room replies.",
+  "mide_chat_health": {"status":"ok","model":"qwen2.5-coder:7b","ai":"LARIEL"},
+  "ask_ai_status": {"ok":true,"status":"ai_triggered"},
+  "ai_reply_check": "error",
+  "timestamp_utc": "2026-05-07T23:41:06Z"
+}
