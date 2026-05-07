@@ -1,22 +1,37 @@
 {
-  "task_id": "MTASK-0106",
-  "created_by": "windows-main",
-  "worker_name": "ubuntu-atlas-01",
-  "assigned_to": "ubuntu-worker-01",
-  "required_worker_id": "ubuntu-worker-01",
-  "objective": "Final end-to-end verification of the Ollama ngrok tunnel. Read the public URL from worker1_services.json, verify /api/tags returns 200, run a live /api/generate test, and write the verified website chat URL and generate URL into worker1_services.json tunnel_verification block.",
-  "executor_script": "pilot_v1/scripts/exec_mtask_0106_verify_ollama_tunnel.sh",
-  "moss_labels": ["moss/customide", "tunnel/ollama", "worker/verification"],
-  "priority": "high",
-  "risk_level": "none",
-  "automation_mode": "auto",
-  "admin_override_allowed": false,
-  "allowed_paths": ["pilot_v1/results", "pilot_v1/state"],
-  "blocked_paths": ["pilot_v1/tasks", "pilot_v1/approvals"],
-  "required_validation": ["snapshot=complete", "verification_status=PASS"],
-  "dependencies": ["MTASK-0105"],
-  "timeout_seconds": 120,
-  "status": "pending",
-  "issued_by": "vs-copilot-main-operator",
-  "timestamp_utc": "2026-05-06T00:00:00Z"
+    "task_id":  "MTASK-0106",
+    "created_by":  "windows-main",
+    "worker_name":  "ubuntu-atlas-01",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "objective":  "Final end-to-end verification of the Ollama ngrok tunnel. Read the public URL from worker1_services.json, verify /api/tags returns 200, run a live /api/generate test, and write the verified website chat URL and generate URL into worker1_services.json tunnel_verification block.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0106_verify_ollama_tunnel.sh",
+    "moss_labels":  [
+                        "moss/customide",
+                        "tunnel/ollama",
+                        "worker/verification"
+                    ],
+    "priority":  "high",
+    "risk_level":  "none",
+    "automation_mode":  "auto",
+    "admin_override_allowed":  false,
+    "allowed_paths":  [
+                          "pilot_v1/results",
+                          "pilot_v1/state"
+                      ],
+    "blocked_paths":  [
+                          "pilot_v1/tasks",
+                          "pilot_v1/approvals"
+                      ],
+    "required_validation":  [
+                                "snapshot=complete",
+                                "verification_status=PASS"
+                            ],
+    "dependencies":  [
+                         "MTASK-0105"
+                     ],
+    "timeout_seconds":  120,
+    "status":  "approved_to_execute",
+    "issued_by":  "vs-copilot-main-operator",
+    "timestamp_utc":  "2026-05-06T00:00:00Z"
 }
