@@ -1,0 +1,13 @@
+{
+    "task_id":  "MTASK-0119",
+    "title":  "Restart cockpit backend — load task-history endpoint",
+    "description":  "New /api/status/task-history endpoint added to runtime.py. Pull latest, restart cockpit backend (correct repo/venv: /home/larieladmin/mide-pilot, .venv), verify /api/status/task-history returns tasks array with count \u003e 0.",
+    "objective":  "restart_cockpit_load_task_history",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "high",
+    "created_utc":  "2026-05-07T02:10:25Z",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0119_restart_load_task_history.sh"
+}
