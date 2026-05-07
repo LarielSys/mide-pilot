@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0105-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0105\nobjective=setup_persistent_ollama_ngrok_tunnel_for_website\ntimestamp_utc=2026-05-07T02:17:10Z\nollama_mode=native\nollama_local_port=11434\n--- stopping_existing_ngrok ---\nngrok_killed=yes\nngrok_token_found=no\nWARNING: No ngrok authtoken found. Tunnel will use anonymous free tier (limited).\n--- starting_ngrok ---\nngrok_started_pid=117391\n--- retrieving_tunnel_url ---\ntunnel_public_url=https://jawed-lapel-dispersed.ngrok-free.dev\n--- verifying_tunnel ---\ntunnel_http_root=200\ntunnel_http_api_tags=200\ntunnel_ollama_api=OK\n--- updating_state ---\nstate_written=/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/worker1_services.json\nstate_updated=ok\n--- systemd_service ---\nsystemd_service=skipped_no_sudo\n[main 87418697] worker: MTASK-0105 ollama tunnel established https://jawed-lapel-dispersed.ngrok-free.dev\n 1 file changed, 3 insertions(+), 3 deletions(-)\nfinal_tunnel_url=https://jawed-lapel-dispersed.ngrok-free.dev\nsnapshot=complete",
+  "stderr_excerpt": "<stdin>:16: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\nTo https://github.com/LarielSys/mide-pilot.git\n   48ef76d5..87418697  main -> main",
+  "timestamp_utc": "2026-05-07T02:17:22Z"
+}
