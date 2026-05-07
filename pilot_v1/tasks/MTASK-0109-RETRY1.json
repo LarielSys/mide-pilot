@@ -1,0 +1,20 @@
+﻿{
+    "task_id":  "MTASK-0109-RETRY1",
+    "title":  "RETRY: Restart cockpit backend (fixed kill logic)",
+    "description":  "Retry of MTASK-0109. Previous attempt failed because multi-PID kill syntax error left old uvicorn running. Fixed exec script now kills each PID individually, verifies port is clear before starting new uvicorn. Pull latest main, kill ALL processes on port 5555, start fresh uvicorn, verify /api/status/token-counters returns rows \u003e 0.",
+    "objective":  "apply_code_fix_restart_backend_verify_token_counter",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "high",
+    "created_utc":  "2026-05-07T00:33:58Z",
+    "tags":  [
+                 "cockpit",
+                 "backend",
+                 "fix",
+                 "token-counter",
+                 "retry"
+             ],
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0109_restart_cockpit_verify_tokens.sh"
+}
