@@ -1,0 +1,13 @@
+{
+    "created_utc":  "2026-05-07T14:12:17Z",
+    "description":  "Previous execution hung on git sync. Worker autopilot now has 60s git timeout. Retry: Pull latest, restart cockpit backend (correct repo/venv: /home/larieladmin/mide-pilot, .venv), verify /api/status/task-history returns tasks array with count \u003e 0.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0119_restart_load_task_history.sh",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "objective":  "restart_cockpit_load_task_history",
+    "created_by":  "windows-main",
+    "assigned_to":  "ubuntu-worker-01",
+    "task_id":  "MTASK-0119-RETRY1",
+    "title":  "Restart cockpit backend — load task-history endpoint (retry 1)",
+    "priority":  "high"
+}
