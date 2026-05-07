@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0122",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0122\ntimestamp_utc=2026-05-07T20:18:09Z\nhostname=lariel-cloud\nuptime=up 20 hours, 3 minutes\nworker_id=ubuntu-worker-01\nrepo_root=unknown\npwd=/home/larieladmin/mide-worker-service\ndisk_free_home=13G\nfinal_status=ALL_CHECKS_PASSED",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T20:18:09Z"
+}
