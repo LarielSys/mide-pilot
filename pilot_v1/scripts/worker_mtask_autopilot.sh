@@ -178,13 +178,13 @@ commit_and_push_status_heartbeat() {
 
   git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
   git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
-  git -C "${REPO_ROOT}" push origin main >/dev/null || {
+  GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" push origin main >/dev/null || {
     echo "[autopilot] Warning: heartbeat push failed; will retry next cycle." >&2
   }
 }
 
 git_sync() {
-  git -C "${REPO_ROOT}" pull --ff-only origin main >/dev/null
+  GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" pull --ff-only origin main >/dev/null
 }
 
 next_task_file() {
@@ -305,7 +305,7 @@ commit_and_push_result() {
   local task_id="$1"
   git -C "${REPO_ROOT}" add "pilot_v1/results/${task_id}.result.json" "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" || true
   git -C "${REPO_ROOT}" commit -m "worker: autopilot result ${task_id}" >/dev/null || true
-  git -C "${REPO_ROOT}" push origin main >/dev/null || {
+  GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" push origin main >/dev/null || {
     echo "[autopilot] Warning: push failed for ${task_id}; result remains local until next successful push." >&2
   }
 }
