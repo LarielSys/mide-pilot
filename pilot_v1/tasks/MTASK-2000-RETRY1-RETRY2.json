@@ -1,0 +1,36 @@
+{
+    "task_id":  "MTASK-2000-RETRY1-RETRY2",
+    "created_by":  "windows-main",
+    "worker_name":  "ubuntu-atlas-01",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "objective":  "RETRY2: Collect comprehensive system data for website integration: hostname, IPs (local + public), listening ports, active connections, DNS config, resource usage (memory, disk, load). Write all data to pilot_v1/state/website_system_data.json for website backend to consume.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2000_collect_system_data.sh",
+    "moss_labels":  [
+                        "website/integration",
+                        "worker/diagnostics",
+                        "worker/data"
+                    ],
+    "priority":  "high",
+    "risk_level":  "none",
+    "automation_mode":  "auto",
+    "admin_override_allowed":  false,
+    "allowed_paths":  [
+                          "pilot_v1/results",
+                          "pilot_v1/state"
+                      ],
+    "blocked_paths":  [
+                          "pilot_v1/tasks",
+                          "pilot_v1/approvals"
+                      ],
+    "required_validation":  [
+                                "snapshot=complete"
+                            ],
+    "dependencies":  [
+
+                     ],
+    "timeout_seconds":  60,
+    "status":  "approved_to_execute",
+    "issued_by":  "vs-copilot-main-operator",
+    "timestamp_utc":  "2026-05-06T21:53:35Z"
+}
