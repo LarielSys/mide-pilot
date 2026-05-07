@@ -67,7 +67,7 @@ for route_file in "${COCKPIT_DIR}/backend/app/routes/"*.py; do
   basename_f="$(basename "${route_file}")"
   echo "### ${basename_f}"
   # Extract route decorators
-  grep -E '@router\.(get|post|put|delete|patch)' "${route_file}" | \
+  (grep -E '@router\.(get|post|put|delete|patch)' "${route_file}" 2>/dev/null || true) | \
     sed 's/.*@router\.\(.*\)(\(.*\))/  \1 \2/' | head -20
   echo ""
 done

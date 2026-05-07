@@ -1,9 +1,0 @@
-{
-  "task_id": "MTASK-0107",
-  "worker_id": "ubuntu-worker-01",
-  "execution_status": "failed",
-  "summary": "Executor script exited with non-zero status.",
-  "stdout_excerpt": "task=MTASK-0107\nworker_id=ubuntu-worker-01\nworker_name=ubuntu-atlas-01",
-  "stderr_excerpt": "",
-  "timestamp_utc": "2026-05-07T02:02:15Z"
-}
