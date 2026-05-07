@@ -1,0 +1,13 @@
+{
+    "created_utc":  "2026-05-07T19:49:16Z",
+    "description":  "Cockpit backend (FastAPI) is running on port 5555 but has no public URL. Start an ngrok tunnel on port 5555, verify /api/status/runtime returns 200 through tunnel, update pilot_v1/config/worker1_services.json with cockpit.public_url.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0120_cockpit_ngrok_tunnel.sh",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "objective":  "RETRY2: cockpit_ngrok_tunnel",
+    "created_by":  "windows-main",
+    "assigned_to":  "ubuntu-worker-01",
+    "task_id":  "MTASK-0120-RETRY2",
+    "title":  "Start cockpit ngrok tunnel on port 5555",
+    "priority":  "high"
+}
