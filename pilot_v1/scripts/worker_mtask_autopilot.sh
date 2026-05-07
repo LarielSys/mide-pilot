@@ -62,6 +62,24 @@ now_epoch() {
   date -u +"%s"
 }
 
+sync_backend_container_state() {
+  local container="mide-backend"
+  local state_file
+
+  command -v docker >/dev/null 2>&1 || return 0
+  docker ps --format '{{.Names}}' | grep -qx "${container}" || return 0
+  docker exec "${container}" sh -lc 'mkdir -p /pilot_v1/state' >/dev/null 2>&1 || return 0
+
+  for state_file in \
+    "${STATUS_FILE}" \
+    "${HEARTBEAT_FILE}" \
+    "${LIVE_STATUS_FILE}" \
+    "${EVENT_LOG_FILE}"; do
+    [[ -f "${state_file}" ]] || continue
+    docker cp "${state_file}" "${container}:/pilot_v1/state/$(basename "${state_file}")" >/dev/null 2>&1 || true
+  done
+}
+
 write_status() {
   local mode="$1"
   local last_task="$2"
@@ -109,6 +127,8 @@ EOF
     echo "Recent Events (latest 20, newest first):"
     head -n 20 "${EVENT_LOG_FILE}" 2>/dev/null || true
   } >"${LIVE_STATUS_FILE}"
+
+  sync_backend_container_state
 }
 
 hash_sha256() {
@@ -175,6 +195,7 @@ commit_and_push_status_heartbeat() {
   local ts
   ts="$(now_epoch)"
   echo "${ts}" >"${HEARTBEAT_FILE}"
+  sync_backend_container_state
 
   git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
   git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
