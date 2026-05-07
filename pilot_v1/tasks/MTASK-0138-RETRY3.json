@@ -1,0 +1,15 @@
+{
+    "task_id":  "MTASK-0138-RETRY3",
+    "issued_by":  "windows-main",
+    "issued_at":  "2026-05-07T23:45:37",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Fresh AI reply validation after MTASK-0137 LAN URL fix — clean history check",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0138_fresh_ai_validate.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  ""
+}
