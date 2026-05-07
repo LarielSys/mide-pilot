@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0132-RETRY6",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-0132] start 2026-05-07T22:19:41Z\nFrom https://github.com/LarielSys/mide-pilot\n * branch              main       -> FETCH_HEAD\n   7e3fe127..5497f09d  main       -> origin/main\nHEAD is now at 5497f09d operator: heartbeat windows-main 1778192348\n[MTASK-0132] mide-chat dir:\ntotal 28\ndrwxrwxr-x 3 larieladmin larieladmin 4096 May  7 18:17 .\ndrwxrwxr-x 7 larieladmin larieladmin 4096 May  7 18:17 ..\n-rw-rw-r-- 1 larieladmin larieladmin  231 May  7 18:17 Dockerfile\n-rw-rw-r-- 1 larieladmin larieladmin   57 May  7 18:17 requirements.txt\n-rw-rw-r-- 1 larieladmin larieladmin 7813 May  7 18:17 server.py\ndrwxrwxr-x 2 larieladmin larieladmin 4096 May  7 18:17 static\ntotal 28\ndrwxrwxr-x 2 larieladmin larieladmin 4096 May  7 18:17 .\ndrwxrwxr-x 3 larieladmin larieladmin 4096 May  7 18:17 ..\n-rw-rw-r-- 1 larieladmin larieladmin 7361 May  7 18:17 chat.js\n-rw-rw-r-- 1 larieladmin larieladmin 2559 May  7 18:17 index.html\n-rw-rw-r-- 1 larieladmin larieladmin 6698 May  7 18:17 style.css\n[MTASK-0132] Building mide-chat Docker image...\nvalidating /home/larieladmin/mide-pilot/pilot_v1/customide/docker-compose.yml: volumes.mide-chat additional properties 'ports', 'extra_hosts', 'environment', 'build', 'image', 'container_name', 'restart' not allowed",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T22:19:41Z"
+}

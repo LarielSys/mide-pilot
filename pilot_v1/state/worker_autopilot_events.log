@@ -1,3 +1,4 @@
+2026-05-07T22:19:41Z | mode=running | last_task=MTASK-0132-RETRY6 | note=Task failed: executor script non-zero exit.
 2026-05-07T22:18:39Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=174, eligible=0, mismatched=2.
 2026-05-07T22:17:38Z | mode=running | last_task=MTASK-0132-RETRY5 | note=Task failed: executor script non-zero exit.
 2026-05-07T22:16:36Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=173, eligible=0, mismatched=2.
