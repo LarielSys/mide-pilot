@@ -1,4 +1,4 @@
-﻿{
+{
     "task_id":  "MTASK-0109",
     "title":  "Restart cockpit backend to apply repo-root path fix",
     "description":  "Pull latest main and restart the cockpit FastAPI backend (uvicorn, port 5555) so that _repo_root() correctly resolves via .git detection. After restart, verify GET /api/status/token-counters returns rows \u003e 0. Report: rows_count, source, and any startup tracebacks.",

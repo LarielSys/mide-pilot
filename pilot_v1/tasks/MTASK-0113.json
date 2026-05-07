@@ -1,0 +1,42 @@
+{
+  "task_id": "MTASK-0113",
+  "created_by": "ubuntu-worker-01",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "objective": "Prevent BOM-corrupted MTASK JSON files from being generated and queued. Update VS task creation flow to always write UTF-8 without BOM, and add a pre-queue validator that rejects or auto-strips BOM before saving. Add a one-shot repair script to scan tasks/*.json and strip BOM safely with a log of touched files.",
+  "title": "Harden MTASK JSON encoding against BOM",
+  "description": "Observed blocker: MTASK-0109-RETRY1.json contains UTF-8 BOM (EF BB BF), causing worker parser (json.load with utf-8) to skip the task silently. Implement prevention + validation so future MTASKs cannot be BOM-tainted.",
+  "executor_script": "",
+  "moss_labels": [
+    "moss/customide",
+    "worker/autopilot",
+    "task-encoding",
+    "reliability"
+  ],
+  "priority": "high",
+  "risk_level": "low",
+  "automation_mode": "review_required",
+  "admin_override_allowed": true,
+  "allowed_paths": [
+    "pilot_v1/tasks",
+    "pilot_v1/scripts",
+    "pilot_v1/state"
+  ],
+  "blocked_paths": [
+    "pilot_v1/results"
+  ],
+  "required_validation": [
+    "new_tasks_utf8_no_bom=true",
+    "bom_prequeue_validator=active",
+    "repair_script_exists=true",
+    "repair_log_recorded=true"
+  ],
+  "dependencies": [
+    "MTASK-0109-RETRY1"
+  ],
+  "timeout_seconds": 900,
+  "status": "approved_to_execute",
+  "issued_by": "ubuntu-worker-01",
+  "timestamp_utc": "2026-05-07T04:39:00Z"
+}

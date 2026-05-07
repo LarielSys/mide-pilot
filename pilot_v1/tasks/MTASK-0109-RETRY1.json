@@ -1,4 +1,4 @@
-﻿{
+{
     "task_id":  "MTASK-0109-RETRY1",
     "title":  "RETRY: Restart cockpit backend (fixed kill logic)",
     "description":  "Retry of MTASK-0109. Previous attempt failed because multi-PID kill syntax error left old uvicorn running. Fixed exec script now kills each PID individually, verifies port is clear before starting new uvicorn. Pull latest main, kill ALL processes on port 5555, start fresh uvicorn, verify /api/status/token-counters returns rows \u003e 0.",
