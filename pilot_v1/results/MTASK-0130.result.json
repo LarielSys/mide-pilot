@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0130",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-0130] start 2026-05-07T21:45:36Z\nFrom https://github.com/LarielSys/mide-pilot\n * branch              main       -> FETCH_HEAD\n   9b40173b..1e984ddd  main       -> origin/main\n[MTASK-0130] done: POST_READ_BRIDGE_FAIL",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T21:45:41Z"
+}
