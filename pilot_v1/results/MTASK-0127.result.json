@@ -1,9 +1,11 @@
 {
   "task_id": "MTASK-0127",
-  "worker_id": "ubuntu-worker-01",
-  "execution_status": "failed",
-  "summary": "Missing required executor_script field in task.",
-  "stdout_excerpt": "",
-  "stderr_excerpt": "",
-  "timestamp_utc": "2026-05-07T21:11:35Z"
+  "worker_id": "operator-manual",
+  "completed_at": "2026-05-07T21:35:43Z",
+  "execution_status": "ok",
+  "final_status": "MESSENGER_OK",
+  "patch_status": "ok",
+  "summary": "Patched messenger.py in mide-backend container with in-memory deque store; restarted container; /health and /api/messenger POST+GET verified.",
+  "health_check": "ok",
+  "messenger_test_id": "f52f4857"
 }
