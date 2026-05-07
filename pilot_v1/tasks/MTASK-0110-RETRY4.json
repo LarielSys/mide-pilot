@@ -1,0 +1,13 @@
+{
+    "task_id":  "MTASK-0110-RETRY4",
+    "title":  "Verify/update chat.html CHAT_BACKEND URL",
+    "description":  "Exec script now exists. Read tunnel_verification.chat_url from worker1_services.json, strip /api/chat suffix to get base URL, verify or update CHAT_BACKEND constant in larielsystems/chat.html, commit and push. Expected value: https://jawed-lapel-dispersed.ngrok-free.dev",
+    "objective":  "update_chat_backend_url",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "high",
+    "created_utc":  "2026-05-07T01:53:20Z",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0110_update_chat_backend_url.sh"
+}
