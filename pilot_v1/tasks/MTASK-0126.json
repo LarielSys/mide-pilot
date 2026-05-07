@@ -1,0 +1,13 @@
+{
+  "task_id": "MTASK-0126",
+  "title": "Rollback cockpit backend to pre-yesterday known-good, preserve current layout",
+  "description": "Save a full backup of current cockpit first, then rollback backend-only files to commit 12e870d8 (pre-2026-05-06 known-good from MTASK-0103), commit/push rollback, restart backend on 5555, and verify runtime endpoint. Do NOT rollback frontend layout files.",
+  "objective": "rollback_backend_preserve_layout",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "created_by": "windows-main",
+  "status": "approved_to_execute",
+  "priority": "high",
+  "created_utc": "2026-05-07T20:49:28Z",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0126_rollback_cockpit_backend_preserve_layout.sh"
+}
