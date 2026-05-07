@@ -1,0 +1,20 @@
+{
+    "task_id":  "MTASK-0114",
+    "title":  "Diagnose Python venv and port-5555 process survival",
+    "description":  "Two problems observed: (1) exec_mtask_0109 always falls back to system python (no fastapi installed), so new uvicorn cannot start — need to find the correct venv path. (2) Old uvicorn process survives kill and re-claims port 5555. Diagnose: (a) run \u0027find /home/larieladmin -name activate -path */bin/activate 2\u003e/dev/null | head -10\u0027 to locate all venvs; (b) which python3 has fastapi installed (pip show fastapi for each venv); (c) lsof -ti :5555 before and after kill to see if process restarts; (d) check if PM2/supervisor/systemd is managing the backend: pm2 list 2\u003e/dev/null; supervisorctl status 2\u003e/dev/null; systemctl list-units --type=service --state=running 2\u003e/dev/null | grep -i uvicorn. Report all findings.",
+    "objective":  "diagnose_python_venv_and_surviving_backend_process",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "high",
+    "created_utc":  "2026-05-07T01:17:17Z",
+    "tags":  [
+                 "cockpit",
+                 "backend",
+                 "diagnose",
+                 "python",
+                 "venv"
+             ],
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0114_diagnose_python_env.sh"
+}
