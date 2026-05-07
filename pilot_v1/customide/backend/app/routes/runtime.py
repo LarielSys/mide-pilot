@@ -1,5 +1,7 @@
+import io
 import json
 import subprocess
+import tarfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -304,40 +306,76 @@ def get_token_counters() -> dict:
     }
 
 
+_KEY_PREFIXES = (
+    "final_status=", "rows_count=", "token_counter_fixed=",
+    "hostname=", "uptime=", "disk_free_home=", "backend_start=",
+    "fastapi_version=", "patch_verified=", "already_patched=",
+    "chat_backend_status=", "tunnel_url=", "file_rows=",
+)
+
+
+def _parse_task_result(data: dict, name_stem: str) -> dict:
+    excerpt = str(data.get("stdout_excerpt") or "")
+    key_lines = []
+    for line in excerpt.splitlines():
+        line = line.strip()
+        if line and any(line.startswith(k) for k in _KEY_PREFIXES):
+            key_lines.append(line)
+    return {
+        "task_id": data.get("task_id", name_stem.replace(".result", "")),
+        "status": data.get("execution_status", "unknown"),
+        "summary": data.get("summary", ""),
+        "timestamp_utc": data.get("timestamp_utc", ""),
+        "worker_id": data.get("worker_id", ""),
+        "key_lines": key_lines[:6],
+    }
+
+
 @router.get("/task-history")
 def get_task_history() -> dict:
     repo_root = _repo_root()
-    results_dir = repo_root / "pilot_v1" / "results"
+    _maybe_fetch_origin(repo_root)
     tasks: list[dict] = []
 
-    if results_dir.exists():
-        for f in sorted(results_dir.glob("MTASK-*.result.json"), key=lambda p: p.name, reverse=True)[:40]:
-            try:
-                data = json.loads(f.read_text(encoding="utf-8"))
-                # Parse key lines from stdout_excerpt into a short summary
-                excerpt = str(data.get("stdout_excerpt") or "")
-                key_lines = []
-                for line in excerpt.splitlines():
-                    line = line.strip()
-                    if not line:
+    # Read result files directly from origin/main via git archive (single subprocess call,
+    # works even when the local working tree is sparse/deleted).
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(repo_root), "archive", "origin/main", "--", "pilot_v1/results/"],
+            capture_output=True,
+            timeout=15,
+            check=False,
+        )
+        if proc.returncode == 0 and proc.stdout:
+            with tarfile.open(fileobj=io.BytesIO(proc.stdout), mode="r:") as tar:
+                members = [
+                    m for m in tar.getmembers()
+                    if m.name.startswith("pilot_v1/results/MTASK-")
+                    and m.name.endswith(".result.json")
+                ]
+                members.sort(key=lambda m: m.name, reverse=True)
+                for member in members[:40]:
+                    fobj = tar.extractfile(member)
+                    if not fobj:
                         continue
-                    if any(line.startswith(k) for k in (
-                        "final_status=", "rows_count=", "token_counter_fixed=",
-                        "hostname=", "uptime=", "disk_free_home=", "backend_start=",
-                        "fastapi_version=", "patch_verified=", "already_patched=",
-                        "chat_backend_status=", "tunnel_url=", "file_rows=",
-                    )):
-                        key_lines.append(line)
-                tasks.append({
-                    "task_id": data.get("task_id", f.stem.replace(".result", "")),
-                    "status": data.get("execution_status", "unknown"),
-                    "summary": data.get("summary", ""),
-                    "timestamp_utc": data.get("timestamp_utc", ""),
-                    "worker_id": data.get("worker_id", ""),
-                    "key_lines": key_lines[:6],
-                })
-            except Exception:
-                pass
+                    try:
+                        data = json.loads(fobj.read().decode("utf-8"))
+                        tasks.append(_parse_task_result(data, Path(member.name).name))
+                    except Exception:
+                        pass
+    except Exception:
+        pass
+
+    # Fallback: local filesystem (for dev environments with full working tree)
+    if not tasks:
+        results_dir = repo_root / "pilot_v1" / "results"
+        if results_dir.exists():
+            for f in sorted(results_dir.glob("MTASK-*.result.json"), key=lambda p: p.name, reverse=True)[:40]:
+                try:
+                    data = json.loads(f.read_text(encoding="utf-8"))
+                    tasks.append(_parse_task_result(data, f.name))
+                except Exception:
+                    pass
 
     return {
         "tasks": tasks,
