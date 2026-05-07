@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0125",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0125\ntimestamp_utc=2026-05-07T20:28:37Z\nls_tree_count=128\nls_tree_first=pilot_v1/results/MTASK-2000-RETRY1-RETRY2-RETRY2.result.json\npilot_v1/results/MTASK-2000-RETRY1-RETRY2-RETRY2-RETRY2.result.json\npilot_v1/results/MTASK-REPORT-ubuntu-worker-01-20260505.result.json\narchive_count=128\norigin_url=https://REDACTED@github.com/LarielSys/mide-pilot.git\nlocal_head=3c27a3af\norigin_head=0a368e1b\nfinal_status=ALL_CHECKS_PASSED",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T20:28:37Z"
+}

@@ -19,7 +19,8 @@ echo "archive_count=${ARCHIVE_COUNT}"
 
 # Check remote URL
 REMOTE=$(git -C "${COCKPIT_REPO}" remote get-url origin 2>&1)
-echo "origin_url=${REMOTE}"
+REMOTE_SAFE=$(printf '%s' "${REMOTE}" | sed -E 's#https://[^/@:]+:[^@]+@github.com/#https://REDACTED@github.com/#g; s#\bgh[pousr]_[A-Za-z0-9_]+\b#REDACTED_GITHUB_TOKEN#g')
+echo "origin_url=${REMOTE_SAFE}"
 
 # Check local HEAD vs origin
 LOCAL=$(git -C "${COCKPIT_REPO}" rev-parse HEAD 2>/dev/null | cut -c1-8)

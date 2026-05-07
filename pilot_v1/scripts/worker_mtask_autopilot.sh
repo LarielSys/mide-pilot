@@ -301,6 +301,7 @@ write_result_json() {
 import datetime
 import json
 import pathlib
+import re
 import sys
 
 result_file, task_id, status, summary, stdout_file, stderr_file, worker_id = sys.argv[1:8]
@@ -314,7 +315,11 @@ def load_excerpt(path):
     max_lines = 120
     if len(lines) > max_lines:
         lines = lines[-max_lines:]
-    return "\n".join(lines)
+    excerpt = "\n".join(lines)
+    excerpt = re.sub(r"https://[^\s/@:]+:[^\s@]+@github\.com/", "https://REDACTED@github.com/", excerpt)
+    excerpt = re.sub(r"\bgh[pousr]_[A-Za-z0-9_]+\b", "REDACTED_GITHUB_TOKEN", excerpt)
+    excerpt = re.sub(r"\bx-access-token:[^\s@]+@", "x-access-token:REDACTED@", excerpt)
+    return excerpt
 
 payload = {
     "task_id": task_id,
