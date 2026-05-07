@@ -1,0 +1,13 @@
+{
+  "task_id": "MTASK-0137",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-07T23:38:28",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Fix Ollama LAN URL in mide-chat container \u2014 set OLLAMA_BASE_URL to 192.168.1.21:11434",
+  "executor_script": "pilot_v1/customide/scripts/exec_mtask_0137_lan_ollama.sh",
+  "dependencies": [],
+  "notes": ""
+}
