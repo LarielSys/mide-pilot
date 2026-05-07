@@ -1444,11 +1444,11 @@
 
     const defaultThreads = {
       cockpit: {
-        title: "Cockpit AI",
-        tag: "qwen2.5:14b",
-        placeholder: "ask the cockpit AI...",
+        title: "Cockpit Room",
+        tag: "ops-central ○",
+        placeholder: "message ops-central...",
         messages: [
-          { role: "ai", text: "Ready. I have access to live cockpit state." }
+          { role: "ai", text: "Room standby. Connecting to OPS-CENTRAL..." }
         ]
       },
       messenger: {
@@ -1574,31 +1574,118 @@
       return div;
     }
 
-    function buildCockpitContext() {
-      // Gather live cockpit state from the DOM panels and variables
-      const lines = [
-        "=== COCKPIT STATE SNAPSHOT ===",
-        "backend_status: " + (statusEl ? statusEl.textContent : "n/a"),
-        "llm_status: "     + (llmBadgeEl ? llmBadgeEl.textContent : "n/a"),
-        "sync_status: "    + (syncBadgeEl ? syncBadgeEl.textContent : "n/a"),
-        "last_refresh: "   + (lastRefreshEl ? lastRefreshEl.textContent : "n/a"),
-        "",
-        "autopilot_summary:\n" + (autopilotSummaryEl ? autopilotSummaryEl.textContent : "n/a"),
-        "",
-        "git_panel:\n"     + (gitPanelEl ? gitPanelEl.textContent : "n/a"),
-        "",
-        "token_panel:\n"   + (tokenPanelEl ? tokenPanelEl.textContent : "n/a"),
-        "",
-        "ollama_panel:\n"  + (ollamaPanelEl ? ollamaPanelEl.textContent : "n/a"),
-        "=== END STATE ===",
-        "",
-        "You are the CustomIDE Cockpit AI. You have access to the above live cockpit state.",
-        "You help the developer understand what the autopilot is doing, debug issues,",
-        "review task and token data, and answer questions about the system.",
-        "Be concise. Use the cockpit state above when answering.",
-        ""
-      ];
-      return lines.join("\n");
+    const ROOM_NAME = "OPS-CENTRAL";
+    const ROOM_USER = "UBUNTU";
+    const ROOM_AI = "LARIEL";
+    const ROOM_PORT = 7070;
+    let cockpitWs = null;
+    let cockpitReconnectMs = 1500;
+
+    function getRoomWsUrl() {
+      const scheme = window.location.protocol === "https:" ? "wss" : "ws";
+      const host = window.location.hostname || "127.0.0.1";
+      return `${scheme}://${host}:${ROOM_PORT}/ws/${encodeURIComponent(ROOM_NAME)}/${encodeURIComponent(ROOM_USER)}`;
+    }
+
+    function extractHm(tsIso) {
+      const ts = String(tsIso || "");
+      if (ts.length >= 16 && ts[10] === "T") return ts.substring(11, 16);
+      return new Date().toTimeString().slice(0, 5);
+    }
+
+    function removeThinking(channel) {
+      const list = threads[channel].messages;
+      if (list.length > 0) {
+        const last = list[list.length - 1];
+        if (last && last.role === "ai chat-thinking") {
+          list.pop();
+          saveThreads();
+        }
+      }
+      if (channel === activeChannel && chatMessages.lastElementChild && chatMessages.lastElementChild.className.includes("chat-thinking")) {
+        chatMessages.lastElementChild.remove();
+      }
+    }
+
+    function handleRoomMessage(data) {
+      if (!data || typeof data !== "object") return;
+      const kind = String(data.kind || "chat");
+      const sender = String(data.sender || "SYSTEM");
+
+      if (kind === "presence") {
+        try {
+          const users = JSON.parse(String(data.text || "[]"));
+          if (Array.isArray(users)) {
+            threads.cockpit.tag = `ops-central ● ${users.length}`;
+            if (activeChannel === "cockpit") chatChannelTag.textContent = threads.cockpit.tag;
+          }
+        } catch (_err) {
+          // ignore malformed presence payload
+        }
+        return;
+      }
+
+      if (kind === "typing") {
+        removeThinking("cockpit");
+        appendChatMsg(`[${extractHm(data.ts)}] ${sender}: ...`, "ai chat-thinking", "cockpit");
+        return;
+      }
+
+      removeThinking("cockpit");
+
+      if (kind === "join" || kind === "leave") {
+        appendChatMsg(`[${extractHm(data.ts)}] SYSTEM: ${String(data.text || "")}`, "ai", "cockpit");
+        return;
+      }
+
+      const line = `[${extractHm(data.ts)}] ${sender}: ${String(data.text || "")}`;
+      if (sender === ROOM_USER) {
+        appendChatMsg(line, "user", "cockpit");
+      } else if (sender === ROOM_AI || kind === "ai") {
+        appendChatMsg(line, "ai", "cockpit");
+      } else {
+        appendChatMsg(line, "ai", "cockpit");
+      }
+    }
+
+    function connectCockpitRoom() {
+      const wsUrl = getRoomWsUrl();
+
+      try {
+        cockpitWs = new WebSocket(wsUrl);
+      } catch (_err) {
+        setTimeout(connectCockpitRoom, cockpitReconnectMs);
+        return;
+      }
+
+      cockpitWs.addEventListener("open", () => {
+        cockpitReconnectMs = 1500;
+        threads.cockpit.tag = "ops-central ●";
+        if (activeChannel === "cockpit") chatChannelTag.textContent = threads.cockpit.tag;
+        appendChatMsg(`CONNECTED: ${ROOM_USER} -> ${ROOM_NAME}`, "ai", "cockpit");
+      });
+
+      cockpitWs.addEventListener("message", evt => {
+        let data;
+        try {
+          data = JSON.parse(evt.data);
+        } catch (_err) {
+          return;
+        }
+        handleRoomMessage(data);
+      });
+
+      cockpitWs.addEventListener("close", () => {
+        cockpitWs = null;
+        threads.cockpit.tag = "ops-central ○";
+        if (activeChannel === "cockpit") chatChannelTag.textContent = threads.cockpit.tag;
+        cockpitReconnectMs = Math.min(cockpitReconnectMs * 2, 15000);
+        setTimeout(connectCockpitRoom, cockpitReconnectMs);
+      });
+
+      cockpitWs.addEventListener("error", () => {
+        if (cockpitWs) cockpitWs.close();
+      });
     }
 
     async function sendMessenger(raw) {
@@ -1716,38 +1803,15 @@
       chatBusy = true;
 
       const sendingChannel = activeChannel;
-      appendChatMsg(raw, "user", sendingChannel);
       const thinkingEl = appendChatMsg("thinking...", "ai chat-thinking", sendingChannel);
 
       try {
         if (sendingChannel === "cockpit") {
-          const fullPrompt = buildCockpitContext() + "User: " + raw;
-          const backendUrl = activeBackendBaseUrl || "http://127.0.0.1:5555";
-          const resp = await fetch(backendUrl + "/api/llm/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: fullPrompt, source: "remote", model: "qwen2.5:14b" }),
-            signal: AbortSignal.timeout(90000)
-          });
-
-          if (thinkingEl && thinkingEl.remove) thinkingEl.remove();
-          if (threads[sendingChannel].messages.length > 0) {
-            const last = threads[sendingChannel].messages[threads[sendingChannel].messages.length - 1];
-            if (last && last.role === "ai chat-thinking") {
-              threads[sendingChannel].messages.pop();
-              saveThreads();
-            }
-          }
-
-          if (!resp.ok) {
-            appendChatMsg("[HTTP " + resp.status + "] " + await resp.text(), "error", sendingChannel);
+          removeThinking(sendingChannel);
+          if (!cockpitWs || cockpitWs.readyState !== WebSocket.OPEN) {
+            appendChatMsg("[error] room socket unavailable", "error", sendingChannel);
           } else {
-            const data = await resp.json();
-            if (data.degraded || data.error) {
-              appendChatMsg("[degraded] " + (data.error || data.text || "no response"), "error", sendingChannel);
-            } else {
-              appendChatMsg(data.text || "(empty response)", "ai", sendingChannel);
-            }
+            cockpitWs.send(JSON.stringify({ text: raw }));
           }
         } else {
           const text = await sendMessenger(raw);
@@ -1765,14 +1829,7 @@
           }
         }
       } catch (err) {
-        if (thinkingEl && thinkingEl.remove) thinkingEl.remove();
-        if (threads[sendingChannel].messages.length > 0) {
-          const last = threads[sendingChannel].messages[threads[sendingChannel].messages.length - 1];
-          if (last && last.role === "ai chat-thinking") {
-            threads[sendingChannel].messages.pop();
-            saveThreads();
-          }
-        }
+        removeThinking(sendingChannel);
         appendChatMsg("[error] " + String(err), "error", sendingChannel);
       } finally {
         chatBusy = false;
@@ -1782,6 +1839,7 @@
     }
 
     loadThreads();
+    connectCockpitRoom();
     setActiveChannel("cockpit");
   })();
   // ── End Cockpit AI Chat ────────────────────────────────────────────────

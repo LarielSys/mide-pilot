@@ -23,6 +23,7 @@ OLLAMA_BASE = os.getenv("OLLAMA_BASE_URL", "http://ollama:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_CHAT_MODEL", "qwen2.5-coder:7b")
 AI_NAME = os.getenv("AI_NAME", "LARIEL")
 HISTORY_LIMIT = int(os.getenv("HISTORY_LIMIT", "200"))
+AI_AUTO_REPLY = os.getenv("AI_AUTO_REPLY", "true").lower() in ("1", "true", "yes", "on")
 
 app = FastAPI(title="MIDE Chat")
 
@@ -157,6 +158,9 @@ async def ws_endpoint(ws: WebSocket, room: str, username: str):
             if lower.startswith("@ai ") or lower.startswith(f"@{AI_NAME.lower()} "):
                 trigger = text.split(" ", 1)[1] if " " in text else text
                 asyncio.create_task(ai_respond(room, trigger, username))
+            elif AI_AUTO_REPLY and username != AI_NAME:
+                # Messenger-like behavior: AI responds automatically after each human message.
+                asyncio.create_task(ai_respond(room, text, username))
 
     except WebSocketDisconnect:
         pass
