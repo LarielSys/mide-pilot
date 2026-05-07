@@ -1,0 +1,22 @@
+{
+  "task_id": "MTASK-0107",
+  "created_by": "ubuntu-worker-01",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "objective": "Generate a living architecture snapshot of the CustomIDE Cockpit so the brain (LLM) can reason about its own environment. Introspect frontend JS, backend FastAPI routes, Docker Compose config, and state schema. Write a structured markdown document to pilot_v1/state/cockpit_architecture.md covering: directory tree, key files, API surface, pane data sources, chat flow, and Docker service topology.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0107_cockpit_architecture_snapshot.sh",
+  "moss_labels": ["moss/customide", "worker/architecture", "brain/context"],
+  "priority": "high",
+  "risk_level": "none",
+  "automation_mode": "auto",
+  "admin_override_allowed": true,
+  "allowed_paths": ["pilot_v1/results", "pilot_v1/state"],
+  "blocked_paths": ["pilot_v1/tasks", "pilot_v1/approvals"],
+  "required_validation": ["architecture_snapshot=written", "cockpit_architecture_md=exists"],
+  "dependencies": [],
+  "timeout_seconds": 120,
+  "status": "approved_to_execute",
+  "issued_by": "admin-lariel",
+  "timestamp_utc": "2026-05-07T01:59:00Z"
+}
