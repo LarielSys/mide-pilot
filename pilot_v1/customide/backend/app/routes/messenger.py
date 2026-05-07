@@ -29,6 +29,10 @@ class MessageIn(BaseModel):
     type: str = "message"
 
 
+class MessageReadIn(BaseModel):
+    limit: int = 20
+
+
 def _cors_json(content: dict, status_code: int = 200) -> JSONResponse:
     return JSONResponse(content=content, status_code=status_code, headers=_CORS_HEADERS)
 
@@ -53,6 +57,13 @@ async def post_message(msg: MessageIn) -> JSONResponse:
 
 @router.get("")
 async def get_messages(limit: int = 20) -> JSONResponse:
+    msgs = list(_messages)[-limit:]
+    return _cors_json({"ok": True, "count": len(msgs), "messages": msgs})
+
+
+@router.post("/read")
+async def read_messages(body: MessageReadIn) -> JSONResponse:
+    limit = max(1, min(body.limit, _MAX_MESSAGES))
     msgs = list(_messages)[-limit:]
     return _cors_json({"ok": True, "count": len(msgs), "messages": msgs})
 
