@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0115-RETRY1",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0115\ntimestamp_utc=2026-05-07T05:20:44Z\ncorrect_repo=/home/larieladmin/mide-pilot\nvenv=/home/larieladmin/mide-pilot/pilot_v1/customide/backend/.venv\n--- git_pull ---\nFrom https://github.com/LarielSys/mide-pilot\n * branch              main       -> FETCH_HEAD\nAlready up to date.\nhead=dd17214c\n1\n_repo_root_fix=present\n--- venv_check ---\nfastapi_version=0.115.0\n--- kill_port_5555 ---\nforce_killing pid=415881\nforce_killing pid=419117\nport_5555_after_kill=450761,\n--- start_backend ---\nnew_pid=450851\n--- wait_ready ---\nattempt=1 http=200\nbackend_start=OK\n--- verify_token_counters ---\ntoken_counters_response={\"source\":\"missing\",\"source_file\":\"/pilot_v1/customide/pilot_v1/customide/TOKEN_COUNTER_TASKS.txt\",\"rows\":[],\"summary\":{\"tasks_tracked\":0,\"ollama_tokens_total\":0,\"vs_tokens_total\":0,\"all_tokens_total\":0,\"estimated_cost_usd_total\":0},\"reported_at_utc\":\"2026-05-07T05:20:51Z\"}\nrows_count=0\nsource=missing\nsource_file=/pilot_v1/customide/pilot_v1/customide/TOKEN_COUNTER_TASKS.txt\ntoken_counter_fixed=no\nERROR:    [Errno 98] error while attempting to bind on address ('0.0.0.0', 5555): address already in use\nfinal_status=TOKEN_COUNTER_EMPTY",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T05:20:51Z"
+}
