@@ -1,0 +1,13 @@
+{
+    "task_id":  "MTASK-0117",
+    "title":  "Verify token counter now reads from git",
+    "description":  "TOKEN_COUNTER_TASKS.txt was gitignored by *token* pattern - now committed to origin/main. Pull latest, restart cockpit backend using correct repo/venv, call /api/status/token-counters and verify rows_count \u003e 0.",
+    "objective":  "verify_token_counter_post_gitfix",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "high",
+    "created_utc":  "2026-05-07T01:39:29Z",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0117_verify_token_counter.sh"
+}
