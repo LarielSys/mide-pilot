@@ -150,6 +150,19 @@ PIPELINE: dict[str, dict] = {
         "script": "exec_mtask_0106_verify_ollama_tunnel.sh",
         "script_body": None,
     },
+    # ── Token counter + chat.html fix chain ──────────────────────────────────
+    "MTASK-0106": {
+        "id": "MTASK-0109",
+        "objective": "Pull latest main fix and restart cockpit backend. Verify token-counters endpoint returns rows > 0.",
+        "script": "exec_mtask_0109_restart_cockpit_verify_tokens.sh",
+        "script_body": None,
+    },
+    "MTASK-0109": {
+        "id": "MTASK-0110",
+        "objective": "Update larielsystems/chat.html CHAT_BACKEND constant to confirmed tunnel base URL.",
+        "script": "exec_mtask_0110_update_chat_backend_url.sh",
+        "script_body": None,
+    },
 }
 
 

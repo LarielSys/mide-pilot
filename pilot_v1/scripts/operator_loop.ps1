@@ -132,6 +132,21 @@ function Issue-NextTask($completedId) {
             script_body = $null
             promote_status = "approved_to_execute"
         }
+        # ── Token counter + chat.html fix chain ───────────────────────────────
+        "MTASK-0106" = @{
+            id          = "MTASK-0109"
+            objective   = "Pull latest main (fix commit) and restart cockpit FastAPI backend on port 5555. Verify GET /api/status/token-counters returns rows > 0 and correct source. Report rows_count, source, any startup tracebacks."
+            script      = "exec_mtask_0109_restart_cockpit_verify_tokens.sh"
+            script_body = $null
+            promote_status = "approved_to_execute"
+        }
+        "MTASK-0109" = @{
+            id          = "MTASK-0110"
+            objective   = "Update larielsystems/chat.html: set CHAT_BACKEND constant to the tunnel base URL read from pilot_v1/state/worker1_services.json (tunnel_verification.website_chat_url minus the /api/chat path suffix). Verify the constant is correct in the file and report the new value."
+            script      = "exec_mtask_0110_update_chat_backend_url.sh"
+            script_body = $null
+            promote_status = "approved_to_execute"
+        }
     }
 
     if (-not $pipeline.ContainsKey($completedId)) {
