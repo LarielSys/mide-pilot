@@ -1,0 +1,36 @@
+{
+  "task_id": "MTASK-0111",
+  "created_by": "ubuntu-worker-01",
+  "worker_name": "ubuntu-atlas-01",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "objective": "Decision required from VS/operator: choose recovery strategy for recurring autopilot git sync rejection on main (remote cannot lock ref during competing pushes). Confirm one path: (A) pause ubuntu heartbeat pushes and keep operator-only heartbeat, (B) move ubuntu heartbeat to a dedicated branch and mirror status into state files, or (C) keep single-branch heartbeat with serialized push lock and exponential backoff. Provide decision and acceptance criteria so worker can implement without policy ambiguity.",
+  "executor_script": "",
+  "moss_labels": [
+    "moss/customide",
+    "worker/autopilot",
+    "decision-required",
+    "git-sync"
+  ],
+  "priority": "critical",
+  "risk_level": "medium",
+  "automation_mode": "review_required",
+  "admin_override_allowed": true,
+  "allowed_paths": [
+    "pilot_v1/state",
+    "pilot_v1/tasks"
+  ],
+  "blocked_paths": [
+    "pilot_v1/results"
+  ],
+  "required_validation": [
+    "operator_decision=recorded",
+    "recovery_path=selected",
+    "implementation_constraints=defined"
+  ],
+  "dependencies": [],
+  "timeout_seconds": 600,
+  "status": "approved_to_execute",
+  "issued_by": "ubuntu-worker-01",
+  "timestamp_utc": "2026-05-07T03:22:30Z"
+}
