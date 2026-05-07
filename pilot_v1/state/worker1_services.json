@@ -38,6 +38,16 @@
       "status": "UP",
       "path": "/usr/local/bin/ollama",
       "start_cmd": "ollama serve"
+    },
+    "ollama_tunnel": {
+      "mode": "native",
+      "local_port": 11434,
+      "public_url": "https://jawed-lapel-dispersed.ngrok-free.dev",
+      "generate_url": "https://jawed-lapel-dispersed.ngrok-free.dev/api/generate",
+      "chat_url": "https://jawed-lapel-dispersed.ngrok-free.dev/api/chat",
+      "tags_url": "https://jawed-lapel-dispersed.ngrok-free.dev/api/tags",
+      "tunnel_api_http": "502",
+      "status": "DEGRADED_502"
     }
   },
   "diagnostics": {
@@ -47,5 +57,7 @@
       "docker_ollama": "name=mide-ollama status=Up About an hour ports=\nname=ollama status=Up 2 hours ports=",
       "ngrok_api_snapshot": "{\"tunnels\":[{\"name\":\"command_line\",\"ID\":\"a9894611ba3392011f399962a91b7928\",\"uri\":\"/api/tunnels/command_line\",\"public_url\":\"https://jawed-lapel-dispersed.ngrok-free.dev\",\"proto\":\"https\",\"config\":{\"addr\":\"http://localhost:8091\",\"inspect\":true},\"metrics\":{\"conns\":{\"count\":0,\"gauge\":0,\"rate1\":0,\"rate5\":0,\"rate15\":0,\"p50\":0,\"p90\":0,\"p95\":0,\"p99\":0},\"http\":{\"count\":0,\"rate1\":0,\"rate5\":0,\"rate15\":0,\"p50\":0,\"p90\":0,\"p95\":0,\"p99\":0}}}],\"uri\":\"/api/tunnels\"}"
     }
-  }
+  },
+  "tunnel_last_updated": "2026-05-07T02:17:08Z",
+  "tunnel_public_url": "https://jawed-lapel-dispersed.ngrok-free.dev"
 }
