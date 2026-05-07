@@ -1,0 +1,10 @@
+{
+    "task_id":  "MTASK-0128-RETRY3",
+    "issued_by":  "operator",
+    "issued_at":  "2026-05-07T21:42:30Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Repair cockpit\u003c-\u003eOle Green messenger receive path by fixing /api/messenger CORS headers for localhost polling",
+    "script":  "pilot_v1/scripts/exec_mtask_0128_fix_messenger_cors.sh"
+}

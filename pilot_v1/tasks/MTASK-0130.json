@@ -1,0 +1,10 @@
+{
+  "task_id": "MTASK-0130",
+  "issued_by": "operator",
+  "issued_at": "2026-05-07T21:46:30Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Enable POST /api/messenger/read on cockpit backend for reliable Ole Green receive polling via ngrok",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0130_enable_post_read_bridge.sh"
+}
