@@ -1,0 +1,10 @@
+{
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0134_deploy_cockpit_room.sh",
+    "assigned_to":  "ubuntu-worker-01",
+    "issued_at":  "2026-05-07T23:20:43Z",
+    "task_id":  "MTASK-0134-RETRY2",
+    "description":  "Deploy cockpit room architecture on Ubuntu. Rebuild frontend and mide-chat so Cockpit AI pane connects by WebSocket to OPS-CENTRAL and mide-chat auto-replies from LARIEL. Validate health and frontend room client markers.",
+    "status":  "approved_to_execute",
+    "issued_by":  "operator",
+    "priority":  "high"
+}
