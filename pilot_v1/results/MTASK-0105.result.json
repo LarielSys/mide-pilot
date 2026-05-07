@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0105",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0105\nobjective=setup_persistent_ollama_ngrok_tunnel_for_website\ntimestamp_utc=2026-05-07T02:12:28Z\nollama_mode=native\nollama_local_port=11434\n--- stopping_existing_ngrok ---\nngrok_killed=yes\nngrok_token_found=no\nWARNING: No ngrok authtoken found. Tunnel will use anonymous free tier (limited).\n--- starting_ngrok ---\nngrok_started_pid=109720\n--- retrieving_tunnel_url ---\ntunnel_public_url=https://jawed-lapel-dispersed.ngrok-free.dev\n--- verifying_tunnel ---\ntunnel_http_root=200\ntunnel_http_api_tags=200\ntunnel_ollama_api=OK\n--- updating_state ---\nstate_written=/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/worker1_services.json\nstate_updated=ok\n--- systemd_service ---",
+  "stderr_excerpt": "<stdin>:16: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\nsudo: a terminal is required to read the password; either use the -S option to read from standard input or configure an askpass helper\nsudo: a password is required",
+  "timestamp_utc": "2026-05-07T02:12:40Z"
+}
