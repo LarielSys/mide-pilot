@@ -1,0 +1,8 @@
+﻿# Token Counter Per Task
+# Local file. Track where tokens (and estimated cost) go.
+# Columns:
+# task_id | ollama_build | ollama_debug | ollama_fix | vs_build | vs_debug | vs_fix | ollama_total | vs_total | total_tokens | est_cost_usd | updated_utc
+
+MTASK-0056 | 1820 | 0 | 0 | 960 | 0 | 0 | 1820 | 960 | 2780 | 0.0000 | 2026-04-23T04:58:40Z
+MTASK-0057 | 1490 | 0 | 0 | 840 | 0 | 0 | 1490 | 840 | 2330 | 0.0000 | 2026-04-23T04:58:40Z
+MTASK-0058 | 1710 | 220 | 0 | 910 | 0 | 180 | 1930 | 1090 | 3020 | 0.0000 | 2026-04-23T05:03:06Z

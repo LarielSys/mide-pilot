@@ -10,3 +10,6 @@
 # OS
 Thumbs.db
 .DS_Store
+
+# Allow token counter tracking file despite *token* pattern
+!pilot_v1/customide/TOKEN_COUNTER_TASKS.txt
