@@ -178,13 +178,42 @@ commit_and_push_status_heartbeat() {
 
   git -C "${REPO_ROOT}" add "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" || true
   git -C "${REPO_ROOT}" commit -m "worker: autopilot heartbeat ${WORKER_ID} ${ts}" >/dev/null || true
-  GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" push origin main >/dev/null || {
+  push_with_retry >/dev/null || {
     echo "[autopilot] Warning: heartbeat push failed; will retry next cycle." >&2
   }
 }
 
+reset_generated_state_files() {
+  git -C "${REPO_ROOT}" checkout -- \
+    "pilot_v1/state/operator_loop.log" \
+    "pilot_v1/state/operator_loop_live.txt" \
+    "pilot_v1/state/operator_loop_processed.json" \
+    "pilot_v1/state/worker_autopilot_events.log" \
+    "pilot_v1/state/worker_autopilot_live.txt" \
+    "pilot_v1/state/worker_autopilot_status.json" \
+    "pilot_v1/state/worker_autopilot_heartbeat_epoch.txt" \
+    "pilot_v1/state/worker_mtask_autopilot.log" >/dev/null 2>&1 || true
+}
+
+push_with_retry() {
+  local attempt
+
+  for attempt in 1 2 3; do
+    if GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" push origin main; then
+      return 0
+    fi
+
+    reset_generated_state_files
+    GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" pull --rebase origin main >/dev/null || true
+    sleep $((4 + attempt))
+  done
+
+  return 1
+}
+
 git_sync() {
-  GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" pull --ff-only origin main >/dev/null
+  reset_generated_state_files
+  GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" pull --rebase origin main >/dev/null
 }
 
 next_task_file() {
@@ -305,7 +334,7 @@ commit_and_push_result() {
   local task_id="$1"
   git -C "${REPO_ROOT}" add "pilot_v1/results/${task_id}.result.json" "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" || true
   git -C "${REPO_ROOT}" commit -m "worker: autopilot result ${task_id}" >/dev/null || true
-  GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" push origin main >/dev/null || {
+  push_with_retry >/dev/null || {
     echo "[autopilot] Warning: push failed for ${task_id}; result remains local until next successful push." >&2
   }
 }
