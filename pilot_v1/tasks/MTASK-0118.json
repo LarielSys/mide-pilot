@@ -1,0 +1,13 @@
+{
+    "task_id":  "MTASK-0118",
+    "title":  "Ping test — verify worker picks up tasks",
+    "description":  "Simple connectivity test. Report hostname, uptime, disk free on /home, and confirm git pull succeeds. No side effects.",
+    "objective":  "worker_ping_test",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "high",
+    "created_utc":  "2026-05-07T01:58:33Z",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0118_ping.sh"
+}
