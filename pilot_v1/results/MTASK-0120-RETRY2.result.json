@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0120-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0120\ntimestamp_utc=2026-05-07T20:01:36Z\nngrok_pid=1708587\nattempt=1 waiting...\nattempt=2 waiting...\nattempt=3 waiting...\nattempt=4 waiting...\nattempt=5 waiting...\nattempt=6 waiting...\nattempt=7 waiting...\nattempt=8 waiting...\nattempt=9 waiting...\nattempt=10 waiting...\nfinal_status=NGROK_URL_NOT_FOUND",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T20:01:59Z"
+}
