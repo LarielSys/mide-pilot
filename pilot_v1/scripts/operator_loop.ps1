@@ -152,6 +152,26 @@ function Issue-NextTask($completedId) {
             script_body = $null
             promote_status = "approved_to_execute"
         }
+        # Token counter chain
+        "MTASK-0115" = @{
+            id          = "MTASK-0117"
+            objective   = "Token counter file is now tracked in git. Pull latest, restart cockpit backend (correct repo/venv), then call /api/status/token-counters and verify rows_count > 0. Report final_status=ALL_CHECKS_PASSED if rows found, or TOKEN_COUNTER_STILL_EMPTY if rows=0."
+            script      = "exec_mtask_0117_verify_token_counter.sh"
+            script_body = $null
+        }
+        "MTASK-0116" = @{
+            id          = "MTASK-0117"
+            objective   = "Token counter file is now tracked in git. Pull latest, restart cockpit backend (correct repo/venv), then call /api/status/token-counters and verify rows_count > 0. Report final_status=ALL_CHECKS_PASSED if rows found, or TOKEN_COUNTER_STILL_EMPTY if rows=0."
+            script      = "exec_mtask_0117_verify_token_counter.sh"
+            script_body = $null
+        }
+        "MTASK-0117" = @{
+            id          = "MTASK-0110"
+            objective   = "Update larielsystems/chat.html: set CHAT_BACKEND constant to the tunnel base URL read from pilot_v1/state/worker1_services.json (tunnel_verification.website_chat_url minus the /api/chat path suffix). Verify the constant is correct in the file and report the new value."
+            script      = "exec_mtask_0110_update_chat_backend_url.sh"
+            script_body = $null
+            promote_status = "approved_to_execute"
+        }
     }
 
     if (-not $pipeline.ContainsKey($completedId)) {
