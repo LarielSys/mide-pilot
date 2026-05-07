@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0119",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0119\ntimestamp_utc=2026-05-07T14:15:47Z\nPlease commit your changes or stash them before you merge.\nAborting\nUpdating 770a4074..79f6f375\ntask_history_endpoint_lines=1\n--- kill_port_5555 ---\nkilling pid=1191923\n--- start_backend ---\nnew_pid=1198139\nattempt=1 http=200\nbackend_start=OK\ntask_history_count=1\nsnapshot=complete\nfinal_status=ALL_CHECKS_PASSED",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T14:15:52Z"
+}
