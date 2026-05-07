@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0138-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-0138] start 2026-05-07T23:54:27Z\n[MTASK-0138] ask result: {\"ok\":true,\"status\":\"ai_triggered\"}\n[MTASK-0138] history snippet: {\"room\":\"OPS-CENTRAL\",\"messages\":[{\"id\":\"94d9c910\",\"room\":\"OPS-CENTRAL\",\"sender\":\"SYSTEM\",\"text\":\"OLEGREEN joined\",\"kind\":\"join\",\"ts\":\"2026-05-07T23:46:08+00:00\"},{\"id\":\"588b9ec4\",\"room\":\"OPS-CENTRAL\",\"sender\":\"SYSTEM\",\"text\":\"[\\\"OLEGREEN\\\"]\",\"kind\":\"presence\",\"ts\":\"2026-05-07T23:46:08+00:00\"},{\"id\":\"3972e64c\",\"room\":\"OPS-CENTRAL\",\"sender\":\"LARIEL\",\"text\":\"[ERROR] Ollama unreachable: Client error '404 Not Found' for url 'http://192.168.1.21:11434/api/generate'\\nFor more information check: https:\n[MTASK-0138] ai_status=parse_error\n[MTASK-0138] ai_snippet='str' object has no attribute 'get'\n[MTASK-0138] VALIDATION FAILED \u2014 ai_reply_check=parse_error",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T23:54:42Z"
+}
