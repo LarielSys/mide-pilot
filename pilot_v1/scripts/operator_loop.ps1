@@ -68,11 +68,11 @@ function Push-ToGit($message) {
 
 function Issue-RetryTask($result) {
     $taskId   = $result.task_id
-    $retryNum = Get-RetryNumber $taskId
-    $retryId  = "$taskId-RETRY$retryNum"
 
-    # Find original task to clone
-    $origBase = $taskId -replace "-RETRY\d+$", ""
+    # Find original base task (strip any existing -RETRYn suffix)
+    $origBase = $taskId -replace "(-RETRY\d+)+$", ""
+    $retryNum = Get-RetryNumber $origBase
+    $retryId  = "$origBase-RETRY$retryNum"
     $origFile = "$TasksDir\${origBase}.json"
     if (-not (Test-Path $origFile)) {
         Write-Log "RETRY SKIPPED: Cannot find original task file $origFile"
@@ -213,7 +213,8 @@ while ($true) {
             Issue-NextTask $id
         }
         elseif ($status -eq "failed") {
-            $retryCount = ($state.processed | Where-Object { $_ -match "^${id}-RETRY" }).Count
+            $baseId = $id -replace "(-RETRY\d+)+$", ""
+            $retryCount = ($state.processed | Where-Object { $_ -match "^${baseId}-RETRY\d+$" }).Count
             if ($retryCount -lt 2) {
                 Write-Log "  -> FAILED: issuing retry (${retryCount} previous retries)"
                 Issue-RetryTask $result

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
 
 echo task=MTASK-2000
 echo objective=collect_system_data_for_website_integration
