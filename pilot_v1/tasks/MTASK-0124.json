@@ -1,0 +1,13 @@
+{
+  "task_id": "MTASK-0124",
+  "title": "Hotpatch cockpit backend runtime.py via git checkout",
+  "description": "The mide-pilot clone has diverged branches; git pull --ff-only fails. Instead: fetch origin/main, then checkout only the updated runtime.py file, restart uvicorn, and verify task-history count > 5.",
+  "objective": "hotpatch_backend",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "created_by": "windows-main",
+  "status": "approved_to_execute",
+  "priority": "high",
+  "created_utc": "2026-05-07T20:25:37Z",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0124_cockpit_hotpatch.sh"
+}
