@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0108",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0108\nobjective=restart_cockpit_backend_with_operator_loop\ntimestamp_utc=2026-05-07T02:32:41Z\ngit_pull=ok\nbackend_old_pid_killed=87520\nbackend_new_pid=141591\nbackend_health=200\noperator_loop_endpoint=alive=None\nbackend_health=UP\nsnapshot=complete",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T02:32:47Z"
+}
