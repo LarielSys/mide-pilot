@@ -1,3 +1,4 @@
+2026-05-07T20:03:23Z | mode=running | last_task=MTASK-0120-RETRY3 | note=Task failed: executor script non-zero exit.
 2026-05-07T20:01:59Z | mode=running | last_task=MTASK-0120-RETRY2 | note=Task failed: executor script non-zero exit.
 2026-05-07T20:00:35Z | mode=running | last_task=MTASK-0120-RETRY1 | note=Task failed: executor script non-zero exit.
 2026-05-07T19:59:06Z | mode=running | last_task=MTASK-0120 | note=Task failed: executor script non-zero exit.
