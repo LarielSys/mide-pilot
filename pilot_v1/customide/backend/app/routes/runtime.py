@@ -306,4 +306,42 @@ def get_status_bundle() -> dict:
         "sync_cadence": get_sync_cadence(),
         "worker_log": get_worker_log(),
         "token_counters": get_token_counters(),
+        "operator_loop": get_operator_loop_status(),
+    }
+
+
+@router.get("/operator-loop")
+def get_operator_loop_status() -> dict:
+    repo_root = _repo_root()
+    live_file = repo_root / "pilot_v1" / "state" / "operator_loop_live.txt"
+    log_file = repo_root / "pilot_v1" / "state" / "operator_loop.log"
+
+    last_heartbeat_epoch: int | None = None
+    stale_seconds: int | None = None
+
+    if live_file.exists():
+        try:
+            parts = live_file.read_text(encoding="utf-8").strip().split()
+            last_heartbeat_epoch = int(parts[-1])
+            import time as _time
+            stale_seconds = int(_time.time()) - last_heartbeat_epoch
+        except Exception:
+            pass
+
+    recent_log: list[str] = []
+    if log_file.exists():
+        try:
+            lines = log_file.read_text(encoding="utf-8").splitlines()
+            recent_log = [l for l in lines if l.strip()][-20:]
+        except Exception:
+            pass
+
+    alive = stale_seconds is not None and stale_seconds < 180
+
+    return {
+        "alive": alive,
+        "last_heartbeat_epoch": last_heartbeat_epoch,
+        "stale_seconds": stale_seconds,
+        "recent_log": recent_log,
+        "reported_at_utc": _utc_now_iso(),
     }
