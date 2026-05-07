@@ -1,0 +1,13 @@
+{
+  "task_id": "MTASK-0123",
+  "title": "Restart cockpit backend - pick up task-history fix",
+  "description": "Pull latest origin/main into the mide-pilot clone and restart the cockpit FastAPI backend so it loads the updated runtime.py (git archive fix for get_task_history). Steps: cd /home/larieladmin/mide-pilot && git pull --ff-only origin main && systemctl --user restart cockpit-backend 2>/dev/null || pkill -f 'uvicorn.*main:app' && sleep 3 && verify /api/status/task-history returns count > 0.",
+  "objective": "restart_service",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "created_by": "windows-main",
+  "status": "approved_to_execute",
+  "priority": "high",
+  "created_utc": "2026-05-07T20:23:23Z",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0123_restart_cockpit.sh"
+}
