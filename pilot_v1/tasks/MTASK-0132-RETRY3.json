@@ -1,0 +1,10 @@
+{
+    "task_id":  "MTASK-0132-RETRY3",
+    "issued_by":  "operator",
+    "issued_at":  "2026-05-07T18:09:12Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Deploy mide-chat multi-user WebSocket chat service with local Ollama AI in Docker on Ubuntu. Writes all service files, adds to docker-compose.yml, builds and starts container on port 7070.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0132_deploy_mide_chat.sh"
+}
