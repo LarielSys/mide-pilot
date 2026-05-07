@@ -1,9 +1,11 @@
 """Messenger endpoint — in-memory message store for cockpit relay."""
 
+import asyncio
 import uuid
 from collections import deque
 from datetime import datetime, timezone
 
+import httpx
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -17,6 +19,9 @@ _CORS_HEADERS = {
     "Access-Control-Allow-Methods": "GET,POST,DELETE,OPTIONS",
     "Access-Control-Allow-Headers": "*",
 }
+
+# mide-chat is on the same Docker bridge network
+_MIDECHAT_BROADCAST = "http://mide-chat:7070/rooms/OPS-CENTRAL/broadcast"
 
 
 def _utc_now_iso() -> str:
@@ -37,6 +42,18 @@ def _cors_json(content: dict, status_code: int = 200) -> JSONResponse:
     return JSONResponse(content=content, status_code=status_code, headers=_CORS_HEADERS)
 
 
+async def _forward_to_midechat(sender: str, text: str) -> None:
+    """Fire-and-forget: forward message to mide-chat OPS-CENTRAL room."""
+    try:
+        async with httpx.AsyncClient(timeout=5) as client:
+            await client.post(
+                _MIDECHAT_BROADCAST,
+                json={"sender": sender.upper(), "text": text, "kind": "chat"},
+            )
+    except Exception:
+        pass  # Never block the cockpit on mide-chat availability
+
+
 @router.options("")
 async def options_messenger() -> JSONResponse:
     return _cors_json({"ok": True})
@@ -52,6 +69,8 @@ async def post_message(msg: MessageIn) -> JSONResponse:
         "timestamp": _utc_now_iso(),
     }
     _messages.append(entry)
+    # Forward to mide-chat OPS-CENTRAL room (non-blocking)
+    asyncio.create_task(_forward_to_midechat(msg.sender, msg.text))
     return _cors_json({"ok": True, "id": entry["id"], "timestamp": entry["timestamp"]})
 
 
