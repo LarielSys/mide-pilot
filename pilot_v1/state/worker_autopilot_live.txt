@@ -1,5 +1,5 @@
 Autopilot Live Status
-updated_utc: 2026-05-07T21:40:20Z
+updated_utc: 2026-05-07T21:41:21Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: idle
@@ -8,6 +8,7 @@ poll_seconds: 60
 note: No assigned mtasks found; sleeping until next poll. approved=161, eligible=0, mismatched=2.
 
 Recent Events (latest 20, newest first):
+2026-05-07T21:41:21Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=161, eligible=0, mismatched=2.
 2026-05-07T21:40:20Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=161, eligible=0, mismatched=2.
 2026-05-07T21:39:18Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=161, eligible=0, mismatched=2.
 2026-05-07T21:38:16Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=161, eligible=0, mismatched=2.
@@ -27,4 +28,3 @@ Recent Events (latest 20, newest first):
 2026-05-07T21:14:47Z | mode=running | last_task=MTASK-0127-RETRY3 | note=Task failed: missing executor_script.
 2026-05-07T21:13:39Z | mode=running | last_task=MTASK-0127-RETRY2 | note=Task failed: missing executor_script.
 2026-05-07T21:12:37Z | mode=running | last_task=MTASK-0127-RETRY1 | note=Task failed: missing executor_script.
-2026-05-07T21:11:35Z | mode=running | last_task=MTASK-0127 | note=Task failed: missing executor_script.
