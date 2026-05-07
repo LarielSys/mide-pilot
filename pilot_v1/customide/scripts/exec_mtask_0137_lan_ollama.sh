@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# RULE: This executor must NOT run git add/commit/push.
+# The autopilot framework (worker_mtask_autopilot.sh) owns all git operations.
+# MIDE_NO_GIT_PUSH=true is set by the autopilot when running this script.
 set -euo pipefail
 
 TASK_ID="MTASK-0137"
@@ -20,7 +23,7 @@ if grep -q "172.17.0.1" docker-compose.yml; then
   sed -i 's|OLLAMA_BASE_URL=http://172.17.0.1:11434|OLLAMA_BASE_URL=http://192.168.1.21:11434|g' docker-compose.yml
   git add docker-compose.yml
   git commit -m "fix(mide-chat): set OLLAMA_BASE_URL to Ubuntu LAN IP [MTASK-0137]" || true
-  GIT_TERMINAL_PROMPT=0 timeout 60 git push origin main 2>&1 | tail -5 || true
+  # NOTE: no git push — autopilot handles push after executor exits
 else
   echo "[${TASK_ID}] OLLAMA_BASE_URL already set correctly, no patch needed"
 fi
@@ -71,13 +74,5 @@ cat > "$RESULT_FILE" <<EOF
 }
 EOF
 
-echo "[${TASK_ID}] result written: $STATUS"
-
-cd "$REPO"
-git add "pilot_v1/results/${TASK_ID}.result.json"
-git commit -m "result(${TASK_ID}): ${STATUS}" 2>&1 || true
-GIT_TERMINAL_PROMPT=0 timeout 60 git fetch origin main 2>&1 | tail -3
-git rebase origin/main 2>&1 | tail -3
-GIT_TERMINAL_PROMPT=0 timeout 60 git push origin main 2>&1 | tail -5 || true
-
-echo "[${TASK_ID}] done"
+echo "[${TASK_ID}] done: $STATUS"
+# NOTE: Autopilot writes the result JSON and handles git push from here.

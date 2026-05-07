@@ -357,9 +357,30 @@ PY
 }
 
 commit_and_push_result() {
+  # RULE: Only the autopilot calls this. Executor scripts must NOT git add/commit/push.
+  # RULE: We use fetch+reset+restore to be race-proof against heartbeat commits.
   local task_id="$1"
-  git -C "${REPO_ROOT}" add "pilot_v1/results/${task_id}.result.json" "pilot_v1/state/worker_autopilot_status.json" "pilot_v1/state/worker_autopilot_live.txt" "pilot_v1/state/worker_autopilot_events.log" || true
-  git -C "${REPO_ROOT}" commit -m "worker: autopilot result ${task_id}" >/dev/null || true
+  local result_file="${RESULT_DIR}/${task_id}.result.json"
+  local result_tmp
+  result_tmp="$(mktemp)"
+
+  # Preserve the result file across the reset
+  [[ -f "${result_file}" ]] && cp "${result_file}" "${result_tmp}"
+
+  # Sync to latest origin to eliminate heartbeat race
+  reset_generated_state_files
+  GIT_TERMINAL_PROMPT=0 timeout 60 git -C "${REPO_ROOT}" fetch origin main 2>/dev/null || true
+  git -C "${REPO_ROOT}" reset --hard origin/main >/dev/null 2>&1 || true
+
+  # Restore result file (may have been wiped by reset)
+  [[ -f "${result_tmp}" ]] && cp "${result_tmp}" "${result_file}"
+  rm -f "${result_tmp}"
+
+  git -C "${REPO_ROOT}" add "pilot_v1/results/${task_id}.result.json" \
+    "pilot_v1/state/worker_autopilot_status.json" \
+    "pilot_v1/state/worker_autopilot_live.txt" \
+    "pilot_v1/state/worker_autopilot_events.log" || true
+  git -C "${REPO_ROOT}" commit -m "result(${task_id}): ${WORKER_ID}" >/dev/null || true
   push_with_retry >/dev/null || {
     echo "[autopilot] Warning: push failed for ${task_id}; result remains local until next successful push." >&2
   }
@@ -421,7 +442,9 @@ process_task() {
   fi
 
   echo "[autopilot] Executing ${executor_script} for ${task_id}"
-  if bash "${script_abs}" >"${stdout_tmp}" 2>"${stderr_tmp}"; then
+  # RULE: MIDE_NO_GIT_PUSH=true tells executor scripts they must NOT run git push.
+  # The autopilot framework owns all git commit/push operations.
+  if MIDE_NO_GIT_PUSH=true bash "${script_abs}" >"${stdout_tmp}" 2>"${stderr_tmp}"; then
     write_result_json "${result_file}" "${task_id}" "completed" "Executor script completed successfully." "${stdout_tmp}" "${stderr_tmp}"
     write_status "running" "${task_id}" "Task completed successfully."
   else
