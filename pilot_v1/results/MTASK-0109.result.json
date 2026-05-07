@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0109",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-0109\ntimestamp_utc=2026-05-07T04:30:01Z\n--- git_pull ---\nFrom https://github.com/LarielSys/mide-pilot\n * branch              main       -> FETCH_HEAD\nAlready up to date.\nhead=460f2978\n--- kill_old_backend ---\nkilling pid=12445\n276435\n/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/exec_mtask_0109_restart_cockpit_verify_tokens.sh: line 26: kill: 12445\n276435: arguments must be process or job IDs\n--- start_backend ---\nusing_system_python\nnew_pid=355686\n--- wait_ready ---\nattempt=1 http=200\nbackend_start=OK\n--- verify_token_counters ---\ntoken_counters_response={\"source\":\"missing\",\"source_file\":\"/pilot_v1/customide/pilot_v1/customide/TOKEN_COUNTER_TASKS.txt\",\"rows\":[],\"summary\":{\"tasks_tracked\":0,\"ollama_tokens_total\":0,\"vs_tokens_total\":0,\"all_tokens_total\":0,\"estimated_cost_usd_total\":0},\"reported_at_utc\":\"2026-05-07T04:30:05Z\"}\nrows_count=0\nsource=missing\n--- startup_errors ---\nTraceback (most recent call last):\nModuleNotFoundError: No module named 'fastapi'\nstartup_errors_found=yes\nfinal_status=TOKEN_COUNTER_EMPTY\ntoken_counter_fixed=no",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T04:30:05Z"
+}
