@@ -1,9 +1,10 @@
 {
   "task_id": "MTASK-0134",
   "worker_id": "ubuntu-worker-01",
-  "execution_status": "failed",
-  "summary": "Executor script exited with non-zero status.",
-  "stdout_excerpt": "[MTASK-0134] start 2026-05-07T23:23:10Z\nFrom https://github.com/LarielSys/mide-pilot\n * branch              main       -> FETCH_HEAD\n   6411eaec..94ccb5df  main       -> origin/main\nHEAD is now at 94ccb5df operator: heartbeat windows-main 1778196135\n[MTASK-0134] repo synced: 94ccb5df\n[MTASK-0134] rebuilding frontend + mide-chat...\n#16 unpacking to docker.io/library/mide-chat:latest 0.0s done\n#16 DONE 0.1s\n\n#17 [mide-chat] resolving provenance for metadata file\n#17 DONE 0.0s\n\n#18 [frontend] exporting to image\n#18 exporting layers 0.1s done\n#18 exporting manifest sha256:2362f087b18c116c1c00bb0ae8edfab0770153d0b2a5fa980280e4eba033a9de done\n#18 exporting config sha256:9a86588833a1ed12d0e4a7caac6d8aa48273ac170751f9d3eb7cfe3927fcee39 done\n#18 exporting attestation manifest sha256:8463e46bfe18dcedcbf3d221c86d519a06eeff922043c97834cc7abbf4fa2d59 done\n#18 exporting manifest list sha256:586afd10fd89ed320553be922e901260d319e082c53f09e1c47f67af4aca01cf done\n#18 naming to docker.io/library/mide-frontend:latest done\n#18 unpacking to docker.io/library/mide-frontend:latest 0.0s done\n#18 DONE 0.2s\n\n#19 [frontend] resolving provenance for metadata file\n#19 DONE 0.0s\n mide-frontend:latest  Built\n mide-chat:latest  Built\n[MTASK-0134] restarting frontend + mide-chat...\n Container mide-frontend  Recreate\n Container mide-chat  Recreate\n Container mide-chat  Recreated\n Container mide-frontend  Recreated\n Container mide-chat  Starting\n Container mide-frontend  Starting\n Container mide-chat  Started\n Container mide-frontend  Started\n[MTASK-0134] waiting 8s for startup...\n[MTASK-0134] mide-chat health: {\"status\":\"ok\",\"model\":\"qwen2.5-coder:7b\",\"ai\":\"LARIEL\"}\n[MTASK-0134] frontend head: HTTP/1.0 200 OK\n[MTASK-0134] cockpit room client check: ok\n[main f85f8acb] worker: result MTASK-0134 completed\n 1 file changed, 10 insertions(+)\n create mode 100644 pilot_v1/results/MTASK-0134.result.json\nhint: the same ref. If you want to integrate the remote changes, use\nhint: 'git pull' before pushing again.\nhint: See the 'Note about fast-forwards' in 'git push --help' for details.",
-  "stderr_excerpt": "",
-  "timestamp_utc": "2026-05-07T23:23:29Z"
+  "execution_status": "completed",
+  "summary": "Deploy cockpit room wiring: frontend cockpit pane + mide-chat auto-reply.",
+  "mide_chat_health": {"status":"ok","model":"qwen2.5-coder:7b","ai":"LARIEL"},
+  "frontend_head": "HTTP/1.0 200 OK",
+  "cockpit_room_client": "ok",
+  "timestamp_utc": "2026-05-07T23:40:19Z"
 }
