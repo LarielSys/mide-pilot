@@ -1,3 +1,4 @@
+2026-05-07T05:46:33Z | mode=running | last_task=MTASK-0110-RETRY1 | note=Task failed: executor script not found.
 2026-05-07T05:45:31Z | mode=running | last_task=MTASK-0110 | note=Task failed: executor script not found.
 2026-05-07T05:45:31Z | mode=running | last_task= | note=Autopilot started.
 2026-05-07T05:44:49Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
