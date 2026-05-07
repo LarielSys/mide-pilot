@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0107",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script not found.",
+  "stdout_excerpt": "",
+  "stderr_excerpt": "Executor script not found: pilot_v1/scripts/exec_mtask_0107_cockpit_architecture_snapshot.sh",
+  "timestamp_utc": "2026-05-07T02:01:14Z"
+}

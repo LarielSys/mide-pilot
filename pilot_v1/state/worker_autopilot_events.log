@@ -1,3 +1,4 @@
+2026-05-07T02:01:14Z | mode=running | last_task=MTASK-0107 | note=Task failed: executor script not found.
 2026-05-07T02:00:13Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=123, eligible=0, mismatched=0.
 2026-05-07T01:59:11Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=123, eligible=0, mismatched=0.
 2026-05-07T01:58:10Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=123, eligible=0, mismatched=0.
