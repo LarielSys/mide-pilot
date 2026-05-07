@@ -144,7 +144,14 @@ function Issue-NextTask($completedId) {
     $scriptFile = "$ScriptsDir\$($next.script)"
 
     if (Test-Path $taskFile) {
-        Write-Log "NEXT TASK $($next.id) already exists, skipping"
+        $existing = Get-Content $taskFile -Raw | ConvertFrom-Json
+        if ($existing.status -eq "pending") {
+            $existing.status = "approved_to_execute"
+            $existing | ConvertTo-Json -Depth 10 | Set-Content $taskFile
+            Write-Log "NEXT TASK $($next.id) promoted from pending -> approved_to_execute"
+        } else {
+            Write-Log "NEXT TASK $($next.id) already exists (status=$($existing.status)), skipping"
+        }
         return
     }
 
