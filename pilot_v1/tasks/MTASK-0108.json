@@ -1,0 +1,35 @@
+{
+    "timeout_seconds":  120,
+    "required_worker_id":  "ubuntu-worker-01",
+    "required_validation":  [
+                                "backend_health=UP",
+                                "operator_loop_endpoint=reachable"
+                            ],
+    "worker_name":  "ubuntu-atlas-01",
+    "task_id":  "MTASK-0108",
+    "automation_mode":  "auto",
+    "objective":  "Pull latest repo, restart the customide cockpit backend (port 5555) so it picks up the new embedded operator_loop.py asyncio task. Verify backend is healthy at /health and /api/status/operator-loop.",
+    "risk_level":  "low",
+    "dependencies":  [
+
+                     ],
+    "allowed_paths":  [
+                          "pilot_v1/results",
+                          "pilot_v1/state"
+                      ],
+    "admin_override_allowed":  false,
+    "blocked_paths":  [
+
+                      ],
+    "issued_by":  "windows-main",
+    "timestamp_utc":  "2026-05-06T22:31:44Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "moss_labels":  [
+                        "moss/customide",
+                        "worker/deploy"
+                    ],
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0108_restart_cockpit_backend.sh",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute"
+}
