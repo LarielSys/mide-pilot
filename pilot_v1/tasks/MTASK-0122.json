@@ -1,0 +1,13 @@
+{
+    "created_utc":  "2026-05-07T20:16:51Z",
+    "description":  "Quick health check. Report: hostname, uptime, which clone the worker is running from (pwd or REPO_ROOT), disk_free_home, worker_id, timestamp.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0122_ping.sh",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "objective":  "ping_test",
+    "created_by":  "windows-main",
+    "assigned_to":  "ubuntu-worker-01",
+    "task_id":  "MTASK-0122",
+    "title":  "Ping test — verify worker on new service clone",
+    "priority":  "normal"
+}
