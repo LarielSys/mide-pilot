@@ -1,0 +1,10 @@
+{
+    "task_id":  "MTASK-0132-RETRY5",
+    "issued_by":  "operator",
+    "issued_at":  "2026-05-07T18:16:54Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Retry MTASK-0132: fixed git pull diverged branches - now uses git fetch + reset --hard origin/main",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0132_deploy_mide_chat.sh"
+}

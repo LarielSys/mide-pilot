@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# MTASK-0132 — Deploy mide-chat multi-user WebSocket chat service in Docker on Ubuntu
+# MTASK-0132 ï¿½ Deploy mide-chat multi-user WebSocket chat service in Docker on Ubuntu
 # All files are in git under pilot_v1/customide/mide-chat/
 # docker-compose.yml already contains the mide-chat service definition.
 set -euo pipefail
@@ -11,9 +11,10 @@ TS_START=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 echo "[MTASK-0132] start $TS_START"
 
-# Pull latest from git
+# Sync to latest origin/main (force, no reconciliation prompts)
 cd "$REPO"
-GIT_TERMINAL_PROMPT=0 timeout 60 git pull origin main 2>&1 | tail -5
+GIT_TERMINAL_PROMPT=0 timeout 60 git fetch origin main 2>&1 | tail -3
+git reset --hard origin/main 2>&1 | tail -3
 
 # Verify mide-chat files exist
 echo "[MTASK-0132] mide-chat dir:"
