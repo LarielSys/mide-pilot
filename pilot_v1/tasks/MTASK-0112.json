@@ -1,0 +1,18 @@
+﻿{
+    "task_id":  "MTASK-0112",
+    "title":  "Implement push retry with backoff in worker autopilot",
+    "description":  "Per MTASK-0111 decision (option C): modify worker_mtask_autopilot.sh to add push_with_retry() function. On git push failure: (1) git pull --rebase origin main, (2) sleep random 5-15s, (3) retry push. Max 3 attempts. If all fail, log \u0027PUSH_FAILED_MAX_RETRIES\u0027 as warning and continue loop without aborting. Apply to all push calls in the script: heartbeat push, result push, status push. Verify by running one push cycle and confirming no errors.",
+    "objective":  "implement_git_push_retry_backoff",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "high",
+    "created_utc":  "2026-05-06T23:28:40Z",
+    "tags":  [
+                 "git",
+                 "autopilot",
+                 "reliability"
+             ],
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0112_push_retry_backoff.sh"
+}
