@@ -59,5 +59,15 @@
     }
   },
   "tunnel_last_updated": "2026-05-07T02:17:21Z",
-  "tunnel_public_url": "https://jawed-lapel-dispersed.ngrok-free.dev"
+  "tunnel_public_url": "https://jawed-lapel-dispersed.ngrok-free.dev",
+  "tunnel_verification": {
+    "verified_utc": "2026-05-07T03:04:27Z",
+    "verified_by": "MTASK-0106",
+    "public_url": "https://jawed-lapel-dispersed.ngrok-free.dev",
+    "generate_url": "https://jawed-lapel-dispersed.ngrok-free.dev/api/generate",
+    "chat_url": "https://jawed-lapel-dispersed.ngrok-free.dev/api/chat",
+    "api_tags_http": "200",
+    "final_status": "ALL_CHECKS_PASSED",
+    "website_integration_note": "Point your website chat page to chat_url for POST /api/chat or generate_url for POST /api/generate with model=qwen2.5-coder:14b"
+  }
 }
