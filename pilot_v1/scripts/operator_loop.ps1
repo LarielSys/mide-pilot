@@ -16,6 +16,11 @@ $TasksDir      = "$RepoRoot\pilot_v1\tasks"
 $ResultsDir    = "$RepoRoot\pilot_v1\results"
 $ScriptsDir    = "$RepoRoot\pilot_v1\scripts"
 
+
+function Write-JsonNoBom($path, $obj) {
+    $json = $obj | ConvertTo-Json -Depth 10
+    [System.IO.File]::WriteAllText($path, $json, [System.Text.UTF8Encoding]::new($false))
+}
 function Write-Log($msg) {
     $ts = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
     $line = "[$ts] $msg"
@@ -31,7 +36,7 @@ function Get-Processed {
 }
 
 function Save-Processed($data) {
-    $data | ConvertTo-Json -Depth 5 | Set-Content $ProcessedLog
+    Write-JsonNoBom $ProcessedLog $data
 }
 
 function Get-NextTaskNumber {
@@ -85,7 +90,7 @@ function Issue-RetryTask($result) {
     $orig.objective = "RETRY${retryNum}: " + $orig.objective
 
     $retryFile = "$TasksDir\${retryId}.json"
-    $orig | ConvertTo-Json -Depth 10 | Set-Content $retryFile
+    Write-JsonNoBom $retryFile $orig
     Write-Log "RETRY CREATED: $retryId (reason: $($result.summary))"
 
     Push-ToGit "operator-loop: $retryId auto-retry"
@@ -110,7 +115,7 @@ function Issue-NextTask($completedId) {
             script      = "exec_mtask_0099_full_stack_verify.sh"
             script_body = $null
         }
-        # ── Tunnel setup chain ────────────────────────────────────────────────
+        # â”€â”€ Tunnel setup chain â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         "MTASK-0103" = @{
             id          = "MTASK-0104"
             objective   = "Diagnose current ngrok tunnel status and Ollama availability (native + Docker). Report all active ngrok tunnels, Docker Ollama containers, native Ollama port 11434 status, and itheia-llm proxy status. Write diagnosis to worker1_services.json."
@@ -132,7 +137,7 @@ function Issue-NextTask($completedId) {
             script_body = $null
             promote_status = "approved_to_execute"
         }
-        # ── Token counter + chat.html fix chain ───────────────────────────────
+        # â”€â”€ Token counter + chat.html fix chain â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         "MTASK-0106" = @{
             id          = "MTASK-0109"
             objective   = "Pull latest main (fix commit) and restart cockpit FastAPI backend on port 5555. Verify GET /api/status/token-counters returns rows > 0 and correct source. Report rows_count, source, any startup tracebacks."
@@ -167,7 +172,7 @@ function Issue-NextTask($completedId) {
         $existing = Get-Content $taskFile -Raw | ConvertFrom-Json
         if ($existing.status -eq "pending") {
             $existing.status = "approved_to_execute"
-            $existing | ConvertTo-Json -Depth 10 | Set-Content $taskFile
+            Write-JsonNoBom $taskFile $existing
             Write-Log "NEXT TASK $($next.id) promoted from pending -> approved_to_execute"
         } else {
             Write-Log "NEXT TASK $($next.id) already exists (status=$($existing.status)), skipping"
@@ -203,13 +208,13 @@ function Issue-NextTask($completedId) {
         status               = "approved_to_execute"
         issued_by            = "operator-loop-windows"
         timestamp_utc        = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
-    } | ConvertTo-Json -Depth 10 | Set-Content $taskFile
+    } | ForEach-Object { Write-JsonNoBom $taskFile $_ }
 
     Write-Log "NEXT TASK ISSUED: $($next.id)"
     Push-ToGit "operator-loop: $($next.id) auto-issued after $completedId"
 }
 
-# ── MAIN LOOP ──────────────────────────────────────────────────────────────────
+# â”€â”€ MAIN LOOP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 Write-Log "=== OPERATOR LOOP STARTED | poll=${PollSeconds}s | repo=${RepoRoot} ==="
 $state = Get-Processed
@@ -255,7 +260,7 @@ while ($true) {
         Save-Processed $state
     }
 
-    # Heartbeat — write live timestamp to state so cockpit and Ubuntu can see Windows loop is alive
+    # Heartbeat â€” write live timestamp to state so cockpit and Ubuntu can see Windows loop is alive
     $hbTs = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
     $hbFile = "$RepoRoot\pilot_v1\state\operator_loop_live.txt"
     "operator_loop windows-main $hbTs" | Set-Content $hbFile
