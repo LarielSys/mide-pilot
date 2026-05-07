@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2000-RETRY1-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-2000\nobjective=collect_system_data_for_website_integration\ntimestamp_utc=2026-05-07T01:54:03Z\n--- system_info ---\nhostname=lariel-cloud\nfqdn=lariel-cloud\nkernel=6.17.0-23-generic\ndistro=Ubuntu 24.04.4 LTS\n--- network_interfaces ---\n  interface: lo state=UP ip=127.0.0.1/8\n  interface: enp132s0 state=UP ip=192.168.1.21/24\n  interface: docker0 state=UP ip=172.17.0.1/16\n  interface: br-e94bcb588538 state=UP ip=172.18.0.1/16",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T01:54:03Z"
+}
