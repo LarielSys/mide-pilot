@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0135-RETRY1",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-0135] start 2026-05-07T23:40:26Z\nFrom https://github.com/LarielSys/mide-pilot\n * branch              main       -> FETCH_HEAD\n   2de4697c..0745286f  main       -> origin/main\nHEAD is now at 0745286f worker: autopilot result MTASK-0134-RETRY2\n[MTASK-0135] repo synced: 0745286f\n[MTASK-0135] rebuilding mide-chat...\n#11 CACHED\n\n#12 exporting to image\n#12 exporting layers done\n#12 exporting manifest sha256:3f552c19748ffa0e0df066c8d8bea2d1a8ab6ea5cd0c552abb61c9d78a6e580c done\n#12 exporting config sha256:4cbc24b05c64d0167f61f8d9e6d2dbf7e8d9deda5386a54fe1c0309ad0c53151 done\n#12 exporting attestation manifest sha256:962b5142d31435d62f810ea6bc412bacca8d2d5604bab20695f48c9ccdf9a114 0.0s done\n#12 exporting manifest list sha256:ff02936acc6da177a695587bcdc11e22f0910b516c9d58b9667edafa11603823 done\n#12 naming to docker.io/library/mide-chat:latest done\n#12 unpacking to docker.io/library/mide-chat:latest done\n#12 DONE 0.0s\n\n#13 resolving provenance for metadata file\n#13 DONE 0.0s\n mide-chat:latest  Built\n[MTASK-0135] restarting mide-chat...\n Container mide-chat  Recreate\n Container mide-chat  Recreated\n Container mide-chat  Starting\n Container mide-chat  Started\n[MTASK-0135] health: {\"status\":\"ok\",\"model\":\"qwen2.5-coder:7b\",\"ai\":\"LARIEL\"}\n[MTASK-0135] ask-ai: {\"ok\":true,\"status\":\"ai_triggered\"}\n[main dfeb4fcd] worker: result MTASK-0135 failed\n 1 file changed, 1 insertion(+), 1 deletion(-)\n[MTASK-0135] done: ROOM_AI_REPLY_FAILED",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-07T23:40:42Z"
+}
