@@ -241,7 +241,7 @@ def get_worker_log() -> dict:
 
     recent_events = []
     if events_text:
-        recent_events = [line for line in events_text.splitlines() if line.strip()][-40:]
+        recent_events = [line for line in events_text.splitlines() if line.strip()][:40]
 
     stale_seconds = None
     last_run_utc = status.get("last_run_utc")

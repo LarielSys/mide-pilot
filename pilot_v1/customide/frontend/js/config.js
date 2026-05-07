@@ -13,7 +13,7 @@ window.CUSTOMIDE_CONFIG = {
   },
   workerServicesPath: "../../config/worker1_services.json",
   messenger: {
-    mode: "custom-json",
+     mode: "custom-json",
       url: "http://127.0.0.1:5555/api/messenger",
     authHeader: "",
     model: "messenger-adapter"

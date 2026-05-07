@@ -1410,7 +1410,7 @@
     const defaultThreads = {
       cockpit: {
         title: "Cockpit AI",
-        tag: "qwen2.5-coder:14b",
+        tag: "qwen2.5:14b",
         placeholder: "ask the cockpit AI...",
         messages: [
           { role: "ai", text: "Ready. I have access to live cockpit state." }
@@ -1691,7 +1691,7 @@
           const resp = await fetch(backendUrl + "/api/llm/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: fullPrompt, source: "remote", model: "qwen2.5-coder:14b" }),
+            body: JSON.stringify({ prompt: fullPrompt, source: "remote", model: "qwen2.5:14b" }),
             signal: AbortSignal.timeout(90000)
           });
 

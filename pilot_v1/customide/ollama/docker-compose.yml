@@ -1,0 +1,20 @@
+# Standalone Ollama-only compose (GPU dedicated).
+# For the full MIDE stack (Ollama + backend + frontend), use:
+#   cd /home/larieladmin/mide-pilot/pilot_v1/customide && docker compose up -d
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: mide-ollama
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "11434:11434"
+    volumes:
+      - /home/ollama/.ollama:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      # To dedicate a single GPU by UUID:
+      # - NVIDIA_VISIBLE_DEVICES=GPU-dc07154d-a52e-2970-7237-e6f52c1de5ea
