@@ -20,14 +20,21 @@ echo "head=$(git rev-parse --short HEAD)" | tee -a "$LOG"
 
 # --- 2. Kill existing uvicorn on port 5555 ---
 echo "--- kill_old_backend ---" | tee -a "$LOG"
-OLD_PID=$(lsof -ti :5555 2>/dev/null || true)
-if [ -n "$OLD_PID" ]; then
-  echo "killing pid=$OLD_PID" | tee -a "$LOG"
-  kill "$OLD_PID" 2>&1 | tee -a "$LOG" || true
+# lsof may return multiple PIDs; kill each one individually
+while IFS= read -r pid; do
+  [ -z "$pid" ] && continue
+  echo "killing pid=$pid" | tee -a "$LOG"
+  kill "$pid" 2>&1 | tee -a "$LOG" || true
+done < <(lsof -ti :5555 2>/dev/null || true)
+sleep 3
+# Verify port is now free
+STILL_BOUND=$(lsof -ti :5555 2>/dev/null || true)
+if [ -n "$STILL_BOUND" ]; then
+  echo "force_killing pid=$STILL_BOUND" | tee -a "$LOG"
+  kill -9 $STILL_BOUND 2>/dev/null || true
   sleep 2
-else
-  echo "no_process_on_5555" | tee -a "$LOG"
 fi
+echo "port_5555_clear=yes" | tee -a "$LOG"
 
 # --- 3. Start backend ---
 echo "--- start_backend ---" | tee -a "$LOG"
