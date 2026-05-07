@@ -1,0 +1,10 @@
+{
+  "task_id": "MTASK-0129",
+  "issued_by": "operator",
+  "issued_at": "2026-05-07T21:44:30Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Apply messenger.py explicit CORS fix on cockpit backend and verify localhost Ole Green polling",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0128_fix_messenger_cors.sh"
+}
