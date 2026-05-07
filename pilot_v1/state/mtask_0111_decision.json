@@ -1,0 +1,14 @@
+﻿{
+    "task_id":  "MTASK-0111",
+    "decision_by":  "windows-main",
+    "decision_utc":  "2026-05-06T23:28:27Z",
+    "selected_option":  "C",
+    "rationale":  "Retry with exponential backoff on push failure keeps single-branch simplicity. No architectural change needed. Worker push should: git pull --rebase origin main, then retry push up to 3 times with 5-15s random sleep between attempts.",
+    "implementation":  "In worker_mtask_autopilot.sh push_with_retry(): on push failure, run git pull --rebase origin main, sleep random 5-15s, retry up to 3 times. Log each retry. If all retries fail, log warning and continue loop — do not abort.",
+    "acceptance_criteria":  [
+                                "push_retry_implemented",
+                                "max_retries=3",
+                                "backoff_seconds=5-15",
+                                "loop_continues_on_all_retries_failed"
+                            ]
+}

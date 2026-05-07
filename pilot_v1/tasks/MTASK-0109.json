@@ -1,18 +1,20 @@
 ﻿{
     "task_id":  "MTASK-0109",
     "title":  "Restart cockpit backend to apply repo-root path fix",
-    "description":  "Pull latest main (commit 69abc9e0) and restart the cockpit FastAPI backend (uvicorn, port 5555) so that _repo_root() now correctly resolves to the MIDE repo root via .git detection. After restart, verify GET /api/status/token-counters returns rows (not empty or error). Report: exit code of backend process, first 5 rows from token-counters endpoint response, and any Python tracebacks seen during startup.",
+    "description":  "Pull latest main and restart the cockpit FastAPI backend (uvicorn, port 5555) so that _repo_root() correctly resolves via .git detection. After restart, verify GET /api/status/token-counters returns rows \u003e 0. Report: rows_count, source, and any startup tracebacks.",
     "objective":  "apply_code_fix_restart_backend_verify_token_counter",
     "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
     "created_by":  "windows-main",
     "status":  "approved_to_execute",
     "priority":  "high",
     "created_utc":  "2026-05-06T23:15:16Z",
+    "updated_utc":  "2026-05-06T23:28:27Z",
     "tags":  [
                  "cockpit",
                  "backend",
                  "fix",
                  "token-counter"
              ],
-    "exec_script":  "exec_mtask_0109_restart_cockpit_verify_tokens.sh"
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0109_restart_cockpit_verify_tokens.sh"
 }
