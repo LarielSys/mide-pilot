@@ -1,0 +1,13 @@
+{
+    "task_id":  "MTASK-0116",
+    "title":  "Fix worker loop: sleep only after execution, not on fixed tick",
+    "description":  "Current loop: sleep(60) runs at the END of every cycle regardless. When a task executes for 90s, the next poll happens only 60s later — giving a window as short as the task duration for races. Fix: move sleep(60) so it only runs AFTER all tasks are processed (or when idle). Specifically: the outer \u0027while true\u0027 loop currently does: git_sync → find tasks → process_task → sleep. Change to: git_sync → find tasks → if found: process all then sleep(60) → if idle: sleep(60). The sleep must come AFTER process_task completes, not on a parallel tick. Also: do NOT sleep when git_sync fails (already retrying via continue) — keep the existing early-continue behavior. The inner \u0027while true\u0027 task drain loop already processes all available tasks before reaching sleep — verify this is preserved.",
+    "objective":  "fix_worker_sleep_after_execution",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "high",
+    "created_utc":  "2026-05-07T01:25:22Z",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0116_fix_worker_sleep.sh"
+}
