@@ -1,0 +1,1 @@
+{"task_id":"MTASK-0136","issued_by":"operator","issued_at":"2026-05-07T23:26:10Z","priority":"high","assigned_to":"ubuntu-worker-01","status":"approved_to_execute","description":"Set mide-chat OLLAMA_BASE_URL to Ubuntu LAN endpoint and validate OPS-CENTRAL AI room replies.","executor_script":"pilot_v1/scripts/exec_mtask_0136_set_ollama_lan_for_room.sh"}
