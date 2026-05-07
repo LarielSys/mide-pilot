@@ -60,10 +60,6 @@ services:
     ports:
       - "5570:5570"
 
-volumes:
-  ollama:
-    external: true
-
   # ── MIDE Chat (multi-user WebSocket + LARIEL AI) ─────────────────────────
   mide-chat:
     build:
@@ -81,3 +77,7 @@ volumes:
       - OLLAMA_CHAT_MODEL=qwen2.5-coder:7b
       - AI_NAME=LARIEL
       - HISTORY_LIMIT=200
+
+volumes:
+  ollama:
+    external: true
