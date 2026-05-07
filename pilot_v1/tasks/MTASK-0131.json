@@ -1,0 +1,10 @@
+{
+  "task_id": "MTASK-0131",
+  "issued_by": "operator",
+  "issued_at": "2026-05-07T21:49:30Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Force-load messenger.py /read endpoint into live cockpit backend process/container and verify POST /api/messenger/read returns 200",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0131_force_reload_messenger_read.sh"
+}
