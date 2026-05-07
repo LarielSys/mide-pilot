@@ -37,7 +37,8 @@ class RemoteExecuteRequest(BaseModel):
 
 
 def _safe_cwd(path_str: Optional[str]) -> Path:
-    repo_root = Path(__file__).resolve().parents[4]
+    _ep = Path(__file__).resolve()
+    repo_root = next((q for q in _ep.parents if (q / ".git").exists()), _ep.parents[5])
     if not path_str:
         return repo_root
 
@@ -70,7 +71,8 @@ def _resolve_remote_target(payload: RemoteExecuteRequest) -> tuple[str, str, Opt
     key_path = payload.key_path
 
     if payload.use_worker_config:
-        repo_root = Path(__file__).resolve().parents[4]
+        _ep2 = Path(__file__).resolve()
+        repo_root = next((q for q in _ep2.parents if (q / ".git").exists()), _ep2.parents[5])
         services = load_worker_services(repo_root)
 
         host = host or services.get("worker_host") or services.get("host")

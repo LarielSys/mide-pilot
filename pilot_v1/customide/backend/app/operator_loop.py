@@ -26,9 +26,13 @@ MAX_RETRIES = 2
 
 # ── repo paths ─────────────────────────────────────────────────────────────────
 def _repo_root() -> Path:
-    # backend/app/operator_loop.py → pilot_v1/customide/backend/app/
-    # parents[3] = pilot_v1/customide, parents[4] = pilot_v1, parents[5] = MIDE root
-    return Path(__file__).resolve().parents[4]
+    # Walk up from this file until we find the .git directory (the actual repo root).
+    p = Path(__file__).resolve()
+    for parent in p.parents:
+        if (parent / ".git").exists():
+            return parent
+    # Fallback: pilot_v1/customide/backend/app/ → parents[4] = MIDE root
+    return p.parents[4]
 
 
 def _tasks_dir(root: Path) -> Path:

@@ -9,5 +9,6 @@ router = APIRouter(prefix="/api/config", tags=["config"])
 
 @router.get("/services")
 def get_services() -> dict:
-    repo_root = Path(__file__).resolve().parents[3]
+    p = Path(__file__).resolve()
+    repo_root = next((q for q in p.parents if (q / ".git").exists()), p.parents[5])
     return load_worker_services(repo_root)

@@ -43,7 +43,8 @@ def _resolve_target_url() -> str:
     if env_base_url:
         return env_base_url
 
-    repo_root = Path(__file__).resolve().parents[3]
+    _p = Path(__file__).resolve()
+    repo_root = next((q for q in _p.parents if (q / ".git").exists()), _p.parents[5])
     svc = load_worker_services(repo_root)
     if svc.get("status") != "ok":
         raise HTTPException(status_code=503, detail="worker1_services.json missing")

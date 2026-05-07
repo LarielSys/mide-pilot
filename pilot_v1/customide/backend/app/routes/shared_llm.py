@@ -58,7 +58,8 @@ def _resolve_generate_url() -> tuple[str | None, str, str | None]:
     if env_base_url:
         return env_base_url, "env.CUSTOMIDE_OLLAMA_BASE_URL", None
 
-    repo_root = Path(__file__).resolve().parents[3]
+    _p = Path(__file__).resolve()
+    repo_root = next((q for q in _p.parents if (q / ".git").exists()), _p.parents[5])
     svc = load_worker_services(repo_root)
     if svc.get("status") != "ok":
         return None, "none", "worker1_services.json missing"

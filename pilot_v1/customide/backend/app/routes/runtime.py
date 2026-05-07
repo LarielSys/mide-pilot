@@ -14,7 +14,13 @@ _last_fetch_monotonic = 0.0
 
 
 def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    # Walk up from this file until we find the .git directory (the actual repo root).
+    p = Path(__file__).resolve()
+    for parent in p.parents:
+        if (parent / ".git").exists():
+            return parent
+    # Fallback: pilot_v1/customide/backend/app/routes → parents[5] = MIDE root
+    return p.parents[5]
 
 
 def _utc_now_iso() -> str:
