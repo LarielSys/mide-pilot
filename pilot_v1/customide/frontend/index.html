@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>CustomIDE Cockpit</title>
-  <link rel="stylesheet" href="css/style.alt-20260507b.css">
+  <link rel="stylesheet" href="css/style.alt-20260507c.css">
   <script>
     (function cockpitResetBootstrap() {
       const resetUrl = "../../state/cockpit_hard_reset_request.json";
@@ -60,8 +60,8 @@
 
   <main class="cockpit-grid">
     <section class="panel panel-live">
-      <h3>Autopilot Live</h3>
-      <pre id="autopilotSummary">waiting...</pre>
+      <h3>Autopilot Live <span class="panel-sub" id="taskHistoryCount"></span></h3>
+      <div id="autopilotLive" class="scroll-log autopilot-live"></div>
     </section>
 
     <section class="panel panel-events">
@@ -113,7 +113,7 @@
 
   </main>
 
-  <script src="js/config.js?v=6"></script>
-  <script src="js/app.js?v=6"></script>
+  <script src="js/config.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
 </body>
 </html>

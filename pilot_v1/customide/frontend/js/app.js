@@ -25,7 +25,8 @@
   const llmBadgeEl = document.getElementById("llmHealthBadge");
   const syncBadgeEl = document.getElementById("syncHealthBadge");
   const lastRefreshEl = document.getElementById("lastRefresh");
-  const autopilotSummaryEl = document.getElementById("autopilotSummary");
+  const autopilotLiveEl = document.getElementById("autopilotLive");
+  const taskHistoryCountEl = document.getElementById("taskHistoryCount");
   const chatPromptInputEl = document.getElementById("chatPromptInput");
   const chatPromptSendEl = document.getElementById("chatPromptSend");
   const chatPromptStatusEl = document.getElementById("chatPromptStatus");
@@ -557,41 +558,39 @@
   }
 
   function renderResponseStream(worker) {
-    if (!autopilotSummaryEl) return;
+    // autopilotSummaryEl removed — Autopilot Live panel now shows task history
+  }
 
-    const activeFile = getActiveFile();
-    const chatSteps = chatState.messages.map((message, index) => ({
-      title: message.role === "assistant" ? "Ollama response" : "Prompt sent",
-      body: message.text,
-      note: message.role === "assistant"
-        ? `model: ${message.model || "ollama"} · source: ${message.source || "local-ide"}`
-        : `source: ${message.source || "local-ide"} · context: ${ideState.activeSymbol || (activeFile ? activeFile.title : "editor")}`,
-      index,
-    }));
-
-    const steps = chatSteps.length > 0
-      ? chatSteps
-      : [{
-          title: "Chat ready",
-          body: "Send a prompt to start the conversation.",
-          note: `context: ${ideState.activeSymbol || (activeFile ? activeFile.title : "editor")}`,
-        }];
-
-    autopilotSummaryEl.innerHTML = steps.map((step, index) => {
+  function renderTaskHistory(taskHistory) {
+    if (!autopilotLiveEl) return;
+    const tasks = (taskHistory && taskHistory.tasks) ? taskHistory.tasks : [];
+    if (taskHistoryCountEl) {
+      taskHistoryCountEl.textContent = tasks.length ? `(${tasks.length} tasks)` : "";
+    }
+    if (tasks.length === 0) {
+      autopilotLiveEl.innerHTML = `<div class="th-empty">No task results yet.</div>`;
+      return;
+    }
+    autopilotLiveEl.innerHTML = tasks.map(t => {
+      const ok = t.status === "completed";
+      const statusCls = ok ? "th-badge-ok" : "th-badge-fail";
+      const statusLabel = ok ? "✓ completed" : "✗ " + t.status;
+      const ts = t.timestamp_utc ? t.timestamp_utc.replace("T", " ").replace("Z", " UTC") : "";
+      const keyLines = (t.key_lines || []).map(l => `<div class="th-kv">${escHtml(l)}</div>`).join("");
+      const summary = t.summary && t.summary !== "Executor script completed successfully."
+        ? `<div class="th-summary">${escHtml(t.summary)}</div>` : "";
       return [
-        `<div class="stream-step">`,
-        `<div class="stream-index">${index + 1}</div>`,
-        `<div class="stream-content">`,
-        `<div class="stream-title">${escHtml(step.title)}</div>`,
-        `<div class="stream-note">${escHtml(step.note)}</div>`,
-        `<div class="stream-body">${escHtml(step.body)}</div>`,
-        `</div>`,
+        `<div class="th-card ${ok ? "th-card-ok" : "th-card-fail"}">`,
+        `  <div class="th-header">`,
+        `    <span class="th-id">${escHtml(t.task_id)}</span>`,
+        `    <span class="th-badge ${statusCls}">${statusLabel}</span>`,
+        `    <span class="th-ts">${escHtml(ts)}</span>`,
+        `  </div>`,
+        summary,
+        keyLines ? `<div class="th-kvs">${keyLines}</div>` : "",
         `</div>`
       ].join("");
     }).join("");
-
-    // Keep latest message visible, GPT/VS-style.
-    autopilotSummaryEl.scrollTop = autopilotSummaryEl.scrollHeight;
   }
 
   async function submitChatPrompt() {
@@ -1052,9 +1051,6 @@
       "error: " + (reason || "network_error")
     ].join("\n");
 
-    if (autopilotSummaryEl) {
-      autopilotSummaryEl.textContent = hints;
-    }
     // Append a separator to the live log rather than wiping it
     appendEventLines(["-- BACKEND OFFLINE: " + (reason || "network_error") + " --"]);
     gitPanelEl.textContent = hints;
@@ -1326,7 +1322,9 @@
     const worker = bundle.worker_log || {};
     const tokens = bundle.token_counters || {};
     const opLoop = bundle.operator_loop || {};
+    const taskHistory = bundle.task_history || {};
     renderOperatorLoop(opLoop);
+    renderTaskHistory(taskHistory);
 
     updateIdeState(worker, gitStatus, tokens, runtime, sync, cadence);
 

@@ -304,6 +304,48 @@ def get_token_counters() -> dict:
     }
 
 
+@router.get("/task-history")
+def get_task_history() -> dict:
+    repo_root = _repo_root()
+    results_dir = repo_root / "pilot_v1" / "results"
+    tasks: list[dict] = []
+
+    if results_dir.exists():
+        for f in sorted(results_dir.glob("MTASK-*.result.json"), key=lambda p: p.name, reverse=True)[:40]:
+            try:
+                data = json.loads(f.read_text(encoding="utf-8"))
+                # Parse key lines from stdout_excerpt into a short summary
+                excerpt = str(data.get("stdout_excerpt") or "")
+                key_lines = []
+                for line in excerpt.splitlines():
+                    line = line.strip()
+                    if not line:
+                        continue
+                    if any(line.startswith(k) for k in (
+                        "final_status=", "rows_count=", "token_counter_fixed=",
+                        "hostname=", "uptime=", "disk_free_home=", "backend_start=",
+                        "fastapi_version=", "patch_verified=", "already_patched=",
+                        "chat_backend_status=", "tunnel_url=", "file_rows=",
+                    )):
+                        key_lines.append(line)
+                tasks.append({
+                    "task_id": data.get("task_id", f.stem.replace(".result", "")),
+                    "status": data.get("execution_status", "unknown"),
+                    "summary": data.get("summary", ""),
+                    "timestamp_utc": data.get("timestamp_utc", ""),
+                    "worker_id": data.get("worker_id", ""),
+                    "key_lines": key_lines[:6],
+                })
+            except Exception:
+                pass
+
+    return {
+        "tasks": tasks,
+        "count": len(tasks),
+        "reported_at_utc": _utc_now_iso(),
+    }
+
+
 @router.get("/bundle")
 def get_status_bundle() -> dict:
     return {
@@ -313,6 +355,7 @@ def get_status_bundle() -> dict:
         "worker_log": get_worker_log(),
         "token_counters": get_token_counters(),
         "operator_loop": get_operator_loop_status(),
+        "task_history": get_task_history(),
     }
 
 
