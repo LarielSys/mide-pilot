@@ -63,3 +63,21 @@ services:
 volumes:
   ollama:
     external: true
+
+  # ── MIDE Chat (multi-user WebSocket + LARIEL AI) ─────────────────────────
+  mide-chat:
+    build:
+      context: ./mide-chat
+      dockerfile: Dockerfile
+    image: mide-chat:latest
+    container_name: mide-chat
+    restart: unless-stopped
+    ports:
+      - "7070:7070"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - OLLAMA_BASE_URL=http://172.17.0.1:11434
+      - OLLAMA_CHAT_MODEL=qwen2.5-coder:7b
+      - AI_NAME=LARIEL
+      - HISTORY_LIMIT=200

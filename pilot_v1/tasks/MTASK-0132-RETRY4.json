@@ -1,0 +1,10 @@
+{
+    "task_id":  "MTASK-0132-RETRY4",
+    "issued_by":  "operator",
+    "issued_at":  "2026-05-07T18:15:07Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Retry MTASK-0132: deploy mide-chat. Fixed: REPO is now mide-pilot, compose is in pilot_v1/customide/, files are in git.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0132_deploy_mide_chat.sh"
+}

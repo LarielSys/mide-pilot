@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIDE CHAT // MU-TH-UR NETWORK</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- LOGIN OVERLAY -->
+  <div id="login-overlay">
+    <div class="login-box">
+      <div class="login-title">MU-TH-UR COMMS NETWORK</div>
+      <div class="login-sub">MIDE MULTI-USER RELAY — AUTHENTICATED ACCESS ONLY</div>
+      <div class="login-form">
+        <label>CALLSIGN</label>
+        <input id="login-user" type="text" placeholder="e.g. ADMIN" autocomplete="off" maxlength="24" />
+        <label>ROOM</label>
+        <input id="login-room" type="text" value="OPS-CENTRAL" autocomplete="off" maxlength="32" />
+        <button id="login-btn">CONNECT</button>
+      </div>
+      <div class="login-hint">Use <code>@ai</code> to invoke LARIEL in any message.</div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div id="app" class="hidden">
+    <header class="topbar">
+      <span class="topbar-logo">MU-TH-UR // MIDE COMMS</span>
+      <span class="topbar-room">ROOM: <span id="room-label">—</span></span>
+      <span class="topbar-user">YOU: <span id="user-label">—</span></span>
+      <span class="topbar-status" id="conn-status">○ OFFLINE</span>
+    </header>
+
+    <div class="layout">
+      <!-- SIDEBAR: rooms & users -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">ACTIVE ROOMS</div>
+          <ul id="room-list" class="sidebar-list"></ul>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">USERS ONLINE</div>
+          <ul id="user-list" class="sidebar-list"></ul>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">JOIN ROOM</div>
+          <div class="join-form">
+            <input id="join-room-input" type="text" placeholder="room-name" maxlength="32" />
+            <button id="join-room-btn">JOIN</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CHAT PANE -->
+      <main class="chat-pane">
+        <div id="messages" class="messages"></div>
+        <div class="input-bar">
+          <span class="input-prefix" id="input-prefix">OPS-CENTRAL &gt;</span>
+          <input id="msg-input" type="text" placeholder="type message… or @ai <question>" autocomplete="off" />
+          <button id="send-btn">TX</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="chat.js"></script>
+</body>
+</html>
