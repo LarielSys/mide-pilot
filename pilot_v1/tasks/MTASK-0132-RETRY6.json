@@ -1,0 +1,10 @@
+{
+    "task_id":  "MTASK-0132-RETRY6",
+    "issued_by":  "operator",
+    "issued_at":  "2026-05-07T18:18:48Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Retry MTASK-0132: fixed docker-compose.yml - mide-chat was nested under volumes: instead of services:. Now correctly placed under services.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0132_deploy_mide_chat.sh"
+}
