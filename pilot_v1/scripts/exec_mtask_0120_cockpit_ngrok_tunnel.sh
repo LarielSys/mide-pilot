@@ -13,6 +13,63 @@ if [[ -z "$NGROK_BIN" ]]; then
   echo "error=ngrok_not_found" | tee -a "$LOG"; exit 1
 fi
 
+clear_ngrok_tunnels() {
+  local api_port tunnel_names tunnel_name
+
+  for api_port in 4040 4041 4042 4043 4044 4045; do
+    tunnel_names="$(curl -s "http://127.0.0.1:${api_port}/api/tunnels" 2>/dev/null | python3 -c '
+import json, sys
+try:
+    payload = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+for tunnel in payload.get("tunnels", []):
+    name = tunnel.get("name")
+    if name:
+        print(name)
+' 2>/dev/null || true)"
+
+    if [[ -z "$tunnel_names" ]]; then
+      continue
+    fi
+
+    while IFS= read -r tunnel_name; do
+      [[ -z "$tunnel_name" ]] && continue
+      curl -s -X DELETE "http://127.0.0.1:${api_port}/api/tunnels/${tunnel_name}" >/dev/null 2>&1 || true
+    done <<<"$tunnel_names"
+  done
+}
+
+discover_cockpit_url() {
+  local api_port raw discovered_url
+
+  for api_port in 4040 4041 4042 4043 4044 4045; do
+    raw="$(curl -s "http://127.0.0.1:${api_port}/api/tunnels" 2>/dev/null || echo '{}')"
+    discovered_url="$(echo "$raw" | python3 -c '
+import json, sys
+try:
+    payload = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+for tunnel in payload.get("tunnels", []):
+    addr = tunnel.get("config", {}).get("addr", "")
+    forwarding = str(tunnel.get("forwarding", ""))
+    if "5555" in addr or "5555" in forwarding:
+        print(tunnel.get("public_url", ""))
+        break
+' 2>/dev/null || true)"
+    if [[ -n "$discovered_url" ]]; then
+      printf '%s' "$discovered_url"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+# Clear any stale local ngrok tunnels before starting the cockpit tunnel.
+clear_ngrok_tunnels
+
 # Kill any existing ngrok tunnel on port 5555
 pkill -f "ngrok.*5555" 2>/dev/null || true
 sleep 2
@@ -26,16 +83,7 @@ echo "ngrok_pid=$NGROK_PID" | tee -a "$LOG"
 COCKPIT_URL=""
 for i in $(seq 1 10); do
   sleep 2
-  RAW=$(curl -s http://127.0.0.1:4040/api/tunnels 2>/dev/null || echo '{}')
-  COCKPIT_URL=$(echo "$RAW" | python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-tunnels=d.get('tunnels',[])
-for t in tunnels:
-    if '5555' in t.get('config',{}).get('addr','') or '5555' in str(t.get('forwarding','')):
-        print(t.get('public_url',''))
-        break
-" 2>/dev/null || echo "")
+  COCKPIT_URL="$(discover_cockpit_url || true)"
   if [[ -n "$COCKPIT_URL" ]]; then
     echo "attempt=$i cockpit_url=$COCKPIT_URL" | tee -a "$LOG"
     break
