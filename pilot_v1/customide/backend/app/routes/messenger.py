@@ -12,6 +12,11 @@ router = APIRouter(prefix="/api/messenger", tags=["messenger"])
 
 _MAX_MESSAGES = 100
 _messages: deque = deque(maxlen=_MAX_MESSAGES)
+_CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,POST,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "*",
+}
 
 
 def _utc_now_iso() -> str:
@@ -24,6 +29,15 @@ class MessageIn(BaseModel):
     type: str = "message"
 
 
+def _cors_json(content: dict, status_code: int = 200) -> JSONResponse:
+    return JSONResponse(content=content, status_code=status_code, headers=_CORS_HEADERS)
+
+
+@router.options("")
+async def options_messenger() -> JSONResponse:
+    return _cors_json({"ok": True})
+
+
 @router.post("")
 async def post_message(msg: MessageIn) -> JSONResponse:
     entry = {
@@ -34,16 +48,16 @@ async def post_message(msg: MessageIn) -> JSONResponse:
         "timestamp": _utc_now_iso(),
     }
     _messages.append(entry)
-    return JSONResponse(content={"ok": True, "id": entry["id"], "timestamp": entry["timestamp"]})
+    return _cors_json({"ok": True, "id": entry["id"], "timestamp": entry["timestamp"]})
 
 
 @router.get("")
 async def get_messages(limit: int = 20) -> JSONResponse:
     msgs = list(_messages)[-limit:]
-    return JSONResponse(content={"ok": True, "count": len(msgs), "messages": msgs})
+    return _cors_json({"ok": True, "count": len(msgs), "messages": msgs})
 
 
 @router.delete("")
 async def clear_messages() -> JSONResponse:
     _messages.clear()
-    return JSONResponse(content={"ok": True, "cleared": True})
+    return _cors_json({"ok": True, "cleared": True})
