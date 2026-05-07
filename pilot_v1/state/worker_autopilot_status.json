@@ -2,8 +2,8 @@
   "worker_name": "ubuntu-atlas-01",
   "worker_id": "ubuntu-worker-01",
   "mode": "running",
-  "last_run_utc": "2026-05-07T01:52:00Z",
-  "last_task_processed": "MTASK-2000",
+  "last_run_utc": "2026-05-07T01:53:02Z",
+  "last_task_processed": "MTASK-2000-RETRY1",
   "poll_seconds": 60,
   "note": "Task failed: executor script non-zero exit."
 }
