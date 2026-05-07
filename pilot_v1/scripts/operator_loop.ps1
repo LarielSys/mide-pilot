@@ -135,8 +135,13 @@ function Issue-NextTask($completedId) {
     }
 
     if (-not $pipeline.ContainsKey($completedId)) {
-        Write-Log "NO PIPELINE ENTRY for ${completedId} -- operator input needed for next step"
-        return
+        # Strip retry suffix and try the base task ID
+        $baseCompletedId = $completedId -replace "(-RETRY\d+)+$", ""
+        if (-not $pipeline.ContainsKey($baseCompletedId)) {
+            Write-Log "NO PIPELINE ENTRY for ${completedId} -- operator input needed for next step"
+            return
+        }
+        $completedId = $baseCompletedId
     }
 
     $next = $pipeline[$completedId]
@@ -233,6 +238,17 @@ while ($true) {
         # Mark processed
         $state.processed += $id
         Save-Processed $state
+    }
+
+    # Heartbeat — write live timestamp to state so cockpit and Ubuntu can see Windows loop is alive
+    $hbTs = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+    $hbFile = "$RepoRoot\pilot_v1\state\operator_loop_live.txt"
+    "operator_loop windows-main $hbTs" | Set-Content $hbFile
+    git -C $RepoRoot add "pilot_v1/state/operator_loop_live.txt" 2>&1 | Out-Null
+    $hbDiff = git -C $RepoRoot diff --cached --stat 2>&1
+    if ($hbDiff -match "operator_loop_live") {
+        git -C $RepoRoot commit -m "operator: heartbeat windows-main $hbTs" 2>&1 | Out-Null
+        git -C $RepoRoot push origin main 2>&1 | Out-Null
     }
 
     Write-Log "poll: sleeping ${PollSeconds}s..."
