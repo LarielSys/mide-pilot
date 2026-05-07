@@ -1,13 +1,14 @@
 Autopilot Live Status
-updated_utc: 2026-05-07T21:11:35Z
+updated_utc: 2026-05-07T21:12:37Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: running
-last_task_processed: MTASK-0127
+last_task_processed: MTASK-0127-RETRY1
 poll_seconds: 60
 note: Task failed: missing executor_script.
 
 Recent Events (latest 20, newest first):
+2026-05-07T21:12:37Z | mode=running | last_task=MTASK-0127-RETRY1 | note=Task failed: missing executor_script.
 2026-05-07T21:11:35Z | mode=running | last_task=MTASK-0127 | note=Task failed: missing executor_script.
 2026-05-07T21:00:44Z | mode=running | last_task= | note=Warning: git_sync failed; retrying next poll.
 2026-05-07T20:59:20Z | mode=running | last_task=MTASK-0127 | note=Task failed: missing executor_script.
@@ -27,4 +28,3 @@ Recent Events (latest 20, newest first):
 2026-05-07T20:40:53Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=156, eligible=0, mismatched=2.
 2026-05-07T20:39:31Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=156, eligible=0, mismatched=2.
 2026-05-07T20:38:09Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=156, eligible=0, mismatched=2.
-2026-05-07T20:36:47Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=156, eligible=0, mismatched=2.
