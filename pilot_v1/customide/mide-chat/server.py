@@ -96,7 +96,7 @@ async def ai_respond(room: str, trigger_text: str, caller: str):
         "You may be asked to write code, explain systems, or assist with task execution. "
         "Keep replies short unless depth is explicitly requested."
     )
-    payload = {
+    chat_payload = {
         "model": OLLAMA_MODEL,
         "stream": False,
         "messages": [
@@ -104,14 +104,24 @@ async def ai_respond(room: str, trigger_text: str, caller: str):
             {"role": "user", "content": trigger_text},
         ],
     }
+    generate_payload = {
+        "model": OLLAMA_MODEL,
+        "stream": False,
+        "prompt": f"{system_prompt}\n\nUser: {trigger_text}",
+    }
     # typing indicator
     await broadcast(room, build_msg(room, AI_NAME, "...", kind="typing"))
     try:
         async with httpx.AsyncClient(timeout=60) as client:
-            resp = await client.post(f"{OLLAMA_BASE}/api/chat", json=payload)
+            # Prefer /api/chat, fallback to /api/generate if chat route is unavailable.
+            resp = await client.post(f"{OLLAMA_BASE}/api/chat", json=chat_payload)
+            if resp.status_code == 404:
+                resp = await client.post(f"{OLLAMA_BASE}/api/generate", json=generate_payload)
             resp.raise_for_status()
             data = resp.json()
             reply = data.get("message", {}).get("content", "").strip()
+            if not reply:
+                reply = str(data.get("response", "")).strip()
     except Exception as exc:
         reply = f"[ERROR] Ollama unreachable: {exc}"
     # remove typing indicator from history, broadcast real response
