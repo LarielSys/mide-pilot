@@ -1,0 +1,13 @@
+{
+    "task_id":  "MTASK-0115",
+    "title":  "Fix cockpit backend: use correct repo path and venv",
+    "description":  "Diagnosis (MTASK-0114-RETRY1) shows: (1) The running cockpit backend is at /home/larieladmin/mide-pilot/pilot_v1/customide/backend/ (started as root via /usr/local/bin/python3.12), NOT itheia-llm/MIDE. (2) The correct venv with fastapi 0.115.0 is at /home/larieladmin/mide-pilot/pilot_v1/customide/backend/.venv. Steps: (a) cd /home/larieladmin/mide-pilot \u0026\u0026 git pull origin main to get latest code including _repo_root() fix; (b) kill all pids on port 5555 individually; (c) start uvicorn using /home/larieladmin/mide-pilot/pilot_v1/customide/backend/.venv/bin/python from /home/larieladmin/mide-pilot/pilot_v1/customide/backend/; (d) wait for HTTP 200 on localhost:5555/api/status/token-counters; (e) verify rows_count \u003e 0 and source_file path is correct (no doubled pilot_v1). Report venv_path used, new_pid, rows_count, source_file.",
+    "objective":  "fix_cockpit_backend_correct_repo_and_venv",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "created_by":  "windows-main",
+    "status":  "approved_to_execute",
+    "priority":  "critical",
+    "created_utc":  "2026-05-07T01:19:39Z",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0115_fix_cockpit_correct_path.sh"
+}
