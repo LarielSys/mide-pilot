@@ -61,20 +61,7 @@ PROPOSE_PAYLOAD='{"text":"MTASK-0143 smoke proposal","issued_by":"cockpit-ai","s
 PROPOSE_RAW="$(curl -s -X POST http://localhost:5555/api/mtask/propose -H 'Content-Type: application/json' -d "${PROPOSE_PAYLOAD}" || true)"
 echo "[${TASK_ID}] propose_raw=${PROPOSE_RAW}"
 
-echo "${PROPOSE_RAW}" | python3 - <<'PY'
-import sys, json
-raw = sys.stdin.read()
-try:
-    d = json.loads(raw)
-except Exception:
-    print('proposal_parse_error')
-    raise SystemExit(1)
-pid = d.get('proposal_id', '')
-if not pid:
-    print('proposal_missing_id')
-    raise SystemExit(1)
-print('proposal_id=' + pid)
-PY
+python3 -c "import json,sys; raw=sys.argv[1]; d=json.loads(raw); pid=d.get('proposal_id',''); print('proposal_id='+pid if pid else 'proposal_missing_id'); raise SystemExit(0 if pid else 1)" "${PROPOSE_RAW}"
 
 echo "[${TASK_ID}] complete"
 exit 0
