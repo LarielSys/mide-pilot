@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2021",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2021] Step 1: Validate /api/chat and /api/cockpit/act\n[MTASK-2021] Step 2: repair upstream routing/service and retry checks",
+  "stderr_excerpt": "Both chat endpoints failed CORS/POST verification on https://jawed-lapel-dispersed.ngrok-free.dev.",
+  "timestamp_utc": "2026-05-08T23:37:40Z"
+}
