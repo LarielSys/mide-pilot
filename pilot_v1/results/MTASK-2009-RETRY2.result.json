@@ -1,9 +1,0 @@
-{
-  "task_id": "MTASK-2009-RETRY2",
-  "worker_id": "ubuntu-worker-01",
-  "execution_status": "completed",
-  "summary": "Executor script completed successfully.",
-  "stdout_excerpt": "[MTASK-2009] Starting fun-host deploy...\n[MTASK-2009] serve_dir=/home/larieladmin/mide-pilot/pilot_v1/funhost\n[MTASK-2009] port=8095\n * branch              main       -> FETCH_HEAD\n   7af1fd1e..560f7b07  main       -> origin/main\nHEAD is now at 560f7b07 operator: heartbeat windows-main 1778215950\n[MTASK-2009] funhost_files=index.html script.js style.css \n[MTASK-2009] fun_host_pid=2379718\n[MTASK-2009] fun_host_http_status=200\n[MTASK-2009] fun_host_url=http://192.168.1.21:8095/\n[MTASK-2009] final_status=FUN_HOST_LIVE\n[MTASK-2009] message=Fun-copy cockpit is now serving on port 8095\n[MTASK-2009] Done.",
-  "stderr_excerpt": "",
-  "timestamp_utc": "2026-05-08T04:52:34Z"
-}

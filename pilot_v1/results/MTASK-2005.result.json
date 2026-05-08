@@ -1,9 +1,0 @@
-{
-  "task_id": "MTASK-2005",
-  "worker_id": "ubuntu-worker-01",
-  "execution_status": "completed",
-  "summary": "Executor script completed successfully.",
-  "stdout_excerpt": "[MTASK-2005] Starting execution...\n[MTASK-2005] Task: create a play folder sandbox where we can run a copy safely without changing original program files or settings; include launch instructions in result\n[MTASK-2005] Executor stub \u2014 task acknowledged by worker.\n[MTASK-2005] Done.",
-  "stderr_excerpt": "",
-  "timestamp_utc": "2026-05-08T04:05:01Z"
-}

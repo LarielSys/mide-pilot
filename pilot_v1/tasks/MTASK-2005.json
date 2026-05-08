@@ -1,14 +1,14 @@
 {
   "task_id": "MTASK-2005",
-  "issued_by": "olegreen",
-  "issued_at": "2026-05-08T04:04:37Z",
+  "issued_by": "OLEGREEN",
+  "issued_at": "2026-05-08T20:47:31Z",
   "priority": "normal",
   "assigned_to": "ubuntu-worker-01",
   "required_worker_id": "ubuntu-worker-01",
   "status": "approved_to_execute",
-  "description": "create a play folder sandbox where we can run a copy safely without changing original program files or settings; include launch instructions in result",
+  "description": "generate a test mtask",
   "executor_script": "pilot_v1/scripts/exec_mtask_2005.sh",
   "dependencies": [],
-  "notes": "source=operator-loop-dispatch; direct_dispatch=true",
+  "notes": "source=cockpit-chat; direct_dispatch=true",
   "category": "brain"
 }

@@ -4,7 +4,7 @@
 set -euo pipefail
 
 TASK_ID="MTASK-2005"
-DESCRIPTION="create a play folder sandbox where we can run a copy safely without changing original program files or settings; include launch instructions in result"
+DESCRIPTION="generate a test mtask"
 
 echo "[MTASK-2005] Starting execution..."
 echo "[MTASK-2005] Task: $DESCRIPTION"

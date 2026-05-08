@@ -1,9 +1,0 @@
-{
-  "task_id": "MTASK-2007",
-  "worker_id": "ubuntu-worker-01",
-  "execution_status": "completed",
-  "summary": "Executor script completed successfully.",
-  "stdout_excerpt": "[MTASK-2007] Starting execution...\n[MTASK-2007] Task: On ubuntu-worker-01: stop other cockpit web hosts, run only two local hosts (fun copy host and customide copy host), verify both return HTTP 200, and record host URLs in result\n[MTASK-2007] Executor stub \u2014 task acknowledged by worker.\n[MTASK-2007] Done.",
-  "stderr_excerpt": "",
-  "timestamp_utc": "2026-05-08T04:17:25Z"
-}
