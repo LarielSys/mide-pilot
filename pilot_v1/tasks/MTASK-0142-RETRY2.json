@@ -1,0 +1,15 @@
+{
+    "task_id":  "MTASK-0142-RETRY2",
+    "issued_by":  "windows-main",
+    "issued_at":  "2026-05-08T00:00:00",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Fix cockpit backend /api/mtask/pending 404 on Ubuntu by hard rebuild + live route introspection and smoke proposal.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0142_fix_cockpit_mtask_404.sh",
+    "dependencies":  [
+                         "MTASK-0141"
+                     ],
+    "notes":  "If endpoint remains missing, print openapi route evidence and fail."
+}
