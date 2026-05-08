@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2009",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T22:41:09Z",
+  "priority": "normal",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "status": "local_private_context",
+  "description": "Local cockpit context task; not for Ubuntu dispatch.",
+  "executor_script": "",
+  "dependencies": [],
+  "notes": "source=auto-local-context; private=true; do_not_push=true; do_not_dispatch=true; do_not_mirror=true; md_context=pilot_v1/tasks/MTASK-2009.md",
+  "category": "brain"
+}

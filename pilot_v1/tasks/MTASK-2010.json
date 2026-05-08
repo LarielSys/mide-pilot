@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2010",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T22:52:00Z",
+  "priority": "normal",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "status": "local_private_context",
+  "description": "Local protocol index for autonomous Ollama MTASK operations.",
+  "executor_script": "",
+  "dependencies": [
+    "pilot_v1/OLLAMA_AUTONOMOUS_MTASK_PROTOCOL.md"
+  ],
+  "notes": "source=manual-local-context; private=true; do_not_push=true; do_not_dispatch=true; do_not_mirror=true; protocol_doc=pilot_v1/OLLAMA_AUTONOMOUS_MTASK_PROTOCOL.md; md_context=pilot_v1/tasks/MTASK-2010.md",
+  "category": "brain"
+}

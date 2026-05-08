@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2008",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T18:40:00Z",
+  "priority": "normal",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "status": "local_private_context",
+  "description": "Local cockpit context task for current OLEGREEN workstream; do not dispatch to ubuntu-worker-01.",
+  "executor_script": "",
+  "dependencies": [],
+  "notes": "source=manual-local; private=true; do_not_push=true; do_not_dispatch=true; md_context=pilot_v1/tasks/MTASK-2008.md",
+  "category": "brain"
+}

@@ -1,0 +1,18 @@
+{
+  "task_id": "MTASK-2012",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T23:07:00Z",
+  "priority": "high",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "status": "local_private_context",
+  "description": "Repair website chat path to Ubuntu Ollama with network-first verification and no git dispatch.",
+  "executor_script": "",
+  "dependencies": [
+    "olegreen/bridge_server.py",
+    "olegreen/restart_bridge.ps1",
+    "pilot_v1/tasks/MTASK-2012.md"
+  ],
+  "notes": "source=manual-local-context; private=true; do_not_push=true; do_not_dispatch=true; do_not_mirror=true; md_context=pilot_v1/tasks/MTASK-2012.md",
+  "category": "brain"
+}
