@@ -328,13 +328,8 @@ async def run_operator_loop() -> None:
                     _log(root, "  -> SUCCESS: issuing next task in pipeline")
                     _issue_next(root, rid)
                 elif status == "failed":
-                    base = _base_id(rid)
-                    retries = _retry_count(_tasks_dir(root), base)
-                    if retries < MAX_RETRIES:
-                        _log(root, f"  -> FAILED: issuing retry ({retries} previous retries)")
-                        _issue_retry(root, result)
-                    else:
-                        _log(root, f"  -> FAILED: max retries reached for {rid} — operator input needed")
+                    # Auto-retry is disabled to avoid retry storms on validation-only failures.
+                    _log(root, f"  -> FAILED: {rid} — operator input required (auto-retry disabled)")
 
                 processed.add(rid)
                 _save_processed(root, processed)

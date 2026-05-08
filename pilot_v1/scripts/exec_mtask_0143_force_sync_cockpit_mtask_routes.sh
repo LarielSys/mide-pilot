@@ -29,14 +29,6 @@ grep -n "include_router(mtask.router)" backend/app/main.py || true
 echo "[${TASK_ID}] host source proof (mtask route file exists):"
 ls -l backend/app/routes/mtask.py || true
 
-echo "[${TASK_ID}] host python route introspection before build:"
-(cd backend && python3 - <<'PY'
-from app.main import app
-paths = sorted({getattr(r, 'path', '') for r in app.router.routes})
-print('host_mtask_routes=', [p for p in paths if p.startswith('/api/mtask')])
-PY
-)
-
 echo "[${TASK_ID}] rebuilding backend (no-cache) and recreating container..."
 docker compose build --no-cache backend 2>&1 | tail -30
 docker compose up -d --force-recreate backend 2>&1 | tail -20

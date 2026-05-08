@@ -5,11 +5,11 @@
     "priority":  "high",
     "assigned_to":  "ubuntu-worker-01",
     "required_worker_id":  "ubuntu-worker-01",
-    "status":  "approved_to_execute",
+    "status":  "on_hold",
     "description":  "Fix cockpit backend /api/mtask/pending 404 on Ubuntu by hard rebuild + live route introspection and smoke proposal.",
     "executor_script":  "pilot_v1/scripts/exec_mtask_0142_fix_cockpit_mtask_404.sh",
     "dependencies":  [
                          "MTASK-0141"
                      ],
-    "notes":  "If endpoint remains missing, print openapi route evidence and fail."
+    "notes":  "If endpoint remains missing, print openapi route evidence and fail. Auto-paused by operator to stop retry storm."
 }
