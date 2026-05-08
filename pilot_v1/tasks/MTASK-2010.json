@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2010",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T05:00:00Z",
+  "priority": "normal",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Stop the olegreen funhost on port 8095 and instead serve the CustomIDE cockpit frontend (pilot_v1/customide/frontend/) on port 8095; verify HTTP 200",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2010.sh",
+  "dependencies": [],
+  "notes": "source=cockpit-chat; real_executor=true; replaces=funhost-olegreen",
+  "category": "deploy"
+}
