@@ -4,6 +4,7 @@ set -euo pipefail
 ORIGIN='https://www.larielsystems.com'
 STATE_DIR='pilot_v1/state'
 SHIM_PORT='8091'
+OLLAMA_MODEL='qwen2.5-coder:7b'
 mkdir -p "$STATE_DIR"
 
 log(){ echo "[MTASK-2026] $*"; }
@@ -34,13 +35,18 @@ start_bridge(){
 }
 
 write_shim(){
+  local target_url="$1"
+  local mode="$2"
   cat > /tmp/mtask2026_chat_shim.py <<'PY'
 import json
+import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 
-TARGET='http://127.0.0.1:8082/api/cockpit/act'
+TARGET=os.environ.get('MTASK2026_TARGET','http://127.0.0.1:8082/api/cockpit/act')
+MODE=os.environ.get('MTASK2026_MODE','cockpit')
+MODEL=os.environ.get('MTASK2026_MODEL','qwen2.5-coder:7b')
 ORIGIN='https://www.larielsystems.com'
 
 class H(BaseHTTPRequestHandler):
@@ -66,11 +72,18 @@ class H(BaseHTTPRequestHandler):
             raw=self.rfile.read(n) if n>0 else b'{}'
             data=json.loads(raw.decode('utf-8') or '{}')
             msg=data.get('message') or ''
-            body=json.dumps({'prompt': msg}).encode('utf-8')
+            if MODE == 'ollama':
+              payload={'model': MODEL, 'prompt': msg, 'stream': False}
+            else:
+              payload={'prompt': msg}
+            body=json.dumps(payload).encode('utf-8')
             req=Request(TARGET,data=body,headers={'Content-Type':'application/json'})
             with urlopen(req,timeout=20) as r:
                 upstream=json.loads(r.read().decode('utf-8') or '{}')
-            reply=upstream.get('reply') or upstream.get('answer') or upstream.get('error') or ''
+            if MODE == 'ollama':
+              reply=upstream.get('response') or upstream.get('error') or ''
+            else:
+              reply=upstream.get('reply') or upstream.get('answer') or upstream.get('error') or ''
             out={'answer': reply, 'reply': reply}
             b=json.dumps(out).encode('utf-8')
             self.send_response(200)
@@ -90,12 +103,27 @@ class H(BaseHTTPRequestHandler):
 
 HTTPServer(('127.0.0.1', 8091), H).serve_forever()
 PY
+
+  export MTASK2026_TARGET="$target_url"
+  export MTASK2026_MODE="$mode"
+  export MTASK2026_MODEL="$OLLAMA_MODEL"
 }
 
 start_shim(){
-  write_shim
+  local target_url="$1"
+  local mode="$2"
+  write_shim "$target_url" "$mode"
   nohup python3 /tmp/mtask2026_chat_shim.py >/tmp/mtask2026_shim.log 2>&1 &
   sleep 2 || true
+}
+
+probe_ollama(){
+  local base="$1"
+  local code
+  code="$(curl -s -m 12 -o /tmp/mtask2026_probe_ollama.json -w '%{http_code}' -X POST "${base%/}/api/generate" \
+    -H 'Content-Type: application/json' \
+    -d "{\"model\":\"${OLLAMA_MODEL}\",\"prompt\":\"Reply with one word: online\",\"stream\":false}" || true)"
+  [ "$code" -ge 200 ] && [ "$code" -lt 300 ] && grep -Eqi 'online|response|error' /tmp/mtask2026_probe_ollama.json
 }
 
 get_ngrok_urls(){
@@ -158,23 +186,39 @@ test_public(){
 
 log 'Step 1: ensure bridge/cockpit upstream'
 BASE='http://127.0.0.1:8082'
+UPSTREAM_MODE=''
+UPSTREAM_TARGET=''
 if ! probe_cockpit "$BASE"; then
   start_bridge
 fi
 
-if ! probe_cockpit "$BASE"; then
-  echo 'Unable to reach /api/cockpit/act on Ubuntu bridge.' >&2
+if probe_cockpit "$BASE"; then
+  UPSTREAM_MODE='cockpit'
+  UPSTREAM_TARGET='http://127.0.0.1:8082/api/cockpit/act'
+else
+  for ob in 'http://127.0.0.1:11434' 'http://localhost:11434' 'http://192.168.1.21:11434'; do
+    if probe_ollama "$ob"; then
+      UPSTREAM_MODE='ollama'
+      UPSTREAM_TARGET="${ob%/}/api/generate"
+      break
+    fi
+  done
+fi
+
+if [ -z "$UPSTREAM_MODE" ]; then
+  echo 'Unable to reach /api/cockpit/act and no Ollama /api/generate endpoint was reachable.' >&2
   exit 1
 fi
 
-echo 'cockpit_ok=1' >> "$STATE_DIR/mtask_2026_diagnostics.txt"
+echo "upstream_mode=${UPSTREAM_MODE}" >> "$STATE_DIR/mtask_2026_diagnostics.txt"
+echo "upstream_target=${UPSTREAM_TARGET}" >> "$STATE_DIR/mtask_2026_diagnostics.txt"
 
 log 'Step 2: ensure /api/chat via native or shim'
 LOCAL_CHAT_BASE=''
 if probe_api_chat "$BASE"; then
   LOCAL_CHAT_BASE="$BASE"
 else
-  start_shim
+  start_shim "$UPSTREAM_TARGET" "$UPSTREAM_MODE"
   if probe_api_chat "http://127.0.0.1:${SHIM_PORT}"; then
     LOCAL_CHAT_BASE="http://127.0.0.1:${SHIM_PORT}"
   fi

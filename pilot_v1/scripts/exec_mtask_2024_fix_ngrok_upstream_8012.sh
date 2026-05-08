@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [ -f pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh ]; then
+  echo '[MTASK-2024] delegating to MTASK-2026 repaired executor path'
+  exec bash pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh
+fi
+
 ORIGIN='https://www.larielsystems.com'
 STATE_DIR='pilot_v1/state'
 mkdir -p "$STATE_DIR"
