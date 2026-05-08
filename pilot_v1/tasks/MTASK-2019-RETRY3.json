@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2019-RETRY3",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-08T23:45:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Auto-recover live website chat backend by discovering or starting a stable public tunnel to bridge endpoint and validating CORS + chat response from larielsystems.com origin.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2019_autorecover_live_chat_backend.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; supersedes=MTASK-2018; acceptance=live_chat_responds_without_backend_error",
+    "category":  "brain"
+}
