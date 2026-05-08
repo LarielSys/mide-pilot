@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2020-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2020] Step 1: verify local Ubuntu Ollama and model\n[MTASK-2020] Step 2: detect active ngrok tunnels on Ubuntu\n[MTASK-2020] Discovered PUBLIC_BASE=https://jawed-lapel-dispersed.ngrok-free.dev\n[MTASK-2020] Step 3: validate endpoint candidates with CORS + POST",
+  "stderr_excerpt": "No public endpoint candidate passed CORS + POST verification.",
+  "timestamp_utc": "2026-05-08T23:38:43Z"
+}
