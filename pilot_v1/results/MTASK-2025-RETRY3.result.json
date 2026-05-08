@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2025-RETRY3",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-2025] delegating to MTASK-2026 repaired executor path\n[MTASK-2026] Step 1: ensure bridge/cockpit upstream\n[MTASK-2026] Step 2: ensure /api/chat via native or shim\n[MTASK-2026] Step 3: verify/publish public ngrok endpoint\n[MTASK-2026] completed",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-08T23:49:33Z"
+}
