@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2014",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T23:31:00Z",
+  "priority": "normal",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "TEST PICKUP: verify Ubuntu worker executes MTASK lane by writing a pickup marker file and timestamp.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2014_pickup_probe.sh",
+  "dependencies": [],
+  "notes": "source=olegreen-manual-test; direct_dispatch=true; purpose=ubuntu_pickup_probe",
+  "category": "brain"
+}
