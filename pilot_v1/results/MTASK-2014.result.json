@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2014",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "MTASK-2014 pickup probe completed at 2026-05-08T23:02:06Z on lariel-cloud",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-08T23:02:06Z"
+}
