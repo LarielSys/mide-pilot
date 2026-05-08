@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2001",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-2001] Starting execution...\n[MTASK-2001] Task: create a test mtask\n[MTASK-2001] Executor stub \u2014 task acknowledged by worker.\n[MTASK-2001] Done.",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-08T02:42:21Z"
+}
