@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2021-RETRY3",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-08T23:58:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Fix live chat backend at jawed-lapel ngrok URL by restoring valid /api/chat or /api/cockpit/act upstream routing and CORS for https://www.larielsystems.com.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2021_fix_jawed_lapel_backend_cors.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; supersedes=MTASK-2020; acceptance=endpoint_2xx_with_cors_and_chat_reply",
+    "category":  "brain"
+}
