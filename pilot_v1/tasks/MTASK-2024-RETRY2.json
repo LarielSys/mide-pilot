@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2024-RETRY2",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T00:10:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Repair ngrok ERR_NGROK_8012 by binding public tunnel to a live local chat upstream on Ubuntu and publish validated backend endpoint for Lariel website chat.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2024_fix_ngrok_upstream_8012.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; root_cause=ngrok_8012_dead_upstream; acceptance=public_2xx_chat_with_cors",
+    "category":  "brain"
+}
