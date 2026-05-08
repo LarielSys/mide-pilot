@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2018-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2018] Step 1: verify Ubuntu Ollama model\n[MTASK-2018] Step 2: establish stable public backend URL",
+  "stderr_excerpt": "NEW_PUBLIC_CHAT_URL is empty; provision endpoint first.",
+  "timestamp_utc": "2026-05-08T23:34:29Z"
+}
