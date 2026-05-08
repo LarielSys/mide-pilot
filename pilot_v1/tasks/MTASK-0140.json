@@ -1,0 +1,13 @@
+{
+  "task_id": "MTASK-0140",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-08T00:00:03",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Final confirmation: OPS-CENTRAL operational, LARIEL responding via qwen2.5:7b on Ubuntu Ollama",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0140_confirm_ops_central.sh",
+  "dependencies": [],
+  "notes": ""
+}
