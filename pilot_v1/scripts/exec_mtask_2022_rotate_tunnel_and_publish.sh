@@ -112,6 +112,11 @@ done <<< "$CANDIDATES"
 
 if [ -z "$FOUND" ]; then
   echo 'No candidate tunnel passed CORS + POST validation.' >&2
+  if [ -f pilot_v1/state/mtask_2022_diagnostics.txt ]; then
+    echo '--- mtask_2022 diagnostics begin ---' >&2
+    tail -n 200 pilot_v1/state/mtask_2022_diagnostics.txt >&2 || true
+    echo '--- mtask_2022 diagnostics end ---' >&2
+  fi
   exit 1
 fi
 
