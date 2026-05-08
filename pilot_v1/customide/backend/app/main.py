@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routes import config, execute, health, messenger, ollama_proxy, runtime, shared_llm
+from .routes import config, execute, health, messenger, mtask, ollama_proxy, runtime, shared_llm
 from .settings import settings
 
 app = FastAPI(title=settings.app_name)
@@ -23,6 +23,7 @@ app.include_router(execute.router)
 app.include_router(runtime.router)
 app.include_router(shared_llm.router)
 app.include_router(messenger.router)
+app.include_router(mtask.router)
 
 
 @app.get("/")
@@ -33,4 +34,5 @@ def root() -> dict:
         "health": "/health",
         "runtime_status": "/api/status/runtime",
         "shared_llm": "/api/llm/chat",
+        "mtask": "/api/mtask/propose",
     }

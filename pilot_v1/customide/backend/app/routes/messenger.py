@@ -10,6 +10,8 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+from .mtask import process_chat_command
+
 router = APIRouter(prefix="/api/messenger", tags=["messenger"])
 
 _MAX_MESSAGES = 100
@@ -61,6 +63,20 @@ async def options_messenger() -> JSONResponse:
 
 @router.post("")
 async def post_message(msg: MessageIn) -> JSONResponse:
+    # Product command lane: mtask:, mtask approve <id>, mtask pending
+    mtask_result = process_chat_command(msg.text, msg.sender)
+    if mtask_result is not None:
+        entry = {
+            "id": str(uuid.uuid4())[:8],
+            "text": msg.text,
+            "sender": msg.sender,
+            "type": "mtask",
+            "timestamp": _utc_now_iso(),
+            "mtask": mtask_result,
+        }
+        _messages.append(entry)
+        return _cors_json({"ok": True, "id": entry["id"], "timestamp": entry["timestamp"], "mtask": mtask_result})
+
     entry = {
         "id": str(uuid.uuid4())[:8],
         "text": msg.text,
