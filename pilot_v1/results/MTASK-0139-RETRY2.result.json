@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0139-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-0139] start 2026-05-08T00:01:03Z\n[MTASK-0139] current model env:       - OLLAMA_CHAT_MODEL=qwen2.5:7b\n[MTASK-0139] restarting mide-chat with correct model (no rebuild needed, env only)...\n Container mide-chat  Recreate\n Container mide-chat  Recreated\n Container mide-chat  Starting\n Container mide-chat  Started\n[MTASK-0139] health: {\"status\":\"ok\",\"model\":\"qwen2.5:7b\",\"ai\":\"LARIEL\"}\n[MTASK-0139] ask: {\"ok\":true,\"status\":\"ai_triggered\"}\n[MTASK-0139] ai_status: parse_error: 'str' object has no attribute 'get'\n[MTASK-0139] LARIEL still not responding",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-08T00:01:32Z"
+}
