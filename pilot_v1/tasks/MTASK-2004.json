@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2004",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T04:02:55Z",
+  "priority": "normal",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "smoke check",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2004.sh",
+  "dependencies": [],
+  "notes": "source=diag; direct_dispatch=true",
+  "category": "brain"
+}
