@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2023",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2022] Step 1: discover current tunnel candidates\n[MTASK-2022] Step 2: validate each candidate and publish first healthy endpoint",
+  "stderr_excerpt": "No candidate tunnel passed CORS + POST validation.\n--- mtask_2022 diagnostics begin ---\ncandidate=https://jawed-lapel-dispersed.ngrok-free.dev\nendpoint=https://jawed-lapel-dispersed.ngrok-free.dev/api/chat\noptions_headers_begin\nHTTP/2 502 \ncontent-type: text/html\nngrok-error-code: ERR_NGROK_8012\nreferrer-policy: no-referrer\ncontent-length: 2692\ndate: Fri, 08 May 2026 23:43:58 GMT\noptions_headers_end\nresult=no_cors_allow_origin\n---\n--- mtask_2022 diagnostics end ---",
+  "timestamp_utc": "2026-05-08T23:43:58Z"
+}
