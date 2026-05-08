@@ -1534,43 +1534,82 @@
     });
     chatSend.addEventListener("click", sendChat);
 
-    // ── Per-pane "Ask AI" buttons ────────────────────────────────────────
-    // Each .ask-ai-btn snapshots its pane's current text and primes the
-    // Cockpit AI input with a [CTX <pane>] block + a question prompt.
+    // ── Per-pane "Ask AI" buttons + "Analyze Cockpit" ──────────────────
+    // Snapshots one or all panes and immediately sends an analysis request
+    // to the Cockpit AI (which speaks to Ollama via mide-chat).
     function trimText(s, maxChars) {
       const t = String(s || "").replace(/\u00a0/g, " ").trim();
       if (t.length <= maxChars) return t;
-      // Keep tail (most recent state) — that's usually what you want to ask about.
+      // Keep tail (most recent state).
       return "...[truncated]...\n" + t.slice(t.length - maxChars);
     }
-    function askAiAboutPane(paneId, paneLabel) {
+    function snapshotPane(paneId) {
       const el = document.getElementById(paneId);
-      if (!el) return;
-      const snapshot = trimText(el.innerText || el.textContent || "", 4000);
-      // Force chat to Cockpit AI tab (where Ollama is wired in).
+      if (!el) return "";
+      return trimText(el.innerText || el.textContent || "", 4000);
+    }
+    function sendCockpitText(text) {
+      // Force chat to Cockpit AI tab where Ollama is wired in.
       if (typeof setActiveChannel === "function" && activeChannel !== "cockpit") {
         setActiveChannel("cockpit");
       }
-      const ctxBlock =
-        "[CTX " + paneLabel + "]\n" +
-        "```\n" + snapshot + "\n```\n\n" +
-        "Question: ";
-      // If user already typed something, append a newline before the context block
-      // so we don't clobber their draft.
-      const existing = chatInput.value;
-      chatInput.value = (existing && existing.trim() ? existing.replace(/\s+$/, "") + "\n\n" : "") + ctxBlock;
-      chatInput.focus();
-      // Place caret at end so they type their question right after "Question: "
-      const len = chatInput.value.length;
-      try { chatInput.setSelectionRange(len, len); } catch (_e) { /* ignore */ }
+      if (!cockpitWs || cockpitWs.readyState !== WebSocket.OPEN) {
+        appendChatMsg("[error] room socket unavailable", "error", "cockpit");
+        return false;
+      }
+      // Echo the user prompt locally (the WS broadcast won't echo back to sender),
+      // truncated for readability.
+      const preview = text.length > 240 ? text.slice(0, 240) + " …[+" + (text.length - 240) + " chars]" : text;
+      appendChatMsg(preview, "user", "cockpit");
+      cockpitWs.send(JSON.stringify({ text: text }));
+      return true;
     }
-    document.querySelectorAll(".ask-ai-btn").forEach(btn => {
+    function analyzePane(paneId, paneLabel) {
+      const snap = snapshotPane(paneId);
+      const prompt =
+        "Analyze the following [" + paneLabel + "] pane snapshot from the MIDE cockpit. " +
+        "Identify the current health/state, any anomalies, root causes, and 2–4 concrete next " +
+        "steps a software/network engineer should take. Reference specific values or lines from " +
+        "the snapshot. Be concise.\n\n" +
+        "[CTX " + paneLabel + "]\n```\n" + (snap || "(empty)") + "\n```";
+      sendCockpitText(prompt);
+    }
+    function analyzeCockpit() {
+      const panes = [
+        ["autopilotLive",     "Autopilot Live"],
+        ["workerLogPanel",    "Autopilot Events"],
+        ["opLoopPanel",       "Operator Loop"],
+        ["gitPanel",          "Git Sync"],
+        ["syncCadencePanel",  "Sync Cadence"],
+        ["tokenPanel",        "Token Counters"],
+        ["ollamaPanel",       "Ollama / Cost Mode"],
+      ];
+      // Smaller per-pane budget when bundling all of them.
+      const blocks = panes.map(([id, label]) => {
+        const el = document.getElementById(id);
+        const raw = el ? (el.innerText || el.textContent || "") : "";
+        const trimmed = trimText(raw, 1200);
+        return "[CTX " + label + "]\n```\n" + (trimmed || "(empty)") + "\n```";
+      });
+      const prompt =
+        "Full MIDE cockpit health analysis. Below are snapshots of all live panes. " +
+        "Produce: (1) overall health verdict (green/yellow/red) with one-line reason; " +
+        "(2) a prioritized list of the top 3–5 issues found, each with the pane name, " +
+        "evidence quoted from the snapshot, root-cause hypothesis, and a concrete fix " +
+        "(command, config, or code change); (3) anything that looks healthy and can be " +
+        "ignored. Be concise and specific.\n\n" +
+        blocks.join("\n\n");
+      sendCockpitText(prompt);
+    }
+    document.querySelectorAll(".ask-ai-btn[data-pane]").forEach(btn => {
       btn.addEventListener("click", () => {
         const paneId = btn.getAttribute("data-pane");
         const label = btn.getAttribute("data-pane-label") || paneId;
-        askAiAboutPane(paneId, label);
+        analyzePane(paneId, label);
       });
     });
+    const analyzeBtn = document.getElementById("analyzeCockpitBtn");
+    if (analyzeBtn) analyzeBtn.addEventListener("click", analyzeCockpit);
 
     function renderActiveThread() {
       chatMessages.innerHTML = "";

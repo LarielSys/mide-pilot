@@ -401,3 +401,15 @@ pre::-webkit-scrollbar-thumb,
 .ask-ai-btn:active {
   background: #15293c;
 }
+
+.ask-ai-btn-lg {
+  float: none;
+  margin-left: 12px;
+  padding: 4px 14px;
+  font-size: 12px;
+  background: #2a5378;
+  border-color: #4a8bbf;
+}
+.ask-ai-btn-lg:hover {
+  background: #3a6e9c;
+}
