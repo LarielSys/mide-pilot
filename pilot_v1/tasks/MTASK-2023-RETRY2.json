@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2023-RETRY2",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T00:05:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Re-run tunnel recovery using patched MTASK-2022 executor and return detailed candidate diagnostics in stderr excerpt.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2022_rotate_tunnel_and_publish.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; objective=collect-actionable-diagnostics-and-publish-valid-backend",
+    "category":  "brain"
+}
