@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MU-TH-UR // LARIEL</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Syntax highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+
+  <div class="main-layout">
+
+    <!-- LEFT: LARIEL CHAT -->
+    <div class="terminal">
+      <div class="terminal-header">
+        <div class="system-name">LARIEL</div>
+        INTERFACE 2037 // NETWORK TERMINAL // MU-TH-UR CLASS
+      </div>
+
+      <!-- CODE VIEWER — appears when LARIEL produces a file/code block -->
+      <div id="code-viewer" class="code-viewer hidden">
+        <div class="code-viewer-titlebar">
+          <div class="code-viewer-tabs" id="code-viewer-tabs">
+            <!-- tabs injected by JS -->
+          </div>
+          <button class="code-viewer-close" onclick="closeCodeViewer()" title="Close">✕</button>
+        </div>
+        <div class="code-viewer-body">
+          <div class="code-line-numbers" id="code-line-numbers"></div>
+          <pre class="code-pre"><code id="code-content" class="language-plaintext"></code></pre>
+        </div>
+      </div>
+
+      <div id="output" class="terminal-output"></div>
+
+      <div class="terminal-input-row">
+        <span class="prompt">QUERY&gt;</span>
+        <input id="input" type="text" placeholder="AWAITING INPUT..." autocomplete="off" autofocus>
+      </div>
+
+      <div class="status-bar">
+        <span id="status">SYSTEM READY</span>
+        <span id="model">MODEL: QWEN2.5-CODER:14B @ 192.168.1.21:11434</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: MIDE CHAT -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="chat-title">COCKPIT AI</div>
+        LARIEL // MU-TH-UR LINK // MIDE PLATFORM
+      </div>
+
+      <div class="chat-users-row">
+        <div id="chat-users" class="chat-users-bar">ONLINE: —</div>
+        <button id="mirror-btn" class="mirror-btn" onclick="toggleMirror()">MIRROR: OFF</button>
+      </div>
+
+      <div class="tv-loop" id="tv-loop">
+        <div class="tv-loop-header">
+          <span class="tv-loop-title">OPERATOR FEED</span>
+          <div class="tv-loop-controls">
+            <select id="tv-feed-select" class="tv-feed-select" title="Select feed">
+              <option value="nasa">NASA LIVE</option>
+              <option value="lofi">LOFI RADIO</option>
+              <option value="news">LIVE NEWS</option>
+            </select>
+            <button id="tv-popout-btn" class="tv-popout-btn" title="Open in new tab">POP OUT</button>
+          </div>
+        </div>
+        <div class="tv-frame-wrap">
+          <iframe
+            id="tv-feed-frame"
+            class="tv-feed-frame"
+            src="about:blank"
+            title="Operator TV feed"
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <div id="chat-log" class="chat-log"></div>
+
+      <div class="chat-input-row">
+        <span class="prompt">TX&gt;</span>
+        <input id="chat-input" type="text" placeholder="MESSAGE TO LARIEL..." autocomplete="off">
+        <button id="chat-send">SEND</button>
+      </div>
+
+      <div class="chat-status-bar">
+        <span id="chat-status">STANDBY</span>
+      </div>
+    </div>
+
+    <!-- GIT PANE -->
+    <div class="git-pane" id="git-pane">
+      <div class="git-pane-header">
+        <span class="git-pane-title">GIT</span>
+        <button class="git-refresh-btn" onclick="refreshGitPane()" title="Refresh">⟳</button>
+      </div>
+
+      <div class="git-section">
+        <div class="git-label">BRANCH</div>
+        <div class="git-value" id="git-branch">—</div>
+      </div>
+
+      <div class="git-section">
+        <div class="git-label">ORIGIN</div>
+        <div class="git-value" id="git-origin">—</div>
+      </div>
+
+      <div class="git-section">
+        <div class="git-label">STATUS</div>
+        <div class="git-value" id="git-status-text">—</div>
+      </div>
+
+      <div class="git-section">
+        <div class="git-label">LAST PUSH</div>
+        <div class="git-push-badge" id="git-push-badge">—</div>
+        <div class="git-value git-small" id="git-push-detail"></div>
+      </div>
+
+      <div class="git-section">
+        <div class="git-label">LAST COMMIT</div>
+        <div class="git-value git-small" id="git-last-commit">—</div>
+      </div>
+
+      <div class="git-section git-log-section">
+        <div class="git-label">LOG</div>
+        <div class="git-log-list" id="git-log-list">—</div>
+      </div>
+
+      <div class="git-pane-footer" id="git-pane-ts">NEVER REFRESHED</div>
+    </div>
+
+  </div>
+
+  <script src="script.js?v=20260508p"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+</body>
+</html>
