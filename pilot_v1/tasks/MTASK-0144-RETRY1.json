@@ -1,0 +1,15 @@
+{
+    "task_id":  "MTASK-0144-RETRY1",
+    "issued_by":  "windows-main",
+    "issued_at":  "2026-05-08T00:00:00",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Run fixed cockpit mtask route deployment check (no host fastapi dependency) and validate /api/mtask/pending + smoke propose.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0143_force_sync_cockpit_mtask_routes.sh",
+    "dependencies":  [
+                         "MTASK-0143"
+                     ],
+    "notes":  "Single clean rerun after disabling auto-retry loops."
+}
