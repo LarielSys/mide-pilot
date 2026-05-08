@@ -14,9 +14,10 @@ echo "[${TASK_ID}] Starting fun-host deploy..."
 echo "[${TASK_ID}] serve_dir=${SERVE_DIR}"
 echo "[${TASK_ID}] port=${PORT}"
 
-# Pull latest so funhost/ files are present
+# Sync to absolute latest — same strategy as autopilot commit_and_push_result
 cd "${REPO_ROOT}"
-git pull origin main 2>&1 | tail -3
+git fetch origin main 2>&1 | tail -2
+git reset --hard origin/main 2>&1 | tail -2
 
 # Verify funhost directory exists
 if [[ ! -d "${SERVE_DIR}" ]]; then
