@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2020-RETRY3",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-08T23:52:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Ubuntu-native live chat recovery: discover active public tunnel endpoint from Ubuntu, verify CORS + POST from larielsystems.com origin, and restore website chat path without using Windows localhost bridge.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2020_ubuntu_native_chat_recovery.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; supersedes=MTASK-2019; acceptance=public_endpoint_verified_and_live_chat_reply",
+    "category":  "brain"
+}
