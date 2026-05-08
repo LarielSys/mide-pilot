@@ -5,11 +5,11 @@
     "priority":  "high",
     "assigned_to":  "ubuntu-worker-01",
     "required_worker_id":  "ubuntu-worker-01",
-    "status":  "approved_to_execute",
+    "status":  "on_hold",
     "description":  "Run fixed cockpit mtask route deployment check (no host fastapi dependency) and validate /api/mtask/pending + smoke propose.",
     "executor_script":  "pilot_v1/scripts/exec_mtask_0143_force_sync_cockpit_mtask_routes.sh",
     "dependencies":  [
                          "MTASK-0143"
                      ],
-    "notes":  "Single clean rerun after disabling auto-retry loops."
+    "notes":  "Single clean rerun after disabling auto-retry loops. Auto-paused by operator to stop retry storm."
 }
