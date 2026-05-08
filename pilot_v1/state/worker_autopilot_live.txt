@@ -1,13 +1,14 @@
 Autopilot Live Status
-updated_utc: 2026-05-07T23:57:00Z
+updated_utc: 2026-05-08T00:03:25Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: idle
 last_task_processed: 
 poll_seconds: 60
-note: No assigned mtasks found; sleeping until next poll. approved=190, eligible=0, mismatched=2.
+note: No assigned mtasks found; sleeping until next poll. approved=195, eligible=0, mismatched=2.
 
 Recent Events (latest 20, newest first):
+2026-05-08T00:03:25Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=195, eligible=0, mismatched=2.
 2026-05-07T23:57:00Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=190, eligible=0, mismatched=2.
 2026-05-07T23:46:26Z | mode=running | last_task=MTASK-0137-RETRY1 | note=Task completed successfully.
 2026-05-07T23:43:36Z | mode=running | last_task=MTASK-0136-RETRY1 | note=Task completed successfully.
@@ -27,4 +28,3 @@ Recent Events (latest 20, newest first):
 2026-05-07T22:21:57Z | mode=running | last_task=MTASK-0132-RETRY7 | note=Task completed successfully.
 2026-05-07T22:20:43Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=175, eligible=0, mismatched=2.
 2026-05-07T22:19:41Z | mode=running | last_task=MTASK-0132-RETRY6 | note=Task failed: executor script non-zero exit.
-2026-05-07T22:18:39Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=174, eligible=0, mismatched=2.
