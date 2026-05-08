@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2013",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T23:18:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Repair website chat so OLEGREEN chat page connects to Ubuntu-hosted Ollama endpoint with verified live responses.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2013_connect_chat_ubuntu_ollama.sh",
+  "dependencies": [],
+  "notes": "source=olegreen-manual; direct_dispatch=true; scope=chat_page_to_ubuntu_ollama_only; acceptance=chat_success_and_endpoint_verified",
+  "category": "brain"
+}
