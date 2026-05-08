@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2025-RETRY1",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T00:15:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Bring up a live Ubuntu chat upstream (/api/chat), then bind/verify ngrok public endpoint with CORS for larielsystems origin and publish backend URL.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2025_bootstrap_upstream_then_publish.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; root_cause=missing_local_api_chat_upstream; acceptance=local_2xx_plus_public_2xx_with_cors",
+    "category":  "brain"
+}
