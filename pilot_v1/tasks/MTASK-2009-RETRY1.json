@@ -7,10 +7,10 @@
     "required_worker_id":  "ubuntu-worker-01",
     "status":  "approved_to_execute",
     "description":  "Deploy the fun-copy cockpit (funhost) â€” serve pilot_v1/funhost/ on port 8095 using Python http.server; verify HTTP 200; report live URL in result",
-    "executor_script":  "pilot_v1/scripts/exec_mtask_2009.sh",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2009_retry1.sh",
     "dependencies":  [
 
                      ],
-    "notes":  "source=cockpit-chat; direct_dispatch=true; real_executor=true",
+    "notes":  "source=cockpit-chat; retry1=fixed_git_sync; real_executor=true",
     "category":  "deploy"
 }
