@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2017-RETRY2",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-08T23:33:00Z",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Restore website chat backend for https://www.larielsystems.com/chat by providing a stable HTTPS endpoint with CORS allowing larielsystems.com, routed to Ubuntu Ollama.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2017_restore_website_chat_backend.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; scope=website_chat_backend_only; acceptance=200_response_with_cors_from_larielsystems_origin",
+    "category":  "brain"
+}
