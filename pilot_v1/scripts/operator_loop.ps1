@@ -265,14 +265,10 @@ while ($true) {
             Issue-NextTask $id
         }
         elseif ($status -eq "failed") {
-            $baseId = $id -replace "(-RETRY\d+)+$", ""
-            $retryCount = ($state.processed | Where-Object { $_ -match "^${baseId}-RETRY\d+$" }).Count
-            if ($retryCount -lt 2) {
-                Write-Log "  -> FAILED: issuing retry (${retryCount} previous retries)"
-                Issue-RetryTask $result
-            } else {
-                Write-Log "  -> FAILED: max retries reached for ${id} -- operator input needed"
-            }
+            # RULE: No auto-retry. A failed task may have partially succeeded (e.g. core work
+            # done but validation bug caused non-zero exit). Auto-retry causes repeated ghost
+            # failures. Operator must review and manually issue a new task if truly needed.
+            Write-Log "  -> FAILED: $id -- operator input required (auto-retry is disabled)"
         }
 
         # Mark processed
