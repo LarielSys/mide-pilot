@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2026",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-09T00:20:00Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Start or repair Ubuntu bridge and, if /api/chat is absent, launch a local shim that maps /api/chat to /api/cockpit/act; then publish a CORS-valid ngrok endpoint.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+  "dependencies": [],
+  "notes": "source=olegreen-manual; direct_dispatch=true; root_cause=no_local_api_chat; acceptance=public_api_chat_2xx_with_cors",
+  "category": "brain"
+}
