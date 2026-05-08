@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2022",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2022] Step 1: discover current tunnel candidates\n[MTASK-2022] Step 2: validate each candidate and publish first healthy endpoint",
+  "stderr_excerpt": "No candidate tunnel passed CORS + POST validation.",
+  "timestamp_utc": "2026-05-08T23:40:51Z"
+}
