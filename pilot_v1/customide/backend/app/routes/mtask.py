@@ -140,6 +140,38 @@ def _git_push_tasks(task_paths: list[Path], proposal_id: str) -> dict[str, Any]:
     return {"ok": True}
 
 
+def _scripts_dir() -> Path:
+    return _repo_root() / "pilot_v1" / "scripts"
+
+
+def _create_executor_script(task_id: str, description: str) -> Path:
+    """Create a default executor script for a chat-originated MTASK."""
+    scripts_dir = _scripts_dir()
+    scripts_dir.mkdir(parents=True, exist_ok=True)
+    script_name = f"exec_{task_id.lower().replace('-', '_')}.sh"
+    script_path = scripts_dir / script_name
+    safe_desc = description.replace('"', "'").replace('`', "'")
+    script_content = f"""#!/usr/bin/env bash
+# Auto-generated executor for {task_id}
+# Issued via MIDE chat lane
+set -euo pipefail
+
+TASK_ID="{task_id}"
+DESCRIPTION="{safe_desc}"
+
+echo "[{task_id}] Starting execution..."
+echo "[{task_id}] Task: $DESCRIPTION"
+
+# ── worker logic below ─────────────────────────────────────────────────────────
+# TODO: replace this stub with real implementation
+echo "[{task_id}] Executor stub — task acknowledged by worker."
+echo "[{task_id}] Done."
+exit 0
+"""
+    script_path.write_text(script_content, encoding="utf-8")
+    return script_path
+
+
 def propose_mtasks_from_text(text: str, issued_by: str, source: str, session_id: str = "") -> dict[str, Any]:
     _ensure_dirs()
     objectives = _split_objectives(text)
@@ -219,6 +251,8 @@ def approve_proposal(proposal_id: str, approved_by: str = "operator") -> dict[st
     task_paths: list[Path] = []
     for i, objective in enumerate(objectives):
         task_id = f"MTASK-{first_num + i:04d}"
+        script_name = f"exec_{task_id.lower().replace('-', '_')}.sh"
+        executor_script = f"pilot_v1/scripts/{script_name}"
         task_payload = {
             "task_id": task_id,
             "issued_by": proposal.get("issued_by", "cockpit-ai"),
@@ -228,7 +262,7 @@ def approve_proposal(proposal_id: str, approved_by: str = "operator") -> dict[st
             "required_worker_id": WORKER_ID,
             "status": "approved_to_execute",
             "description": objective,
-            "executor_script": f"pilot_v1/scripts/exec_{task_id.lower().replace('-', '_')}.sh",
+            "executor_script": executor_script,
             "dependencies": [],
             "notes": f"source={proposal.get('source', '')}; proposal_id={proposal_id}",
             "category": "brain",
@@ -236,6 +270,11 @@ def approve_proposal(proposal_id: str, approved_by: str = "operator") -> dict[st
         path = _tasks_dir() / f"{task_id}.json"
         path.write_text(json.dumps(task_payload, indent=2), encoding="utf-8")
         task_paths.append(path)
+
+        # Create executor script so the worker doesn't fail with "not found"
+        script_path = _create_executor_script(task_id, objective)
+        task_paths.append(script_path)
+
         tasks.append(task_payload)
 
         rollback_stub = {
