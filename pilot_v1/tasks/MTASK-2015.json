@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2015",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T23:37:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Validation rerun: execute fixed Ubuntu Ollama readiness script and emit completion evidence for chat connectivity lane.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2013_connect_chat_ubuntu_ollama.sh",
+  "dependencies": [],
+  "notes": "source=olegreen-manual-validation; direct_dispatch=true; supersedes=MTASK-2013-retry-lane; acceptance=ubuntu_ready_marker_and_success_result",
+  "category": "brain"
+}
