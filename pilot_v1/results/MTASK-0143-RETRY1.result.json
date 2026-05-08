@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0143-RETRY1",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-0143] start 2026-05-08T00:54:26Z\n[MTASK-0143] objective: force-sync cockpit backend route files from origin/main and verify /api/mtask\n[MTASK-0143] repo_head_before=d11aa770\n[MTASK-0143] synced target files from origin/main\n[MTASK-0143] host source proof (main.py import line):\n4:from .routes import config, execute, health, messenger, mtask, ollama_proxy, runtime, shared_llm\n[MTASK-0143] host source proof (router include):\n26:app.include_router(mtask.router)\n[MTASK-0143] host source proof (mtask route file exists):\n-rw-rw-r-- 1 larieladmin larieladmin 10244 May  7 20:53 backend/app/routes/mtask.py\n[MTASK-0143] host python route introspection before build:",
+  "stderr_excerpt": "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\n  File \"/home/larieladmin/mide-pilot/pilot_v1/customide/backend/app/main.py\", line 1, in <module>\n    from fastapi import FastAPI\nModuleNotFoundError: No module named 'fastapi'",
+  "timestamp_utc": "2026-05-08T00:54:26Z"
+}
