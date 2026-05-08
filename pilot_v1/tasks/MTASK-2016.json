@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2016",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T23:20:00Z",
+  "priority": "high",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "status": "completed",
+  "description": "Website chat frontend fix: route file:// and localhost modes to local bridge (Ubuntu Ollama path) and resolve CORS/header mismatch.",
+  "executor_script": "",
+  "dependencies": [
+    "larielsystems/chat.html"
+  ],
+  "notes": "source=manual-fix; private=true; do_not_push=true; do_not_dispatch=true; verification=file_mode_and_localhost_mode_passed; md_context=pilot_v1/tasks/MTASK-2016.md",
+  "category": "brain"
+}
