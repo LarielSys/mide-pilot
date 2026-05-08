@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-0141-RETRY2",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-0141] start 2026-05-08T00:49:43Z\n[MTASK-0141] objective: deploy cockpit MTASK lane + verify endpoints\n[MTASK-0141] rebuilding backend container to load latest routes...\n#12 [7/7] COPY app/ app/\n#12 CACHED\n\n#13 exporting to image\n#13 exporting layers done\n#13 exporting manifest sha256:52cd53d82cd12e557b10175b657d8a4a0c45b3f0222a9a866e2f446f28efab9f done\n#13 exporting config sha256:75873157bac592c34c02f3fd2407defc2a4bbfb22a7c6f9e3aabd88ec102b63b done\n#13 exporting attestation manifest sha256:75232eb1e2a6f6f0a9bbce4eea45d59667f26e01884c3845a956052ad79a946d done\n#13 exporting manifest list sha256:6654a4e9b96a42f43bc0ad545412dde3f1b608199839e89cecd96d3ee86dba44 done\n#13 naming to docker.io/library/mide-backend:latest done\n#13 unpacking to docker.io/library/mide-backend:latest done\n#13 DONE 0.0s\n\n#14 resolving provenance for metadata file\n#14 DONE 0.0s\n mide-backend:latest  Built\n Container mide-backend  Recreate\n Container mide-backend  Recreated\n Container mide-backend  Starting\n Container mide-backend  Started\n[MTASK-0141] health_http=200\n[MTASK-0141] pending_http=404\n[MTASK-0141] /api/mtask/pending endpoint failed",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-08T00:49:52Z"
+}
