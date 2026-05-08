@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2019",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2019] Step 1: verify Ubuntu Ollama model\n[MTASK-2019] Step 2: ensure local bridge responds",
+  "stderr_excerpt": "curl: (7) Failed to connect to 127.0.0.1 port 8082 after 0 ms: Couldn't connect to server",
+  "timestamp_utc": "2026-05-08T23:34:14Z"
+}
