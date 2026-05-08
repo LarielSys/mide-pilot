@@ -60,37 +60,51 @@
 
   <main class="cockpit-grid">
     <section class="panel panel-live">
-      <h3>Autopilot Live <span class="panel-sub" id="taskHistoryCount"></span></h3>
+      <h3>Autopilot Live <span class="panel-sub" id="taskHistoryCount"></span>
+        <button class="ask-ai-btn" data-pane="autopilotLive" data-pane-label="Autopilot Live" title="Ask the AI engineer about this pane">Ask AI</button>
+      </h3>
       <div id="autopilotLive" class="scroll-log autopilot-live"></div>
     </section>
 
     <section class="panel panel-events">
-      <h3>Autopilot Events <span class="panel-sub">(Worker 1)</span></h3>
+      <h3>Autopilot Events <span class="panel-sub">(Worker 1)</span>
+        <button class="ask-ai-btn" data-pane="workerLogPanel" data-pane-label="Autopilot Events" title="Ask the AI engineer about this pane">Ask AI</button>
+      </h3>
       <div id="workerLogPanel" class="scroll-log"></div>
     </section>
 
     <section class="panel panel-oploop">
-      <h3>Operator Loop <span class="panel-sub" id="opLoopStatus">…</span></h3>
+      <h3>Operator Loop <span class="panel-sub" id="opLoopStatus">…</span>
+        <button class="ask-ai-btn" data-pane="opLoopPanel" data-pane-label="Operator Loop" title="Ask the AI engineer about this pane">Ask AI</button>
+      </h3>
       <div id="opLoopPanel" class="scroll-log"></div>
     </section>
 
     <section class="panel panel-git">
-      <h3>Git Sync</h3>
+      <h3>Git Sync
+        <button class="ask-ai-btn" data-pane="gitPanel" data-pane-label="Git Sync" title="Ask the AI engineer about this pane">Ask AI</button>
+      </h3>
       <pre id="gitPanel">waiting...</pre>
     </section>
 
     <section class="panel panel-cadence">
-      <h3>Sync Cadence</h3>
+      <h3>Sync Cadence
+        <button class="ask-ai-btn" data-pane="syncCadencePanel" data-pane-label="Sync Cadence" title="Ask the AI engineer about this pane">Ask AI</button>
+      </h3>
       <pre id="syncCadencePanel">waiting...</pre>
     </section>
 
     <section class="panel panel-token">
-      <h3>Token Counters</h3>
+      <h3>Token Counters
+        <button class="ask-ai-btn" data-pane="tokenPanel" data-pane-label="Token Counters" title="Ask the AI engineer about this pane">Ask AI</button>
+      </h3>
       <pre id="tokenPanel">waiting...</pre>
     </section>
 
     <section class="panel panel-ollama">
-      <h3>Ollama / Cost Mode</h3>
+      <h3>Ollama / Cost Mode
+        <button class="ask-ai-btn" data-pane="ollamaPanel" data-pane-label="Ollama / Cost Mode" title="Ask the AI engineer about this pane">Ask AI</button>
+      </h3>
       <pre id="ollamaPanel">waiting...</pre>
     </section>
 
@@ -113,7 +127,7 @@
 
   </main>
 
-  <script src="js/config.js?v=7"></script>
-  <script src="js/app.js?v=7"></script>
+  <script src="js/config.js?v=8"></script>
+  <script src="js/app.js?v=8"></script>
 </body>
 </html>

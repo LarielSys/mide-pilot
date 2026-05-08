@@ -4,4 +4,5 @@ WORKDIR /app
 
 COPY . .
 
-CMD ["python3", "server.py"]
+EXPOSE 5570
+CMD ["python3", "-m", "http.server", "5570", "--bind", "0.0.0.0"]

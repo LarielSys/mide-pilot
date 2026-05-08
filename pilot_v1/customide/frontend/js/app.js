@@ -1534,6 +1534,44 @@
     });
     chatSend.addEventListener("click", sendChat);
 
+    // ── Per-pane "Ask AI" buttons ────────────────────────────────────────
+    // Each .ask-ai-btn snapshots its pane's current text and primes the
+    // Cockpit AI input with a [CTX <pane>] block + a question prompt.
+    function trimText(s, maxChars) {
+      const t = String(s || "").replace(/\u00a0/g, " ").trim();
+      if (t.length <= maxChars) return t;
+      // Keep tail (most recent state) — that's usually what you want to ask about.
+      return "...[truncated]...\n" + t.slice(t.length - maxChars);
+    }
+    function askAiAboutPane(paneId, paneLabel) {
+      const el = document.getElementById(paneId);
+      if (!el) return;
+      const snapshot = trimText(el.innerText || el.textContent || "", 4000);
+      // Force chat to Cockpit AI tab (where Ollama is wired in).
+      if (typeof setActiveChannel === "function" && activeChannel !== "cockpit") {
+        setActiveChannel("cockpit");
+      }
+      const ctxBlock =
+        "[CTX " + paneLabel + "]\n" +
+        "```\n" + snapshot + "\n```\n\n" +
+        "Question: ";
+      // If user already typed something, append a newline before the context block
+      // so we don't clobber their draft.
+      const existing = chatInput.value;
+      chatInput.value = (existing && existing.trim() ? existing.replace(/\s+$/, "") + "\n\n" : "") + ctxBlock;
+      chatInput.focus();
+      // Place caret at end so they type their question right after "Question: "
+      const len = chatInput.value.length;
+      try { chatInput.setSelectionRange(len, len); } catch (_e) { /* ignore */ }
+    }
+    document.querySelectorAll(".ask-ai-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const paneId = btn.getAttribute("data-pane");
+        const label = btn.getAttribute("data-pane-label") || paneId;
+        askAiAboutPane(paneId, label);
+      });
+    });
+
     function renderActiveThread() {
       chatMessages.innerHTML = "";
       const items = threads[activeChannel].messages || [];

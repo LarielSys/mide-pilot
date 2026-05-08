@@ -379,3 +379,25 @@ pre::-webkit-scrollbar-thumb,
     max-width: 100%;
   }
 }
+
+/* Ask AI per-pane button */
+.ask-ai-btn {
+  float: right;
+  margin-left: 6px;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c8e9ff;
+  background: #1f3b56;
+  border: 1px solid #2e6390;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+}
+.ask-ai-btn:hover {
+  background: #2a5378;
+  border-color: #4a8bbf;
+}
+.ask-ai-btn:active {
+  background: #15293c;
+}
