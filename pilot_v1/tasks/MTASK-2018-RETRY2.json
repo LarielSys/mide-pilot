@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2018-RETRY2",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-08T23:40:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Replace broken public chat backend URL with a stable HTTPS endpoint and restore live chat on https://www.larielsystems.com/chat with CORS allowed for larielsystems.com.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2018_restore_live_chat_endpoint.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; supersedes=MTASK-2017; acceptance=live_chat_returns_ai_reply_from_larielsystems_com_origin",
+    "category":  "brain"
+}
