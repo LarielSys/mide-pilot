@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2025-RETRY1",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2025] Step 1: locate live local /api/chat upstream\n[MTASK-2025] Step 2: bootstrap upstream services",
+  "stderr_excerpt": "Unable to bring up local /api/chat upstream on Ubuntu after bootstrap attempts.",
+  "timestamp_utc": "2026-05-08T23:47:23Z"
+}
