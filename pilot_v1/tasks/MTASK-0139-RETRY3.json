@@ -1,0 +1,15 @@
+{
+    "task_id":  "MTASK-0139-RETRY3",
+    "issued_by":  "windows-main",
+    "issued_at":  "2026-05-07T23:57:47",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Fix OLLAMA_CHAT_MODEL: change qwen2.5-coder:7b to qwen2.5:7b (model not on Ubuntu host)",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0139_fix_model_name.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  ""
+}
