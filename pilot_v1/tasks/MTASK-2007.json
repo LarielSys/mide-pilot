@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2007",
+  "issued_by": "OLEGREEN",
+  "issued_at": "2026-05-08T21:25:30Z",
+  "priority": "normal",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "create a test mtask",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2007.sh",
+  "dependencies": [],
+  "notes": "source=cockpit-chat; direct_dispatch=true",
+  "category": "brain"
+}
