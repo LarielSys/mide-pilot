@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2022-RETRY3",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-08T23:40:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Replace broken public chat endpoint by creating a fresh ngrok tunnel to the correct backend service, then update published backend target used by larielsystems chat and verify CORS+POST from larielsystems origin.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2022_rotate_tunnel_and_publish.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=olegreen-manual; direct_dispatch=true; root_cause=jawed-lapel-502-and-cors-fail; acceptance=public_endpoint_works_from_lariel_origin",
+    "category":  "brain"
+}
