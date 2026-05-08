@@ -15,7 +15,7 @@ router = APIRouter(prefix="/api/mtask", tags=["mtask"])
 WORKER_ID = "ubuntu-worker-01"
 MAX_TASKS_PER_PROPOSAL = 3
 _NL_MTASK_CREATE_RE = re.compile(
-    r"\b(create|make|write|generate|issue|add|submit|send)\s+(a\s+)?(new\s+)?mtask\b",
+    r"\b(create|make|write|generate|issue|add|submit|send)\b(?:\s+\w+){0,5}?\s+mtask\b",
     re.IGNORECASE,
 )
 
