@@ -14,6 +14,10 @@ router = APIRouter(prefix="/api/mtask", tags=["mtask"])
 
 WORKER_ID = "ubuntu-worker-01"
 MAX_TASKS_PER_PROPOSAL = 3
+_NL_MTASK_CREATE_RE = re.compile(
+    r"\b(create|make|write|generate|issue|add|submit|send)\s+(a\s+)?(new\s+)?mtask\b",
+    re.IGNORECASE,
+)
 
 
 class ProposeRequest(BaseModel):
@@ -92,6 +96,22 @@ def _split_objectives(raw_text: str) -> list[str]:
         parts = [text]
 
     return parts[:MAX_TASKS_PER_PROPOSAL]
+
+
+def _extract_nl_mtask_objective(raw_text: str) -> str:
+    text = (raw_text or "").strip()
+    if not text:
+        return ""
+
+    m = re.search(r"mtask\s*(?:to|for|that|:|-)\s*(.+)$", text, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+
+    m = re.search(r"mtask\s+(.+)$", text, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+
+    return text
 
 
 def _next_task_number() -> int:
@@ -330,6 +350,12 @@ def process_chat_command(text: str, sender: str) -> dict[str, Any] | None:
 
     if lower == "mtask pending":
         return list_pending_proposals(limit=20)
+
+    # Server-side intent fallback: if user writes natural language like
+    # "create a test mtask", force it into the MTASK proposal lane.
+    if _NL_MTASK_CREATE_RE.search(raw):
+        objective_text = _extract_nl_mtask_objective(raw)
+        return propose_mtasks_from_text(objective_text, issued_by=sender or "cockpit-ai", source="cockpit")
 
     return None
 
