@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2006",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-08T04:15:46Z",
+  "priority": "normal",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "On ubuntu-worker-01: stop other cockpit web hosts, run only two local hosts (fun copy host and customide copy host), verify both return HTTP 200, and record host URLs in result",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2006.sh",
+  "dependencies": [],
+  "notes": "source=ops-sync-two-hosts; direct_dispatch=true",
+  "category": "brain"
+}
