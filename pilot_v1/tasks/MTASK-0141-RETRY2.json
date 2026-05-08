@@ -1,0 +1,15 @@
+{
+    "task_id":  "MTASK-0141-RETRY2",
+    "issued_by":  "windows-main",
+    "issued_at":  "2026-05-08T00:00:00",
+    "priority":  "high",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Deploy cockpit MTASK lane backend changes on Ubuntu and verify /api/mtask endpoints with a live proposal smoke test.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_0141_deploy_cockpit_mtask_lane.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "Creates a pending proposal via /api/mtask/propose for manual approval QA."
+}
