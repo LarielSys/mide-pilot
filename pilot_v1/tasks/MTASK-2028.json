@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2028",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-09T03:15:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Confirm whether worker eligibility is blocked only by the presence of a result file and report the exact gating rule.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2028_confirm_gate.sh",
+  "dependencies": [],
+  "notes": "source=olegreen-manual; test=no_result_json; acceptance=explicit_gate_explanation",
+  "category": "brain"
+}
