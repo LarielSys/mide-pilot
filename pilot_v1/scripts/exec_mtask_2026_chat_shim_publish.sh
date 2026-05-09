@@ -41,6 +41,7 @@ write_shim(){
   cat > /tmp/mtask2026_chat_shim.py <<'PY'
 import json
 import os
+import re
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
@@ -50,6 +51,38 @@ MODE=os.environ.get('MTASK2026_MODE','cockpit')
 MODEL=os.environ.get('MTASK2026_MODEL','qwen2.5-coder:7b')
 SYSTEM_CONTEXT=os.environ.get('MTASK2026_SYSTEM_CONTEXT','')
 ORIGIN='https://www.larielsystems.com'
+
+KB_URLS=[
+  'https://www.larielsystems.com/',
+  'https://www.larielsystems.com/services',
+  'https://www.larielsystems.com/process',
+  'https://www.larielsystems.com/moss',
+  'https://www.larielsystems.com/contact',
+]
+
+def _html_to_text(html):
+  t=re.sub(r'(?is)<script.*?>.*?</script>', ' ', html)
+  t=re.sub(r'(?is)<style.*?>.*?</style>', ' ', t)
+  t=re.sub(r'(?s)<[^>]+>', ' ', t)
+  t=re.sub(r'\s+', ' ', t).strip()
+  return t
+
+def _build_site_kb():
+  parts=[]
+  for u in KB_URLS:
+    try:
+      req=Request(u, headers={'User-Agent':'mtask-2026-chat-shim'})
+      with urlopen(req, timeout=10) as r:
+        raw=r.read().decode('utf-8', errors='ignore')
+      txt=_html_to_text(raw)
+      if txt:
+        parts.append(f'URL: {u}\\n{txt[:1400]}')
+    except Exception:
+      continue
+  kb='\\n\\n'.join(parts)
+  return kb[:7000]
+
+SITE_KB=_build_site_kb()
 
 class H(BaseHTTPRequestHandler):
     def _cors(self):
@@ -75,7 +108,12 @@ class H(BaseHTTPRequestHandler):
             data=json.loads(raw.decode('utf-8') or '{}')
             msg=data.get('message') or ''
             if MODE == 'ollama':
-              prompt=f"{SYSTEM_CONTEXT}\n\nUser question: {msg}\n\nAssistant answer:"
+              prompt=(
+                  f"{SYSTEM_CONTEXT}\n\n"
+                  f"Website context (authoritative excerpts):\n{SITE_KB}\n\n"
+                  f"User question: {msg}\n\n"
+                  "Assistant answer:"
+              )
               payload={'model': MODEL, 'prompt': prompt, 'stream': False}
             else:
               routed=f"{SYSTEM_CONTEXT}\n\nUser question: {msg}"

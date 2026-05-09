@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2026-RETRY4",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T00:45:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Re-run MTASK-2026 with website-context ingestion in chat shim so answers reflect Lariel webpage content.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "manual_retry=true; objective=webpage_knowledge_restore; includes_site_context_fetch",
+    "category":  "brain"
+}
