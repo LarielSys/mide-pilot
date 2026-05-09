@@ -1,0 +1,43 @@
+{
+  "from": "mtask-admin",
+  "report_id": "mtask_admin_status_2",
+  "host": "ubuntu-atlas-01",
+  "worker_id": "ubuntu-worker-01",
+  "issued_at_utc": "2026-05-09T03:49:01Z",
+  "summary": "Ops cycle complete: disk extended, MTASK-2031 executed (qwen2.5-coder:14b live), duplicate ollama container removed.",
+  "actions": [
+    {
+      "action": "filesystem_extend",
+      "detail": "lvextend +500G on /dev/ubuntu-vg/ubuntu-lv + online resize2fs (ext4)",
+      "before": "98G / 100% used / 0 free",
+      "after": "591G total, 101G used (18%), 465G free",
+      "status": "success"
+    },
+    {
+      "action": "MTASK-2031",
+      "detail": "Pulled qwen2.5-coder:14b (9.0 GB), validated /api/generate (HTTP 200), updated MTASK-2026 chat shim default model, ran chat shim publish for live validation.",
+      "result_commit": "5110e347a",
+      "result_path": "pilot_v1/results/MTASK-2031.result.json",
+      "execution_status": "completed"
+    },
+    {
+      "action": "deduplicate_ollama_runtime",
+      "detail": "Stopped+removed redundant 'ollama' container (bridge net, no compose project, ad-hoc docker run with restart=unless-stopped). Kept 'mide-ollama' (host net, owns :11434).",
+      "removed_container": "ollama",
+      "kept_container": "mide-ollama",
+      "shared_volume": "ollama (/var/lib/docker/volumes/ollama/_data)",
+      "models_preserved": ["qwen2.5-coder:14b","qwen2.5-coder:7b","qwen2.5:14b","qwen2.5:7b","qwen2.5vl:7b","kimi-k2.6:cloud"]
+    }
+  ],
+  "current_state": {
+    "disk_root": "591G total, 101G used (18%), 465G free",
+    "memory": "46Gi total, 7.6Gi used, 38Gi available",
+    "ollama_endpoint": "http://127.0.0.1:11434",
+    "ollama_models_count": 6,
+    "active_loaded_model": "qwen2.5-coder:14b (Q4_K_M, 14.8B params, ~11.5 GB VRAM/RAM)",
+    "cockpit": "http://127.0.0.1:5570/ and http://192.168.1.21:5570/ (200 OK)",
+    "chat_shim": "mide-chat:7070 healthy",
+    "worker_autopilot": "stopped briefly for this commit; will resume after push"
+  },
+  "notes": "Resource constraint resolved \u2014 only one ollama runtime now serving inference, freeing CPU/RAM/scheduler contention."
+}
