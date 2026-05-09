@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2028-RETRY1",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script not found.",
+  "stdout_excerpt": "",
+  "stderr_excerpt": "Executor script not found: pilot_v1/scripts/exec_mtask_2028_confirm_gate.sh",
+  "timestamp_utc": "2026-05-09T03:14:22Z"
+}
