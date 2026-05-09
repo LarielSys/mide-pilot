@@ -1,0 +1,14 @@
+{
+    "task_id":  "MTASK-2026-RETRY13",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T02:35:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Fix contact-loop misrouting by extracting the real user question before intent matching, preventing system-context keywords from forcing contact answers.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [],
+    "notes":  "manual_retry=true; objective=eliminate_contact_loop_intent_bug",
+    "category":  "brain"
+}

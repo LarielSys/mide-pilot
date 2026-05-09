@@ -201,6 +201,16 @@ def _rule_based_answer(msg):
     return 'MOSS information is available at https://www.larielsystems.com/moss.'
   return _site_grounded_answer(msg) or 'I can help with Lariel Systems services, process, MOSS, or contact/quote guidance.'
 
+def _extract_user_question(raw_msg):
+  s=(raw_msg or '').strip()
+  if not s:
+    return ''
+  marker='User question:'
+  if marker in s:
+    # Keep only the latest user question segment if prompt scaffolding was included upstream.
+    s=s.split(marker)[-1].strip()
+  return s
+
 class H(BaseHTTPRequestHandler):
     def _cors(self):
         req_origin=(self.headers.get('Origin') or '').strip()
@@ -231,7 +241,7 @@ class H(BaseHTTPRequestHandler):
             n=int(self.headers.get('Content-Length','0'))
             raw=self.rfile.read(n) if n>0 else b'{}'
             data=json.loads(raw.decode('utf-8') or '{}')
-            msg=data.get('message') or ''
+            msg=_extract_user_question(data.get('message') or '')
             direct=_rule_based_answer(msg)
             if direct:
               out={'answer': direct, 'reply': direct}
