@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-2034",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "task=MTASK-2034\nstatus=test_running\nmessage=Worker picked up MTASK-2034 successfully.\ntimestamp_utc=2026-05-09T04:40:16Z",
+  "stderr_excerpt": "",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 121,
+    "output_lines": 4
+  },
+  "timestamp_utc": "2026-05-09T04:40:16Z"
+}
