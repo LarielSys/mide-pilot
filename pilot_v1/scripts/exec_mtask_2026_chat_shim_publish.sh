@@ -84,6 +84,26 @@ def _build_site_kb():
 
 SITE_KB=_build_site_kb()
 
+def _rule_based_answer(msg):
+  m=(msg or '').lower()
+  if any(k in m for k in ['contact', 'email', 'phone', 'call', 'reach', 'address', 'get quote', 'quote']):
+    return (
+      'For contact details and quote requests, use the Contact page: '
+      'https://www.larielsystems.com/contact and the Get Quote flow on the website. '
+      'If you share what you need, I can help you prepare the request message.'
+    )
+  if any(k in m for k in ['service', 'services', 'offer', 'offering', 'capabilities']):
+    return (
+      'Lariel Systems services are outlined on https://www.larielsystems.com/services. '
+      'You can also review MOSS-specific information at https://www.larielsystems.com/moss '
+      'and the delivery workflow at https://www.larielsystems.com/process.'
+    )
+  if any(k in m for k in ['process', 'workflow', 'how do you work', 'how you work']):
+    return 'The website process flow is documented at https://www.larielsystems.com/process.'
+  if any(k in m for k in ['moss', 'demo', 'studio']):
+    return 'MOSS information is available at https://www.larielsystems.com/moss.'
+  return None
+
 class H(BaseHTTPRequestHandler):
     def _cors(self):
         self.send_header('Access-Control-Allow-Origin', ORIGIN)
@@ -107,6 +127,17 @@ class H(BaseHTTPRequestHandler):
             raw=self.rfile.read(n) if n>0 else b'{}'
             data=json.loads(raw.decode('utf-8') or '{}')
             msg=data.get('message') or ''
+            direct=_rule_based_answer(msg)
+            if direct:
+              out={'answer': direct, 'reply': direct}
+              b=json.dumps(out).encode('utf-8')
+              self.send_response(200)
+              self._cors()
+              self.send_header('Content-Type','application/json')
+              self.send_header('Content-Length',str(len(b)))
+              self.end_headers()
+              self.wfile.write(b)
+              return
             if MODE == 'ollama':
               prompt=(
                   f"{SYSTEM_CONTEXT}\n\n"
