@@ -1,0 +1,14 @@
+{
+    "task_id":  "MTASK-2026-RETRY12",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T02:22:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Improve contact response clarity by labeling extracted phone numbers by region (US and Mexico) when available.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [],
+    "notes":  "manual_retry=true; objective=phone_region_labeling",
+    "category":  "brain"
+}

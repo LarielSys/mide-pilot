@@ -122,6 +122,14 @@ def _extract_contact_details():
 
 CONTACT_DETAILS=_extract_contact_details()
 
+def _label_phone(phone):
+  p=(phone or '').strip()
+  if p.startswith('+52'):
+    return f"Mexico: {p}"
+  if re.fullmatch(r'\d{3}-\d{3}-\d{4}', p):
+    return f"US: {p}"
+  return p
+
 def _keywords(msg):
   tokens=re.findall(r"[a-z0-9]+", (msg or '').lower())
   stop={'the','and','for','with','that','this','from','your','about','what','when','where','how','are','can','you','our'}
@@ -177,7 +185,8 @@ def _rule_based_answer(msg):
       if CONTACT_DETAILS.get('emails'):
         parts.append('Email: ' + ', '.join(CONTACT_DETAILS['emails']) + '.')
       if CONTACT_DETAILS.get('phones'):
-        parts.append('Phone: ' + ', '.join(CONTACT_DETAILS['phones']) + '.')
+        labeled=[_label_phone(p) for p in CONTACT_DETAILS['phones']]
+        parts.append('Phone: ' + ', '.join(labeled) + '.')
     parts.append('Use the Get Quote flow on the website for project requests.')
     return ' '.join(parts)
   if any(k in m for k in ['service', 'services', 'offer', 'offering', 'capabilities']):
