@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2039",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T05:20:00Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Retry cockpit git panel repair after MTASK-2038 failed with /api/git/status=404. Apply robust backend patching for git router wiring and sync-health git root resolution, then validate endpoints.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2039_retry_cockpit_git_binding.sh",
+  "dependencies": [
+    "MTASK-2038"
+  ],
+  "notes": "source=manual; retry_of=MTASK-2038; fail_reason=api_git_status_404; success_requires=api_git_status_has_origin_and_sync_health_not_missing",
+  "category": "brain"
+}
