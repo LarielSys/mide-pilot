@@ -1240,29 +1240,120 @@
     panelEl.scrollTop = panelEl.scrollHeight;
   }
 
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function renderMtaskStream(stream) {
+    const panelEl = document.getElementById("mtaskStreamPanel");
+    const statusEl = document.getElementById("mtaskStreamStatus");
+    if (!panelEl) return;
+
+    const entries = (stream && stream.entries) || [];
+    const summary = (stream && stream.summary) || {};
+
+    if (statusEl) {
+      const total = summary.total || 0;
+      const done = summary.completed || 0;
+      const fail = summary.failed || 0;
+      const pend = summary.pending || 0;
+      statusEl.innerHTML =
+        '<span style="color:#cbd5e1">' + total + ' shown</span>' +
+        ' · <span style="color:#4ade80">' + done + ' completed</span>' +
+        ' · <span style="color:#f87171">' + fail + ' failed</span>' +
+        (pend ? ' · <span style="color:#f59e0b">' + pend + ' pending</span>' : "");
+    }
+
+    if (!entries.length) {
+      panelEl.innerHTML = '<div class="mtask-card">No MTASKs in stream yet.</div>';
+      return;
+    }
+
+    panelEl.innerHTML = "";
+    entries.forEach(e => {
+      const status = (e.execution_status || "pending").toLowerCase();
+      const cls = status === "completed" ? "mtask-completed" :
+                  status === "failed" ? "mtask-failed" : "mtask-pending";
+      const card = document.createElement("div");
+      card.className = "mtask-card " + cls;
+
+      const meta = [
+        e.issued_by ? "by " + e.issued_by : "",
+        e.assigned_to ? "→ " + e.assigned_to : "",
+        e.priority || "",
+        e.category || "",
+        e.issued_at_utc || "",
+      ].filter(Boolean).join(" · ");
+
+      let html = '<div class="mtask-card-header">' +
+        '<span class="mtask-id">' + escapeHtml(e.task_id) + '</span>' +
+        '<span class="mtask-status ' + status + '">' + escapeHtml(status) + '</span>' +
+        '<span class="mtask-meta">' + escapeHtml(meta) + '</span>' +
+        '</div>';
+
+      if (e.description) {
+        html += '<div class="mtask-desc">' + escapeHtml(e.description) + '</div>';
+      }
+
+      if (e.executor_script) {
+        html += '<div class="mtask-section-label">code · ' + escapeHtml(e.executor_script) + '</div>';
+        html += '<pre class="mtask-code">' + escapeHtml(e.executor_excerpt || "(script not found in repo)") + '</pre>';
+      } else {
+        html += '<div class="mtask-section-label">code</div>' +
+                '<div class="mtask-summary">(no executor script)</div>';
+      }
+
+      html += '<div class="mtask-section-label">summary' +
+        (e.result_timestamp_utc ? ' · ' + escapeHtml(e.result_timestamp_utc) : "") +
+        '</div>';
+      if (status === "pending") {
+        html += '<div class="mtask-summary">(awaiting result)</div>';
+      } else {
+        html += '<div class="mtask-summary">' + escapeHtml(e.result_summary || "(no summary)") + '</div>';
+        if (e.stdout_excerpt) {
+          html += '<pre class="mtask-code">' + escapeHtml(e.stdout_excerpt) + '</pre>';
+        }
+        if (e.stderr_excerpt && status === "failed") {
+          html += '<pre class="mtask-code mtask-stderr">' + escapeHtml(e.stderr_excerpt) + '</pre>';
+        }
+      }
+
+      card.innerHTML = html;
+      panelEl.appendChild(card);
+    });
+  }
+
   function renderTokens(tokens) {
     const summary = (tokens && tokens.summary) || {};
-    const rows = (tokens && tokens.rows) ? tokens.rows.slice(0, 12) : [];
+    const rows = (tokens && tokens.rows) ? tokens.rows.slice(0, 16) : [];
     const table = rows.map(r => {
+      const status = (r.execution_status || "").slice(0, 4);
       return [
-        (r.task_id || "").padEnd(12, " "),
-        String(asNum(r.ollama_total)).padStart(7, " "),
-        String(asNum(r.vs_total)).padStart(7, " "),
+        (r.task_id || "").padEnd(20, " "),
+        status.padEnd(4, " "),
+        String(asNum(r.ollama_calls)).padStart(5, " "),
+        String(asNum(r.prompt_eval_count)).padStart(7, " "),
+        String(asNum(r.eval_count)).padStart(7, " "),
         String(asNum(r.total_tokens)).padStart(8, " ")
       ].join(" | ");
     });
 
     tokenPanelEl.textContent = [
-      "Token counters (cost-down cockpit)",
+      "Token counters (per-MTASK · derived from result.json)",
       "- source: " + ((tokens && tokens.source) || "n/a"),
       "- tasks_tracked: " + (summary.tasks_tracked || 0),
+      "- ollama_calls_total: " + (summary.ollama_calls_total || 0),
+      "- prompt_eval_total: " + (summary.prompt_eval_total || 0),
+      "- eval_count_total:  " + (summary.eval_count_total || 0),
       "- ollama_tokens_total: " + (summary.ollama_tokens_total || 0),
-      "- vs_tokens_total: " + (summary.vs_tokens_total || 0),
-      "- all_tokens_total: " + (summary.all_tokens_total || 0),
-      "- estimated_cost_usd_total: " + (summary.estimated_cost_usd_total || 0),
+      "- output_chars_total: " + (summary.output_chars_total || 0),
       "",
-      "task_id      | ollama |      vs |    total",
-      "--------------------------------------------",
+      "task_id              | st   | calls |  prompt |    eval |    total",
+      "-----------------------------------------------------------------",
       ...table
     ].join("\n");
   }
@@ -1323,8 +1414,10 @@
     const tokens = bundle.token_counters || {};
     const opLoop = bundle.operator_loop || {};
     const taskHistory = bundle.task_history || {};
+    const mtaskStream = bundle.mtask_stream || {};
     renderOperatorLoop(opLoop);
     renderTaskHistory(taskHistory);
+    renderMtaskStream(mtaskStream);
 
     updateIdeState(worker, gitStatus, tokens, runtime, sync, cadence);
 
@@ -1343,10 +1436,7 @@
     renderFlowCanvas(worker, gitStatus, tokens);
     renderWorkerLog(worker);
     updateAutopilotWatchdog(worker);
-
-    if (mode === "full") {
-      renderTokens(tokens);
-    }
+    renderTokens(tokens);
 
     if (forceLlm) {
       try {
@@ -1583,6 +1673,7 @@
         ["syncCadencePanel",  "Sync Cadence"],
         ["tokenPanel",        "Token Counters"],
         ["ollamaPanel",       "Ollama / Cost Mode"],
+        ["mtaskStreamPanel",  "MTASK Stream"],
       ];
       // Smaller per-pane budget when bundling all of them.
       const blocks = panes.map(([id, label]) => {

@@ -1,0 +1,345 @@
+:root {
+  --bg: #020602;
+  --bg-deep: #000000;
+  --panel: #030903;
+  --line: #1d7a1d;
+  --line-soft: #0f3d0f;
+  --ink: #78ff62;
+  --ink-dim: #49be3e;
+  --ink-alt: #ffd700;
+  --alert: #ff5d5d;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at 30% 10%, #052005 0%, var(--bg) 40%, var(--bg-deep) 100%);
+  color: var(--ink);
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 8px rgba(71, 255, 89, 0.3);
+}
+
+.bg-orbit {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(120, 255, 98, 0.03) 1px, transparent 1px);
+  background-size: 100% 4px;
+  opacity: 0.45;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.86);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  overflow: hidden;
+  height: 36px;
+}
+
+.brand {
+  margin-right: auto;
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--ink);
+  letter-spacing: 0.12em;
+  flex: 0 0 auto;
+}
+
+.status {
+  color: var(--ink-dim);
+  font-size: 0.76rem;
+  max-width: 18rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 1 auto;
+}
+
+.cockpit-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-areas:
+    "live    live    live    live    events  events  events  events  events  events  oploop  oploop"
+    "git     git     git     git     events  events  events  events  events  events  chat    chat"
+    "token   token   token   token   token   token   cadence cadence ollama  ollama  chat    chat";
+  grid-template-rows: 40% 30% 30%;
+  gap: 6px;
+  padding: 6px;
+  height: calc(100vh - 36px);
+}
+
+.panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(3, 9, 3, 0.98), rgba(0, 0, 0, 0.98));
+  box-shadow: inset 0 0 0 1px rgba(120, 255, 98, 0.06), 0 0 12px rgba(73, 190, 62, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.panel h3 {
+  margin: 0;
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 0.8rem;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.panel-live { grid-area: live; }
+.panel-events { grid-area: events; }
+.panel-oploop { grid-area: oploop; }
+.panel-git { grid-area: git; }
+.panel-cadence { grid-area: cadence; }
+.panel-ollama { grid-area: ollama; }
+.panel-token { grid-area: token; }
+.panel-chat {
+  grid-area: chat;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+pre {
+  margin: 0;
+  padding: 8px;
+  background: transparent;
+  color: var(--ink);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10.5px;
+  line-height: 1.24;
+  white-space: pre-wrap;
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow: auto;
+}
+
+pre::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: #1a581a;
+  border-radius: 8px;
+}
+
+.scroll-log {
+  margin: 0;
+  padding: 8px;
+  background: transparent;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10.5px;
+  line-height: 1.24;
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.scroll-log::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-log::-webkit-scrollbar-thumb {
+  background: #1a581a;
+  border-radius: 8px;
+}
+
+.log-line {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.log-line-a { color: var(--ink); }
+.log-line-b { color: var(--ink-alt); }
+
+.status-offline {
+  color: var(--alert);
+}
+
+/* ── Cockpit AI Chat (inline panel) ─────────────────────────────────── */
+.panel-chat h3 {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-model-tag {
+  font-size: 0.7rem;
+  color: var(--ink-dim);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  margin-right: auto;
+}
+
+.chat-tab-btn {
+  background: none;
+  border: 1px solid var(--line-soft);
+  border-radius: 2px;
+  color: var(--ink-dim);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.64rem;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.chat-tab-btn:hover {
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.chat-tab-active {
+  color: var(--ink);
+  border-color: var(--line);
+  box-shadow: inset 0 0 6px rgba(120, 255, 98, 0.12);
+}
+
+.chat-clear {
+  background: none;
+  border: 1px solid var(--line-soft);
+  border-radius: 2px;
+  color: var(--ink-dim);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.68rem;
+  padding: 1px 5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.chat-clear:hover {
+  color: var(--alert);
+  border-color: var(--alert);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 5px 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 0;
+}
+
+.chat-msg {
+  font-size: 0.72rem;
+  line-height: 1.28;
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding: 4px 7px;
+  border-left: 2px solid var(--line-soft);
+}
+
+.chat-msg-user {
+  color: var(--ink-alt);
+  border-left-color: var(--ink-alt);
+}
+
+.chat-msg-ai {
+  color: var(--ink);
+  border-left-color: var(--line);
+}
+
+.chat-msg-ai.chat-thinking {
+  color: var(--ink-dim);
+  font-style: italic;
+}
+
+.chat-msg-error {
+  color: var(--alert);
+  border-left-color: var(--alert);
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 5px;
+  padding: 5px 7px;
+  border-top: 1px solid var(--line-soft);
+  background: rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+
+.chat-input {
+  flex: 1;
+  resize: none;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--ink);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.72rem;
+  padding: 3px 0;
+  line-height: 1.35;
+  outline: none;
+}
+
+.chat-input:focus {
+  border-bottom-color: var(--line);
+}
+
+.chat-input::placeholder {
+  color: var(--ink-dim);
+  opacity: 0.45;
+}
+
+.chat-send-btn {
+  background: none;
+  border: 1px solid var(--line-soft);
+  border-radius: 2px;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  padding: 0 9px;
+  letter-spacing: 0.05em;
+}
+
+.chat-send-btn:hover:not(:disabled) {
+  border-color: var(--line);
+  color: var(--ink);
+  text-shadow: 0 0 6px rgba(120, 255, 98, 0.5);
+}
+
+.chat-send-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+/* ── End Cockpit AI Chat ─────────────────────────────────────────────── */
+

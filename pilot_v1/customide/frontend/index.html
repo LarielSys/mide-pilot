@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>CustomIDE Cockpit</title>
-  <link rel="stylesheet" href="css/style.alt-20260507c.css">
+  <link rel="stylesheet" href="css/style.alt-20260507c.css?v=14">
   <script>
     (function cockpitResetBootstrap() {
       const resetUrl = "../../state/cockpit_hard_reset_request.json";
@@ -75,10 +75,10 @@
     </section>
 
     <section class="panel panel-oploop">
-      <h3>Operator Loop <span class="panel-sub" id="opLoopStatus">…</span>
-        <button class="ask-ai-btn" data-pane="opLoopPanel" data-pane-label="Operator Loop" title="Ask the AI engineer about this pane">Ask AI</button>
+      <h3>MTASK Stream <span class="panel-sub" id="mtaskStreamStatus">…</span>
+        <button class="ask-ai-btn" data-pane="mtaskStreamPanel" data-pane-label="MTASK Stream" title="Ask the AI engineer about this pane">Ask AI</button>
       </h3>
-      <div id="opLoopPanel" class="scroll-log"></div>
+      <div id="mtaskStreamPanel" class="mtask-stream-list"></div>
     </section>
 
     <section class="panel panel-git">
@@ -128,7 +128,7 @@
 
   </main>
 
-  <script src="js/config.js?v=9"></script>
-  <script src="js/app.js?v=9"></script>
+  <script src="js/config.js?v=14"></script>
+  <script src="js/app.js?v=14"></script>
 </body>
 </html>
