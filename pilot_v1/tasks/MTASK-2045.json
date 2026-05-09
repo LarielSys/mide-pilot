@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2045",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T23:05:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Test MTASK delivery path for mide-pilot repository. Worker executes a lightweight git/environment check and returns result evidence.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2045_test_mide_pilot_git.sh",
+  "dependencies": [
+    "MTASK-2042"
+  ],
+  "notes": "source=manual_test; purpose=validate_mide_pilot_git_task_delivery; success_requires=script_executes_and_result_is_pushed",
+  "category": "brain"
+}
