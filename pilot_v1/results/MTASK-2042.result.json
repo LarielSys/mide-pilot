@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-2042",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-2042] Running tunnel setup via MTASK-0105\n[MTASK-2042] Running tunnel verification via MTASK-0106\nlocal_health_http=200\nlocal_git_status_http=200\npublic_tags_http=200\npublic_generate_http=200\npublic_models=qwen2.5-coder:14b,qwen2.5vl:7b,qwen2.5-coder:7b,qwen2.5:14b,qwen2.5:7b,kimi-k2.6:cloud\n[MTASK-2042] Tunnel and cockpit validation passed",
+  "stderr_excerpt": "",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 350,
+    "output_lines": 8
+  },
+  "timestamp_utc": "2026-05-09T17:20:22Z"
+}
