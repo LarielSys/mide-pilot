@@ -51,6 +51,7 @@ write_shim(){
 import json
 import os
 import re
+from collections import Counter
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
@@ -77,6 +78,7 @@ def _html_to_text(html):
   return t
 
 def _build_site_kb():
+  docs=[]
   parts=[]
   for u in KB_URLS:
     try:
@@ -85,33 +87,93 @@ def _build_site_kb():
         raw=r.read().decode('utf-8', errors='ignore')
       txt=_html_to_text(raw)
       if txt:
-        parts.append(f'URL: {u}\\n{txt[:1400]}')
+        t=txt[:2800]
+        docs.append({'url':u,'text':t,'lower':t.lower()})
+        parts.append(f'URL: {u}\\n{t[:1400]}')
     except Exception:
       continue
   kb='\\n\\n'.join(parts)
-  return kb[:7000]
+  return kb[:7000], docs
 
-SITE_KB=_build_site_kb()
+SITE_KB, SITE_DOCS=_build_site_kb()
+
+def _keywords(msg):
+  tokens=re.findall(r"[a-z0-9]+", (msg or '').lower())
+  stop={'the','and','for','with','that','this','from','your','about','what','when','where','how','are','can','you','our'}
+  return [t for t in tokens if len(t) > 2 and t not in stop]
+
+def _best_docs(msg, n=2):
+  kws=_keywords(msg)
+  if not kws or not SITE_DOCS:
+    return []
+  scored=[]
+  for d in SITE_DOCS:
+    score=0
+    for k in kws:
+      if k in d['lower']:
+        score += 1 + d['lower'].count(k)
+    if score:
+      scored.append((score, d))
+  scored.sort(key=lambda x: x[0], reverse=True)
+  return [d for _, d in scored[:n]]
+
+def _summarize_excerpt(text, msg):
+  if not text:
+    return ''
+  kws=_keywords(msg)
+  low=text.lower()
+  idx=0
+  for k in kws:
+    i=low.find(k)
+    if i >= 0:
+      idx=i
+      break
+  start=max(0, idx-120)
+  end=min(len(text), idx+340)
+  snippet=text[start:end].strip()
+  snippet=re.sub(r'\s+', ' ', snippet)
+  return snippet
+
+def _site_grounded_answer(msg):
+  docs=_best_docs(msg, n=2)
+  if not docs:
+    return None
+  lines=[]
+  for d in docs:
+    sn=_summarize_excerpt(d['text'], msg)
+    if sn:
+      lines.append(f"From {d['url']}: {sn}")
+  if not lines:
+    return None
+  return ' '.join(lines)[:900]
 
 def _rule_based_answer(msg):
   m=(msg or '').lower()
   if any(k in m for k in ['contact', 'email', 'phone', 'call', 'reach', 'address', 'get quote', 'quote']):
+    grounded=_site_grounded_answer(msg)
     return (
       'For contact details and quote requests, use the Contact page: '
       'https://www.larielsystems.com/contact and the Get Quote flow on the website. '
-      'If you share what you need, I can help you prepare the request message.'
+      + (' ' + grounded if grounded else '') +
+      ' If you share what you need, I can help you prepare the request message.'
     )
   if any(k in m for k in ['service', 'services', 'offer', 'offering', 'capabilities']):
-    return (
+    grounded=_site_grounded_answer(msg)
+    base=(
       'Lariel Systems services are outlined on https://www.larielsystems.com/services. '
       'You can also review MOSS-specific information at https://www.larielsystems.com/moss '
       'and the delivery workflow at https://www.larielsystems.com/process.'
     )
+    return base + (' ' + grounded if grounded else '')
   if any(k in m for k in ['process', 'workflow', 'how do you work', 'how you work']):
-    return 'The website process flow is documented at https://www.larielsystems.com/process.'
+    grounded=_site_grounded_answer(msg)
+    base='The website process flow is documented at https://www.larielsystems.com/process.'
+    return base + (' ' + grounded if grounded else '')
   if any(k in m for k in ['moss', 'demo', 'studio']):
-    return 'MOSS information is available at https://www.larielsystems.com/moss.'
-  return None
+    grounded=_site_grounded_answer(msg)
+    base='MOSS information is available at https://www.larielsystems.com/moss.'
+    return base + (' ' + grounded if grounded else '')
+  return _site_grounded_answer(msg)
 
 class H(BaseHTTPRequestHandler):
     def _cors(self):
