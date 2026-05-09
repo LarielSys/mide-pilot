@@ -1,0 +1,9 @@
+{
+  "task_id": "MTASK-2026-RETRY7",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-2026] Step 1: ensure website-expert upstream (ollama first, cockpit fallback)\n[MTASK-2026] Step 2: ensure /api/chat via native or shim\n[MTASK-2026] Step 3: verify/publish public ngrok endpoint\n[MTASK-2026] completed",
+  "stderr_excerpt": "",
+  "timestamp_utc": "2026-05-09T00:09:28Z"
+}
