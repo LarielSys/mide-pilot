@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2032",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T04:00:00Z",
+  "priority": "normal",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Run a simple test MTASK and confirm the worker can pick it up from git.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2032_test.sh",
+  "dependencies": [],
+  "notes": "source=manual; test=true; acceptance=worker_reports_completed_test",
+  "category": "brain"
+}
