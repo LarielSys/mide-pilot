@@ -342,6 +342,51 @@ def load_excerpt(path):
     excerpt = re.sub(r"\bx-access-token:[^\s@]+@", "x-access-token:REDACTED@", excerpt)
     return excerpt
 
+def collect_tokens(*paths):
+    """Scan stdout/stderr for Ollama token-usage markers and accumulate.
+
+    Looks for the standard Ollama API response fields (prompt_eval_count,
+    eval_count) which appear whether the executor used `ollama run`,
+    `ollama generate`, or a direct curl to /api/generate / /api/chat.
+    Also reports raw output size as a coarse fallback metric.
+    """
+    prompt_eval = 0
+    eval_count = 0
+    total_duration_ns = 0
+    ollama_calls = 0
+    output_chars = 0
+    output_lines = 0
+    model_seen = ""
+    for path in paths:
+        p = pathlib.Path(path)
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8", errors="replace")
+        output_chars += len(text)
+        output_lines += text.count("\n")
+        # Pull every JSON-ish chunk that has at least prompt_eval_count or eval_count.
+        for m in re.finditer(r'"prompt_eval_count"\s*:\s*(\d+)', text):
+            prompt_eval += int(m.group(1))
+            ollama_calls += 1
+        for m in re.finditer(r'"eval_count"\s*:\s*(\d+)', text):
+            eval_count += int(m.group(1))
+        for m in re.finditer(r'"total_duration"\s*:\s*(\d+)', text):
+            total_duration_ns += int(m.group(1))
+        if not model_seen:
+            mm = re.search(r'"model"\s*:\s*"([^"]+)"', text)
+            if mm:
+                model_seen = mm.group(1)
+    return {
+        "prompt_eval_count": prompt_eval,
+        "eval_count": eval_count,
+        "total_tokens": prompt_eval + eval_count,
+        "ollama_calls": ollama_calls,
+        "ollama_model": model_seen,
+        "ollama_total_duration_ms": total_duration_ns // 1_000_000 if total_duration_ns else 0,
+        "output_chars": output_chars,
+        "output_lines": output_lines,
+    }
+
 payload = {
     "task_id": task_id,
     "worker_id": worker_id,
@@ -349,6 +394,7 @@ payload = {
     "summary": summary,
     "stdout_excerpt": load_excerpt(stdout_file),
     "stderr_excerpt": load_excerpt(stderr_file),
+    "tokens": collect_tokens(stdout_file, stderr_file),
     "timestamp_utc": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
 }
 
