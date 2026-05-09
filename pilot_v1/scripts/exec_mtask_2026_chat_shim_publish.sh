@@ -165,7 +165,15 @@ def _rule_based_answer(msg):
 
 class H(BaseHTTPRequestHandler):
     def _cors(self):
-        self.send_header('Access-Control-Allow-Origin', ORIGIN)
+        req_origin=(self.headers.get('Origin') or '').strip()
+        allowed={
+          ORIGIN,
+          'http://localhost:8080',
+          'http://127.0.0.1:8080',
+          'null',
+        }
+        allow_origin=req_origin if req_origin in allowed else ORIGIN
+        self.send_header('Access-Control-Allow-Origin', allow_origin)
         self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'content-type, ngrok-skip-browser-warning')
 

@@ -1,0 +1,14 @@
+{
+    "task_id":  "MTASK-2026-RETRY10",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T01:55:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Fix localhost testing mismatch by allowing localhost/file origins in shim CORS while keeping production origin behavior.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [],
+    "notes":  "manual_retry=true; objective=localhost_cors_alignment_for_consistent_answers",
+    "category":  "brain"
+}
