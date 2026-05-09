@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2031",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T03:45:00Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Upgrade worker chat/coding runtime to qwen2.5-coder:14b on Ubuntu, update shim default model, and validate Ollama + chat shim responses.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2031_upgrade_ollama_14b.sh",
+  "dependencies": [],
+  "notes": "source=olegreen-manual; model=qwen2.5-coder:14b; acceptance=ollama_generate_ok_and_chat_shim_2xx",
+  "category": "brain"
+}
