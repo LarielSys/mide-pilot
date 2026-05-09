@@ -58,7 +58,7 @@
       "ngrok_api_snapshot": "{\"tunnels\":[{\"name\":\"command_line\",\"ID\":\"a9894611ba3392011f399962a91b7928\",\"uri\":\"/api/tunnels/command_line\",\"public_url\":\"https://jawed-lapel-dispersed.ngrok-free.dev\",\"proto\":\"https\",\"config\":{\"addr\":\"http://localhost:8091\",\"inspect\":true},\"metrics\":{\"conns\":{\"count\":0,\"gauge\":0,\"rate1\":0,\"rate5\":0,\"rate15\":0,\"p50\":0,\"p90\":0,\"p95\":0,\"p99\":0},\"http\":{\"count\":0,\"rate1\":0,\"rate5\":0,\"rate15\":0,\"p50\":0,\"p90\":0,\"p95\":0,\"p99\":0}}}],\"uri\":\"/api/tunnels\"}"
     }
   },
-  "tunnel_last_updated": "2026-05-07T02:17:21Z",
+  "tunnel_last_updated": "2026-05-09T17:20:14Z",
   "tunnel_public_url": "https://jawed-lapel-dispersed.ngrok-free.dev",
   "tunnel_verification": {
     "verified_utc": "2026-05-07T03:04:27Z",
