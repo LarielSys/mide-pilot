@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2027",
+  "issued_by": "olegreen",
+  "issued_at": "2026-05-09T12:30:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Locate imagetest1.png on the system by filename alone, encode it, and deliver to git for download",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2027_find_imagetest1.sh",
+  "dependencies": [],
+  "notes": "source=olegreen-manual; autonomy_test=true; delivery=git_base64_encoded; acceptance=imagetest1.png.b64_in_git",
+  "category": "data_delivery"
+}

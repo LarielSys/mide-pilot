@@ -51,6 +51,7 @@ write_shim(){
 import json
 import os
 import re
+import html
 from collections import Counter
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.request import Request, urlopen
@@ -70,10 +71,11 @@ KB_URLS=[
   'https://www.larielsystems.com/contact',
 ]
 
-def _html_to_text(html):
-  t=re.sub(r'(?is)<script.*?>.*?</script>', ' ', html)
+def _html_to_text(raw_html):
+  t=re.sub(r'(?is)<script.*?>.*?</script>', ' ', raw_html)
   t=re.sub(r'(?is)<style.*?>.*?</style>', ' ', t)
   t=re.sub(r'(?s)<[^>]+>', ' ', t)
+  t=html.unescape(t)
   t=re.sub(r'\s+', ' ', t).strip()
   return t
 
@@ -160,6 +162,8 @@ def _summarize_excerpt(text, msg):
   if not text:
     return ''
   kws=_keywords(msg)
+  text=html.unescape(text)
+  text=re.sub(r'\s+', ' ', text).strip()
   low=text.lower()
   idx=0
   for k in kws:
@@ -167,11 +171,38 @@ def _summarize_excerpt(text, msg):
     if i >= 0:
       idx=i
       break
-  start=max(0, idx-80)
-  end=min(len(text), idx+180)
+  prev=max(text.rfind('. ', 0, idx), text.rfind('! ', 0, idx), text.rfind('? ', 0, idx))
+  start=(prev + 2) if prev >= 0 else max(0, idx-80)
+  next_dot=text.find('. ', min(len(text)-1, idx+120))
+  next_bang=text.find('! ', min(len(text)-1, idx+120))
+  next_q=text.find('? ', min(len(text)-1, idx+120))
+  ends=[p for p in [next_dot, next_bang, next_q] if p >= 0]
+  end=(min(ends) + 1) if ends else min(len(text), idx+220)
+
+  if start > 0 and start < len(text) and text[start].isalnum() and text[start-1].isalnum():
+    next_space=text.find(' ', start)
+    if next_space >= 0:
+      start=next_space + 1
+
   snippet=text[start:end].strip()
   snippet=re.sub(r'\s+', ' ', snippet)
+  if re.match(r'^(tion|sion|ment|ing)\b', snippet.lower()):
+    return ''
   return snippet
+
+def _is_noisy_snippet(snippet):
+  s=(snippet or '').lower()
+  if not s:
+    return True
+  noisy_markers=[
+    'services process moss ai chat contact get quote',
+    'all rights reserved',
+    'tiktok',
+    'intelligence. integration. innovation',
+  ]
+  if any(m in s for m in noisy_markers):
+    return True
+  return False
 
 def _site_grounded_answer(msg):
   docs=_best_docs(msg, n=1)
@@ -179,7 +210,7 @@ def _site_grounded_answer(msg):
     return None
   d=docs[0]
   sn=_summarize_excerpt(d['text'], msg)
-  if not sn:
+  if not sn or _is_noisy_snippet(sn):
     return None
   return f"Based on {d['url']}: {sn}"[:320]
 
@@ -189,7 +220,7 @@ def _grounded_from_hint(url_hint, prefix):
     fallback=_site_grounded_answer(url_hint or '')
     return (prefix + ' ' + fallback)[:360] if fallback else prefix
   sn=_summarize_excerpt(d.get('text',''), url_hint)
-  if not sn:
+  if not sn or _is_noisy_snippet(sn):
     fallback=_site_grounded_answer(url_hint or '')
     return (prefix + ' ' + fallback)[:360] if fallback else prefix
   return f"{prefix} {sn}"[:360]
