@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2042",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T05:55:00Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Recover worker1 ngrok upstream for Ollama after ERR_NGROK_8012. Run MTASK-0105 tunnel setup and MTASK-0106 verification, then validate local cockpit backend and public Ollama endpoints.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2042_recover_tunnel_then_validate.sh",
+  "dependencies": [
+    "MTASK-2041"
+  ],
+  "notes": "source=manual; retry_of=MTASK-2041; root_cause=ngrok_err_8012_upstream_unreachable; success_requires=public_tags_200_public_generate_200_local_git_status_200_models_present",
+  "category": "brain"
+}
