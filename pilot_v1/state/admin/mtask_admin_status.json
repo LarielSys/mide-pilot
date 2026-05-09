@@ -1,0 +1,19 @@
+{
+  "from": "mtask-admin",
+  "host": "ubuntu-atlas-01",
+  "issued_at_utc": "2026-05-09T03:05:02Z",
+  "summary": "Autopilot and git healthy on ubuntu-worker-01.",
+  "details": {
+    "service": "active (uptime ~7m at report time)",
+    "heartbeat_age_s": 59,
+    "poll_seconds": 60,
+    "git_sync": "rebase + push cycles successful, no conflicts",
+    "ahead_origin": 0,
+    "behind_origin": "0-1 (operator heartbeat drift only)",
+    "approved_total": 273,
+    "eligible": 0,
+    "mismatched": 2,
+    "pending_for_ubuntu_worker_01": 0,
+    "note": "All approved MTASKs for ubuntu-worker-01 already have .result.json. Worker idle until windows-main issues a new task assigned here."
+  }
+}
