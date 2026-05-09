@@ -66,7 +66,7 @@ KB_URLS=[
   'https://www.larielsystems.com/',
   'https://www.larielsystems.com/services',
   'https://www.larielsystems.com/process',
-  'https://www.larielsystems.com/moss',
+  'https://www.larielsystems.com/moss-demo',
   'https://www.larielsystems.com/contact',
 ]
 
@@ -209,7 +209,7 @@ def _rule_based_answer(msg):
   if any(k in m for k in ['service', 'services', 'offer', 'offering', 'capabilities']):
     return _grounded_from_hint(
       '/services',
-      'Services are detailed at https://www.larielsystems.com/services. For implementation flow see https://www.larielsystems.com/process and for product context see https://www.larielsystems.com/moss.'
+      'Services are detailed at https://www.larielsystems.com/services. For implementation flow see https://www.larielsystems.com/process and for product context see https://www.larielsystems.com/moss-demo.'
     )
   if any(k in m for k in ['process', 'workflow', 'how do you work', 'how you work']):
     return _grounded_from_hint(
@@ -218,8 +218,8 @@ def _rule_based_answer(msg):
     )
   if any(k in m for k in ['moss', 'demo', 'studio']):
     return _grounded_from_hint(
-      '/moss',
-      'MOSS information is available at https://www.larielsystems.com/moss.'
+      '/moss-demo',
+      'MOSS information is available at https://www.larielsystems.com/moss-demo.'
     )
   return _site_grounded_answer(msg) or 'I can help with Lariel Systems services, process, MOSS, or contact/quote guidance.'
 

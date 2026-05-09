@@ -1,0 +1,14 @@
+{
+    "task_id":  "MTASK-2026-RETRY16",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T03:18:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Correct MOSS URL mapping to live path (/moss-demo) so responses and grounding use real page content instead of broken /moss route.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [],
+    "notes":  "manual_retry=true; objective=fix_moss_url_grounding",
+    "category":  "brain"
+}
