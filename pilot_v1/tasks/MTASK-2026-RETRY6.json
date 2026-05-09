@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2026-RETRY6",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T01:05:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Re-run MTASK-2026 with strict website-intent validation so published endpoint must answer contact/services in webpage-aware format.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "manual_retry=true; objective=force_correct_chat_endpoint_selection",
+    "category":  "brain"
+}

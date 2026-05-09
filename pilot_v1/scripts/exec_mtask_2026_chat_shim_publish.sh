@@ -253,6 +253,23 @@ test_public(){
 
   [ "$code" -ge 200 ] && [ "$code" -lt 300 ] || return 1
   grep -Eqi 'online|reply|answer|message|token' /tmp/mtask2026_public_probe.json || return 1
+
+  # Ensure this endpoint actually serves website-aware chat behavior.
+  local code_contact
+  code_contact="$(curl -s -m 15 -o /tmp/mtask2026_public_contact.json -w '%{http_code}' -X POST "$endpoint" \
+    -H 'Content-Type: application/json' \
+    -H 'ngrok-skip-browser-warning: true' \
+    -H "Origin: ${ORIGIN}" \
+    -d '{"message":"what is the contact information on the Lariel Systems website?","stream":false}' || true)"
+
+  echo "contact_status=${code_contact}" >> "$STATE_DIR/mtask_2026_diagnostics.txt"
+  if [ -f /tmp/mtask2026_public_contact.json ]; then
+    echo "contact_body=$(head -c 500 /tmp/mtask2026_public_contact.json | tr '\n' ' ')" >> "$STATE_DIR/mtask_2026_diagnostics.txt"
+  fi
+
+  [ "$code_contact" -ge 200 ] && [ "$code_contact" -lt 300 ] || return 1
+  grep -Eqi 'larielsystems.com/contact|get quote|contact page' /tmp/mtask2026_public_contact.json || return 1
+
   return 0
 }
 
