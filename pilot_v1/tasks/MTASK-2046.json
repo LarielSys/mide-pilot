@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2046",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T23:55:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "pending_approval",
+  "description": "Restore yesterday's known-good chat/Ollama connectivity and validate end-to-end endpoints. Current probes from Windows showed failures: public /api/chat=400, local :8091 /health=404, local :8091 /api/chat=501, Ubuntu Ollama /api/tags timeout.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2046_restore_chat_ollama.sh",
+  "dependencies": [
+    "MTASK-2026-RETRY16",
+    "MTASK-2045"
+  ],
+  "notes": "known_good_commit=599c13081; tunnel_url=https://jawed-lapel-dispersed.ngrok-free.dev; ubuntu_ollama=http://192.168.1.21:11434; requires_proof=pre_and_post_probe_status"
+}
