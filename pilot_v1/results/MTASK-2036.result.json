@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-2036",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-2036] Artifacts present\n[MTASK-2036] artifact=pilot_v1/deliverables/screenshot1.png.b64\n[MTASK-2036] metadata=pilot_v1/deliverables/screenshot1.metadata.json\n[MTASK-2036] artifact_bytes=1156617\n[MTASK-2036] metadata_bytes=250\n[MTASK-2036] ready_for_autopilot_commit=true",
+  "stderr_excerpt": "",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 278,
+    "output_lines": 6
+  },
+  "timestamp_utc": "2026-05-09T04:50:32Z"
+}
