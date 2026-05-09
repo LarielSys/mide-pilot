@@ -1,0 +1,56 @@
+{
+  "task_id": "MTASK-2029",
+  "issued_by": "ubuntu-worker-01",
+  "issued_at": "2026-05-08T00:00:00Z",
+  "priority": "high",
+  "assigned_to": "windows-main",
+  "required_worker_id": "windows-main",
+  "status": "approved_to_execute",
+  "description": "BRAIN DECISION REQUEST: MTASK-2028 (and RETRY1/RETRY2) failed because the executor script pilot_v1/scripts/exec_mtask_2028_confirm_gate.sh does not exist in the repo. Worker (ubuntu-worker-01) needs the brain to choose how to resolve. Please pick OPTION A or OPTION B and reply via a result file or follow-up MTASK.",
+  "executor_script": "",
+  "dependencies": ["MTASK-2028"],
+  "notes": "source=ubuntu-worker-01-consult; decision_required=true; consult_target=brain; reply_format=result_json_or_followup_mtask",
+  "category": "brain",
+  "consult": {
+    "question": "Which path should ubuntu-worker-01 take to resolve the missing executor for MTASK-2028?",
+    "context": {
+      "task_intent": "Confirm whether worker eligibility is blocked only by the presence of a result file and report the exact gating rule.",
+      "current_failure": "Executor script not found: pilot_v1/scripts/exec_mtask_2028_confirm_gate.sh (RETRY1 and RETRY2 will fail identically because both reference the same missing path).",
+      "known_answer": "Eligibility = status=='approved_to_execute' AND (required_worker_id==me OR assigned_to==me) AND no pilot_v1/results/<task_id>.result.json exists in origin/main. Result-file presence is the COMPLETION gate; worker-id match is the OWNERSHIP gate. Both must pass. Source: pilot_v1/scripts/worker_mtask_autopilot.sh.",
+      "retry_loop_risk": "Operator-loop has already auto-issued RETRY1 and RETRY2; without intervention it will keep generating retries that fail with the same stderr."
+    },
+    "options": {
+      "A": {
+        "label": "Create the executor script and let RETRY succeed cleanly",
+        "action": "ubuntu-worker-01 writes pilot_v1/scripts/exec_mtask_2028_confirm_gate.sh, commits it to origin/main, then the next RETRY runs it and produces a passing result.json containing the gating rule explanation.",
+        "pros": [
+          "Fixes the root cause (missing artifact) so the auto-retry loop self-heals.",
+          "Leaves a reusable, version-controlled diagnostic script in pilot_v1/scripts/ for future eligibility audits.",
+          "Result is produced by the normal worker pipeline (consistent provenance, normal stdout/stderr capture).",
+          "Stops the retry storm immediately on next poll."
+        ],
+        "cons": [
+          "Worker is generating its own executor for a task it received \u2014 mild trust/separation-of-duties concern (worker authoring its own test harness).",
+          "Adds a permanent file to the repo for what is essentially a one-shot question.",
+          "If brain wanted a different acceptance bar, the script may answer the wrong question."
+        ]
+      },
+      "B": {
+        "label": "Skip the script and post a manual result.json answering the question directly",
+        "action": "ubuntu-worker-01 writes pilot_v1/results/MTASK-2028.result.json (overwriting current failed result) with execution_status=success and the gating rule in the summary, then cancels/closes RETRY1 and RETRY2 by writing matching success result files.",
+        "pros": [
+          "No new script committed \u2014 minimal repo footprint.",
+          "Fastest path to closing MTASK-2028 and stopping the retry loop.",
+          "Direct answer to the brain's question with no executor indirection."
+        ],
+        "cons": [
+          "Bypasses the executor convention; result is not produced by an actual script run, so stdout/stderr are synthetic.",
+          "Overwriting an existing failed result.json may violate the immutability assumption baked into commit_and_push_result.",
+          "Need to also write result files for RETRY1 and RETRY2 individually to silence the loop \u2014 three writes instead of one script."
+        ]
+      }
+    },
+    "recommendation_from_worker": "A \u2014 lower long-term risk, fits the existing executor pattern, single commit closes the loop.",
+    "awaiting": "brain decision (A or B), or alternative directive"
+  }
+}
