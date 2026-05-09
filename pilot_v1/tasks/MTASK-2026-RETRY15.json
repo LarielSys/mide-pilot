@@ -1,0 +1,14 @@
+{
+    "task_id":  "MTASK-2026-RETRY15",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T03:05:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Improve MOSS response quality by adding grounded-detail fallback when page-specific snippet extraction is unavailable.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [],
+    "notes":  "manual_retry=true; objective=moss_detail_fallback",
+    "category":  "brain"
+}

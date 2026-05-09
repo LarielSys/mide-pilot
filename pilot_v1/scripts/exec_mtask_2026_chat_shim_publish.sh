@@ -186,10 +186,12 @@ def _site_grounded_answer(msg):
 def _grounded_from_hint(url_hint, prefix):
   d=_best_doc_for_url_hint(url_hint)
   if not d:
-    return prefix
+    fallback=_site_grounded_answer(url_hint or '')
+    return (prefix + ' ' + fallback)[:360] if fallback else prefix
   sn=_summarize_excerpt(d.get('text',''), url_hint)
   if not sn:
-    return prefix
+    fallback=_site_grounded_answer(url_hint or '')
+    return (prefix + ' ' + fallback)[:360] if fallback else prefix
   return f"{prefix} {sn}"[:360]
 
 def _rule_based_answer(msg):
