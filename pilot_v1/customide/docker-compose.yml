@@ -59,6 +59,10 @@ services:
     restart: unless-stopped
     ports:
       - "5570:5570"
+    volumes:
+      - /home/larieladmin/mide-pilot/pilot_v1/config:/app/config:ro
+      - /home/larieladmin/mide-pilot/pilot_v1/state:/app/state:ro
+      - /home/larieladmin/mide-pilot/pilot_v1/customide/TOKEN_COUNTER_TASKS.txt:/app/TOKEN_COUNTER_TASKS.txt:ro
 
   # ── MIDE Chat (multi-user WebSocket + LARIEL AI) ─────────────────────────
   mide-chat:
