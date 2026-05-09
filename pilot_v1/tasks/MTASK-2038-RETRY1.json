@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2038-RETRY1",
+    "issued_by":  "windows-main",
+    "issued_at":  "2026-05-09T05:15:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Repair the CustomIDE cockpit git panel so it reports the real MIDE repository on Ubuntu. Do not report success unless /api/git/status shows an origin remote and /api/status/sync-health no longer reports source=missing for git sync.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2038_repair_cockpit_git_binding.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "source=manual; root_cause=cockpit_backend_git_binding; success_requires=api_git_status_has_origin_and_sync_health_not_missing; if_validation_fails=exit_nonzero",
+    "category":  "brain"
+}
