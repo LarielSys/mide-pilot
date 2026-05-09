@@ -5,6 +5,7 @@ ORIGIN='https://www.larielsystems.com'
 STATE_DIR='pilot_v1/state'
 SHIM_PORT='8091'
 OLLAMA_MODEL='qwen2.5-coder:7b'
+WEBSITE_SYSTEM_CONTEXT='You are Lariel, the Lariel Systems website AI assistant and webpage expert. Primary scope: Lariel Systems services, process, MOSS, contact/get quote flow, and website guidance. Respond clearly and concisely in a professional tone. If a question is outside site scope, say so briefly and suggest contacting Lariel Systems. Do not invent unavailable services, prices, or guarantees. Never promise guaranteed outcomes or exact pricing. For any pricing, quote, or guarantee question, direct the user to the Contact/Get Quote flow.'
 mkdir -p "$STATE_DIR"
 
 log(){ echo "[MTASK-2026] $*"; }
@@ -47,6 +48,7 @@ from urllib.error import URLError, HTTPError
 TARGET=os.environ.get('MTASK2026_TARGET','http://127.0.0.1:8082/api/cockpit/act')
 MODE=os.environ.get('MTASK2026_MODE','cockpit')
 MODEL=os.environ.get('MTASK2026_MODEL','qwen2.5-coder:7b')
+SYSTEM_CONTEXT=os.environ.get('MTASK2026_SYSTEM_CONTEXT','')
 ORIGIN='https://www.larielsystems.com'
 
 class H(BaseHTTPRequestHandler):
@@ -73,9 +75,11 @@ class H(BaseHTTPRequestHandler):
             data=json.loads(raw.decode('utf-8') or '{}')
             msg=data.get('message') or ''
             if MODE == 'ollama':
-              payload={'model': MODEL, 'prompt': msg, 'stream': False}
+              prompt=f"{SYSTEM_CONTEXT}\n\nUser question: {msg}\n\nAssistant answer:"
+              payload={'model': MODEL, 'prompt': prompt, 'stream': False}
             else:
-              payload={'prompt': msg}
+              routed=f"{SYSTEM_CONTEXT}\n\nUser question: {msg}"
+              payload={'prompt': routed}
             body=json.dumps(payload).encode('utf-8')
             req=Request(TARGET,data=body,headers={'Content-Type':'application/json'})
             with urlopen(req,timeout=20) as r:
@@ -107,6 +111,7 @@ PY
   export MTASK2026_TARGET="$target_url"
   export MTASK2026_MODE="$mode"
   export MTASK2026_MODEL="$OLLAMA_MODEL"
+  export MTASK2026_SYSTEM_CONTEXT="$WEBSITE_SYSTEM_CONTEXT"
 }
 
 start_shim(){
@@ -184,25 +189,26 @@ test_public(){
 
 : > "$STATE_DIR/mtask_2026_diagnostics.txt"
 
-log 'Step 1: ensure bridge/cockpit upstream'
+log 'Step 1: ensure website-expert upstream (ollama first, cockpit fallback)'
 BASE='http://127.0.0.1:8082'
 UPSTREAM_MODE=''
 UPSTREAM_TARGET=''
-if ! probe_cockpit "$BASE"; then
-  start_bridge
-fi
+for ob in 'http://192.168.1.21:11434' 'http://127.0.0.1:11434' 'http://localhost:11434'; do
+  if probe_ollama "$ob"; then
+    UPSTREAM_MODE='ollama'
+    UPSTREAM_TARGET="${ob%/}/api/generate"
+    break
+  fi
+done
 
-if probe_cockpit "$BASE"; then
-  UPSTREAM_MODE='cockpit'
-  UPSTREAM_TARGET='http://127.0.0.1:8082/api/cockpit/act'
-else
-  for ob in 'http://127.0.0.1:11434' 'http://localhost:11434' 'http://192.168.1.21:11434'; do
-    if probe_ollama "$ob"; then
-      UPSTREAM_MODE='ollama'
-      UPSTREAM_TARGET="${ob%/}/api/generate"
-      break
-    fi
-  done
+if [ -z "$UPSTREAM_MODE" ]; then
+  if ! probe_cockpit "$BASE"; then
+    start_bridge
+  fi
+  if probe_cockpit "$BASE"; then
+    UPSTREAM_MODE='cockpit'
+    UPSTREAM_TARGET='http://127.0.0.1:8082/api/cockpit/act'
+  fi
 fi
 
 if [ -z "$UPSTREAM_MODE" ]; then
@@ -215,13 +221,9 @@ echo "upstream_target=${UPSTREAM_TARGET}" >> "$STATE_DIR/mtask_2026_diagnostics.
 
 log 'Step 2: ensure /api/chat via native or shim'
 LOCAL_CHAT_BASE=''
-if probe_api_chat "$BASE"; then
-  LOCAL_CHAT_BASE="$BASE"
-else
-  start_shim "$UPSTREAM_TARGET" "$UPSTREAM_MODE"
-  if probe_api_chat "http://127.0.0.1:${SHIM_PORT}"; then
-    LOCAL_CHAT_BASE="http://127.0.0.1:${SHIM_PORT}"
-  fi
+start_shim "$UPSTREAM_TARGET" "$UPSTREAM_MODE"
+if probe_api_chat "http://127.0.0.1:${SHIM_PORT}"; then
+  LOCAL_CHAT_BASE="http://127.0.0.1:${SHIM_PORT}"
 fi
 
 if [ -z "$LOCAL_CHAT_BASE" ]; then

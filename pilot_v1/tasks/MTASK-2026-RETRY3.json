@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2026-RETRY3",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T00:35:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Re-run MTASK-2026 with website-expert chat behavior: force /api/chat shim with system context and Ollama-first upstream.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [
+
+                     ],
+    "notes":  "manual_retry=true; objective=website_knowledge_restored; no_router_intent_prompts",
+    "category":  "brain"
+}
