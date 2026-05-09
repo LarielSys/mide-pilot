@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2041-RETRY1",
+    "issued_by":  "windows-main",
+    "issued_at":  "2026-05-09T05:40:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Recover worker1 cockpit and website Ollama connectivity. Restart dockerized CustomIDE backend/frontend and Ollama path, recover tunnel if needed, and validate /api/git/status plus public Ollama /api/tags health.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2041_recover_worker1_connections.sh",
+    "dependencies":  [
+                         "MTASK-2040"
+                     ],
+    "notes":  "source=manual; retry_of=MTASK-2040; fix=container_restart_plus_tunnel_recovery; success_requires=local_git_status_200_and_public_tags_200_and_models_present",
+    "category":  "brain"
+}
