@@ -150,6 +150,12 @@ def _best_docs(msg, n=2):
   scored.sort(key=lambda x: x[0], reverse=True)
   return [d for _, d in scored[:n]]
 
+def _best_doc_for_url_hint(url_hint):
+  for d in SITE_DOCS:
+    if url_hint in d.get('url',''):
+      return d
+  return None
+
 def _summarize_excerpt(text, msg):
   if not text:
     return ''
@@ -177,6 +183,15 @@ def _site_grounded_answer(msg):
     return None
   return f"Based on {d['url']}: {sn}"[:320]
 
+def _grounded_from_hint(url_hint, prefix):
+  d=_best_doc_for_url_hint(url_hint)
+  if not d:
+    return prefix
+  sn=_summarize_excerpt(d.get('text',''), url_hint)
+  if not sn:
+    return prefix
+  return f"{prefix} {sn}"[:360]
+
 def _rule_based_answer(msg):
   m=(msg or '').lower()
   if any(k in m for k in ['contact', 'email', 'phone', 'call', 'reach', 'address', 'get quote', 'quote']):
@@ -190,15 +205,20 @@ def _rule_based_answer(msg):
     parts.append('Use the Get Quote flow on the website for project requests.')
     return ' '.join(parts)
   if any(k in m for k in ['service', 'services', 'offer', 'offering', 'capabilities']):
-    return (
-      'Services: https://www.larielsystems.com/services. '
-      'Process: https://www.larielsystems.com/process. '
-      'MOSS: https://www.larielsystems.com/moss.'
+    return _grounded_from_hint(
+      '/services',
+      'Services are detailed at https://www.larielsystems.com/services. For implementation flow see https://www.larielsystems.com/process and for product context see https://www.larielsystems.com/moss.'
     )
   if any(k in m for k in ['process', 'workflow', 'how do you work', 'how you work']):
-    return 'Our workflow is documented at https://www.larielsystems.com/process.'
+    return _grounded_from_hint(
+      '/process',
+      'Our workflow is documented at https://www.larielsystems.com/process.'
+    )
   if any(k in m for k in ['moss', 'demo', 'studio']):
-    return 'MOSS information is available at https://www.larielsystems.com/moss.'
+    return _grounded_from_hint(
+      '/moss',
+      'MOSS information is available at https://www.larielsystems.com/moss.'
+    )
   return _site_grounded_answer(msg) or 'I can help with Lariel Systems services, process, MOSS, or contact/quote guidance.'
 
 def _extract_user_question(raw_msg):
