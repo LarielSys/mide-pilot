@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-2040-RETRY3",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2040] Patched backend files\n[MTASK-2040] Starting CustomIDE stack\n[MTASK-2040] Waiting for backend health\napi_git_status_http=404\n--- backend log tail ---",
+  "stderr_excerpt": "pkill: killing pid 513250 failed: Operation not permitted\npkill: killing pid 533048 failed: Operation not permitted",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 278,
+    "output_lines": 7
+  },
+  "timestamp_utc": "2026-05-09T05:09:16Z"
+}
