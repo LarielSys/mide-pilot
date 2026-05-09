@@ -1,0 +1,14 @@
+{
+    "task_id":  "MTASK-2026-RETRY11",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T02:10:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Upgrade contact-answer quality by surfacing email/phone facts extracted from Lariel contact page content, not just link-only guidance.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [],
+    "notes":  "manual_retry=true; objective=contact_facts_from_page_content",
+    "category":  "brain"
+}

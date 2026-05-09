@@ -97,6 +97,31 @@ def _build_site_kb():
 
 SITE_KB, SITE_DOCS=_build_site_kb()
 
+def _extract_contact_details():
+  contact_docs=[d for d in SITE_DOCS if '/contact' in d.get('url','')]
+  if not contact_docs:
+    return None
+  txt=' '.join(d.get('text','') for d in contact_docs)
+  txt=re.sub(r'\s+', ' ', txt)
+  emails=re.findall(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}', txt)
+  phones=[]
+  for pat in [r'\+\d{1,3}\s\d{2,4}\s\d{3,4}\s\d{3,4}', r'\d{3}-\d{3}-\d{4}']:
+    phones.extend(re.findall(pat, txt))
+  uniq_emails=[]
+  for e in emails:
+    if e not in uniq_emails:
+      uniq_emails.append(e)
+  uniq_phones=[]
+  for p in phones:
+    if p not in uniq_phones:
+      uniq_phones.append(p)
+  return {
+    'emails': uniq_emails[:2],
+    'phones': uniq_phones[:3],
+  }
+
+CONTACT_DETAILS=_extract_contact_details()
+
 def _keywords(msg):
   tokens=re.findall(r"[a-z0-9]+", (msg or '').lower())
   stop={'the','and','for','with','that','this','from','your','about','what','when','where','how','are','can','you','our'}
@@ -147,10 +172,14 @@ def _site_grounded_answer(msg):
 def _rule_based_answer(msg):
   m=(msg or '').lower()
   if any(k in m for k in ['contact', 'email', 'phone', 'call', 'reach', 'address', 'get quote', 'quote']):
-    return (
-      'For contact details and quote requests, use '
-      'https://www.larielsystems.com/contact and the Get Quote flow on the website.'
-    )
+    parts=['For contact details and quote requests, use https://www.larielsystems.com/contact.']
+    if CONTACT_DETAILS:
+      if CONTACT_DETAILS.get('emails'):
+        parts.append('Email: ' + ', '.join(CONTACT_DETAILS['emails']) + '.')
+      if CONTACT_DETAILS.get('phones'):
+        parts.append('Phone: ' + ', '.join(CONTACT_DETAILS['phones']) + '.')
+    parts.append('Use the Get Quote flow on the website for project requests.')
+    return ' '.join(parts)
   if any(k in m for k in ['service', 'services', 'offer', 'offering', 'capabilities']):
     return (
       'Services: https://www.larielsystems.com/services. '
