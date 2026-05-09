@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2036",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T04:55:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Commit and push the screenshot1 deliverable artifacts that MTASK-2035 created locally on Ubuntu so windows-main can download them.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2036_push_screenshot1_artifacts.sh",
+  "dependencies": ["MTASK-2035"],
+  "notes": "source=manual; followup=deliverables_not_committed; acceptance=screenshot1_artifacts_committed",
+  "category": "data_delivery"
+}
