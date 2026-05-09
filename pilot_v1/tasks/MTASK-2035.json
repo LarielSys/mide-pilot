@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2035",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T04:30:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Locate screenshot1 on Ubuntu by basename, encode it for delivery, and push the artifact to git so windows-main can download it.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2035_deliver_screenshot1.sh",
+  "dependencies": [],
+  "notes": "source=manual; target=screenshot1; delivery=git_base64_encoded; acceptance=screenshot1_artifact_in_deliverables",
+  "category": "data_delivery"
+}
