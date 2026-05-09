@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2037",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T05:05:00Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Upload screenshot1 artifacts to origin/main and do not report success unless the artifact files are actually committed and pushed. A local-only artifact is not completion.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2037_force_push_screenshot1.sh",
+  "dependencies": ["MTASK-2035", "MTASK-2036"],
+  "notes": "source=manual; strict_completion=true; success_requires=deliverables_present_in_origin_main; if_not_pushed=exit_nonzero",
+  "category": "data_delivery"
+}
