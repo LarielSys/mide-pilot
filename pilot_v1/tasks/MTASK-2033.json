@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2033",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T04:10:00Z",
+  "priority": "normal",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Run a second simple test MTASK and confirm worker pickup after git sync.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2033_test.sh",
+  "dependencies": [],
+  "notes": "source=manual; test=true; acceptance=worker_reports_completed_test_2033",
+  "category": "brain"
+}
