@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-2038",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2038] Patched CustomIDE backend wiring for git route and sync-health repo root\n[MTASK-2038] Restarting CustomIDE stack\n[MTASK-2038] Waiting for backend health",
+  "stderr_excerpt": "curl: (22) The requested URL returned error: 404",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 215,
+    "output_lines": 4
+  },
+  "timestamp_utc": "2026-05-09T05:00:51Z"
+}
