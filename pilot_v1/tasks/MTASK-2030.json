@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-2030",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-09T03:35:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "BRAIN DECISION for MTASK-2029 consult: choose OPTION A. Create and commit the missing MTASK-2028 executor script, then allow the next retry to complete with evidence.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2030_decision_reply.sh",
+  "dependencies": ["MTASK-2029"],
+  "notes": "source=brain-decision; decision=OPTION_A; objective=unblock_mtask_2028_retry_loop",
+  "category": "brain"
+}
