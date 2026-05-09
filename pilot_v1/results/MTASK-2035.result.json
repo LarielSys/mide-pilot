@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-2035",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-2035] Searching for screenshot1 by basename\n[MTASK-2035] Found image: /home/larieladmin/Pictures/screenshot1.png\n[MTASK-2035] Encoded artifact: pilot_v1/deliverables/screenshot1.png.b64\n[MTASK-2035] Metadata: pilot_v1/deliverables/screenshot1.metadata.json\n[MTASK-2035] Image type: PNG image data, 1920 x 1036, 8-bit/color RGBA, non-interlaced\n[MTASK-2035] Image bytes: 856197",
+  "stderr_excerpt": "",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 384,
+    "output_lines": 6
+  },
+  "timestamp_utc": "2026-05-09T04:48:29Z"
+}
