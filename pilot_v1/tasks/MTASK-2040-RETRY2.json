@@ -1,0 +1,16 @@
+{
+    "task_id":  "MTASK-2040-RETRY2",
+    "issued_by":  "windows-main",
+    "issued_at":  "2026-05-09T05:30:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Retry cockpit git panel fix after MTASK-2039. Force-restart CustomIDE backend/frontend processes so patched routes are actually served, then validate /api/git/status and /api/status/sync-health.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2040_force_restart_cockpit_git_binding.sh",
+    "dependencies":  [
+                         "MTASK-2039"
+                     ],
+    "notes":  "source=manual; retry_of=MTASK-2039; root_cause=stale_backend_process_after_patch; success_requires=api_git_status_http200_and_origin_present_and_sync_health_source_not_missing",
+    "category":  "brain"
+}
