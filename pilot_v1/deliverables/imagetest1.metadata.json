@@ -1,0 +1,9 @@
+{
+  "filename": "imagetest1.png",
+  "original_path": "/home/larieladmin/Pictures/imagetest1.png",
+  "discovered_at": "2026-05-09T03:14:19Z",
+  "file_size_bytes": 101532,
+  "file_type": "PNG image data, 1150 x 858, 8-bit/color RGBA, non-interlaced",
+  "base64_file": "imagetest1.png.b64",
+  "delivery_method": "git_base64_encoded"
+}
