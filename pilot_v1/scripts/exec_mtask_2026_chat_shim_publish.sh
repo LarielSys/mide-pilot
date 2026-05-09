@@ -128,52 +128,40 @@ def _summarize_excerpt(text, msg):
     if i >= 0:
       idx=i
       break
-  start=max(0, idx-120)
-  end=min(len(text), idx+340)
+  start=max(0, idx-80)
+  end=min(len(text), idx+180)
   snippet=text[start:end].strip()
   snippet=re.sub(r'\s+', ' ', snippet)
   return snippet
 
 def _site_grounded_answer(msg):
-  docs=_best_docs(msg, n=2)
+  docs=_best_docs(msg, n=1)
   if not docs:
     return None
-  lines=[]
-  for d in docs:
-    sn=_summarize_excerpt(d['text'], msg)
-    if sn:
-      lines.append(f"From {d['url']}: {sn}")
-  if not lines:
+  d=docs[0]
+  sn=_summarize_excerpt(d['text'], msg)
+  if not sn:
     return None
-  return ' '.join(lines)[:900]
+  return f"Based on {d['url']}: {sn}"[:320]
 
 def _rule_based_answer(msg):
   m=(msg or '').lower()
   if any(k in m for k in ['contact', 'email', 'phone', 'call', 'reach', 'address', 'get quote', 'quote']):
-    grounded=_site_grounded_answer(msg)
     return (
-      'For contact details and quote requests, use the Contact page: '
-      'https://www.larielsystems.com/contact and the Get Quote flow on the website. '
-      + (' ' + grounded if grounded else '') +
-      ' If you share what you need, I can help you prepare the request message.'
+      'For contact details and quote requests, use '
+      'https://www.larielsystems.com/contact and the Get Quote flow on the website.'
     )
   if any(k in m for k in ['service', 'services', 'offer', 'offering', 'capabilities']):
-    grounded=_site_grounded_answer(msg)
-    base=(
-      'Lariel Systems services are outlined on https://www.larielsystems.com/services. '
-      'You can also review MOSS-specific information at https://www.larielsystems.com/moss '
-      'and the delivery workflow at https://www.larielsystems.com/process.'
+    return (
+      'Services: https://www.larielsystems.com/services. '
+      'Process: https://www.larielsystems.com/process. '
+      'MOSS: https://www.larielsystems.com/moss.'
     )
-    return base + (' ' + grounded if grounded else '')
   if any(k in m for k in ['process', 'workflow', 'how do you work', 'how you work']):
-    grounded=_site_grounded_answer(msg)
-    base='The website process flow is documented at https://www.larielsystems.com/process.'
-    return base + (' ' + grounded if grounded else '')
+    return 'Our workflow is documented at https://www.larielsystems.com/process.'
   if any(k in m for k in ['moss', 'demo', 'studio']):
-    grounded=_site_grounded_answer(msg)
-    base='MOSS information is available at https://www.larielsystems.com/moss.'
-    return base + (' ' + grounded if grounded else '')
-  return _site_grounded_answer(msg)
+    return 'MOSS information is available at https://www.larielsystems.com/moss.'
+  return _site_grounded_answer(msg) or 'I can help with Lariel Systems services, process, MOSS, or contact/quote guidance.'
 
 class H(BaseHTTPRequestHandler):
     def _cors(self):

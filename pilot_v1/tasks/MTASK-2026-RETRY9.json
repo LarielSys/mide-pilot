@@ -1,0 +1,14 @@
+{
+    "task_id":  "MTASK-2026-RETRY9",
+    "issued_by":  "olegreen",
+    "issued_at":  "2026-05-09T01:40:00Z",
+    "priority":  "critical",
+    "assigned_to":  "ubuntu-worker-01",
+    "required_worker_id":  "ubuntu-worker-01",
+    "status":  "approved_to_execute",
+    "description":  "Fix inconsistent local-vs-localhost chat outputs by enforcing a single test backend path, and simplify website chat answers to concise link-first guidance.",
+    "executor_script":  "pilot_v1/scripts/exec_mtask_2026_chat_shim_publish.sh",
+    "dependencies":  [],
+    "notes":  "manual_retry=true; objective=consistent_backend_path_and_concise_answers",
+    "category":  "brain"
+}
