@@ -19,6 +19,15 @@ probe_api_chat(){
   [ "$code" -ge 200 ] && [ "$code" -lt 300 ] && grep -Eqi 'online|reply|answer|message|token' /tmp/mtask2026_probe_chat.json
 }
 
+probe_api_chat_contact(){
+  local base="$1"
+  local code
+  code="$(curl -s -m 12 -o /tmp/mtask2026_probe_chat_contact.json -w '%{http_code}' -X POST "${base%/}/api/chat" \
+    -H 'Content-Type: application/json' \
+    -d '{"message":"what is the contact information on the Lariel Systems website?","stream":false}' || true)"
+  [ "$code" -ge 200 ] && [ "$code" -lt 300 ] && grep -Eqi 'larielsystems.com/contact|get quote|contact page' /tmp/mtask2026_probe_chat_contact.json
+}
+
 probe_cockpit(){
   local base="$1"
   local code
@@ -186,9 +195,16 @@ PY
 start_shim(){
   local target_url="$1"
   local mode="$2"
+  # Replace any stale shim so latest code is always active.
+  if command -v pkill >/dev/null 2>&1; then
+    pkill -f '/tmp/mtask2026_chat_shim.py' >/dev/null 2>&1 || true
+  fi
+  if command -v fuser >/dev/null 2>&1; then
+    fuser -k 8091/tcp >/dev/null 2>&1 || true
+  fi
   write_shim "$target_url" "$mode"
   nohup python3 /tmp/mtask2026_chat_shim.py >/tmp/mtask2026_shim.log 2>&1 &
-  sleep 2 || true
+  sleep 3 || true
 }
 
 probe_ollama(){
@@ -308,7 +324,7 @@ echo "upstream_target=${UPSTREAM_TARGET}" >> "$STATE_DIR/mtask_2026_diagnostics.
 log 'Step 2: ensure /api/chat via native or shim'
 LOCAL_CHAT_BASE=''
 start_shim "$UPSTREAM_TARGET" "$UPSTREAM_MODE"
-if probe_api_chat "http://127.0.0.1:${SHIM_PORT}"; then
+if probe_api_chat "http://127.0.0.1:${SHIM_PORT}" && probe_api_chat_contact "http://127.0.0.1:${SHIM_PORT}"; then
   LOCAL_CHAT_BASE="http://127.0.0.1:${SHIM_PORT}"
 fi
 
