@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2050",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-10T02:35:00Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Cockpit AI recovery v2. Reconnect customide backend to a reachable Ubuntu Ollama endpoint, normalize frontend backend URL, restart backend, and verify /api/llm/chat returns degraded=false with a working qwen model. Do not fail solely on missing vision model.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2050_repair_cockpit_ai_v2.sh",
+  "dependencies": [
+    "MTASK-2049"
+  ],
+  "notes": "success_requires=llm_health_configured_and_llm_chat_not_degraded; model_policy=prefer_qwen2.5-coder:7b_fallback_qwen2.5:14b_or_qwen2.5:7b",
+  "category": "brain"
+}
