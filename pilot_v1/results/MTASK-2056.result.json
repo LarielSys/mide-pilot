@@ -1,6 +1,19 @@
 {
-  "mtask_id": "MTASK-2056",
+  "task_id": "MTASK-2056",
+  "worker_id": "ubuntu-worker-01",
   "execution_status": "completed",
-  "message": "Test MTASK executed successfully",
-  "worker_time_utc": "2026-05-10T04:21:10Z"
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[main 9ae06c2d3] result(MTASK-2056): test git pipeline\n 1 file changed, 3 insertions(+), 16 deletions(-)\nMTASK-2056 complete",
+  "stderr_excerpt": "To https://github.com/LarielSys/mide-pilot.git\n   a197e266c..9ae06c2d3  main -> main",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 210,
+    "output_lines": 5
+  },
+  "timestamp_utc": "2026-05-10T04:21:11Z"
 }
