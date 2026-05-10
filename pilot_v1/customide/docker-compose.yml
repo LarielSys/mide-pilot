@@ -47,8 +47,8 @@ services:
     environment:
       - CUSTOMIDE_APP_HOST=0.0.0.0
       # Reach Ollama on the host via host-gateway (since ollama uses host networking)
-      - CUSTOMIDE_OLLAMA_BASE_URL=http://192.168.1.21:11434
-      - CUSTOMIDE_OLLAMA_MODEL=qwen2.5:14b
+      - CUSTOMIDE_OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - CUSTOMIDE_OLLAMA_MODEL=qwen2.5-coder:7b
 
   # ── CustomIDE Frontend (static) ─────────────────────────────────────────
   frontend:
