@@ -1,0 +1,20 @@
+{
+  "id": "MTASK-2055",
+  "name": "Apply Fixed Connector Configs",
+  "description": "Deploy config fixes from Windows. Copy updated website chat and cockpit frontend configs from repo to proper locations. Verify /api/llm/health returns non-degraded response.",
+  "created_at": "2026-05-09T00:00:00Z",
+  "status": "approved_to_execute",
+  "priority": "HIGH",
+  "reason": "Website chat and cockpit frontend were using stale ngrok URLs. Fixed configs point to localhost:5555 (cockpit backend).",
+  "executor": "exec_mtask_2055_apply_config_fixes.sh",
+  "timeout_seconds": 60,
+  "retry_on_failure": false,
+  "dependencies": [],
+  "steps": [
+    "Copy larielsystems/chat.html to web server location",
+    "Copy MIDE/pilot_v1/customide/frontend/js/config.js to frontend location",
+    "Verify cockpit backend is running on :5555",
+    "Test /api/llm/health endpoint",
+    "Return health check result"
+  ]
+}
