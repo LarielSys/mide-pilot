@@ -5,13 +5,13 @@
   "priority": "high",
   "assigned_to": "ubuntu-worker-01",
   "required_worker_id": "ubuntu-worker-01",
-  "status": "approved_to_execute",
+  "status": "pending_approval",
   "description": "Hard reset the Worker 1 Ollama/chat/cockpit connection stack and rebuild it from fresh local validation. Website connector found in larielsystems/chat.html still uses CHAT_BACKEND=https://jawed-lapel-dispersed.ngrok-free.dev with local bridge fallback, and cockpit frontend config still points backendBaseUrl at the same stale public base. Remove stale local chat shim listeners, rediscover a working Ollama-backed upstream, republish website chat, refresh cockpit backend routing if a validated public cockpit endpoint exists, request a cockpit hard reset, and return proof.",
   "executor_script": "pilot_v1/scripts/exec_mtask_2047_reset_ollama_cockpit_webchat.sh",
   "dependencies": [
     "MTASK-2026-RETRY16",
     "MTASK-2046"
   ],
-  "notes": "website_chat_connector=larielsystems/chat.html:CHAT_BACKEND; cockpit_connector=pilot_v1/customide/frontend/js/config.js:backendBaseUrl; reset_scope=stale_local_chat_shim_plus_public_connectors; success_requires=local_ollama_up_plus_public_webchat_plus_cockpit_llm_or_validated_local_cockpit",
+  "notes": "website_chat_connector=larielsystems/chat.html:CHAT_BACKEND; cockpit_connector=pilot_v1/customide/frontend/js/config.js:backendBaseUrl; reset_scope=stale_local_chat_shim_plus_public_connectors; success_requires=local_ollama_up_plus_public_webchat_plus_cockpit_llm_or_validated_local_cockpit; debug_hold=paused_to_stop_worker_loop",
   "category": "brain"
 }
