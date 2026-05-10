@@ -1,0 +1,12 @@
+{
+  "id": "MTASK-2054",
+  "name": "Micro Echo Test",
+  "description": "Minimal test: write a single heartbeat line to result file. Purpose: determine if task executor system is running at all.",
+  "created_at": "2026-05-09T00:00:00Z",
+  "status": "approved_to_execute",
+  "priority": "CRITICAL",
+  "executor": "exec_mtask_2054_micro_echo_test.sh",
+  "timeout_seconds": 5,
+  "retry_on_failure": false,
+  "dependencies": []
+}
