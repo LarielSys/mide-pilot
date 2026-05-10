@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-2049",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "[MTASK-2049] start_utc=2026-05-10T04:09:53Z\n[MTASK-2049] failed",
+  "stderr_excerpt": "<stdin>:19: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 279,
+    "output_lines": 3
+  },
+  "timestamp_utc": "2026-05-10T04:09:59Z"
+}
