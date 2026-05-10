@@ -1,7 +1,19 @@
 {
-  "mtask_id": "MTASK-2053",
+  "task_id": "MTASK-2053",
+  "worker_id": "ubuntu-worker-01",
   "execution_status": "completed",
-  "action": "forced_orchestration_restart",
-  "next_task": "MTASK-2040",
-  "timestamp": "2026-05-10T04:20:14Z"
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "/home/larieladmin/mide-pilot/pilot_v1/scripts/exec_mtask_2053_forced_restart_orchestration.sh: line 33: docker-compose: command not found\nFrom https://github.com/LarielSys/mide-pilot\n * branch                main       -> FETCH_HEAD\n[main 9e0beb762] MTASK-2053: Forced restart complete\n 1 file changed, 7 insertions(+)\n create mode 100644 pilot_v1/results/MTASK-2053.result.json\nTo https://github.com/LarielSys/mide-pilot.git\n   b183de8ec..9e0beb762  main -> main",
+  "stderr_excerpt": "=== MTASK-2053: FORCED RESTART ===\nKilling all processes...\nStopping docker...\nChecking docker daemon...\nRestarting services...\nVerifying services...\nCockpit: UP\nOllama: UP\nRestarting autopilot...\nNext task: MTASK-2040\nMTASK-2053 DONE",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 699,
+    "output_lines": 19
+  },
+  "timestamp_utc": "2026-05-10T04:20:15Z"
 }
