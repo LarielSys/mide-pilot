@@ -1,11 +1,19 @@
 {
-  "mtask_id": "MTASK-2055",
+  "task_id": "MTASK-2055",
+  "worker_id": "ubuntu-worker-01",
   "execution_status": "completed",
-  "configs_fixed": {
-    "web_chat": true,
-    "cockpit_frontend": true
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[main 4ff36388b] MTASK-2055: Config fixes applied\n 1 file changed, 11 insertions(+)\n create mode 100644 pilot_v1/results/MTASK-2055.result.json\nTo https://github.com/LarielSys/mide-pilot.git\n   9ff3586df..4ff36388b  main -> main",
+  "stderr_excerpt": "=== MTASK-2055: Apply Config Fixes ===\nChecking web paths...\nWARNING: ./larielsystems/chat.html not found\nERROR: Web chat config not fixed\nCockpit config: OK (points to :5555)\nChecking cockpit backend...\nCockpit :5555 HTTP response: 200\nTesting /api/llm/health...\nLLM response: {\"status\":\"configured\",\"generate_url\":\"http://172.19.0.1:11434/api/generate\",\"source_key\":\"env.CUSTOMIDE_OLLAMA_BASE_URL\"}\nMTASK-2055 COMPLETED",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 651,
+    "output_lines": 15
   },
-  "cockpit_backend_http_code": "200",
-  "llm_health_response": {"status":"configured","generate_url":"http://172.19.0.1:11434/api/generate","source_key":"env.CUSTOMIDE_OLLAMA_BASE_URL"},
-  "timestamp": "2026-05-10T04:20:18Z"
+  "timestamp_utc": "2026-05-10T04:20:19Z"
 }
