@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-2054",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "",
+  "stderr_excerpt": "mkdir: cannot create directory \u2018/pilot_v1\u2019: Permission denied\n/home/larieladmin/mide-pilot/pilot_v1/scripts/exec_mtask_2054_micro_echo_test.sh: line 4: /pilot_v1/results/MTASK-2054.result.json: No such file or directory",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 220,
+    "output_lines": 2
+  },
+  "timestamp_utc": "2026-05-10T04:20:17Z"
+}
