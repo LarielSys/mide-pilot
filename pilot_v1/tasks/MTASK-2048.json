@@ -1,0 +1,17 @@
+{
+  "task_id": "MTASK-2048",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-10T01:45:00Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Status request only: collect and return the latest execution status and evidence for MTASK-2045 and MTASK-2047. Do not restart services and do not modify runtime configs; read result/state files and report current state.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2048_status_update_2045_2047.sh",
+  "dependencies": [
+    "MTASK-2045",
+    "MTASK-2047"
+  ],
+  "notes": "mode=read_only_status_probe; targets=MTASK-2045,MTASK-2047; success_requires=single_result_with_target_status_and_evidence",
+  "category": "brain"
+}
