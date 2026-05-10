@@ -1,0 +1,23 @@
+{
+  "id": "MTASK-2053",
+  "name": "FORCED ORCHESTRATION RESTART",
+  "description": "CRITICAL: Restart entire MIDE orchestration. Kill all worker processes, restart docker services, restart autopilot daemon. Verify services up before signaling next task.",
+  "created_at": "2026-05-09T00:00:00Z",
+  "status": "approved_to_execute",
+  "priority": "CRITICAL",
+  "reason": "Worker autopilot is completely non-responsive. Last heartbeat was 4+ hours ago. Force full system restart.",
+  "executor": "exec_mtask_2053_forced_restart_orchestration.sh",
+  "timeout_seconds": 180,
+  "retry_on_failure": false,
+  "dependencies": [],
+  "steps": [
+    "Stop docker containers forcefully",
+    "Kill all autopilot and worker python processes",
+    "Verify docker daemon is running",
+    "Restart all services (customide, itheia-llm, ollama, code-server)",
+    "Wait for services to stabilize (10s)",
+    "Restart autopilot daemon",
+    "Force git fetch and poll for next task",
+    "Return diagnostics and next task ID"
+  ]
+}
