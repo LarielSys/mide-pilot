@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2049",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-10T02:10:00Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Repair cockpit AI connectivity to Ubuntu-hosted Ollama and return proof. Enforce an active Ollama base URL, ensure qwen2.5-coder:7b and qwen2.5vl:7b are available, patch cockpit backend/frontend config for the validated endpoint, restart cockpit backend, and verify /api/llm/health is configured and /api/llm/chat responds with degraded=false.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2049_fix_cockpit_ollama_connectivity.sh",
+  "dependencies": [
+    "MTASK-2048"
+  ],
+  "notes": "policy=ubuntu_ollama_tunnel_mode; required_models=qwen2.5-coder:7b,qwen2.5vl:7b; success_requires=backend_llm_health_configured_and_chat_not_degraded",
+  "category": "brain"
+}
