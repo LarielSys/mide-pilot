@@ -1,0 +1,17 @@
+{
+  "id": "MTASK-2057",
+  "name": "Second Test MTASK Git Pipeline",
+  "description": "Second simple test task to confirm worker pickup and git result writeback on main.",
+  "created_at": "2026-05-10T00:00:00Z",
+  "status": "approved_to_execute",
+  "priority": "LOW",
+  "executor": "exec_mtask_2057_test_git_pipeline.sh",
+  "timeout_seconds": 20,
+  "retry_on_failure": false,
+  "dependencies": [],
+  "steps": [
+    "Emit second heartbeat payload",
+    "Write MTASK-2057 result JSON",
+    "Commit and push result to main"
+  ]
+}
