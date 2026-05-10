@@ -1,0 +1,17 @@
+{
+  "id": "MTASK-2056",
+  "name": "Test MTASK Git Pipeline",
+  "description": "Simple test task to verify worker pickup and git result writeback path.",
+  "created_at": "2026-05-10T00:00:00Z",
+  "status": "approved_to_execute",
+  "priority": "LOW",
+  "executor": "exec_mtask_2056_test_git_pipeline.sh",
+  "timeout_seconds": 20,
+  "retry_on_failure": false,
+  "dependencies": [],
+  "steps": [
+    "Emit a heartbeat payload",
+    "Write MTASK-2056 result JSON",
+    "Commit and push result to main"
+  ]
+}
