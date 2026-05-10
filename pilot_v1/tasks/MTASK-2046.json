@@ -2,6 +2,8 @@
   "task_id": "MTASK-2046",
   "issued_by": "windows-main",
   "issued_at": "2026-05-09T23:55:00Z",
+  "redispatched_at": "2026-05-10T00:20:00Z",
+  "redispatch_nonce": "resend-2-20260510",
   "priority": "high",
   "assigned_to": "ubuntu-worker-01",
   "required_worker_id": "ubuntu-worker-01",
