@@ -1,0 +1,16 @@
+{
+  "task_id": "MTASK-2051",
+  "issued_by": "windows-main",
+  "issued_at": "2026-05-10T02:55:00Z",
+  "priority": "critical",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Diagnostic only: determine why Ollama is unreachable from cockpit and worker flows. Perform layered checks for local service state, local port bind/listen, localhost API reachability, LAN API reachability, model tags, and container/service conflicts. Return precise failing layer with evidence and recommended fix path.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_2051_diagnose_ollama_unreachable.sh",
+  "dependencies": [
+    "MTASK-2050"
+  ],
+  "notes": "mode=diagnostic_read_only; success_requires=layered_failure_localization_with_evidence",
+  "category": "brain"
+}
