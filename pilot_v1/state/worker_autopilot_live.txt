@@ -1,13 +1,18 @@
 Autopilot Live Status
-updated_utc: 2026-06-08T22:03:29Z
+updated_utc: 2026-06-11T03:12:16Z
 worker_name: ubuntu-atlas-01
 worker_id: ubuntu-worker-01
 mode: idle
 last_task_processed: 
-poll_seconds: 60
-note: No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
+poll_seconds: 30
+note: No assigned mtasks found; sleeping until next poll. approved=323, eligible=0, mismatched=3.
 
 Recent Events (latest 20, newest first):
+2026-06-11T03:12:16Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=323, eligible=0, mismatched=3.
+2026-06-11T03:12:16Z | mode=running | last_task= | note=Autopilot started.
+2026-06-11T03:12:00Z | mode=idle | last_task= | note=Autopilot one-shot cycle finished. approved=323, eligible=0, mismatched=3.
+2026-06-11T03:11:59Z | mode=running | last_task= | note=Autopilot started.
+2026-06-11T03:04:51Z | mode=idle | last_task=MTASK-0004 | note=Forced task cycle finished.
 2026-06-08T22:03:29Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
 2026-06-08T22:02:27Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
 2026-06-08T22:01:25Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
@@ -23,8 +28,3 @@ Recent Events (latest 20, newest first):
 2026-06-08T21:51:02Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
 2026-06-08T21:50:00Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
 2026-06-08T21:48:57Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
-2026-06-08T21:47:55Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
-2026-06-08T21:46:52Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
-2026-06-08T21:45:50Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
-2026-06-08T21:44:48Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
-2026-06-08T21:43:46Z | mode=idle | last_task= | note=No assigned mtasks found; sleeping until next poll. approved=319, eligible=0, mismatched=3.
