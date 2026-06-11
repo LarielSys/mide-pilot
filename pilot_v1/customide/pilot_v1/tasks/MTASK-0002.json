@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-0002",
+  "issued_by": "MAIN",
+  "issued_at": "2026-06-11T02:38:20Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "create a test mtask for operator route verification",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0002.sh",
+  "dependencies": [],
+  "notes": "source=operator-cli; proposal_id=PRP-20260611023820-44000",
+  "category": "brain"
+}
