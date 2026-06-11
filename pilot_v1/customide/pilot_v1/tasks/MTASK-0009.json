@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-0009",
+  "issued_by": "MAIN",
+  "issued_at": "2026-06-11T03:45:19Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "create a test mtask just to see if ubuntu picks it up, no data needed",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0009.sh",
+  "dependencies": [],
+  "notes": "source=operator-cli; proposal_id=PRP-20260611034519-48988",
+  "category": "brain"
+}
