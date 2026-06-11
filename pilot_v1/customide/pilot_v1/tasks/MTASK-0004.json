@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-0004",
+  "issued_by": "MAIN",
+  "issued_at": "2026-06-11T03:00:03Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "Create a simple marker file named `ubuntu_pickup_test.txt` in the repo root, write the current UTC timestamp and the worker id into it, then confirm the file exists and report the exact path.",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0004.sh",
+  "dependencies": [],
+  "notes": "source=operator-cli; proposal_id=PRP-20260611030003-44000",
+  "category": "brain"
+}
