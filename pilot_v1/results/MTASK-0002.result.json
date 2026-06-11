@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-0002",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "completed",
+  "summary": "Executor script completed successfully.",
+  "stdout_excerpt": "[MTASK-0002] Starting execution...\n[MTASK-0002] Task: create mtask simulation upload from cockpit now\n[MTASK-0002] Executor stub \u2014 task acknowledged by worker.\n[MTASK-0002] Done.",
+  "stderr_excerpt": "",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 179,
+    "output_lines": 4
+  },
+  "timestamp_utc": "2026-06-11T01:47:39Z"
+}
