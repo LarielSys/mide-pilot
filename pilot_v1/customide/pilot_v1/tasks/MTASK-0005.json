@@ -1,0 +1,14 @@
+{
+  "task_id": "MTASK-0005",
+  "issued_by": "MAIN",
+  "issued_at": "2026-06-11T03:14:48Z",
+  "priority": "high",
+  "assigned_to": "ubuntu-worker-01",
+  "required_worker_id": "ubuntu-worker-01",
+  "status": "approved_to_execute",
+  "description": "create an mtask asking for status of token counter, if its recording tokens or not, it must reply with its own mtask and upload it using the letter a at the end of the mtask number to knw it goes together",
+  "executor_script": "pilot_v1/scripts/exec_mtask_0005.sh",
+  "dependencies": [],
+  "notes": "source=operator-cli; proposal_id=PRP-20260611031448-44000",
+  "category": "brain"
+}
