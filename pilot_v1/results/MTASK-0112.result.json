@@ -1,0 +1,19 @@
+{
+  "task_id": "MTASK-0112",
+  "worker_id": "ubuntu-worker-01",
+  "execution_status": "failed",
+  "summary": "Executor script exited with non-zero status.",
+  "stdout_excerpt": "task=MTASK-0112\ntimestamp_utc=2026-06-11T04:48:20Z\nerror: cannot pull with rebase: You have unstaged changes.\nerror: Please commit or stash them.\npatching=/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh\nbackup=/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh.bak_mtask0112\npatch_applied=yes\nfunction_verified=FAILED \u2014 restoring backup\nfinal_status=PATCH_FAILED_RESTORED",
+  "stderr_excerpt": "tee: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/mtask_0112.log: No such file or directory\ntee: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/mtask_0112.log: No such file or directory\n/c/AI Glasses/mide-pilot/pilot_v1/scripts/exec_mtask_0112_push_retry_backoff.sh: line 14: cd: /home/larieladmin/Documents/itheia-llm/MIDE: No such file or directory\ntee: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/mtask_0112.log: No such file or directory\ngrep: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh: No such file or directory\ntee: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/mtask_0112.log: No such file or directory\ncp: cannot stat '/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh': No such file or directory\ntee: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/mtask_0112.log: No such file or directory\n/c/AI Glasses/mide-pilot/pilot_v1/scripts/exec_mtask_0112_push_retry_backoff.sh: line 66: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh: No such file or directory\nsed: can't read /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh: No such file or directory\nsed: can't read /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh: No such file or directory\ntee: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/mtask_0112.log: No such file or directory\ngrep: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh: No such file or directory\ntee: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/mtask_0112.log: No such file or directory\ncp: cannot stat '/home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/scripts/worker_mtask_autopilot.sh.bak_mtask0112': No such file or directory\ntee: /home/larieladmin/Documents/itheia-llm/MIDE/pilot_v1/state/mtask_0112.log: No such file or directory",
+  "tokens": {
+    "prompt_eval_count": 0,
+    "eval_count": 0,
+    "total_tokens": 0,
+    "ollama_calls": 0,
+    "ollama_model": "",
+    "ollama_total_duration_ms": 0,
+    "output_chars": 2442,
+    "output_lines": 25
+  },
+  "timestamp_utc": "2026-06-11T04:48:21Z"
+}
